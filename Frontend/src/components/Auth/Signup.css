@@ -1,0 +1,22 @@
+.signup {
+  position: absolute;
+  left: 33rem;
+}
+
+.form {
+  padding: 1.5rem;
+  height: fit-content;
+  width: 25rem;
+  background-color: white;
+}
+
+input {
+  width: 24rem;
+  height: 1.8rem;
+  margin: 0 0 1rem 0;
+}
+
+p {
+  color: red;
+  margin: 0;
+}

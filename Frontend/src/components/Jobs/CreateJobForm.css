@@ -1,0 +1,13 @@
+.createjobform {
+  position: relative;
+  background-color: bisque;
+  padding: 1rem;
+  max-height: 75vh;
+  overflow: auto;
+}
+
+.createjobform i {
+  position: absolute;
+  top: 0rem;
+  right: 0rem;
+}

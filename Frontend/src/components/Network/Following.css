@@ -1,0 +1,9 @@
+.following {
+  background-color: aqua;
+  height: fit-content;
+  min-height: 20rem;
+  width: 95%;
+  position: relative;
+  top: 5rem;
+  padding: 1rem 1.5rem;
+}

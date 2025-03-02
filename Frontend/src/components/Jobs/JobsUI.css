@@ -1,0 +1,39 @@
+.jobs {
+  display: flex;
+  background-color: salmon;
+  height: fit-content;
+  height: 45.9rem;
+  width: 75%;
+  position: relative;
+  top: 3rem;
+  margin: auto;
+}
+
+.jobOptions {
+  background-color: white;
+  width: 8.5rem;
+  height: 5rem;
+  position: absolute;
+  top: 5rem;
+  left: 1rem;
+  padding: 1rem;
+  border: 1px solid gray;
+  border-radius: 0.5rem;
+}
+
+.jobOptions button {
+  margin: 0 0 1rem 0;
+}
+
+.jobList {
+  width: 45%;
+  height: 100%;
+  background-color: aqua;
+  border: 1px solid gray;
+}
+
+.jobList .a {
+  width: 100%;
+  height: 10%;
+  background-color: white;
+}

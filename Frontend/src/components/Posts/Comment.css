@@ -1,0 +1,18 @@
+.comment {
+  padding: 0 0.3rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0.5rem 0;
+}
+
+/* We are using these three properties to ensure that if a long word is written then it doesn't overflow from 
+the div, that's it . */
+
+.comment .txt {
+  height: fit-content;
+  padding: 0.5rem;
+  width: 100%;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}

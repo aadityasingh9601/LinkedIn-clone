@@ -1,0 +1,44 @@
+.chatui {
+  width: 28rem;
+  height: 75%;
+  background-color: lightblue;
+  position: fixed;
+  right: 17.5rem;
+  bottom: 0;
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
+  border: 1.5px solid gray;
+  z-index: 20;
+}
+
+.receiver {
+  border-bottom: 1px solid gray;
+  width: 96%;
+  padding: 0.5rem;
+  height: 8%;
+}
+
+.receiver .header .img img {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  margin-right: 0.8rem;
+}
+
+.allMsg {
+  background-color: salmon;
+  width: 94.5%;
+  padding: 0.8rem;
+  height: 65%;
+  overflow-y: auto;
+}
+
+.date-divider {
+  background-color: white;
+  padding: 0.3rem 0.5rem;
+  display: inline-block;
+  font-size: 0.85rem;
+  margin: 0rem 0 1rem 0;
+  border-radius: 0.4rem;
+  transform: translate(8rem, 0);
+}

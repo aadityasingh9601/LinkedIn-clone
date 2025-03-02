@@ -1,0 +1,26 @@
+.jobDetail {
+  width: 55%;
+  max-height: 100%;
+  background-color: white;
+  border: 1px solid gray;
+  padding: 1rem;
+  overflow: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.jobDetail .a div {
+  transform: translateX(-15rem);
+  display: flex;
+  align-items: center;
+}
+
+.jobDetail .a div img {
+  border-radius: 0;
+}
+
+.jobDetail .a div span {
+  margin: 0 0 0rem 0.5rem;
+  font-weight: 500;
+}

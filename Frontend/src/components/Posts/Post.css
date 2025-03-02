@@ -1,0 +1,175 @@
+.post {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  justify-content: center;
+  height: fit-content;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.6rem;
+  margin: 0.6rem 0 0.6rem 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.header .img img {
+  height: 3.6rem;
+  width: 3.6rem;
+  border-radius: 50%;
+  margin-right: 0.8rem;
+}
+
+.followBtn {
+  position: absolute;
+  right: 3.5rem;
+  background-color: white;
+  color: #0a66c2;
+  border: none;
+  font-size: 1rem;
+}
+
+.followBtn:hover {
+  text-decoration: underline;
+}
+
+.followedBtn {
+  position: absolute;
+  right: 3.5rem;
+  background-color: rgb(219, 212, 212);
+  color: black;
+  border: none;
+  font-size: 1rem;
+}
+
+.options {
+  position: absolute;
+  right: 0rem;
+  top: 0rem;
+  background-color: white;
+  border: none;
+  font-size: 1.4rem;
+}
+
+.options-box {
+  position: relative;
+  top: 3rem;
+  left: 9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  background-color: antiquewhite;
+  border-radius: 0.6rem;
+  padding: 0.7rem;
+}
+
+.options-box button {
+  background-color: antiquewhite;
+  width: 6rem;
+  padding: 0.3rem;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+}
+
+.options-box button:hover {
+  background-color: white;
+}
+
+.options-box button i {
+  font-size: 1.3rem;
+}
+
+.followBtn i {
+  margin-right: 0.3rem;
+  font-size: 1.1rem;
+}
+
+.body {
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.body-text {
+  height: fit-content;
+  margin: 0 0 0.5rem 0;
+}
+
+.body .media img {
+  height: 30rem;
+  width: 100%;
+}
+
+.body .media video {
+  height: 100%;
+  width: 100%;
+}
+
+.postInfo div {
+  font-size: 0.835rem;
+  color: #575757;
+  position: relative;
+  left: 12rem;
+}
+
+.postInfo div span:hover {
+  cursor: pointer;
+  color: blue;
+}
+
+.footer {
+  border-top: 0.5px solid black;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 1rem;
+}
+
+.footer button {
+  background-color: white;
+  padding: 0.3rem;
+  border: none;
+  font-size: 0.9rem;
+}
+
+.footer button:hover {
+  background-color: rgba(209, 204, 204);
+}
+
+.footer button i {
+  font-size: 1.4rem;
+  margin-right: 0.3rem;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.likeList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem 0.5rem;
+  border-radius: 1rem;
+}
+
+.like {
+  display: flex;
+  align-items: center;
+  border-bottom: 0.5px solid black;
+  font-size: 1.2rem;
+  width: 100%;
+  height: fit-content;
+  margin: 0 0 0.5rem 0;
+}
+
+.like .img img {
+  height: 3.8rem;
+  width: 3.8rem;
+  border-radius: 50%;
+  margin-right: 0.8rem;
+}

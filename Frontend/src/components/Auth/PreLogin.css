@@ -1,0 +1,53 @@
+.prelogin {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  bottom: 0.8rem;
+  left: 0;
+  right: 0;
+  background-color: white;
+}
+
+/* Instead of giving height 100% width 100% , you can also write like this to make the element cover the whole page. */
+
+.logo {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+}
+
+.landingForm {
+  position: relative;
+  bottom: 3rem;
+  height: fit-content;
+  padding: 1rem;
+  width: 35rem;
+  text-align: center;
+}
+
+.motto {
+  color: rgb(82 106 110);
+  font-size: 3rem;
+}
+
+.landingForm button {
+  padding: 0.8rem 0.75rem;
+  width: 22rem;
+  border: 1.5px solid black;
+  background-color: white;
+  border-radius: 1.5rem;
+  margin-left: 1rem;
+  font-size: 1.1rem;
+}
+
+.landingImg {
+  height: fit-content;
+  width: fit-content;
+}
+
+.landingImg img {
+  height: 50rem;
+  width: 50rem;
+}

@@ -1,0 +1,10 @@
+.connections {
+  background-color: white;
+  height: fit-content;
+  min-height: 15rem;
+  width: 50%;
+  position: relative;
+  top: 5rem;
+  left: 10rem;
+  padding: 1rem 1.5rem;
+}

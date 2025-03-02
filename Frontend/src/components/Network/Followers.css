@@ -1,0 +1,36 @@
+.followers {
+  background-color: white;
+  height: fit-content;
+  min-height: 15rem;
+  width: 50%;
+  position: relative;
+  top: 5rem;
+  left: 10rem;
+  padding: 1rem 1.5rem;
+}
+
+.follower {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-bottom: 1px solid black;
+  padding: 0.4rem 0;
+}
+
+.headline :first-child:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.follower .img img {
+  height: 3.6rem;
+  width: 3.6rem;
+  border-radius: 50%;
+  margin-right: 0.8rem;
+}
+
+.follower button {
+  position: absolute !important;
+  right: 0;
+  top: 1.3rem;
+}
