@@ -48,6 +48,7 @@ export default function Navbar({ handleLogout }) {
       if (response.status === 200) {
         setUserProfiles(response.data);
 
+        //Triggering log event for search appearances.
         searchResultUsers = response.data.map((u) => {
           return u.userId;
         });

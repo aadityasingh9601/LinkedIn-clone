@@ -40,13 +40,20 @@ const analyticsSchema = new Schema({
     required: true,
   },
   //metadata, U can also store this field later in ur schema, if u switch to more advanced analytics.
+  //It's optional, if there's some metadata store it, else leave it empty.
+  metaData: {
+    postId: {
+      type: Schema.Types.ObjectId,
+      ref: "Post",
+    },
+  },
 });
 
 //Creating an index to ensure duplicate entries doesn't get stored in the database, only there must be one
 //entry per user per day.
 
 analyticsSchema.index(
-  { user: 1, triggeredBy: 1, eventType: 1, date: 1 },
+  { user: 1, triggeredBy: 1, eventType: 1, date: 1, metadata: { postId: 1 } },
   { unique: true }
 );
 

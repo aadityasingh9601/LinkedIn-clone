@@ -1,5 +1,5 @@
 import "./Post.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import usePostStore from "../../stores/Post";
 import Modal from "../Modal";
 import Button from "../Button.";
@@ -17,7 +17,6 @@ import useFollowStore from "../../stores/Follow";
 //object and everything started working properly again.
 
 export default function Post({ post }) {
-  //console.log(post);
   const currUserId = localStorage.getItem("currUserId");
 
   const [toggle, setToggle] = useState(false);
@@ -158,7 +157,7 @@ export default function Post({ post }) {
   // try yourself, to persist the isLiked state of the post.
 
   return (
-    <div className="post">
+    <div className="post" data-post-id={post._id}>
       <div className="header">
         <div className="img">
           <img src={post.createdBy.profile.profileImage.url} alt="" />
