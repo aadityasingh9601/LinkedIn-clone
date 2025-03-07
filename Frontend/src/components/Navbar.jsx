@@ -1,9 +1,10 @@
 import "./Navbar.css";
 import Button from "./Button.";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 import axios from "axios";
+import { debounce } from "lodash";
 
 import useProfileStore from "../stores/Profile";
 import useUserStore from "../stores/User";
@@ -30,10 +31,6 @@ export default function Navbar({ handleLogout }) {
   );
 
   const currUserId = useUserStore((state) => state.currUserId);
-
-  const handleChange = (e) => {
-    setUsername(e.target.value);
-  };
 
   const logEvent = useAnalyticStore((state) => state.logEvent);
 
@@ -71,12 +68,15 @@ export default function Navbar({ handleLogout }) {
     }
   }
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      fetchProfiles(username);
-      setUsername("");
-    }
-  };
+  //Handle automatic search with debouncing.
+  //Using useCallback to ensure the function doesn't gets re-created on every re-render and multipe api calls
+  //go the backend.
+  const handleSearch = useCallback(
+    debounce((searchValue) => {
+      fetchProfiles(searchValue);
+    }, 1000),
+    [] //Add dependency, when this function should create again.
+  );
 
   const handleClick = () => {
     setSearchResult(true);
@@ -117,8 +117,10 @@ export default function Navbar({ handleLogout }) {
       </svg>
       <input
         value={username}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
+        onChange={(e) => {
+          setUsername(e.target.value);
+          handleSearch(e.target.value);
+        }}
         onClick={handleClick}
         placeholder="Search "
         style={{

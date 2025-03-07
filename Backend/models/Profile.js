@@ -39,11 +39,9 @@ const profileSchema = new Schema({
   contactInfo: {
     phone: {
       type: Number,
-      unique: true,
     },
     email: {
       type: String,
-      unique: true,
     },
   },
   location: {

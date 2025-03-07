@@ -198,6 +198,7 @@ const logout = async (req, res) => {
   await user.save();
 
   //Remove the userId from the local storage.
+  localStorage.setItem(currProfileUserId, "");
 
   //Delete the cookie from the client.
   res
