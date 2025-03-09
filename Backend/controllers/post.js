@@ -74,7 +74,8 @@ const allPosts = async (req, res) => {
         path: "profile", // Populate the `profile` field
         select: "headline name profileImage", // Include only `headline` and `name` fields in the `profile`
       },
-    });
+    })
+    .limit(20);
 
   //What we have to do here is to populate the post's createdBy field with the user field and the user's
   // profileId field with name, profileImg and headline. So, we have to use nested populate here.

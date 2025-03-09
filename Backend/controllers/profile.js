@@ -14,14 +14,22 @@ const getUserProfile = async (req, res) => {
 };
 
 const getAllUserProfiles = async (req, res) => {
+  //WE HAVE TO FIX IT TO ENSURE THAT ALL USERS GOT SELECTED THAT MATCHES THE ENTRY SENT BY THE USER.
   console.log("inside getAllUserProfiles ");
   const { username } = req.body;
+
   console.log(req.body);
-  const users = await Profile.find(
-    { name: username },
-    { name: 1, profileImage: 1, headline: 1, userId: 1 }
-  );
-  console.log(users);
+  const users = await Profile.find({
+    name: { $regex: username, $options: "i" }, // Case-insensitive search
+  })
+    .select("name profileImage headline userId")
+    .limit(10); // Optional: Limit results to 10 users
+
+  // const users = await Profile.find(
+  //   { name: username },
+  //   { name: 1, profileImage: 1, headline: 1, userId: 1 }
+  // );
+  // console.log(users);
   if (users.length === 0) {
     res.status(404).send({ message: "No users found!" });
   } else {

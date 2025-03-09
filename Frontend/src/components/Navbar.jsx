@@ -1,7 +1,7 @@
 import "./Navbar.css";
 import Button from "./Button.";
 import { useNavigate } from "react-router-dom";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 import axios from "axios";
 import { debounce } from "lodash";
@@ -119,7 +119,13 @@ export default function Navbar({ handleLogout }) {
         value={username}
         onChange={(e) => {
           setUsername(e.target.value);
-          handleSearch(e.target.value);
+          // handleSearch.cancel(), Cancels any pending call before scheduling a new one.This ensures only the latest search term
+          // triggers an API call after the delay.
+          handleSearch.cancel();
+          //To ensure no call goes to backend if the value is "".
+          if (e.target.value !== "") {
+            handleSearch(e.target.value);
+          }
         }}
         onClick={handleClick}
         placeholder="Search "
