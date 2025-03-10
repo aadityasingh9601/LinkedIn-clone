@@ -65,6 +65,12 @@ const createPost = async (req, res) => {
 
 const allPosts = async (req, res) => {
   const { userId } = req.params;
+
+  const page = parseInt(req.query.page) || 1;
+  console.log("55", page);
+  // const skip = (page - 1) * limit;
+  const skip = (page - 1) * 2;
+
   const posts = await Post.find()
     .sort({ createdAt: -1 })
     .populate({
@@ -75,13 +81,16 @@ const allPosts = async (req, res) => {
         select: "headline name profileImage", // Include only `headline` and `name` fields in the `profile`
       },
     })
-    .limit(20);
+    .skip(skip) //It'll skip the first "skip" no. of posts and send from the further data.
+    .limit(2); //Limits to only 2 posts at a time.
 
   //What we have to do here is to populate the post's createdBy field with the user field and the user's
   // profileId field with name, profileImg and headline. So, we have to use nested populate here.
   //
+  for (let post of posts) {
+    console.log("Post Id:-" + post._id);
+  }
 
-  //console.log(posts);
   res.status(200).send(posts);
 };
 

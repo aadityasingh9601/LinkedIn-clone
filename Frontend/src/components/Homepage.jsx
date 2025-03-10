@@ -6,13 +6,18 @@ import usePostStore from "../stores/Post"; //Import the store first.
 import Post from "./Posts/Post";
 import useUserStore from "../stores/User";
 import useAnalyticStore from "../stores/Analytic";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Homepage() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const logEvent = useAnalyticStore((state) => state.logEvent);
   const currUserId = useUserStore((state) => state.currUserId);
   const posts = usePostStore((state) => state.posts);
-  const getAllPosts = usePostStore((state) => state.getAllPosts);
+  const fetchPosts = usePostStore((state) => state.fetchPosts);
+  const hasMore = usePostStore((state) => state.hasMore);
+  const page = usePostStore((state) => state.page);
+
+  //Intersection Observer part starts here.
 
   const [viewedPostIds, setViewedPostIds] = useState(new Set()); // Use Set to avoid duplicates
   const observer = useRef(null); //Create your observer for posts.
@@ -57,11 +62,17 @@ export default function Homepage() {
     }
   }, [viewedPostIds]);
 
+  //Intersection Observer part ends here.
+
   useEffect(() => {
     if (isLoggedIn) {
-      getAllPosts(currUserId);
+      fetchPosts(currUserId, page);
     }
   }, [currUserId]);
+
+  const fetchMoreData = () => {
+    fetchPosts(currUserId, page);
+  };
 
   const showModal = true;
   {
@@ -75,9 +86,17 @@ export default function Homepage() {
           <hr></hr>
 
           <div className="posts">
-            {posts.map((post) => {
-              return <Post key={post._id} post={post} />; // We're mapping through the posts array and returning a Post component for each post.
-            })}
+            <InfiniteScroll
+              dataLength={posts.length}
+              next={fetchMoreData}
+              hasMore={hasMore}
+              //You can create your own good looking custom loader here also.
+              loader={<div className="loader">Loading...</div>}
+            >
+              {posts.map((post) => {
+                return <Post key={post._id} post={post} />; // We're mapping through the posts array and returning a Post component for each post.
+              })}
+            </InfiniteScroll>
           </div>
         </div>
         <div className="sideTab2">This is our sideTab2.</div>

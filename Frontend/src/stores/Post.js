@@ -9,6 +9,11 @@ const { newAccessToken } = useUserStore.getState();
 const usePostStore = create((set) => ({
   posts: [], //Just start with an empty array, and not any initial value so that no extra post is created automatically.
 
+  hasMore: true,
+
+  //To detect our page turn or no. of times posts data have been fetched.
+  page: 1,
+
   createPost: async (postData) => {
     let post;
     try {
@@ -43,17 +48,24 @@ const usePostStore = create((set) => ({
     }));
   },
 
-  getAllPosts: async (userId) => {
+  fetchPosts: async (userId, page) => {
     try {
-      const response = await axios.get(`http://localhost:8000/post/${userId}`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `http://localhost:8000/post/${userId}?page=${page}`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response);
       // console.log(response.data);
       //the map & forEach functions are used when updating the state or showing them somewhere, or making some
       //change to them, they are not needed to just normally set state.
-      set(() => ({
-        posts: response.data,
+
+      set((state) => ({
+        posts: [...state.posts, ...response.data],
       }));
+      set({ hasMore: response.data.length > 0 });
+      set({ page: page + 1 });
     } catch (err) {
       console.log(err);
       if (err.response.status === 401) {
