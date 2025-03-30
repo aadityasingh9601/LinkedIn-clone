@@ -1,0 +1,40 @@
+.postformpreview {
+  background-color: white;
+  border-radius: 0.6rem;
+  padding: 0.6rem 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.postformpreview .form {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  justify-content: center;
+  padding: 1rem 0.5rem;
+}
+
+.postformpreview .form input {
+  border: 1px solid gray;
+  padding: 0.65rem 0.65rem;
+  border-radius: 25px;
+  width: 27rem;
+  margin: 0;
+}
+
+.postformpreview .form .img img {
+  height: 3.6rem;
+  width: 3.6rem;
+  border-radius: 50%;
+  margin-right: 0.8rem;
+}
+
+.postformpreview .icons {
+  width: 70%;
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}

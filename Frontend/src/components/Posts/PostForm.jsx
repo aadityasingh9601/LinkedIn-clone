@@ -2,6 +2,7 @@ import "./PostForm.css";
 import usePostStore from "../../stores/Post";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 export default function PostForm() {
   const {
@@ -12,6 +13,8 @@ export default function PostForm() {
   } = useForm();
 
   const createPost = usePostStore((state) => state.createPost);
+
+  const [postType, setpostType] = useState("Anyone");
 
   const onSubmit = (data) => {
     //console.log(data);
@@ -29,9 +32,26 @@ export default function PostForm() {
   //The error was occuri6ng 5because reset was removing the file before it gets submitted.
   return (
     <div className="postform">
-      <h3>This is our post form.</h3>
+      <div className="header">
+        <div className="img">
+          <img src="https://tse3.mm.bing.net/th?id=OIP.puMo9ITfruXP8iQx9cYcqwHaGJ&pid=Api&P=0&h=180" />
+        </div>
+        <div>Aaditya Singh</div>
+        <div>
+          <select
+            value={postType}
+            onChange={(event) => {
+              setpostType(event.target.value);
+            }}
+            className="analyticDropdown"
+          >
+            <option value="anyone">Anyone</option>
+            <option value="connections">Connection only</option>
+          </select>
+        </div>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input
+        <textarea
           placeholder="Write your post here"
           {...register("content", {
             required: "Content is required",
@@ -43,11 +63,27 @@ export default function PostForm() {
         />
         {errors.content && <p>{errors.content.message}</p>}
         <br />
-        <input
-          type="file"
-          placeholder="Enter your post image url here"
-          {...register("media")}
-        />
+        <div className="options">
+          <div>
+            <i className="fa-regular fa-face-smile"></i>
+          </div>
+          <div>
+            <label for="mediaInput">
+              <i class="fa-regular fa-image"></i>
+            </label>
+            <input
+              id="mediaInput"
+              type="file"
+              style={{ display: "none" }}
+              placeholder="Enter your post image url here"
+              {...register("media")}
+            />
+          </div>
+
+          <div>
+            <i class="fa-solid fa-square-poll-vertical"></i>
+          </div>
+        </div>
 
         <br />
         <input

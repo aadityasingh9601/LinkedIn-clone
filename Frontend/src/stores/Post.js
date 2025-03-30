@@ -7,7 +7,13 @@ import useUserStore from "./User";
 const { newAccessToken } = useUserStore.getState();
 
 const usePostStore = create((set) => ({
-  posts: [], //Just start with an empty array, and not any initial value so that no extra post is created automatically.
+  posts: [],
+
+  postFormModal: false,
+
+  setPostFormModal: (value) => {
+    set({ postFormModal: value });
+  },
 
   hasMore: true,
 

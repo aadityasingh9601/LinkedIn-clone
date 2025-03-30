@@ -74,13 +74,13 @@ io.on("connection", (socket) => {
   console.log(`Socket connected with id${socket.id}`);
   const userId = socket.handshake.query.userId; // Get userId from query or auth token
   //const userId = req.user._id;
-  console.log("76n", userId);
+  // console.log(userId);
 
   userSocketMap[userId] = socket.id;
   console.log(userSocketMap);
 
   socket.on("join-room", (roomId) => {
-    console.log("85b", roomId);
+    //console.log( roomId);
     socket.join(roomId);
     console.log(`User ${userId} joined room ${roomId}`);
   });
@@ -120,9 +120,9 @@ const notifyAdmins = async (data) => {
       notiType: data.type,
     });
     newNotification.save().then(() => {
-      console.log(newNotification);
+      //console.log(newNotification);
       const socketId = userSocketMap[admin._id]; // Get admin's socketId from mapping
-      console.log(socketId);
+      //console.log(socketId);
       if (socketId) {
         io.to(socketId).emit("groupJoinReq", newNotification);
       }
@@ -140,7 +140,7 @@ const notifyUser = async (data) => {
   await newNotification.save();
 
   const socketId = userSocketMap[data.to];
-  console.log(socketId);
+  // console.log(socketId);
   if (socketId) {
     io.to(socketId).emit("joinReqRes", newNotification);
   }

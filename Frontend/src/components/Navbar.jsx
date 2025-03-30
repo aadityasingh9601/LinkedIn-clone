@@ -223,7 +223,6 @@ export default function Navbar({ handleLogout }) {
       you also have to receive it in the button component. */}
 
       <Button btnText="Logout" onClick={handleLogout}></Button>
-      <Button btnText="ChatUI" onClick={() => navigate("/chatui")}></Button>
     </div>
   );
 }

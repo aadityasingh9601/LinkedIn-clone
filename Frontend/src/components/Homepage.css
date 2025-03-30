@@ -7,6 +7,10 @@
   top: 4rem;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
+
 .sideTab {
   height: 40rem;
   width: 13rem;

@@ -27,7 +27,7 @@ const postSchema = new Schema({
   ],
   postType: {
     type: String,
-    enum: ["individual", "group"],
+    enum: ["anyone", "connections"],
     required: true,
   },
   groupId: {

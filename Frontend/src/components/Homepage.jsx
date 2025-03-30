@@ -7,6 +7,8 @@ import Post from "./Posts/Post";
 import useUserStore from "../stores/User";
 import useAnalyticStore from "../stores/Analytic";
 import InfiniteScroll from "react-infinite-scroll-component";
+import PostFormPreview from "./Posts/PostFormPreview";
+import Modal from "./Modal";
 
 export default function Homepage() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -16,6 +18,9 @@ export default function Homepage() {
   const fetchPosts = usePostStore((state) => state.fetchPosts);
   const hasMore = usePostStore((state) => state.hasMore);
   const page = usePostStore((state) => state.page);
+
+  const postFormModal = usePostStore((state) => state.postFormModal);
+  const setPostFormModal = usePostStore((state) => state.setPostFormModal);
 
   //Intersection Observer part starts here.
 
@@ -74,33 +79,49 @@ export default function Homepage() {
     fetchPosts(currUserId, page);
   };
 
-  const showModal = true;
-  {
-    return (
-      <div className="homepage">
-        {/* <Button btnText="Join Group" onClick={handleJoin} />
-        <Button btnText="Connect" onClick={sendReq} /> */}
-        <div className="sideTab">This is our sideTab.</div>
-        <div className="feed">
-          <PostForm />
-          <hr></hr>
-
-          <div className="posts">
-            <InfiniteScroll
-              dataLength={posts.length}
-              next={fetchMoreData}
-              hasMore={hasMore}
-              //You can create your own good looking custom loader here also.
-              loader={<div className="loader">Loading...</div>}
-            >
-              {posts.map((post) => {
-                return <Post key={post._id} post={post} />; // We're mapping through the posts array and returning a Post component for each post.
-              })}
-            </InfiniteScroll>
-          </div>
-        </div>
-        <div className="sideTab2">This is our sideTab2.</div>
-      </div>
-    );
+  //To ensure that we can't scroll the page while the modal is open.
+  if (postFormModal) {
+    document.body.classList.add("no-scroll");
+  } else {
+    document.body.classList.remove("no-scroll");
   }
+
+  return (
+    <div className="homepage">
+      {/* <Button btnText="Join Group" onClick={handleJoin} />
+        <Button btnText="Connect" onClick={sendReq} /> */}
+      <div className="sideTab">This is our sideTab.</div>
+      <div className="feed">
+        <PostFormPreview />
+        <hr></hr>
+
+        {postFormModal && (
+          <div>
+            <Modal>
+              <i
+                class="fa-solid fa-xmark cross"
+                onClick={() => setPostFormModal(false)}
+              ></i>
+              <PostForm />
+            </Modal>
+          </div>
+        )}
+
+        <div className="posts">
+          <InfiniteScroll
+            dataLength={posts.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            //You can create your own good looking custom loader here also.
+            loader={<div className="loader">Loading...</div>}
+          >
+            {posts.map((post) => {
+              return <Post key={post._id} post={post} />; // We're mapping through the posts array and returning a Post component for each post.
+            })}
+          </InfiniteScroll>
+        </div>
+      </div>
+      <div className="sideTab2">This is our sideTab2.</div>
+    </div>
+  );
 }
