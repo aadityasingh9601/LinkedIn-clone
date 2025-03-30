@@ -27,6 +27,7 @@ import connectionRouter from "./routes/connectionRoutes.js";
 import notiRouter from "./routes/notiRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
 import analyticRouter from "./routes/analyticsRoutes.js";
+import pollRouter from "./routes/pollRoutes.js";
 
 const app = express();
 const server = createServer(app);
@@ -108,6 +109,7 @@ app.use("/notification", notiRouter);
 app.use("/profile", profileRouter);
 app.use("/follow", followRouter);
 app.use("/analytics", analyticRouter);
+app.use("/poll", pollRouter);
 
 // Function to notify group admins
 const notifyAdmins = async (data) => {

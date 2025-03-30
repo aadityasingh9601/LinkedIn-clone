@@ -27,12 +27,8 @@ const postSchema = new Schema({
   ],
   postType: {
     type: String,
-    enum: ["anyone", "connections"],
+    enum: ["Everyone", "Connections only"],
     required: true,
-  },
-  groupId: {
-    type: Schema.Types.ObjectId,
-    ref: "Group",
   },
   likeCount: {
     type: Number,

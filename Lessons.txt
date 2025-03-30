@@ -1,0 +1,13 @@
+1.The best way to debug if a element isn't getting styled properly is by going to the browser and inspect that
+particular element and see if there are any other css styling also that are getting applied on that particular
+element, if yes, remove them or rename the element , etc.
+
+2. onChange handlers doesn't work properly when u've registered that particular element in the internal state
+of the react hook form, see why? Instead you can use the watch method of react hook form to get the current 
+state of an element and u can use setValue to update the state of a element manually.
+
+3. In mongoDB, while defining mongoose schema, using --
+  { timestamps: true } // 👈 Adds createdAt & updatedAt automatically
+
+4. We can also submit a form with a button that's outside the form by linking them, assign a id to the form
+element and pass form = "form_id" in the opening tag of button, now they are linked together.

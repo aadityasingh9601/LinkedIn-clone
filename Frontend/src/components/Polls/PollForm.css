@@ -1,0 +1,65 @@
+.pollform {
+  display: flex;
+  flex-direction: column;
+  min-height: 35rem;
+  height: fit-content;
+  width: 30rem;
+  border: 1px solid black;
+}
+
+.pollform .head {
+  height: 3.5rem;
+  border-bottom: 0.1px solid gray;
+  width: 100%;
+}
+
+.pollform .head span {
+  padding: 0.8rem 0 0 1rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.pollform .mid {
+  height: 28rem;
+  width: 100%;
+}
+
+.pollform .mid form {
+  padding: 1rem;
+}
+
+.pollform .mid form span {
+  font-size: 0.8rem;
+}
+
+.pollform .mid form textarea {
+  height: 3rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.pollform .mid form input {
+  width: 98%;
+  padding: 0 0 0 0.4rem;
+  height: 2rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.pollform .pollDropdown {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.pollform .foot {
+  position: relative;
+  height: 3.5rem;
+  border-top: 0.1px solid gray;
+  width: 100%;
+}
+
+.pollform .btns {
+  display: flex;
+  position: absolute;
+  right: 2rem;
+  top: 0.8rem;
+}

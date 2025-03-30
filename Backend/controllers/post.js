@@ -6,7 +6,6 @@ import { v2 as cloudinary } from "cloudinary";
 const createPost = async (req, res) => {
   const { postData } = req.body;
   console.log(postData);
-
   console.log(req.file);
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
@@ -28,39 +27,20 @@ const createPost = async (req, res) => {
     },
     createdBy: req.user._id,
     postType: postData.postType,
-    groupId: postData.groupId,
     category: postData.category,
   });
 
-  if (postData.postType === "individual") {
-    let Post = await newPost.save();
-    let fullPost = await Post.populate({
-      path: "createdBy",
-      select: "profile",
-      populate: {
-        path: "profile",
-        select: "name profileImage headline",
-      },
-    });
-    console.log(fullPost);
-    res.status(201).send(fullPost);
-  }
-  if (postData.postType === "group") {
-    const group = await Group.findById(postData.groupId);
-    if (!group) {
-      res.status(404).send({ message: "Group not found." });
-      return;
-    }
-    //User trying to create the post, must be a member of the group.
-    if (group.members.includes(req.user._id)) {
-      await newPost.save();
-      group.posts.push(newPost._id);
-      await group.save();
-      res.status(201).send({ message: "Post saved successfully" });
-    } else {
-      res.status(401).send({ message: "You are not a member of this group." });
-    }
-  }
+  await newPost.save();
+  let fullPost = await Post.findById(newPost._id).populate({
+    path: "createdBy",
+    select: "profile",
+    populate: {
+      path: "profile",
+      select: "name profileImage headline",
+    },
+  });
+  console.log(fullPost);
+  res.status(201).send(fullPost);
 };
 
 const allPosts = async (req, res) => {

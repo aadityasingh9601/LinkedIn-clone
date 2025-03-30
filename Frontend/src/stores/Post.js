@@ -35,7 +35,10 @@ const usePostStore = create((set) => ({
         }
       );
 
-      console.log(response.data);
+      //console.log(response.data);
+      if (response.status === 201) {
+        return toast.success("Post created successfully!");
+      }
       post = response.data;
     } catch (err) {
       console.log(err);
@@ -52,6 +55,7 @@ const usePostStore = create((set) => ({
       //but I have reversed the order here, that means post will get added first , that means the newest post
       //will come on top.
     }));
+    set;
   },
 
   fetchPosts: async (userId, page) => {

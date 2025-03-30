@@ -2,31 +2,57 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  flex-direction: column;
   background-color: white;
-  padding: 0.5rem;
-  text-align: center;
   width: 35rem;
+  height: fit-content;
 }
 
 .postform .header {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
-.postform textarea {
-  min-height: 15rem;
+.postform .form {
+  width: 100%;
+  padding: 0rem;
 }
 
-.postform .options {
-  position: absolute;
-  top: 20rem;
-  left: 2rem;
+.postform .form form {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.85rem;
 }
 
-.postform .options i {
+.postform .form textarea {
+  min-height: 15rem;
+  width: 100%;
+}
+
+.postform .form form input {
+  width: 99%;
+  margin: 0;
+}
+
+.previewImg {
+  height: 5rem;
+  width: 5rem;
+  border: 1px solid black;
+}
+
+.postform .form .optionss {
+  display: flex;
+}
+
+.postform .form .optionss i {
   color: #666666;
-  margin: 0 0.8rem 0 0;
+  margin: 0 1rem 0 0;
   font-size: 1.2rem;
+}
+
+.postform .form .optionss i:hover {
+  color: #444;
 }
