@@ -26,7 +26,7 @@ export default function PollForm() {
     name: "options", // Register options as an array
   });
 
-  const [pollDuration, setpollDuration] = useState("1 day");
+  const [pollDuration, setpollDuration] = useState("1");
 
   const onSubmit = (data) => {
     const pollData = {
@@ -83,9 +83,9 @@ export default function PollForm() {
             }}
             className="pollDropdown"
           >
-            <option>1 day</option>
-            <option>3 days</option>
-            <option>7 days</option>
+            <option value="1">1 day</option>
+            <option value="3">3 days</option>
+            <option value="7">7 days</option>
           </select>
           <p>
             Fields marked <span style={{ color: "red" }}>*</span> are required

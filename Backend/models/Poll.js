@@ -9,7 +9,10 @@ const pollSchema = new Schema({
   },
   options: [
     {
-      type: String,
+      value: {
+        type: String,
+        required: true,
+      },
       votes: {
         type: Number,
         default: 0,
@@ -23,8 +26,8 @@ const pollSchema = new Schema({
         ref: "User",
         required: true,
       },
-      optionIndex: {
-        type: Number,
+      optionId: {
+        type: Schema.Types.ObjectId,
         required: true,
       },
     },

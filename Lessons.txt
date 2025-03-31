@@ -11,3 +11,13 @@ state of an element and u can use setValue to update the state of a element manu
 
 4. We can also submit a form with a button that's outside the form by linking them, assign a id to the form
 element and pass form = "form_id" in the opening tag of button, now they are linked together.
+
+5. MongoDB automatically creates an _id field for each object inside the options array (in poll schema)
+because subdocuments (objects within arrays in a schema) are treated as full-fledged documents by Mongoose.
+
+6. Don't overthink too much and keep things simple,if u have an array of objects inside the schema, and u want
+to choose a particular option from it using it's id, then why think so much? it's an array after all , just
+use the find method to get it, simple. "USE UR MIND TOO, BREAK PROBLEMS INTO SMALLER CHUNKS".
+
+7. While comparing two ids in mongoose, make sure to check their types, if one of them is object and another
+one is a string it's will show undefined or error, so make both of them a string to compare.

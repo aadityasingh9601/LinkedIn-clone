@@ -6,9 +6,11 @@ import usePostStore from "../stores/Post"; //Import the store first.
 import Post from "./Posts/Post";
 import useUserStore from "../stores/User";
 import useAnalyticStore from "../stores/Analytic";
+import usePollStore from "../stores/Poll";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostFormPreview from "./Posts/PostFormPreview";
 import Modal from "./Modal";
+import Poll from "./Polls/Poll";
 
 export default function Homepage() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -18,6 +20,8 @@ export default function Homepage() {
   const fetchPosts = usePostStore((state) => state.fetchPosts);
   const hasMore = usePostStore((state) => state.hasMore);
   const page = usePostStore((state) => state.page);
+  const fetchAllPolls = usePollStore((state) => state.fetchAllPolls);
+  const polls = usePollStore((state) => state.polls);
 
   const postFormModal = usePostStore((state) => state.postFormModal);
   const setPostFormModal = usePostStore((state) => state.setPostFormModal);
@@ -75,6 +79,12 @@ export default function Homepage() {
     }
   }, [currUserId]);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchAllPolls();
+    }
+  }, [currUserId]);
+
   const fetchMoreData = () => {
     fetchPosts(currUserId, page);
   };
@@ -106,6 +116,12 @@ export default function Homepage() {
             </Modal>
           </div>
         )}
+
+        <div className="polls">
+          {polls.map((poll) => {
+            return <Poll key={poll._id} poll={poll} />;
+          })}
+        </div>
 
         <div className="posts">
           <InfiniteScroll
