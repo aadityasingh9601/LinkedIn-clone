@@ -12,7 +12,7 @@ import ProfileHeadForm from "./ProfileHeadForm";
 import useProfileStore from "../../stores/Profile";
 import useFollowStore from "../../stores/Follow";
 import { useNavigate } from "react-router-dom";
-
+import useUserStore from "../../stores/User";
 import useChatStore from "../../stores/Chat";
 import PDF from "./Pdf";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -21,7 +21,7 @@ import useAnalyticStore from "../../stores/Analytic";
 
 export default function Profile({ socket }) {
   const navigate = useNavigate();
-  const currUserId = localStorage.getItem("currUserId");
+  const currUserId = useUserStore((state) => state.currUserId);
   const fetchAllMsg = useChatStore((state) => state.fetchAllMsg);
   const {
     register,
@@ -30,8 +30,9 @@ export default function Profile({ socket }) {
     formState: { errors },
   } = useForm({});
 
-  const [profile, setProfile] = useState({});
-
+  const profile = useProfileStore((state) => state.profile);
+  const handleChange1 = useProfileStore((state) => state.handleChange1);
+  const fetchProfileData = useProfileStore((state) => state.fetchProfileData);
   const currProfileUserId = useProfileStore((state) => state.currProfileUserId);
   console.log(currProfileUserId);
 
@@ -40,36 +41,7 @@ export default function Profile({ socket }) {
   const fullChat = useChatStore((state) => state.fullChat);
   const setfullChat = useChatStore((state) => state.setfullChat);
 
-  const logEvent = useAnalyticStore.getState().logEvent;
-
   useEffect(() => {
-    async function fetchProfileData(userId) {
-      //LOGIC TO ENSURE THAT WHENEVER A USER VISITS SOME OTHER USER'S PROFILE, A EVENT GETS LOGGED IN THE
-      //DATABASE, THAT CAN BE USED LATER TO SHOW ANALYTICS DATA.
-
-      if (currUserId !== currProfileUserId) {
-        let eventData = {
-          userId: userId,
-          eventType: "profile_view",
-        };
-        logEvent(eventData);
-      }
-
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/profile/${userId}`,
-          { withCredentials: true }
-        );
-
-        console.log(response);
-
-        setProfile(response.data);
-      } catch (err) {
-        console.log(err);
-        return toast.err(err.message);
-      }
-    }
-
     fetchProfileData(currProfileUserId);
   }, [currProfileUserId]);
 
@@ -111,10 +83,6 @@ export default function Profile({ socket }) {
   const checkFollow = useFollowStore((state) => state.checkFollow);
   const follow = useFollowStore((state) => state.follow);
   const unfollow = useFollowStore((state) => state.unfollow);
-
-  const handleChange1 = (e) => {
-    setProfile({ ...profile, [e.target.name]: e.target.value });
-  };
 
   const handleChange2 = (e) => {
     setNewSkill(e.target.value);
