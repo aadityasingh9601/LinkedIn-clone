@@ -61,6 +61,28 @@ const useUserStore = create((set) => ({
       return toast.error(err.message);
     }
   },
+
+  logout: async (navigate) => {
+    console.log("triggered logout function");
+
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/users/logout`,
+        { withCredentials: true }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        localStorage.removeItem("currUserId");
+        set({ isLoggedIn: false });
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log(err);
+      if (err.response.status === (401 || 403)) {
+        return toast.error(err.logout);
+      }
+    }
+  },
 }));
 
 export default useUserStore;

@@ -178,6 +178,7 @@ const generateNewAccessToken = async (req, res) => {
 };
 
 const logout = async (req, res) => {
+  console.log("inside logout function on the backend");
   const oldRefreshToken = req.cookies.refreshtoken;
   console.log(oldRefreshToken);
   if (!oldRefreshToken) {
@@ -196,9 +197,6 @@ const logout = async (req, res) => {
     (token) => token !== oldRefreshToken
   );
   await user.save();
-
-  //Remove the userId from the local storage.
-  localStorage.setItem(currProfileUserId, "");
 
   //Delete the cookie from the client.
   res

@@ -42,12 +42,17 @@ export default function Notification({ noti }) {
     }
   }
 
+  const timeRep = (time) => {
+    const seconds = Math.floor(time / 1000); //Converting to seconds
+    const minutes = Math.floor(seconds / 60); //Converting to minutes
+    const hours = Math.floor(minutes / 60); //Converting to hours
+    const days = Math.floor(hours / 24); //Converting to days.
+    return seconds, minutes, hours, days;
+  };
   const currDate = new Date();
   const createdDate = new Date(noti.sentDate);
-  const seconds = Math.floor((currDate - createdDate) / 1000); //Converting to seconds
-  const minutes = Math.floor(seconds / 60); //Converting to minutes
-  const hours = Math.floor(minutes / 60); //Converting to hours
-  const days = Math.floor(hours / 24); //Converting to days.
+  const returnedValue = timeRep(currDate - createdDate);
+  console.log(returnedValue);
 
   let styles = { fontSize: "1.3rem" };
   let styles2 = { fontSize: "0.75rem", marginLeft: "1rem" };

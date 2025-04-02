@@ -73,6 +73,100 @@ const usePollStore = create((set) => ({
       );
 
       console.log(response);
+      if (response.status === 200) {
+        //Update the poll voters and options votes carefully.
+        set((state) => ({
+          polls: state.polls.map((poll) =>
+            poll._id === pollId
+              ? {
+                  ...poll,
+                  voters: response.data.voters,
+                  options: response.data.options,
+                }
+              : poll
+          ),
+        }));
+      }
+    } catch (err) {
+      console.log(err);
+      return toast.error(err.message);
+    }
+  },
+
+  unVote: async (pollId) => {
+    console.log("inside unvote in the zustand store");
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/poll/${pollId}/unvote`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response);
+      if (response.status === 200) {
+        //Update the poll voters and options votes carefully.
+        set((state) => ({
+          polls: state.polls.map((poll) =>
+            poll._id === pollId
+              ? {
+                  ...poll,
+                  voters: response.data.voters,
+                  options: response.data.options,
+                }
+              : poll
+          ),
+        }));
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
+      return toast.error(err.message);
+    }
+  },
+
+  checkVote: async (pollId) => {
+    console.log("inside checkVote in the zustand store");
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/poll/${pollId}/checkvote`,
+
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response);
+      if (response.data === "Yes") {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
+      return toast.error(err.message);
+    }
+  },
+
+  deletePoll: async (pollId) => {
+    console.log("inside deletePoll in the zustand store");
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/poll/${pollId}/delete`,
+
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response);
+      if (response.status === 200) {
+        set((state) => ({
+          polls: state.polls.filter((p) => p._id !== pollId),
+        }));
+      }
+      return toast.success(response.data);
     } catch (err) {
       console.log(err);
       return toast.error(err.message);

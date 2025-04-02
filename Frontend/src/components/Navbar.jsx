@@ -18,8 +18,10 @@ import JobIcon from "../icons/JobIcon";
 import MsgIcon from "../icons/MsgIcon";
 import NotiIcon from "../icons/NotiIcon";
 
-export default function Navbar({ handleLogout }) {
+export default function Navbar() {
   const navigate = useNavigate();
+
+  const logout = useUserStore((state) => state.logout);
 
   const [showNetwork, setShowNetworks] = useState(false);
 
@@ -222,7 +224,7 @@ export default function Navbar({ handleLogout }) {
       that you are passsing it as a prop //and if u have passed a prop , then
       you also have to receive it in the button component. */}
 
-      <Button btnText="Logout" onClick={handleLogout}></Button>
+      <Button btnText="Logout" onClick={() => logout(navigate)}></Button>
     </div>
   );
 }

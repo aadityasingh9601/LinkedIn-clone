@@ -79,31 +79,6 @@ function App() {
     });
   }
 
-  const handleLogout = async () => {
-    console.log("triggered logout function");
-
-    try {
-      const response = await axios.delete(
-        `http://localhost:8000/users/logout`,
-        { withCredentials: true }
-      );
-      console.log(response);
-      if (response.status === 200) {
-        setSocket();
-        localStorage.removeItem("userId");
-        setIsLoggedIn(false);
-      }
-    } catch (err) {
-      console.log(err);
-      if (err.response.status === (401 || 403)) {
-        setSocket();
-        setIsLoggedIn(false);
-        localStorage.removeItem("userId");
-      }
-      toast.error(err.logout);
-    }
-  };
-
   useEffect(() => {
     fetchNotifications();
   }, [currUserId]);
@@ -197,7 +172,7 @@ function App() {
   return (
     <>
       <Router>
-        <AppWraper handleLogout={handleLogout} socket={socket}>
+        <AppWraper socket={socket}>
           <Routes>
             <Route path="/" element={<PreLogin />} />
 

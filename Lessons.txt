@@ -21,3 +21,12 @@ use the find method to get it, simple. "USE UR MIND TOO, BREAK PROBLEMS INTO SMA
 
 7. While comparing two ids in mongoose, make sure to check their types, if one of them is object and another
 one is a string it's will show undefined or error, so make both of them a string to compare.
+
+8. If NaN is printing somewhere in console, try printing the type of the operators and check for spelling 
+mistakes too, don't just go and open ChatGPT, try to debug yourself too.
+
+9. What problem was occuring while designing the poll option 2 ::before, why the text was getting covered and
+how it got fixed? see in SS. Also see how variable width was passed to the pseudo element.
+
+10. You can't call useNavigate hook inside zustand store as it's plain js, so u can pass the navigate function
+from somewhere else, maybe as a parameter to the function you're calling. Remember this from now on.

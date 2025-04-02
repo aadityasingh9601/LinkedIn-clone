@@ -6,7 +6,7 @@ import useChatStore from "../stores/Chat";
 import ChatList from "./Messaging/ChatList";
 import { useEffect } from "react";
 
-function Layout({ children, handleLogout, socket }) {
+function Layout({ children, socket }) {
   const currUserId = localStorage.getItem("currUserId");
 
   const chats = useChatStore((state) => state.chats);
@@ -27,7 +27,7 @@ function Layout({ children, handleLogout, socket }) {
 
   return (
     <>
-      <Navbar handleLogout={handleLogout} />
+      <Navbar />
       <ToastContainer
         position="bottom-left"
         autoClose={5000}
