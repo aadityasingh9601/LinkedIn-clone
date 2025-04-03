@@ -10,17 +10,11 @@ const currUserId = useUserStore.getState().currUserId;
 const useProfileStore = create((set, get) => ({
   profile: {},
 
-  currProfileUserId: localStorage.getItem("currProfileUserId"),
-
-  updateCurrProfileUserId: (newId) => {
-    set({ currProfileUserId: newId });
-  },
-
   fetchProfileData: async (userId) => {
     //LOGIC TO ENSURE THAT WHENEVER A USER VISITS SOME OTHER USER'S PROFILE, A EVENT GETS LOGGED IN THE
     //DATABASE, THAT CAN BE USED LATER TO SHOW ANALYTICS DATA.
 
-    if (currUserId !== get().currProfileUserId) {
+    if (currUserId !== userId) {
       let eventData = {
         userId: userId,
         eventType: "profile_view",

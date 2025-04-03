@@ -180,7 +180,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route element={<PrivateRoutes isLoggedIn={isLoggedIn} />}>
               <Route path="/home" element={<Homepage />} />
-              <Route path="/profile" element={<Profile socket={socket} />} />
+              <Route
+                path="/profile/:id"
+                element={<Profile socket={socket} />}
+              />
 
               <Route path="/followers" element={<Followers />} />
               <Route path="/following" element={<Following />} />

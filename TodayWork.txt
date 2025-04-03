@@ -5,17 +5,11 @@ voted, etc. states are independent for every single post or poll, so should u se
 for the state for each and every post or poll instance? Aren't they so many backend requests? Search what is
 is a better and optimized way to do so.
 
-3. Build carousels feature(ability to upload and show multiple images).
+3. Scheduled posts.
 
-4. Research properly how u can provide a preview of images while uploading them, as even to get a preview,they
-need to reach the cloudinary store and url is returned from there,only then u can show a preview, but 
-what if the user removes that image then and chooses another when ? the older image is already uploaded, so 
-it's taking space on the cloud, how do u deal with that? Search about the standard practice and also the option
-upload from internet.
-Also add a loader, so that it UX is improved and the user can see what percentage of their image is uploaded
-or is the image even uploading or not?
+4. Start streak feature.
 
-5. Better way to fetch different people's profile and open different people chat,currently u r passing and
-updating currProfileUserId or currUserId on localStorage, but there must be a better way, how about using
-react router dom by creating dynamic routes for this purpose, as provided by react router dom. Explore and
-make sure to add the lessons to notes, so that u don't repeat the same mistakes and save time later while coding.
+
+Build carousels feature(ability to upload and show multiple images),would do in the future, as normally
+carousels are uploaded as a single pdf & then get displayed on the frontend, not like we select one file , then
+another, then another, not like this.

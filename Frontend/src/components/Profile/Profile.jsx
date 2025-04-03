@@ -11,7 +11,7 @@ import Chart from "../analytics/Chart";
 import ProfileHeadForm from "./ProfileHeadForm";
 import useProfileStore from "../../stores/Profile";
 import useFollowStore from "../../stores/Follow";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../../stores/User";
 import useChatStore from "../../stores/Chat";
 import PDF from "./Pdf";
@@ -20,6 +20,9 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import useAnalyticStore from "../../stores/Analytic";
 
 export default function Profile({ socket }) {
+  const { id: currProfileId } = useParams();
+  console.log(currProfileId);
+
   const navigate = useNavigate();
   const currUserId = useUserStore((state) => state.currUserId);
   const fetchAllMsg = useChatStore((state) => state.fetchAllMsg);
@@ -42,8 +45,8 @@ export default function Profile({ socket }) {
   const setfullChat = useChatStore((state) => state.setfullChat);
 
   useEffect(() => {
-    fetchProfileData(currProfileUserId);
-  }, [currProfileUserId]);
+    fetchProfileData(currProfileId);
+  }, [currProfileId]);
 
   useEffect(() => {
     async function checkConn(userId) {
@@ -63,11 +66,11 @@ export default function Profile({ socket }) {
       }
     }
 
-    checkConn(currProfileUserId);
-  }, [currProfileUserId]);
+    checkConn(currProfileId);
+  }, [currProfileId]);
 
   useEffect(() => {
-    checkFollow(currProfileUserId);
+    checkFollow(currProfileId);
   }, []);
 
   const [editAbout, setEditAbout] = useState(false);
@@ -287,7 +290,7 @@ export default function Profile({ socket }) {
     console.log("inside handlemsg");
     try {
       const response = await axios.post(
-        `http://localhost:8000/chat/createchat/${currProfileUserId}`,
+        `http://localhost:8000/chat/createchat/${currProfileId}`,
         {},
         {
           withCredentials: true,
@@ -313,7 +316,7 @@ export default function Profile({ socket }) {
   }
 
   let styles = {
-    display: currUserId !== currProfileUserId ? "none" : "inline",
+    display: currUserId !== currProfileId ? "none" : "inline",
   };
 
   const setAnalyticsEvent = useAnalyticStore(
@@ -377,12 +380,12 @@ export default function Profile({ socket }) {
               {isFollowed ? (
                 <Button
                   btnText=" Following "
-                  onClick={() => unfollow(currProfileUserId)}
+                  onClick={() => unfollow(currProfileId)}
                 />
               ) : (
                 <Button
                   btnText="Follow"
-                  onClick={() => follow(currProfileUserId)}
+                  onClick={() => follow(currProfileId)}
                 />
               )}
               <Button btnText="Message" onClick={() => handleMessage()} />
@@ -407,20 +410,22 @@ export default function Profile({ socket }) {
         </div>
       </div>
 
-      <div className="section">
-        <div className="head">
-          <span style={{ margin: "0 0 1.5rem 0" }}>Analytics</span>
-        </div>
-        <div className="bodyyy">
-          <div onClick={showAnalytics}>Followers</div>
-          <div onClick={showAnalytics}>Post Impressions</div>
-          <div onClick={showAnalytics}>Profile Views</div>
-          <div onClick={showAnalytics}>Search Appearances</div>
-          {/* <div style={{ backgroundColor: "beige" }}>
+      {currUserId === currProfileId && (
+        <div className="section">
+          <div className="head">
+            <span style={{ margin: "0 0 1.5rem 0" }}>Analytics</span>
+          </div>
+          <div className="bodyyy">
+            <div onClick={showAnalytics}>Followers</div>
+            <div onClick={showAnalytics}>Post Impressions</div>
+            <div onClick={showAnalytics}>Profile Views</div>
+            <div onClick={showAnalytics}>Search Appearances</div>
+            {/* <div style={{ backgroundColor: "beige" }}>
             <Chart data={analyticsData} />
           </div> */}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="section">
         <div className="head">

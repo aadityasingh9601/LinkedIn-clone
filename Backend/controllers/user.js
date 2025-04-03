@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Like from "../models/Like.js";
 import bcrypt from "bcrypt";
 import { generateAccessToken, generateRefreshToken } from "../utils/Token.js";
 import { signupSchema, loginSchema } from "../schema.js";
@@ -177,6 +178,16 @@ const generateNewAccessToken = async (req, res) => {
   }
 };
 
+const allLikedPosts = async (req, res) => {
+  console.log("inside allLikedPosts");
+  const allLikedPosts = await Like.find({ user: req.user._id });
+  console.log(allLikedPosts);
+  const likedPosts = allLikedPosts.map((p) => {
+    return p.postId;
+  });
+  res.status(200).send(likedPosts);
+};
+
 const logout = async (req, res) => {
   console.log("inside logout function on the backend");
   const oldRefreshToken = req.cookies.refreshtoken;
@@ -211,5 +222,6 @@ export default {
   signup,
   login,
   logout,
+  allLikedPosts,
   generateNewAccessToken,
 };

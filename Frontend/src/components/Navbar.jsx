@@ -35,10 +35,6 @@ export default function Navbar() {
 
   const notiCount = useNotificationStore((state) => state.notiCount);
 
-  const updateCurrProfileUserId = useProfileStore(
-    (state) => state.updateCurrProfileUserId
-  );
-
   const currUserId = useUserStore((state) => state.currUserId);
 
   const logEvent = useAnalyticStore((state) => state.logEvent);
@@ -102,12 +98,9 @@ export default function Navbar() {
   //and as someone tries to visit a user's profile, then the value of currUserProfileId gets updated in the local
   //storage and the state variable as well, means the profile component now re-renders and fetches new data from the
   //backend.Remember this to implement later too whenever needed.
+  //We don't need local storage for this now, we can use dynamic routes.
   const showProfile = (userId) => {
-    console.log(userId);
-    localStorage.setItem("currProfileUserId", userId);
-
-    updateCurrProfileUserId(userId);
-    navigate("/profile");
+    navigate(`/profile/${userId}`);
   };
 
   return (

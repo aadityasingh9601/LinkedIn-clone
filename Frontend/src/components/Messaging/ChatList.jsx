@@ -1,8 +1,9 @@
 import "./ChatList.css";
 import Chat from "./Chat";
+import useUserStore from "../../stores/User";
 
 export default function ChatList({ chats, socket }) {
-  const currUserId = localStorage.getItem("currUserId");
+  const currUserId = useUserStore((state) => state.currUserId);
   return (
     <div>
       {chats.map((chat) => {

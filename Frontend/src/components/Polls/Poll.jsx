@@ -16,7 +16,7 @@ export default function Poll({ poll }) {
   const setVoteState = (value) => {
     setVoted(value);
   };
-  console.log(poll);
+
   const timeRep = (time) => {
     const seconds = Math.floor(time / 1000); //Converting to seconds
     const minutes = Math.floor(seconds / 60); //Converting to minutes
@@ -74,7 +74,7 @@ export default function Poll({ poll }) {
             <Button btnText="Delete" onClick={() => deletePoll(poll._id)} />
           </div>
         )}
-        {currUserId !== poll.createdBy._id &&
+        {/* {currUserId !== poll.createdBy._id &&
           (isFollowed ? (
             <button
               className="followedBtn"
@@ -90,7 +90,7 @@ export default function Poll({ poll }) {
             >
               <i className="fa-solid fa-plus"></i>Follow
             </button>
-          ))}
+          ))} */}
       </div>
       <div className="pollbody">
         <div className="ques">{poll?.question}</div>

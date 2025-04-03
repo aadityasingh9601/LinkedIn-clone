@@ -62,6 +62,28 @@ const useUserStore = create((set) => ({
     }
   },
 
+  //Create a set as time complexity is 1 , so CRUD is faster on it.
+  allLikedPosts: new Set(JSON.parse(localStorage.getItem("allLikedPosts"))),
+
+  getAllLikedPosts: async () => {
+    try {
+      let response = await axios.get(
+        "http://localhost:8000/users/allLikedPosts",
+
+        {
+          withCredentials: true,
+        }
+      );
+      //console.log(response);
+      //Save to local storage to persist state and to identify the posts liked by the user and update the state.
+      let allLikedPosts = response.data;
+      localStorage.setItem("allLikedPosts", JSON.stringify(allLikedPosts));
+    } catch (err) {
+      console.log(err);
+      return toast.error(err.message);
+    }
+  },
+
   logout: async (navigate) => {
     console.log("triggered logout function");
 

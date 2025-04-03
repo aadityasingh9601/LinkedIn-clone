@@ -5,7 +5,7 @@
   justify-content: center;
   flex-direction: column;
   background-color: white;
-  width: 35rem;
+  width: 38rem;
   height: fit-content;
 }
 
@@ -28,7 +28,7 @@
 }
 
 .postform .form textarea {
-  min-height: 15rem;
+  min-height: 20rem;
   width: 100%;
 }
 
@@ -37,10 +37,22 @@
   margin: 0;
 }
 
+.postform .form .formBody {
+  overflow: auto;
+
+  margin: 0 0 2rem 0;
+  max-height: 28rem;
+}
+
 .previewImg {
-  height: 5rem;
-  width: 5rem;
-  border: 1px solid black;
+  position: relative;
+  width: 100%;
+}
+
+.previewImg img {
+  height: 20rem;
+  width: 99%;
+  border-radius: 0.6rem;
 }
 
 .postform .form .optionss {

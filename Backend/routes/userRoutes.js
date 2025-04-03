@@ -13,6 +13,8 @@ router.get(
   wrapAsync(userController.generateNewAccessToken)
 );
 
+router.get("/allLikedPosts", protect, wrapAsync(userController.allLikedPosts));
+
 router.post("/signup", wrapAsync(userController.signup));
 
 router.post("/login", wrapAsync(userController.login));

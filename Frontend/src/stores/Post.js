@@ -206,8 +206,6 @@ const usePostStore = create((set) => ({
     }
   },
 
-  //Get all likes.Transfered to the post component.
-
   //Add a comment.Transfered to post component, to update comments(local state variable).
 
   //Get all comments.

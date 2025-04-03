@@ -30,3 +30,20 @@ how it got fixed? see in SS. Also see how variable width was passed to the pseud
 
 10. You can't call useNavigate hook inside zustand store as it's plain js, so u can pass the navigate function
 from somewhere else, maybe as a parameter to the function you're calling. Remember this from now on.
+
+11. We can't use onChange on react hook form elements, instead we can use the watch method to track the state
+of that element.
+
+12. To provide a preview of the image wihtout even uploading them to cloudinary you can use a FileReader or 
+URL.createObjectUrl api , these are built-in javascipt api, how to use it , how it works? See on Google and
+chatGPT how it works, and add to notes.
+
+13. Instead of doing DOM manipulation, you can conditionally change the styling on an element according to the
+state of that element. U can change the class of the particular element or u can give it a style tag that 
+shows styling according to the state, for example see PollOption.jsx for example.
+
+14. U can create dynamic routes in react and use useParams() hook to get the parameter from the url and fetch
+data for a particular user based on his id, like dynamic routes for visiting user's profile.
+
+15. Search about Set and Map data structures in javascipt and why to use them instead or array for storing,
+insertion, deletion ,etc, the lower the time & space complexity of a D.S. or function, better the performance.

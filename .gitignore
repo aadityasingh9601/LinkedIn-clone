@@ -26,4 +26,6 @@ dist-ssr
 .env
 Frontend/node_modules
 Backend/node_modules
+Lessons.txt
+TodayWork.txt
 

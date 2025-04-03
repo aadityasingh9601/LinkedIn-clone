@@ -25,7 +25,9 @@ export default function Homepage() {
 
   const postFormModal = usePostStore((state) => state.postFormModal);
   const setPostFormModal = usePostStore((state) => state.setPostFormModal);
-
+  const getAllLikedPosts = useUserStore((state) => state.getAllLikedPosts);
+  const allLikedPosts = useUserStore((state) => state.allLikedPosts);
+  console.log(allLikedPosts);
   //Intersection Observer part starts here.
 
   const [viewedPostIds, setViewedPostIds] = useState(new Set()); // Use Set to avoid duplicates
@@ -72,6 +74,12 @@ export default function Homepage() {
   }, [viewedPostIds]);
 
   //Intersection Observer part ends here.
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getAllLikedPosts();
+    }
+  }, [currUserId]);
 
   useEffect(() => {
     if (isLoggedIn) {

@@ -22,7 +22,17 @@ export default function PostForm() {
   const setPoll = usePollStore((state) => state.setPoll);
 
   const [postType, setpostType] = useState("Everyone");
-  const fileName = watch("media") || "";
+  const [preview, setPreview] = useState("");
+  // Watch for file changes
+  const file = watch("media");
+
+  if (file && file.length > 0) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result);
+    };
+    reader.readAsDataURL(file[0]); // Convert first file to Base64
+  }
 
   const onSubmit = (data) => {
     //console.log(data);
@@ -64,19 +74,44 @@ export default function PostForm() {
           </div>
           <div className="form">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <textarea
-                placeholder="Write your post here"
-                {...register("content", {
-                  required: "Content is required",
-                  minLength: {
-                    value: 50,
-                    message: "Content should be at least 50 characters",
-                  },
-                })}
-              />
+              <div className="formBody">
+                <textarea
+                  placeholder="Write your post here"
+                  {...register("content", {
+                    required: "Content is required",
+                    minLength: {
+                      value: 50,
+                      message: "Content should be at least 50 characters",
+                    },
+                  })}
+                />
 
-              {errors.content && <p>{errors.content.message}</p>}
-              <br />
+                {errors.content && <p>{errors.content.message}</p>}
+                <br />
+
+                {file && (
+                  <div className="previewImg">
+                    <div
+                      style={{
+                        position: "absolute",
+                        right: "1rem",
+                        top: "0.3rem",
+                        fontSize: "1.25rem",
+                      }}
+                    >
+                      <i
+                        className="fa-solid fa-xmark"
+                        style={{ zIndex: "10" }}
+                        onClick={() => {
+                          setValue("media", "");
+                        }}
+                      ></i>
+                    </div>
+
+                    <img src={preview} />
+                  </div>
+                )}
+              </div>
 
               <input
                 type="text"
@@ -89,25 +124,6 @@ export default function PostForm() {
               {errors.category && <p>{errors.category.message}</p>}
 
               <br />
-
-              {fileName && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: "0 0 0.4rem 0",
-                  }}
-                >
-                  <i
-                    className="fa-solid fa-xmark"
-                    style={{ margin: "0 0.3rem 0 0 " }}
-                    onClick={() => {
-                      setValue("media", "");
-                    }}
-                  ></i>
-                  <div>{fileName[0]?.name}</div>
-                </div>
-              )}
 
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div className="optionss">
