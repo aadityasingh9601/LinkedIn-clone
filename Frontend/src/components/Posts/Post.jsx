@@ -18,7 +18,7 @@ import useFollowStore from "../../stores/Follow";
 
 export default function Post({ post }) {
   const currUserId = localStorage.getItem("currUserId");
-
+  console.log(post._id);
   const [toggle, setToggle] = useState(false);
   const [deleteModal, setdeleteModal] = useState(false);
   const [editModal, seteditModal] = useState(false);
@@ -37,6 +37,8 @@ export default function Post({ post }) {
   const [likedUsers, setlikedUsers] = useState([]);
 
   const newAccessToken = useUserStore((state) => state.newAccessToken);
+
+  const allLikedPosts = useUserStore((state) => state.allLikedPosts);
 
   const { comments, setComments, showComments, setshowComments, addComment } =
     useComment(post._id);
@@ -75,45 +77,53 @@ export default function Post({ post }) {
     setLikeCount(likeCount - 1);
   };
 
+  useEffect(() => {
+    if (allLikedPosts.has(post._id)) {
+      setisLiked(true);
+    } else {
+      setisLiked(false);
+    }
+  }, []);
+
   //Creating a useEffect to check if the current user has liked the post or not so update the state on the
   //frontend accordingly, maybe there's a better way to do this , but for now let's just do this.
   //Usually we persist state on the frontend by using our local storage, but that's good only for storing some
   //states like login state, u can't store every user's state in local storage because of storage issues.
   //So, use a backend route to check , similarly do for following & followers. As, time goes by if u find a
   //better way to do this, switch to that, but for now just focus on the functionality part first.
-  useEffect(() => {
-    async function checkLike(postId) {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/post/${postId}/like/checklike`,
-          {
-            withCredentials: true,
-          }
-        );
+  // useEffect(() => {
+  //   async function checkLike(postId) {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:8000/post/${postId}/like/checklike`,
+  //         {
+  //           withCredentials: true,
+  //         }
+  //       );
 
-        if (response.data === "yes") {
-          return setisLiked(true);
-        } else {
-          return setisLiked(false);
-        }
-      } catch (err) {
-        console.log(err);
-        //Handle 401, if 401 occurs, newAccessToken is generated and error message is shown to the user to
-        //try again.Now when user tries again, it will work because new access token is generated already.
-        //Understand the flow carefully and handle this part in all the backend requests.
-        if (err.response.status === 401) {
-          newAccessToken();
-        }
-        return toast.error("Something went wrong!Try again.");
-      }
-    }
+  //       if (response.data === "yes") {
+  //         return setisLiked(true);
+  //       } else {
+  //         return setisLiked(false);
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //       //Handle 401, if 401 occurs, newAccessToken is generated and error message is shown to the user to
+  //       //try again.Now when user tries again, it will work because new access token is generated already.
+  //       //Understand the flow carefully and handle this part in all the backend requests.
+  //       if (err.response.status === 401) {
+  //         newAccessToken();
+  //       }
+  //       return toast.error("Something went wrong!Try again.");
+  //     }
+  //   }
 
-    checkLike(post._id);
-  }, []);
+  //   checkLike(post._id);
+  // }, []);
 
   useEffect(() => {
     checkFollow(post.createdBy._id);
-  }, []);
+  }, [post]);
 
   //Fetch likes related to a post when like modal shows up.
   useEffect(() => {

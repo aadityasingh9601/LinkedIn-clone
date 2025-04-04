@@ -181,7 +181,7 @@ const generateNewAccessToken = async (req, res) => {
 const allLikedPosts = async (req, res) => {
   console.log("inside allLikedPosts");
   const allLikedPosts = await Like.find({ user: req.user._id });
-  console.log(allLikedPosts);
+  //console.log(allLikedPosts);
   const likedPosts = allLikedPosts.map((p) => {
     return p.postId;
   });

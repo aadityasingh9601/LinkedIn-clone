@@ -3,7 +3,7 @@ import Analytic from "../models/Analytics.js";
 import Post from "../models/Post.js";
 
 const logEvent = async (req, res) => {
-  console.log("inside log event on backend.");
+  //console.log("inside log event on backend.");
 
   const { eventData } = req.body;
 
@@ -18,8 +18,8 @@ const logEvent = async (req, res) => {
       //Find the owner of each post.
       const post = await Post.findById(p);
 
-      console.log(req.user._id);
-      console.log(post.createdBy);
+      //console.log(req.user._id);
+      //console.log(post.createdBy);
 
       if (req.user._id.toString() === post.createdBy.toString()) {
         res.send("You can't log event for yourself!");
@@ -38,7 +38,7 @@ const logEvent = async (req, res) => {
       });
 
       await analytic.save();
-      console.log(analytic);
+      //console.log(analytic);
       res.status(201).send("Data logged successfully!");
       return;
     }
@@ -61,7 +61,7 @@ const logEvent = async (req, res) => {
       });
 
       await analytic.save();
-      console.log(analytic);
+      // console.log(analytic);
       res.status(200).send("Data logged in successfully!");
       return;
     }
@@ -93,7 +93,7 @@ const logEvent = async (req, res) => {
     });
 
     await analytic.save();
-    console.log(analytic);
+    // console.log(analytic);
     res.status(200).send("Data logged in successfully!");
     return;
   }
@@ -107,7 +107,7 @@ const getAnalyticsData = async (req, res) => {
 
     const range = req.query.q2;
 
-    console.log(range);
+    //console.log(range);
 
     const eventType = event
       .substring(0, event.length - 1)
@@ -117,14 +117,14 @@ const getAnalyticsData = async (req, res) => {
 
     const user = await User.findById(userId);
     const signupDate = user.signupDate;
-    console.log(signupDate);
+    //console.log(signupDate);
 
     let startDate;
 
     // console.log(signupDate);
 
     let endDate = new Date(); //Pass today's date.
-    console.log("I am end date" + endDate);
+    //console.log("I am end date" + endDate);
     //In case , user is logged in just 5 days ago, but wanna see the earlier analytics too, so to handle that
     //fix the startDate to signupDate.
 
@@ -144,7 +144,7 @@ const getAnalyticsData = async (req, res) => {
           0
         )
       );
-      console.log("I am the start date" + startDate);
+      //console.log("I am the start date" + startDate);
     } else {
       let today = new Date();
       startDate = new Date(
@@ -155,7 +155,7 @@ const getAnalyticsData = async (req, res) => {
         )
       );
       startDate.setUTCDate(startDate.getUTCDate() - (range - 1));
-      console.log("I am the start date" + startDate);
+      // console.log("I am the start date" + startDate);
     }
 
     //console.log(startDate);
@@ -190,8 +190,8 @@ const getAnalyticsData = async (req, res) => {
     const properData = data.map((e) => {
       return { date: e._id, count: e.count };
     });
-    console.log(data);
-    console.log(properData);
+    //console.log(data);
+    //console.log(properData);
 
     //What we're doing here is that , suppose there is no analytics data for a certain data in the database,
     //what would we show on the graph for that day? nothing? no, we would be needing a full range of data to
@@ -239,11 +239,11 @@ const getAnalyticsData = async (req, res) => {
       };
     });
 
-    console.log(completeData.length);
+    //console.log(completeData.length);
 
     res.status(200).send(completeData);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     res.send("Already logged for the day.");
   }
 };

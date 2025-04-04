@@ -5,8 +5,8 @@ import { v2 as cloudinary } from "cloudinary";
 
 const createPost = async (req, res) => {
   const { postData } = req.body;
-  console.log(postData);
-  console.log(req.file);
+  //console.log(postData);
+  // console.log(req.file);
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
   let filename = req.file ? req.file.filename : "";
@@ -39,7 +39,7 @@ const createPost = async (req, res) => {
       select: "name profileImage headline",
     },
   });
-  console.log(fullPost);
+  //console.log(fullPost);
   res.status(201).send(fullPost);
 };
 
@@ -48,10 +48,9 @@ const allPosts = async (req, res) => {
 
   const page = parseInt(req.query.page) || 1;
   console.log("55", page);
-  // const skip = (page - 1) * limit;
   const skip = (page - 1) * 2;
 
-  const posts = await Post.find()
+  const posts = await Post.find({ createdBy: userId })
     .sort({ createdAt: -1 })
     .populate({
       path: "createdBy",
@@ -62,7 +61,7 @@ const allPosts = async (req, res) => {
       },
     })
     .skip(skip) //It'll skip the first "skip" no. of posts and send from the further data.
-    .limit(2); //Limits to only 2 posts at a time.
+    .limit(5); //Limits to only 10 posts at a time.
 
   //What we have to do here is to populate the post's createdBy field with the user field and the user's
   // profileId field with name, profileImg and headline. So, we have to use nested populate here.
@@ -84,8 +83,8 @@ const updatePost = async (req, res) => {
   const { postId } = req.params;
 
   const { postData } = req.body;
-  console.log(postData);
-  console.log(req.file);
+  //console.log(postData);
+  // console.log(req.file);
 
   const { error } = postSchema.validate(req.body);
   if (error) {
@@ -117,7 +116,7 @@ const updatePost = async (req, res) => {
       //Then save the new media details in the database.
 
       let type = req.file.mimetype.split("/")[0];
-      console.log(type);
+      //console.log(type);
 
       post.media.mediaType = type;
       post.media.url = req.file.path;

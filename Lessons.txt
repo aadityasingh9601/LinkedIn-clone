@@ -47,3 +47,13 @@ data for a particular user based on his id, like dynamic routes for visiting use
 
 15. Search about Set and Map data structures in javascipt and why to use them instead or array for storing,
 insertion, deletion ,etc, the lower the time & space complexity of a D.S. or function, better the performance.
+
+16. What is circular dependency in Javascript? why it throws error? It's because of this that the error was
+occuring in the useUserStore , when u were trying to import usePostStore as usePostStore also imports 
+useUserStore, so both are dependent on each other. To tackle, this, use dynamic imports inside the function
+you need to use it, see useUserStore and GPT for demonstration.
+
+17. Why the postId was getting printed again and again when scrolling the page up and down again and again?
+See in ChatGPT and also see , how to prevent that in REACT?
+
+18. Also explore why we should avoid DOM manipulation in REACT as much as possible?

@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 
 import useUserStore from "./User";
 
+const setAllLikedPosts = useUserStore.getState().setAllLikedPosts;
+
 const { newAccessToken } = useUserStore.getState();
 
 const usePostStore = create((set) => ({
@@ -37,7 +39,8 @@ const usePostStore = create((set) => ({
 
       //console.log(response.data);
       if (response.status === 201) {
-        return toast.success("Post created successfully!");
+        set({ postFormModal: false });
+        toast.success("Post created successfully!");
       }
       post = response.data;
     } catch (err) {
@@ -66,7 +69,7 @@ const usePostStore = create((set) => ({
           withCredentials: true,
         }
       );
-      console.log(response);
+      console.log(response.data.length);
       // console.log(response.data);
       //the map & forEach functions are used when updating the state or showing them somewhere, or making some
       //change to them, they are not needed to just normally set state.
@@ -179,6 +182,8 @@ const usePostStore = create((set) => ({
         { withCredentials: true }
       );
       console.log(response);
+      //Add the postId that is liked into the allLikedPosts stored in the localStorage to persist state.
+      setAllLikedPosts("add", postId);
     } catch (err) {
       console.log(err);
       if (err.response.status === 401) {
@@ -196,6 +201,8 @@ const usePostStore = create((set) => ({
         { withCredentials: true }
       );
       console.log(response);
+      //Delete the postId that is unliked from the allLikedPosts stored in the localStorage to persist state.
+      setAllLikedPosts("remove", postId);
     } catch (err) {
       console.log(err);
       if (err.response.status === 401) {

@@ -27,7 +27,7 @@ export default function Homepage() {
   const setPostFormModal = usePostStore((state) => state.setPostFormModal);
   const getAllLikedPosts = useUserStore((state) => state.getAllLikedPosts);
   const allLikedPosts = useUserStore((state) => state.allLikedPosts);
-  console.log(allLikedPosts);
+  //console.log(allLikedPosts);
   //Intersection Observer part starts here.
 
   const [viewedPostIds, setViewedPostIds] = useState(new Set()); // Use Set to avoid duplicates
@@ -41,7 +41,7 @@ export default function Homepage() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const postId = entry.target.getAttribute("data-post-id");
-            console.log(postId);
+            //console.log(postId);
             if (postId && !viewedPostIds.has(postId)) {
               setViewedPostIds((prev) => new Set(prev).add(postId)); // Prevent duplicates
             }
@@ -77,19 +77,14 @@ export default function Homepage() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      getAllLikedPosts();
-    }
-  }, [currUserId]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
+      fetchAllPolls();
       fetchPosts(currUserId, page);
     }
   }, [currUserId]);
 
   useEffect(() => {
     if (isLoggedIn) {
-      fetchAllPolls();
+      getAllLikedPosts();
     }
   }, [currUserId]);
 

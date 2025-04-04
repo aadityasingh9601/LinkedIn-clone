@@ -63,7 +63,35 @@ const useUserStore = create((set) => ({
   },
 
   //Create a set as time complexity is 1 , so CRUD is faster on it.
-  allLikedPosts: new Set(JSON.parse(localStorage.getItem("allLikedPosts"))),
+  //But storing all ids of posts liked by the user will cause error, as we can store only a limited amount of
+  //data in our localStorage, so we'll store only those ids that are liked by the user and are present in the
+  //current feed.
+  allLikedPosts: new Set(
+    JSON.parse(localStorage.getItem("allLikedPosts") || "[]")
+  ),
+
+  setAllLikedPosts: (action, postId) => {
+    const likedPostIds = JSON.parse(
+      localStorage.getItem("allLikedPosts") || "[]"
+    ); //returns an array.
+    const likedSet = new Set(likedPostIds); //Create set from the array.
+
+    if (action === "add") {
+      likedSet.add(postId);
+    }
+
+    if (action === "remove") {
+      likedSet.delete(postId);
+    }
+
+    // Update localStorage,Set isn't a plain JS object so we havae to serialize it like this in an array.
+    localStorage.setItem("allLikedPosts", JSON.stringify([...likedSet]));
+
+    // Update the state
+    set({ allLikedPosts: likedSet });
+
+    console.log("Updated liked posts:", likedSet);
+  },
 
   getAllLikedPosts: async () => {
     try {
@@ -76,6 +104,16 @@ const useUserStore = create((set) => ({
       );
       //console.log(response);
       //Save to local storage to persist state and to identify the posts liked by the user and update the state.
+
+      const usePostStore = (await import("./Post")).default; //dynamically import here
+      const posts = usePostStore.getState().posts;
+
+      let postIds = posts.map((p) => {
+        return p._id;
+      });
+
+      console.log(postIds);
+
       let allLikedPosts = response.data;
       localStorage.setItem("allLikedPosts", JSON.stringify(allLikedPosts));
     } catch (err) {
