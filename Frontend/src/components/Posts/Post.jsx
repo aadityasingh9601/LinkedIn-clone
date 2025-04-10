@@ -16,7 +16,7 @@ import useFollowStore from "../../stores/Follow";
 //I accessed the props the correct way, i.e. written below, the post prop gets destructed from the complete props
 //object and everything started working properly again.
 
-export default function Post({ post }) {
+export default function Post({ post, postRef }) {
   const currUserId = localStorage.getItem("currUserId");
   console.log(post._id);
   const [toggle, setToggle] = useState(false);
@@ -167,7 +167,7 @@ export default function Post({ post }) {
   // try yourself, to persist the isLiked state of the post.
 
   return (
-    <div className="post" data-post-id={post._id}>
+    <div className="post" data-post-id={post._id} ref={postRef}>
       <div className="header">
         <div className="img">
           <img src={post.createdBy.profile.profileImage.url} alt="" />

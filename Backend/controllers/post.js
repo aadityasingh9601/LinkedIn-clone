@@ -61,7 +61,7 @@ const allPosts = async (req, res) => {
       },
     })
     .skip(skip) //It'll skip the first "skip" no. of posts and send from the further data.
-    .limit(5); //Limits to only 10 posts at a time.
+    .limit(4); //Limits to only 10 posts at a time.
 
   //What we have to do here is to populate the post's createdBy field with the user field and the user's
   // profileId field with name, profileImg and headline. So, we have to use nested populate here.

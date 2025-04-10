@@ -57,3 +57,27 @@ you need to use it, see useUserStore and GPT for demonstration.
 See in ChatGPT and also see , how to prevent that in REACT?
 
 18. Also explore why we should avoid DOM manipulation in REACT as much as possible?
+
+19. What is Intersection observer in detail? How it works in react? How do we use multiple refs in react?
+What are multiple ways of doing so? And other small lessons along with it also.
+Also, IO by default observes everytime the specified element comes into the veiwport, but u can also change it
+to ensure it triggers only once, see in code.
+
+20. Why does all posts were getting re-rendered each time a new post comes into the viewport and is observed
+by the intersection observer? 
+Each time a new post comes into the viewport, the viewedPostIds state variable gets updated , due to which the
+whole component gets re-rendered, along with posts, so all posts ids gets printed on the console window.
+To fix this use useRef instead of useState, also for future, if you don't need to show the changes on the UI
+and just've to persist the value across re-renders then just use useRef hook,not useState hooks.
+
+21. Debouncing vs SetTimeOuts in react. Detail comparison with pros and cons of each.
+
+22.(V Imp) Modularity and breaking components into smaller & smaller parts and giving state variables to different
+components very carefully is very important to ensure no un-necessary re-render occurs, as it decreases the 
+performance. That's why decide the state for a particular component very carefully and try to separate and
+break the components as much as possible, don't create unnecessary state variables. 
+Ex. :- Suppose u have a big component that has various child components now a state variable in the parent
+component changes, but there's no change in other child components state, but they'll also get re-rendered again
+along with the whole parent, that's why keep the concerns separate as much as possible each time to build a 
+react app.
+NO. OF RE-RENDERS IS INVERSELY PROPORTIONAL TO PERFORMANCE OF YOUR APP.

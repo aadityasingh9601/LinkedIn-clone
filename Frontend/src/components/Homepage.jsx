@@ -1,5 +1,5 @@
 import "./Homepage.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import axios from "axios";
 import PostForm from "./Posts/PostForm";
 import usePostStore from "../stores/Post"; //Import the store first.
@@ -11,6 +11,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import PostFormPreview from "./Posts/PostFormPreview";
 import Modal from "./Modal";
 import Poll from "./Polls/Poll";
+import { debounce } from "lodash";
 
 export default function Homepage() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -28,52 +29,6 @@ export default function Homepage() {
   const getAllLikedPosts = useUserStore((state) => state.getAllLikedPosts);
   const allLikedPosts = useUserStore((state) => state.allLikedPosts);
   //console.log(allLikedPosts);
-  //Intersection Observer part starts here.
-
-  const [viewedPostIds, setViewedPostIds] = useState(new Set()); // Use Set to avoid duplicates
-  const observer = useRef(null); //Create your observer for posts.
-
-  useEffect(() => {
-    if (!posts.length) return; // Ensure posts exist before setting up observer
-
-    observer.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const postId = entry.target.getAttribute("data-post-id");
-            //console.log(postId);
-            if (postId && !viewedPostIds.has(postId)) {
-              setViewedPostIds((prev) => new Set(prev).add(postId)); // Prevent duplicates
-            }
-          }
-        });
-      },
-      { threshold: 0.5 } //Means set a post as viewed only when atleast 50% of the post has came into the viewport.
-    );
-
-    const postElements = document.querySelectorAll(".post");
-    postElements.forEach((post) => observer.current.observe(post));
-
-    return () => observer.current.disconnect();
-  }, [posts]); // Runs when posts update
-
-  // Send impressions after a delay to avoid multiple requests
-  useEffect(() => {
-    if (viewedPostIds.size > 0) {
-      const timer = setTimeout(() => {
-        let eventData = {
-          postIds: Array.from(viewedPostIds), // Convert Set to array before sending
-          eventType: "post_impression",
-        };
-        logEvent(eventData);
-        setViewedPostIds(new Set()); // Reset after sending to avoid duplicate API calls
-      }, 2000); // Delay to reduce API spam
-
-      return () => clearTimeout(timer);
-    }
-  }, [viewedPostIds]);
-
-  //Intersection Observer part ends here.
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -91,6 +46,89 @@ export default function Homepage() {
   const fetchMoreData = () => {
     fetchPosts(currUserId, page);
   };
+
+  //Function to send logEvent requests to the backend.
+  const sendToBackend = useCallback(
+    debounce(
+      () => {
+        if (viewedPostIds.current.size > 0) {
+          let eventData = {
+            postIds: Array.from(viewedPostIds.current), // Convert Set to array before sending
+            eventType: "post_impression",
+          };
+          logEvent(eventData);
+          //clear the viewedPostIds after sending request to backend.
+          viewedPostIds.current.clear();
+        }
+      },
+      2000,
+      [] //Add dependency, when this function should create again.
+    )
+  );
+
+  //Intersection Observer part starts here.
+
+  //const [viewedPostIds, setViewedPostIds] = useState(new Set());
+  const viewedPostIds = useRef(new Set());
+  const observer = useRef(null); //Create your observer for posts.
+
+  const postRefs = useRef({});
+  console.log(postRefs);
+
+  const IOCallback = (entries) => {
+    entries.forEach((entry) => {
+      // console.log(entry);
+      if (entry.isIntersecting) {
+        const postId = entry.target.getAttribute("data-post-id");
+        console.log(postId);
+        if (postId && !viewedPostIds.current.has(postId)) {
+          viewedPostIds.current.add(postId); // Prevent duplicates
+          //console.log(viewedPostIds.current);
+        }
+        // Stop observing this element after first intersection
+        observer.current.unobserve(entry.target);
+
+        //As a post is detected,send backend request to log analytics event for it.
+        sendToBackend();
+      }
+    });
+  };
+
+  const IOoptions = { threshold: 0.75 };
+
+  useEffect(() => {
+    if (!posts.length) return;
+
+    observer.current = new IntersectionObserver(IOCallback, IOoptions);
+
+    //observe all the posts.
+    Object.values(postRefs.current).forEach((node) => {
+      if (node) {
+        observer.current?.observe(node);
+      }
+    });
+
+    //unobserve all the posts.
+    return () => {
+      if (observer && postRefs.current) {
+        Object.values(postRefs.current).forEach((node) => {
+          if (node instanceof Element) {
+            observer.current.unobserve(node);
+          }
+        });
+      }
+    };
+  }, [posts]); // Runs when posts update
+
+  // Assign ref to each post
+  const setRef = (node, id) => {
+    //console.log(node);
+    if (node) {
+      postRefs.current[id] = node;
+    }
+  };
+
+  //Intersection Observer part ends here.
 
   //To ensure that we can't scroll the page while the modal is open.
   if (postFormModal) {
@@ -127,20 +165,28 @@ export default function Homepage() {
         </div>
 
         <div className="posts">
-          <InfiniteScroll
-            dataLength={posts.length}
-            next={fetchMoreData}
-            hasMore={hasMore}
-            //You can create your own good looking custom loader here also.
-            loader={<div className="loader">Loading...</div>}
-          >
-            {posts.map((post) => {
-              return <Post key={post._id} post={post} />; // We're mapping through the posts array and returning a Post component for each post.
-            })}
-          </InfiniteScroll>
+          {posts.map((post) => {
+            return (
+              <Post
+                key={post._id}
+                post={post}
+                postRef={(node) => setRef(node, post._id)}
+              />
+            ); // We're mapping through the posts array and returning a Post component for each post.
+          })}
         </div>
       </div>
       <div className="sideTab2">This is our sideTab2.</div>
     </div>
   );
 }
+
+// <InfiniteScroll
+//             dataLength={posts.length}
+//             next={fetchMoreData}
+//             hasMore={hasMore}
+//             //You can create your own good looking custom loader here also.
+//             loader={<div className="loader">Loading...</div>}
+//           >
+
+//           </InfiniteScroll>

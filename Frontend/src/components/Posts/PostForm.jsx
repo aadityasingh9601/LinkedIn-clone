@@ -131,7 +131,7 @@ export default function PostForm() {
                     <i className="fa-regular fa-face-smile"></i>
                   </div>
                   <div>
-                    <label for="mediaInput">
+                    <label htmlFor="mediaInput">
                       <i class="fa-regular fa-image"></i>
                     </label>
                     <input
