@@ -81,3 +81,5 @@ component changes, but there's no change in other child components state, but th
 along with the whole parent, that's why keep the concerns separate as much as possible each time to build a 
 react app.
 NO. OF RE-RENDERS IS INVERSELY PROPORTIONAL TO PERFORMANCE OF YOUR APP.
+
+SEE LESSONS FROM GPT ALSO AND ADD TO NOTES.

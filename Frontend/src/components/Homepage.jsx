@@ -164,29 +164,27 @@ export default function Homepage() {
           })}
         </div>
 
-        <div className="posts">
-          {posts.map((post) => {
-            return (
-              <Post
-                key={post._id}
-                post={post}
-                postRef={(node) => setRef(node, post._id)}
-              />
-            ); // We're mapping through the posts array and returning a Post component for each post.
-          })}
-        </div>
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          //You can create your own good looking custom loader here also.
+          loader={<div className="loader">Loading...</div>}
+        >
+          <div className="posts">
+            {posts.map((post) => {
+              return (
+                <Post
+                  key={post._id}
+                  post={post}
+                  postRef={(node) => setRef(node, post._id)}
+                />
+              ); // We're mapping through the posts array and returning a Post component for each post.
+            })}
+          </div>
+        </InfiniteScroll>
       </div>
       <div className="sideTab2">This is our sideTab2.</div>
     </div>
   );
 }
-
-// <InfiniteScroll
-//             dataLength={posts.length}
-//             next={fetchMoreData}
-//             hasMore={hasMore}
-//             //You can create your own good looking custom loader here also.
-//             loader={<div className="loader">Loading...</div>}
-//           >
-
-//           </InfiniteScroll>

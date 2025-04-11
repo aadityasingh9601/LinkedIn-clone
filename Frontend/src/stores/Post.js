@@ -24,6 +24,7 @@ const usePostStore = create((set) => ({
 
   createPost: async (postData) => {
     let post;
+    console.log(postData);
     try {
       const response = await axios.post(
         "http://localhost:8000/post",
@@ -37,12 +38,25 @@ const usePostStore = create((set) => ({
         }
       );
 
-      //console.log(response.data);
+      //console.log(response);
+      post = response.data;
       if (response.status === 201) {
         set({ postFormModal: false });
-        toast.success("Post created successfully!");
+        console.log(post);
+
+        //Updating the state variable according to the data received.
+        if (post.published === true) {
+          set((state) => ({
+            posts: [post, ...state.posts],
+            //Generally we write like posts:[...state.posts,post] it means spread first then add post too
+            //but I have reversed the order here, that means post will get added first , that means the newest post
+            //will come on top.
+          }));
+          return toast.success("Post created successfully!");
+        } else {
+          return toast.success("Post scheduled !!");
+        }
       }
-      post = response.data;
     } catch (err) {
       console.log(err);
       if (err.response.status === 401) {
@@ -51,14 +65,6 @@ const usePostStore = create((set) => ({
       }
       return toast.error(err.message);
     }
-    //Updating the state variable according to the data received.
-    set((state) => ({
-      posts: [post, ...state.posts],
-      //Generally we write like posts:[...state.posts,post] it means spread first then add post too
-      //but I have reversed the order here, that means post will get added first , that means the newest post
-      //will come on top.
-    }));
-    set;
   },
 
   fetchPosts: async (userId, page) => {
@@ -77,8 +83,8 @@ const usePostStore = create((set) => ({
       set((state) => ({
         posts: [...state.posts, ...response.data],
       }));
-      set({ hasMore: response.data.length > 0 });
       set({ page: page + 1 });
+      set({ hasMore: response.data.length > 0 });
     } catch (err) {
       console.log(err);
       if (err.response.status === 401) {

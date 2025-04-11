@@ -27,6 +27,8 @@ const postSchema = Joi.object({
     media: Joi.any(),
     category: Joi.string().required(),
     postType: Joi.string(),
+    date: Joi.string(),
+    time: Joi.string(),
   }).required(),
 });
 

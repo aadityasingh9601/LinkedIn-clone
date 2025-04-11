@@ -2,11 +2,33 @@ import Post from "../models/Post.js";
 import Group from "../models/Group.js";
 import { postSchema } from "../schema.js";
 import { v2 as cloudinary } from "cloudinary";
+import cron from "node-cron";
+
+function convertDateToCron(date) {
+  const minutes = date.getMinutes();
+  const hours = date.getHours();
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // JS months are 0-based
+
+  return `${minutes} ${hours} ${day} ${month} *`; // ignore day-of-week
+}
 
 const createPost = async (req, res) => {
   const { postData } = req.body;
+  const { date, time } = postData;
+  //console.log(date, time);
+  //Converting date and time into proper format.
+  let scheduledAt = "";
+  if (date && time) {
+    const [day, month, year] = date.split("-");
+    scheduledAt = new Date(`${year}-${month}-${day}T${time}:00`);
+  }
+
+  console.log(scheduledAt);
+
   //console.log(postData);
-  // console.log(req.file);
+
+  console.log(req.file);
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
   let filename = req.file ? req.file.filename : "";
@@ -26,11 +48,28 @@ const createPost = async (req, res) => {
       filename: filename,
     },
     createdBy: req.user._id,
+    scheduledTime: scheduledAt,
     postType: postData.postType,
+    published: scheduledAt ? false : true,
     category: postData.category,
   });
 
   await newPost.save();
+
+  //Schedule the post and publish at the scheduled time.
+  if (scheduledAt) {
+    const cronTime = convertDateToCron(scheduledAt);
+
+    const task = cron.schedule(cronTime, async () => {
+      console.log("this post will be scheduled");
+      //Set published to true, and it'll b now displayed to the users.
+      newPost.published = true;
+      await newPost.save();
+    });
+
+    console.log(task);
+  }
+
   let fullPost = await Post.findById(newPost._id).populate({
     path: "createdBy",
     select: "profile",
@@ -50,7 +89,7 @@ const allPosts = async (req, res) => {
   console.log("55", page);
   const skip = (page - 1) * 2;
 
-  const posts = await Post.find({ createdBy: userId })
+  const posts = await Post.find({ published: true })
     .sort({ createdAt: -1 })
     .populate({
       path: "createdBy",
@@ -61,7 +100,7 @@ const allPosts = async (req, res) => {
       },
     })
     .skip(skip) //It'll skip the first "skip" no. of posts and send from the further data.
-    .limit(4); //Limits to only 10 posts at a time.
+    .limit(2); //Limits to only 10 posts at a time.
 
   //What we have to do here is to populate the post's createdBy field with the user field and the user's
   // profileId field with name, profileImg and headline. So, we have to use nested populate here.

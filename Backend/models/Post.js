@@ -19,6 +19,10 @@ const postSchema = new Schema({
     url: String,
     filename: String,
   },
+  published: {
+    type: Boolean,
+    required: true,
+  },
   category: [
     {
       type: String,
@@ -40,6 +44,7 @@ const postSchema = new Schema({
       ref: "Comment",
     },
   ],
+  scheduledTime: { type: Date, default: Date.now },
 });
 
 // Delete all comments related to the post.It's our mongoose middleware.
