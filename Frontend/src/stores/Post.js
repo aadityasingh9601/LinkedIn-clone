@@ -11,10 +11,24 @@ const { newAccessToken } = useUserStore.getState();
 const usePostStore = create((set) => ({
   posts: [],
 
+  scheduledPosts: [],
+
   postFormModal: false,
 
   setPostFormModal: (value) => {
     set({ postFormModal: value });
+  },
+
+  schedule: false,
+
+  setSchedule: (value) => {
+    set({ schedule: value });
+  },
+
+  showSchPosts: false,
+
+  setshowSchPosts: (value) => {
+    set({ showSchPosts: value });
   },
 
   hasMore: true,
@@ -54,7 +68,7 @@ const usePostStore = create((set) => ({
           }));
           return toast.success("Post created successfully!");
         } else {
-          return toast.success("Post scheduled !!");
+          return toast.success("Post scheduled!");
         }
       }
     } catch (err) {
@@ -63,6 +77,28 @@ const usePostStore = create((set) => ({
         newAccessToken();
         return toast.error("Something went wrong! Please try again.");
       }
+      return toast.error(err.message);
+    }
+  },
+
+  getScheduledPosts: async (userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/post/scheduled/${userId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response);
+      if (response.status == 200) {
+        set({ scheduledPosts: response.data });
+      }
+      // console.log(response.data);
+      //the map & forEach functions are used when updating the state or showing them somewhere, or making some
+      //change to them, they are not needed to just normally set state.
+    } catch (err) {
+      console.log(err);
+
       return toast.error(err.message);
     }
   },
@@ -110,10 +146,11 @@ const usePostStore = create((set) => ({
       );
 
       console.log(response.data);
-      const updatedPost = response.data.post;
+      const updatedPost = response.data.updatedPost;
 
       if (response.status === 200) {
         set((state) => ({
+          //This one is for regular posts.
           posts: state.posts.map((post) =>
             post._id === postId
               ? {
@@ -126,6 +163,24 @@ const usePostStore = create((set) => ({
                   },
                 }
               : post
+          ),
+        }));
+
+        //This one is for scheduled posts.
+        set((state) => ({
+          scheduledPosts: state.scheduledPosts.map((schPost) =>
+            schPost._id === postId
+              ? {
+                  ...schPost,
+                  content: updatedPost.content,
+                  media: {
+                    mediaType: updatedPost.media.mediaType,
+                    filename: updatedPost.media.filename,
+                    url: updatedPost.media.url,
+                  },
+                  scheduledTime: updatedPost.scheduledTime,
+                }
+              : schPost
           ),
         }));
 
@@ -150,9 +205,13 @@ const usePostStore = create((set) => ({
         }
       );
       console.log(response.status);
+
       if (response.status === 200) {
         set((state) => ({
           posts: state.posts.filter((post) => post._id !== postId),
+          scheduledPosts: state.scheduledPosts.filter(
+            (schPost) => schPost._id !== postId
+          ),
         }));
         return toast.success("Post deleted successfully!");
       }

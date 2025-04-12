@@ -3,13 +3,38 @@ import usePostStore from "../../stores/Post";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
 
-export default function PostEditForm({ post, toggleEditModal }) {
+export default function PostEditForm({ post }) {
+  function parseISODate(isoDate) {
+    const date = new Date(isoDate);
+
+    const day = date.getDate().toString().padStart(2, "0"); // dd
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // mm
+    const year = date.getFullYear(); // yyyy
+
+    const hours = date.getHours().toString().padStart(2, "0"); // HH
+    const minutes = date.getMinutes().toString().padStart(2, "0"); // mm
+
+    return {
+      date: `${day}-${month}-${year}`, // dd-mm-yyyy
+      time: `${hours}:${minutes}`, // HH:mm
+    };
+  }
+
+  const { date, time } = parseISODate(post?.scheduledTime);
+  const schedule = usePostStore((state) => state.schedule);
+  const setSchedule = usePostStore((state) => state.setSchedule);
   const {
     register,
     handleSubmit,
     reset, //This method is used to clear up the form fields after the form has been submitted.
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      category: post.category.map((e) => e + ","),
+      date: date,
+      time: time,
+    },
+  });
 
   const editPost = usePostStore((state) => state.editPost);
 
@@ -23,8 +48,11 @@ export default function PostEditForm({ post, toggleEditModal }) {
 
     const postData = {
       ...data,
-      media: data.media[0],
     };
+
+    if (data.media && data.media.length > 0) {
+      postData.media = data.media[0];
+    }
 
     console.log(postData);
 
@@ -49,20 +77,23 @@ export default function PostEditForm({ post, toggleEditModal }) {
         </textarea>
         {errors.content && <p>{errors.content.message}</p>}
         <br />
-        <span>
-          <b>Orignal image</b>
-        </span>
-        <br />
-        <img height="200px" width="200px" src={post.media.url} alt="" />
-        <input
-          type="file"
-          placeholder="Enter your post image url here"
-          {...register("media")}
-        />
+        {post.media.url && (
+          <div>
+            <span>
+              <b>Orignal image</b>
+            </span>
+            <br />
+            <img height="200px" width="200px" src={post.media.url} alt="" />
+            <input
+              type="file"
+              placeholder="Enter your post image url here"
+              {...register("media")}
+            />
+          </div>
+        )}
         <br />
         <textarea
           type="text"
-          value={post.category}
           placeholder="Category"
           {...register("category", {
             required: "Category is required",
@@ -72,8 +103,79 @@ export default function PostEditForm({ post, toggleEditModal }) {
         {errors.category && <p>{errors.category.message}</p>}
         <br />
         <br />
-        <Button btnText="Cancel" onClick={() => toggleEditModal(false)} />
+        {/* Show only if post isn't published yet. */}
+        {post.published === false && (
+          <div style={{ display: "inline" }}>
+            {schedule ? (
+              <i
+                class="fa-solid fa-clock"
+                onClick={() => setSchedule(false)}
+                style={{ fontSize: "1.2rem" }}
+              ></i>
+            ) : (
+              <i
+                class="fa-regular fa-clock"
+                onClick={() => setSchedule(true)}
+                style={{ fontSize: "1.2rem" }}
+              ></i>
+            )}
+          </div>
+        )}
         <Button btnText="Save Changes" />
+        {schedule && (
+          <div
+            style={{
+              position: "absolute",
+              right: "-20rem",
+              bottom: "5rem",
+              backgroundColor: "lightblue",
+              padding: "1rem",
+              width: "14rem",
+              textAlign: "start",
+            }}
+          >
+            <div>Date</div>
+            <input
+              placeholder="dd-mm-yyyy"
+              style={{
+                margin: "0 0 1rem 0",
+                width: "95%",
+              }}
+              {...register("date", {
+                required: schedule ? "Date is required" : false,
+                pattern: {
+                  value: /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/,
+                  message: "Enter date in dd-mm-yyyy format",
+                },
+              })}
+            />
+            {errors.date && <p>{errors.date.message}</p>}
+
+            <div>Time</div>
+            <input
+              placeholder="17:30"
+              style={{
+                margin: "0 0 1rem 0",
+                width: "95%",
+              }}
+              {...register("time", {
+                required: schedule ? "Time is required" : false,
+                pattern: {
+                  value: /^([01]\d|2[0-3]):([0-5]\d)$/,
+                  message: "Enter time in 24-hour format (HH:mm)",
+                },
+              })}
+            />
+            {errors.time && <p>{errors.time.message}</p>}
+
+            <Button
+              onClick={() => {
+                setshowSchPosts(true), console.log("clikced");
+              }}
+              btnText="View all scheduled posts"
+            />
+          </div>
+        )}
       </form>
     </div>
   );

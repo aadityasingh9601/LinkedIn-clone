@@ -28,6 +28,7 @@ export default function Homepage() {
   const setPostFormModal = usePostStore((state) => state.setPostFormModal);
   const getAllLikedPosts = useUserStore((state) => state.getAllLikedPosts);
   const allLikedPosts = useUserStore((state) => state.allLikedPosts);
+  const setshowSchPosts = usePostStore((state) => state.setshowSchPosts);
   //console.log(allLikedPosts);
 
   useEffect(() => {
@@ -151,7 +152,9 @@ export default function Homepage() {
             <Modal>
               <i
                 class="fa-solid fa-xmark cross"
-                onClick={() => setPostFormModal(false)}
+                onClick={() => {
+                  setPostFormModal(false), setshowSchPosts(false);
+                }}
               ></i>
               <PostForm />
             </Modal>

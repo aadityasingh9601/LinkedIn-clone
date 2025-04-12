@@ -4,6 +4,7 @@ import wrapAsync from "../utils/wrapAsync.js";
 import protect from "../Middleware.js";
 import multer from "multer";
 import { storage } from "../cloudConfig.js";
+import post from "../controllers/post.js";
 const upload = multer({ storage: storage });
 
 const router = Router();
@@ -18,6 +19,8 @@ router.post(
 
 //Get all posts route.
 router.get("/:userId", wrapAsync(postController.allPosts));
+
+router.get("/scheduled/:userId", wrapAsync(postController.allScheduledPosts));
 
 //Get a single post route.
 router.get("/:postId", protect, wrapAsync(postController.singlePost));

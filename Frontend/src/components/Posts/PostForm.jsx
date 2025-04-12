@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import PollForm from "../Polls/PollForm";
 import usePollStore from "../../stores/Poll";
+import SchPostsUI from "./SchPostsUI";
 
 export default function PostForm() {
   const {
@@ -20,8 +21,10 @@ export default function PostForm() {
 
   const poll = usePollStore((state) => state.poll);
   const setPoll = usePollStore((state) => state.setPoll);
-
-  const [schedule, setSchedule] = useState(false);
+  const schedule = usePostStore((state) => state.schedule);
+  const setSchedule = usePostStore((state) => state.setSchedule);
+  const showSchPosts = usePostStore((state) => state.showSchPosts);
+  const setshowSchPosts = usePostStore((state) => state.setshowSchPosts);
 
   const [postType, setpostType] = useState("Everyone");
   const [preview, setPreview] = useState("");
@@ -56,6 +59,8 @@ export default function PostForm() {
     <div>
       {poll ? (
         <PollForm />
+      ) : showSchPosts ? (
+        <SchPostsUI />
       ) : (
         <div className="postform">
           <div className="header">
@@ -221,6 +226,13 @@ export default function PostForm() {
                       })}
                     />
                     {errors.time && <p>{errors.time.message}</p>}
+
+                    <Button
+                      onClick={() => {
+                        setshowSchPosts(true), console.log("clikced");
+                      }}
+                      btnText="View all scheduled posts"
+                    />
                   </div>
                 )}
               </div>

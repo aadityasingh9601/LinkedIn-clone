@@ -9,6 +9,8 @@ is a better and optimized way to do so.
 
 4. Start streak feature.
 
+5. Fix the post edit form.
+
 
 Build carousels feature(ability to upload and show multiple images),would do in the future, as normally
 carousels are uploaded as a single pdf & then get displayed on the frontend, not like we select one file , then

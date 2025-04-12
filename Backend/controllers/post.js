@@ -67,7 +67,7 @@ const createPost = async (req, res) => {
       await newPost.save();
     });
 
-    console.log(task);
+    //console.log(task);
   }
 
   let fullPost = await Post.findById(newPost._id).populate({
@@ -100,7 +100,7 @@ const allPosts = async (req, res) => {
       },
     })
     .skip(skip) //It'll skip the first "skip" no. of posts and send from the further data.
-    .limit(2); //Limits to only 10 posts at a time.
+    .limit(4); //Limits to only 10 posts at a time.
 
   //What we have to do here is to populate the post's createdBy field with the user field and the user's
   // profileId field with name, profileImg and headline. So, we have to use nested populate here.
@@ -109,7 +109,31 @@ const allPosts = async (req, res) => {
     console.log("Post Id:-" + post._id);
   }
 
+  console.log("These are our all posts " + posts);
+
   res.status(200).send(posts);
+};
+
+const allScheduledPosts = async (req, res) => {
+  const { userId } = req.params;
+  console.log(userId);
+
+  const schPosts = await Post.find({
+    published: false,
+    scheduledTime: { $gt: new Date() },
+  })
+    .sort({ createdAt: -1 })
+    .populate({
+      path: "createdBy",
+      select: "profile", // Include only the `profile` field in `createdBy`
+      populate: {
+        path: "profile", // Populate the `profile` field
+        select: "headline name profileImage", // Include only `headline` and `name` fields in the `profile`
+      },
+    });
+  console.log(schPosts);
+
+  res.status(200).send(schPosts);
 };
 
 const singlePost = async (req, res) => {
@@ -120,10 +144,15 @@ const singlePost = async (req, res) => {
 
 const updatePost = async (req, res) => {
   const { postId } = req.params;
-
   const { postData } = req.body;
-  //console.log(postData);
-  // console.log(req.file);
+  const { date, time } = postData;
+  //console.log(date, time);
+  //Converting date and time into proper format.
+  let scheduledAt = "";
+  if (date && time) {
+    const [day, month, year] = date.split("-");
+    scheduledAt = new Date(`${year}-${month}-${day}T${time}:00`);
+  }
 
   const { error } = postSchema.validate(req.body);
   if (error) {
@@ -132,7 +161,10 @@ const updatePost = async (req, res) => {
     return;
   }
 
-  const post = await Post.findByIdAndUpdate(postId, { ...req.body.postData });
+  const post = await Post.findByIdAndUpdate(postId, {
+    ...req.body.postData,
+    scheduledTime: scheduledAt,
+  });
   //Check if the user trying to update is the owner of the post.
   if (req.user._id.toString() === post.createdBy.toString()) {
     // Update the image url only when some new image is available.
@@ -167,8 +199,9 @@ const updatePost = async (req, res) => {
     //what about the old image on the cloud it's still there , it's not deleted from there & still consuming
     //memory so ,that needs to be deleted , even u have changed the url of the file and all in the database, that
     //fine , but u need to remove the old image from the cloud storage also. So do that.
+    const updatedPost = await Post.findById(postId);
 
-    res.status(200).send({ message: "Post updated successfully", post });
+    res.status(200).send({ message: "Post updated successfully", updatedPost });
   } else {
     res.status(401).send({ message: "You are not the owner of this post." });
   }
@@ -208,6 +241,7 @@ const deletePost = async (req, res) => {
 export default {
   createPost,
   allPosts,
+  allScheduledPosts,
   singlePost,
   updatePost,
   deletePost,
