@@ -1,0 +1,9 @@
+.dot {
+  display: flex;
+  align-items: center;
+}
+
+.dot div {
+  margin: 0 0.3rem 0.5rem 0.3rem;
+  font-size: 1.1rem;
+}

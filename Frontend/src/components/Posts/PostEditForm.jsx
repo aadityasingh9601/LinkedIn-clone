@@ -30,6 +30,7 @@ export default function PostEditForm({ post }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
+      content: post.content,
       category: post.category.map((e) => e + ","),
       date: date,
       time: time,
@@ -72,9 +73,8 @@ export default function PostEditForm({ post }) {
               message: "Content should be at least 50 characters",
             },
           })}
-        >
-          {post.content}
-        </textarea>
+        />
+
         {errors.content && <p>{errors.content.message}</p>}
         <br />
         {post.media.url && (
@@ -92,14 +92,16 @@ export default function PostEditForm({ post }) {
           </div>
         )}
         <br />
-        <textarea
+
+        <input
           type="text"
+          style={{ width: "100%" }}
           placeholder="Category"
           {...register("category", {
             required: "Category is required",
             type: "text",
           })}
-        ></textarea>
+        />
         {errors.category && <p>{errors.category.message}</p>}
         <br />
         <br />

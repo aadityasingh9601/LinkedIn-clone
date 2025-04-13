@@ -1,4 +1,5 @@
 .jobDetail {
+  position: relative;
   width: 55%;
   max-height: 100%;
   background-color: white;
@@ -10,17 +11,40 @@
   flex-direction: column;
 }
 
-.jobDetail .a div {
-  transform: translateX(-15rem);
+.jobDetail .aa {
   display: flex;
   align-items: center;
 }
 
-.jobDetail .a div img {
-  border-radius: 0;
+.jobDetail .aa img {
+  border: 1px solid black;
+  height: 2.5rem;
+  width: 2.5rem;
 }
 
-.jobDetail .a div span {
-  margin: 0 0 0rem 0.5rem;
+.jobDetail .aa span {
+  margin: 0 0 0 0.4rem;
+  font-weight: bolder;
+}
+
+.jobDetail .bb {
+  display: flex;
+  flex-direction: column;
+}
+
+.job_btns {
+  margin: 0 0 0.7rem 0;
+}
+
+.job_btns button {
+  margin: 0 1rem 0 0;
+}
+
+.subtitle {
   font-weight: 500;
+  font-size: 1rem;
+}
+
+.subsection {
+  margin: 0 0 1rem 0;
 }

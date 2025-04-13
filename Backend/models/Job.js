@@ -17,6 +17,10 @@ const jobSchema = new Schema({
     type: [String], //Means this field is an array of strings.
     required: true,
   },
+  isOpen: {
+    type: Boolean,
+    default: true,
+  },
   skills: {
     type: [String], //Means this field is an array of strings.
     required: true,

@@ -96,5 +96,7 @@ was nothing to scroll and that's why react infinite scroll wasn't getting trigge
 components become more reusable and you don't have to create new components for each part, use the default value
 feature if needed in all your components.
 
+27. What are CSS modules, how do they help u in styling react components better? Also explore other ways for
+naming the components effectively without overriding classes.
 
 SEE LESSONS FROM GPT ALSO AND ADD TO NOTES.

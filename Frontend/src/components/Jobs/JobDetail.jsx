@@ -3,7 +3,8 @@ import useJobStore from "../../stores/Job";
 import useUserStore from "../../stores/User";
 import { useEffect, useState } from "react";
 import Button from "../Button.";
-
+import { timeRep } from "../../utils/helper";
+import Dot from "../Dot";
 export default function JobDetail({ job }) {
   const jobData = job[0];
   const currUserId = useUserStore((state) => state.currUserId);
@@ -13,38 +14,89 @@ export default function JobDetail({ job }) {
   const applied = useJobStore((state) => state.applied);
   const setApplied = useJobStore((state) => state.setApplied);
   const appliedStatus = useJobStore((state) => state.appliedStatus);
-  console.log(jobData?.postedBy);
+  console.log(jobData);
   console.log(currUserId);
   useEffect(() => {
     appliedStatus(currJobListingId);
   }, [currJobListingId]);
 
+  const { days, hours, minutes, seconds } = timeRep(
+    new Date() - new Date(jobData?.postedDate)
+  );
+  console.log(days, hours, minutes, seconds);
   return (
     <div className="jobDetail">
-      <div className="a">
-        <div>
-          <img src={jobData?.companyLogo} />
-          <span>{jobData?.company}</span>
-        </div>
+      <div className="aa">
+        <img src={jobData?.companyLogo} />
+        <span>{jobData?.company}</span>
       </div>
-      <div className="b">
-        <h3>{jobData?.title}</h3>
-        <span>
-          {jobData?.location} {jobData?.postedDate}{" "}
-          {jobData?.applicants?.length} people clicked apply
-        </span>
-        <div>
-          <div>₹{jobData?.salary}/month</div>
-          <div> On-site</div>
-          <div>{jobData?.jobType}</div>
+      <div className="bb">
+        <div
+          style={{
+            fontWeight: "500",
+            fontSize: "1.8rem",
+            margin: "1rem 0 0.35rem 0",
+          }}
+        >
+          {jobData?.title}
         </div>
-        <div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            color: "#444444",
+            fontSize: "0.9rem",
+            margin: "0 0 0.7rem 0",
+          }}
+        >
+          {jobData?.location} <Dot />
+          {days > 0
+            ? `${days} days `
+            : hours > 0
+            ? `${hours} hrs `
+            : minutes > 0
+            ? `${minutes} min`
+            : `${seconds} s`}
+          ago
+          <Dot />
+          {jobData?.applicants?.length} people clicked apply
+        </div>
+        <div style={{ display: "flex", margin: "0 0 0.85rem 0" }}>
+          {/* <div>₹{jobData?.salary}/month</div> */}
+          <div
+            style={{
+              backgroundColor: "rgb(232,232,232)",
+              borderRadius: "0.3rem",
+              fontSize: "0.9rem",
+              padding: "0.25rem 0.4rem",
+              margin: "0 0.3rem 0 0 ",
+            }}
+          >
+            {jobData?.mode}
+          </div>
+          <div
+            style={{
+              backgroundColor: "rgb(218, 235, 209)",
+              borderRadius: "0.3rem",
+              fontSize: "0.9rem",
+              padding: "0.2rem 0.4rem",
+              margin: "0 0 0 0.3rem",
+            }}
+          >
+            <i class="fa-solid fa-check" style={{ marginRight: "0.3rem" }}></i>
+            {jobData?.jobType}
+          </div>
+        </div>
+
+        <div className="job_btns">
           {currUserId !== jobData?.postedBy &&
             (applied ? (
               <Button
                 btnText={
                   <>
-                    <span>Applied</span> <i class="fa-solid fa-check"></i>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <span>Applied</span> <i class="fa-solid fa-check"></i>
+                    </div>
                   </>
                 }
                 onClick={() => {
@@ -61,39 +113,49 @@ export default function JobDetail({ job }) {
                 }}
               />
             ))}
+
+          <Button btnText="Save" />
         </div>
       </div>
+
       <div className="c">
-        <h4>About the job</h4>
-        <div>
-          <span>
-            <b>Skills:</b>
-          </span>
-          <br />
-          <span>{jobData?.skills}</span>
+        <div
+          style={{
+            fontWeight: "500",
+            fontSize: "1.3rem",
+            margin: "0 0 0.7rem 0",
+          }}
+        >
+          About the job
+        </div>
+        <div className="subsection">
+          <span className="subtitle">Skills required</span>
+
+          <div>
+            {" "}
+            {jobData?.skills?.map((q) => {
+              return <li>{q}</li>;
+            })}
+          </div>
         </div>
 
-        <div>
-          <span>
-            <b>Company overview</b>
-          </span>
-          <span> {jobData?.companydescription}</span>
+        <div className="subsection">
+          <span className="subtitle">Company overview</span>
+          <div> {jobData?.companydescription}</div>
         </div>
 
-        <div>
-          <span>
-            <b>Required qualifications</b>
-          </span>
-          {jobData?.qualifications?.map((q) => {
-            return <li>{q}</li>;
-          })}
+        <div className="subsection">
+          <span className="subtitle">Required qualifications</span>
+          <div>
+            {jobData?.qualifications?.map((q) => {
+              return <li>{q}</li>;
+            })}
+          </div>
         </div>
 
-        <div>
-          <span>
-            <b>Job overview</b>
-          </span>
-          <span> {jobData?.jobdescription}</span>
+        <div className="subsection">
+          <span className="subtitle">Job overview</span>
+          <div> {jobData?.jobdescription}</div>
         </div>
 
         {currUserId === jobData?.postedBy && (
