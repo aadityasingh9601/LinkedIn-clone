@@ -67,14 +67,7 @@ const getMyJobs = async (req, res) => {
 const getAllJobs = async (req, res) => {
   console.log("inside getalljobs on the backend!");
 
-  const jobs = await Job.find().populate({
-    path: "applicants",
-    select: "profile",
-    populate: {
-      path: "profile",
-      select: "name headline profileImage",
-    },
-  });
+  const jobs = await Job.find().populate("applications");
   console.log(jobs);
 
   res.status(200).send(jobs);
@@ -87,29 +80,6 @@ const getAllJobs = async (req, res) => {
   // } else {
   //   res.status(200).send(jobs);
   // }
-};
-
-const applyToJob = async (req, res) => {
-  const { id } = req.params;
-  const job = await Job.findById(id);
-  const currUser = await Profile.findOne({ userId: req.user._id });
-
-  if (currUser._id === job.postedBy) {
-    return res.status(404).message("You can't apply to a job posted by you!!");
-  } else {
-    if (job.applicants.includes(req.user._id)) {
-      res
-        .status(400)
-        .send({ message: "You have already applied to this job!" });
-      return;
-    } else {
-      job.applicants.push(req.user._id);
-      currUser.myJobs.push(id);
-      await job.save();
-      await currUser.save();
-      res.status(200).send(job.applicants);
-    }
-  }
 };
 
 const isApplied = async (req, res) => {
@@ -145,36 +115,13 @@ const unapplyFromJob = async (req, res) => {
   }
 };
 
-const getAllApplicants = async (req, res) => {
-  const { id } = req.params;
-  const job = await Job.findById(id);
-  if (req.user._id.toString() === job.postedBy.toString()) {
-    if (job.applicants.length === 0) {
-      res.status(404).send({ message: "No applications found!" });
-      return;
-    } else {
-      const applications = await Profile.find(
-        { _id: { $in: job.applicants } },
-        { name: 1, profileImage: 1, headline: 1 }
-      );
-      console.log(applications);
-      res.status(200).send(applications);
-    }
-  } else {
-    res
-      .status(401)
-      .send({ message: "You can't see the applicants of this job listing!" });
-  }
-};
-
 export default {
   createJob,
   editJob,
   deleteJob,
   getAllJobs,
   getMyJobs,
-  applyToJob,
+
   isApplied,
   unapplyFromJob,
-  getAllApplicants,
 };

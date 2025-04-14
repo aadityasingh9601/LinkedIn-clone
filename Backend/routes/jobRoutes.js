@@ -1,7 +1,26 @@
 import { Router } from "express";
 import jobController from "../controllers/job.js";
+import applicationController from "../controllers/application.js";
 import wrapAsync from "../utils/wrapAsync.js";
 import protect from "../Middleware.js";
+import multer from "multer";
+import { GridFsStorage } from "multer-gridfs-storage";
+
+const pdfStorage = new GridFsStorage({
+  url: "mongodb://127.0.0.1:27017/LinkedIn",
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      const filename = `${Date.now()}-${file.originalname}`;
+      const fileInfo = {
+        filename,
+        bucketName: "uploads",
+      };
+      resolve(fileInfo);
+    });
+  },
+});
+
+const upload = multer({ storage: pdfStorage });
 
 const router = Router();
 
@@ -16,11 +35,16 @@ router
   .get("/:id/checkapplied", protect, wrapAsync(jobController.isApplied))
   .get("/alljobs", protect, wrapAsync(jobController.getAllJobs))
   .get("/myjobs", protect, wrapAsync(jobController.getMyJobs))
-  .get("/:id/applicants", protect, jobController.getAllApplicants);
+  .get("/:jobId/applicants", protect, applicationController.getAllApplicants);
 
 router
-  .post("/:id/apply", protect, wrapAsync(jobController.applyToJob))
-  .delete("/:id/unapply", protect, wrapAsync(jobController.unapplyFromJob));
+  .post(
+    "/:jobId/apply",
+    upload.single("data[resume]"),
+    protect,
+    wrapAsync(applicationController.applyToJob)
+  )
+  .delete("/:jobId/unapply", protect, wrapAsync(jobController.unapplyFromJob));
 
 //Respond to a applicant(attach your dm feature to this, they will interact with dm.)
 //Add a view full profile & dm button by clicking on the applicant & the applicant can view the full profile

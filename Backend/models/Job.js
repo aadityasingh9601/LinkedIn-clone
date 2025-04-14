@@ -42,7 +42,7 @@ const jobSchema = new Schema({
     required: true,
   },
   postedDate: { type: Date, default: Date.now },
-  applicants: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  applications: [{ type: Schema.Types.ObjectId, ref: "Application" }],
 });
 
 const Job = mongoose.model("Job", jobSchema);

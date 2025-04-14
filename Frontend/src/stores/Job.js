@@ -121,14 +121,18 @@ const useJobStore = create((set) => ({
     }
   },
 
-  applyToJob: async (jobId) => {
-    console.log("inside applytojob in job store.");
-    console.log(jobId);
+  applyToJob: async (jobId, data) => {
+    console.log(jobId, data);
     try {
       const response = await axios.post(
         `http://localhost:8000/jobs/${jobId}/apply`,
-        {},
-        { withCredentials: true }
+        { data },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
       );
       console.log(response);
       if (response.status === 200) {

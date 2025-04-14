@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import Button from "../Button.";
 import { timeRep } from "../../utils/helper";
 import Dot from "../Dot";
+import { useNavigate } from "react-router-dom";
+
 export default function JobDetail({ job }) {
+  const navigate = useNavigate();
   const jobData = job[0];
   const currUserId = useUserStore((state) => state.currUserId);
   const currJobListingId = useJobStore((state) => state.currJobListingId);
@@ -16,9 +19,9 @@ export default function JobDetail({ job }) {
   const appliedStatus = useJobStore((state) => state.appliedStatus);
   console.log(jobData);
   console.log(currUserId);
-  useEffect(() => {
-    appliedStatus(currJobListingId);
-  }, [currJobListingId]);
+  // useEffect(() => {
+  //   appliedStatus(currJobListingId);
+  // }, [currJobListingId]);
 
   const { days, hours, minutes, seconds } = timeRep(
     new Date() - new Date(jobData?.postedDate)
@@ -107,10 +110,7 @@ export default function JobDetail({ job }) {
             ) : (
               <Button
                 btnText="Apply"
-                onClick={() => {
-                  applyToJob(jobData._id);
-                  setApplied(true);
-                }}
+                onClick={() => navigate(`/jobs/${jobData._id}/apply`)}
               />
             ))}
 
@@ -168,7 +168,7 @@ export default function JobDetail({ job }) {
             }}
           >
             <h4>Applicants</h4>
-            {jobData?.applicants.map((applicant) => {
+            {/* {jobData?.applicants.map((applicant) => {
               return (
                 <div
                   key={applicant._id}
@@ -202,7 +202,7 @@ export default function JobDetail({ job }) {
                   </div>
                 </div>
               );
-            })}
+            })} */}
           </div>
         )}
       </div>

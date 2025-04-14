@@ -14,6 +14,7 @@ import Following from "./Network/Following";
 import Connections from "./Network/Connections";
 import JobsUI from "./Jobs/JobsUI";
 import Analytics from "./Analytics/Analytics";
+import ApplicationForm from "./Jobs/ApplicationForm";
 import {
   BrowserRouter as Router,
   Routes,
@@ -184,7 +185,7 @@ function App() {
                 path="/profile/:id"
                 element={<Profile socket={socket} />}
               />
-
+              <Route path="/jobs/:id/apply" element={<ApplicationForm />} />
               <Route path="/followers" element={<Followers />} />
               <Route path="/following" element={<Following />} />
               <Route path="/connections" element={<Connections />} />
