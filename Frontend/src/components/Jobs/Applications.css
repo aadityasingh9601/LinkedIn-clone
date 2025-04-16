@@ -1,0 +1,9 @@
+.applications {
+  height: 90%;
+  width: 99%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 4rem;
+  background-color: pink;
+}

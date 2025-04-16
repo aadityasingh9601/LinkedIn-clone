@@ -3,8 +3,10 @@ import { useForm } from "react-hook-form";
 import Button from "../Button.";
 import useJobStore from "../../stores/Job";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ApplicationForm() {
+  const navigate = useNavigate();
   const { id: jobId } = useParams();
   console.log(jobId);
   const applyToJob = useJobStore((state) => state.applyToJob);
@@ -21,7 +23,7 @@ export default function ApplicationForm() {
       resume: data.resume[0],
     };
     console.log(applicationData);
-    applyToJob(jobId, applicationData);
+    applyToJob(jobId, applicationData, navigate);
   };
 
   return (

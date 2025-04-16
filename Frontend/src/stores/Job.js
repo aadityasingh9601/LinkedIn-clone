@@ -8,6 +8,8 @@ const currUserId = useUserStore.getState().currUserId;
 const useJobStore = create((set) => ({
   jobs: [],
 
+  applicants: [],
+
   postJob: false,
 
   setpostJob: (value) => {
@@ -121,7 +123,7 @@ const useJobStore = create((set) => ({
     }
   },
 
-  applyToJob: async (jobId, data) => {
+  applyToJob: async (jobId, data, navigate) => {
     console.log(jobId, data);
     try {
       const response = await axios.post(
@@ -145,10 +147,28 @@ const useJobStore = create((set) => ({
             }
           }),
         }));
+        //Navigate.
+        navigate("/jobs");
         return toast.success("Applied successfully!");
       }
-      if (response.status === 404) {
-        return toast.warn(response.data);
+    } catch (e) {
+      console.log(e);
+      return toast.error(e.message);
+    }
+  },
+
+  getAllApplicants: async (jobId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/jobs/${jobId}/applicants`,
+
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        set({ applicants: response.data });
       }
     } catch (e) {
       console.log(e);

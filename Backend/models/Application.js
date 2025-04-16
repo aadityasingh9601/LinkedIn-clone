@@ -24,7 +24,7 @@ const applicationSchema = new Schema({
       type: String,
       required: true,
     },
-    resumeId: {
+    id: {
       type: Schema.Types.ObjectId,
       ref: "uploads.files",
       required: true,

@@ -35,7 +35,8 @@ router
   .get("/:id/checkapplied", protect, wrapAsync(jobController.isApplied))
   .get("/alljobs", protect, wrapAsync(jobController.getAllJobs))
   .get("/myjobs", protect, wrapAsync(jobController.getMyJobs))
-  .get("/:jobId/applicants", protect, applicationController.getAllApplicants);
+  .get("/:jobId/applicants", protect, applicationController.getAllApplications)
+  .get("/resume/:resumeId", protect, applicationController.getUserResume);
 
 router
   .post(

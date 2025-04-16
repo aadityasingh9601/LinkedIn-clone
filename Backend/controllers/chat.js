@@ -6,9 +6,9 @@ import { io } from "../server.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const createChat = async (req, res) => {
-  console.log("inside createChat");
+  // console.log("inside createChat");
   const { userId } = req.params;
-  console.log(userId);
+  // console.log(userId);
   const currUserId = req.user._id;
   //First save the currUser's id in a variable only then use it , else mongoose will not include chatList in the
   //currUser, see the reason why_? in ChatGPT.
@@ -36,22 +36,22 @@ const createChat = async (req, res) => {
       participants: [currUser.userId, user.userId],
     });
     await chat.save();
-    console.log("Emitting join-room with chatId:");
+    //console.log("Emitting join-room with chatId:");
     io.emit("join-room", chat._id);
     //console.log(currUser.chatList);
     user.chatList.push(chat);
     currUser.chatList.push(chat);
     await user.save();
     await currUser.save();
-    console.log("ChatID", chat._id);
+    // console.log("ChatID", chat._id);
     res.status(200).send({ chatId: chat._id });
   }
 };
 
 const getSingleChat = async (req, res) => {
-  console.log("getsingleChat");
+  // console.log("getsingleChat");
   const { chatId } = req.params;
-  console.log(chatId);
+  // console.log(chatId);
   const chat = await Chat.findById(chatId).populate({
     path: "participants",
     select: "profile",
@@ -66,7 +66,7 @@ const getSingleChat = async (req, res) => {
 };
 
 const getAllChats = async (req, res) => {
-  console.log("inside getAllChats");
+  // console.log("inside getAllChats");
   const { userId } = req.params;
   const profile = await Profile.findOne({ userId: userId });
   // console.log(profile.chatList);
@@ -93,12 +93,12 @@ const getAllChats = async (req, res) => {
 };
 
 const createMsg = async (req, res) => {
-  console.log("inside sendMsg");
+  // console.log("inside sendMsg");
   const { chatId } = req.params;
-  console.log(req.file);
-  console.log(chatId);
+  // console.log(req.file);
+  // console.log(chatId);
   const { data } = req.body;
-  console.log(data);
+  // console.log(data);
 
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
@@ -156,9 +156,9 @@ const createMsg = async (req, res) => {
 };
 
 const getAllMsg = async (req, res) => {
-  console.log("inside getAllMsg");
+  // console.log("inside getAllMsg");
   const { chatId } = req.params;
-  console.log(chatId);
+  // console.log(chatId);
   const currUserId = req.user._id;
 
   const chat = await Chat.findById(chatId);
@@ -250,14 +250,14 @@ const deleteMsg = async (req, res) => {
 const deleteChat = async (req, res) => {
   const { chatId } = req.params;
   const chat = await Chat.findById(chatId);
-  console.log(chat);
+  // console.log(chat);
   //Only members of a chat can delete it not anyone else.
   if (chat.participants.includes(req.user._id.toString())) {
     //First check if the chat has no participants, only then delete it, else delete it just for the one user.
 
     if (chat.participants.length === 1) {
       const deletedChat = await Chat.findByIdAndDelete(chatId);
-      console.log(deletedChat);
+      // console.log(deletedChat);
     } else {
       //Remove the chatId from the chatList of the user.
       const profile = await Profile.findOne({ userId: req.user._id });

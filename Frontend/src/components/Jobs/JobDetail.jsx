@@ -26,7 +26,7 @@ export default function JobDetail({ job }) {
   const { days, hours, minutes, seconds } = timeRep(
     new Date() - new Date(jobData?.postedDate)
   );
-  console.log(days, hours, minutes, seconds);
+  //console.log(days, hours, minutes, seconds);
   return (
     <div className="jobDetail">
       <div className="aa">
@@ -167,42 +167,10 @@ export default function JobDetail({ job }) {
               maxWidth: "95%",
             }}
           >
-            <h4>Applicants</h4>
-            {/* {jobData?.applicants.map((applicant) => {
-              return (
-                <div
-                  key={applicant._id}
-                  style={{
-                    display: "flex",
-                    backgroundColor: "yellow",
-                    padding: "0.3rem 0.4rem 0 0.4rem",
-                    marginBottom: "1rem",
-                    border: "1px solid gray",
-                    borderRadius: "0.5rem",
-                  }}
-                >
-                  <div>
-                    <img
-                      src={applicant.profile.profileImage.url}
-                      style={{
-                        height: "3rem",
-                        width: "3rem",
-                        borderRadius: "50%",
-                        marginRight: "1rem",
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <div>
-                      <b>{applicant.profile.name}</b>
-                    </div>
-                    <div style={{ fontSize: "0.85rem", color: "grey" }}>
-                      {applicant.profile.headline}
-                    </div>
-                  </div>
-                </div>
-              );
-            })} */}
+            <Button
+              btnText="View Applicants"
+              onClick={() => navigate(`/jobs/${jobData._id}/applications`)}
+            />
           </div>
         )}
       </div>
