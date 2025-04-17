@@ -1,0 +1,64 @@
+.application-container {
+  width: 100%;
+  max-width: 900px;
+
+  font-family: Arial, sans-serif;
+  margin: 1rem 0 0 0;
+}
+
+.application-card {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  padding: 0.7rem;
+  border-radius: 0.6rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.application-left {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.application-avatar {
+  width: 3.3rem;
+  height: 3.3rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.application-info h3 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.application-info p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.application-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.application-btn {
+  padding: 8px 16px;
+  border: none;
+  background-color: #0a66c2;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.application-btn.download {
+  background-color: #e0e0e0;
+  color: #333;
+}

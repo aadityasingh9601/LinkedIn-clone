@@ -10,7 +10,7 @@ const pdfStorage = new GridFsStorage({
   url: "mongodb://127.0.0.1:27017/LinkedIn",
   file: (req, file) => {
     return new Promise((resolve, reject) => {
-      const filename = `${Date.now()}-${file.originalname}`;
+      const filename = `${file.originalname}`;
       const fileInfo = {
         filename,
         bucketName: "uploads",

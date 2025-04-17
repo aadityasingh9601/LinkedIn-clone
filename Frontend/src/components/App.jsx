@@ -16,6 +16,7 @@ import JobsUI from "./Jobs/JobsUI";
 import Analytics from "./Analytics/Analytics";
 import ApplicationForm from "./Jobs/ApplicationForm";
 import Applications from "./Jobs/Applications";
+import FullApplication from "./Jobs/fullApplication";
 
 import {
   BrowserRouter as Router,
@@ -189,6 +190,10 @@ function App() {
               />
               <Route path="/jobs/:id/apply" element={<ApplicationForm />} />
               <Route path="/jobs/:id/applications" element={<Applications />} />
+              <Route
+                path="/jobs/:id/applications/:appId"
+                element={<FullApplication />}
+              />
               <Route path="/followers" element={<Followers />} />
               <Route path="/following" element={<Following />} />
               <Route path="/connections" element={<Connections />} />

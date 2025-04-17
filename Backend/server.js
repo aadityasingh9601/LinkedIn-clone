@@ -60,7 +60,7 @@ async function main() {
 }
 
 main()
-  .then(() => {
+  .then((client) => {
     console.log("Connected to MongoDB");
   })
   .catch((err) => console.log(err));

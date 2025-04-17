@@ -2,6 +2,7 @@ import "./Applications.css";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import useJobStore from "../../stores/Job";
+import Application from "./Application";
 
 export default function Applications() {
   const { id } = useParams();
@@ -12,24 +13,12 @@ export default function Applications() {
     getAllApplicants(id);
   }, [id]);
   return (
-    <div className="applications">
-      {applicants?.map((a) => {
-        return (
-          <div key={a._id}>
-            <div>{a._id}</div>
-            <div>
-              <a
-                href={`http://localhost:8000/jobs/resume/${a.resume.filename}`}
-                download
-                target="_blank"
-                rel="noreferrer"
-              >
-                <button>Download Resume</button>
-              </a>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <div className="applications">
+        {applicants?.map((a) => {
+          return <Application application={a} key={a._id} jobId={id} />;
+        })}
+      </div>
+    </>
   );
 }

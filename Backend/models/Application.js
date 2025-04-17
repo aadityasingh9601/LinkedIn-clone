@@ -8,9 +8,9 @@ const applicationSchema = new Schema({
     ref: "Job",
     required: true,
   },
-  applicantId: {
+  applicant: {
     type: Schema.Types.ObjectId,
-    ref: "Job",
+    ref: "User",
     required: true,
   },
   answers: [

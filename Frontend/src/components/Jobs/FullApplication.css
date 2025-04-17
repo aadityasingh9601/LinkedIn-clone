@@ -1,0 +1,82 @@
+.fullApplication {
+  height: 90%;
+  width: 99%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 4rem;
+  background-color: pink;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+
+  border-radius: 0.6rem;
+}
+
+.fullapplication-container {
+  background-color: #fff;
+  border-radius: 0.6rem;
+  border: 1px solid black;
+  min-width: 42rem;
+  max-width: 50rem;
+}
+
+.fullapplication-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid black;
+  padding: 1rem;
+}
+
+.fullapplication-date {
+  font-size: 1rem;
+  color: #777;
+}
+
+.fullapplication-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+}
+
+.application-answers {
+  padding: 0rem 1rem 1.5rem 1rem;
+}
+
+.answer {
+  margin-top: 1.5rem;
+}
+
+.ans-head {
+  font-weight: bolder;
+  font-size: 1.1rem;
+  margin: 0 0 0.7rem 0;
+}
+
+.btn-download {
+  color: #0a66c2;
+  padding: 0.3rem 0.7rem;
+  border-radius: 8px;
+  border: 1.5px solid #0a66c2;
+  background-color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-download:hover {
+  background-color: #0a66c2;
+  color: white;
+  border: none;
+}
+
+.fullapplication-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 0rem 1rem 1rem 1rem;
+}
+
+.fullapplication-actions btn {
+  margin: 0rem !important;
+}
