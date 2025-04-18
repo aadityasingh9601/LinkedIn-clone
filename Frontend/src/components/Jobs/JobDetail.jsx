@@ -1,27 +1,32 @@
 import "./jobDetail.css";
 import useJobStore from "../../stores/Job";
 import useUserStore from "../../stores/User";
-import { useEffect, useState } from "react";
+
 import Button from "../Button.";
 import { timeRep } from "../../utils/helper";
 import Dot from "../Dot";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function JobDetail({ job }) {
   const navigate = useNavigate();
   const jobData = job[0];
   const currUserId = useUserStore((state) => state.currUserId);
-  const currJobListingId = useJobStore((state) => state.currJobListingId);
-  const applyToJob = useJobStore((state) => state.applyToJob);
+  const [applied, setApplied] = useState(false);
+
   const unapplyFromJob = useJobStore((state) => state.unapplyFromJob);
-  const applied = useJobStore((state) => state.applied);
-  const setApplied = useJobStore((state) => state.setApplied);
-  const appliedStatus = useJobStore((state) => state.appliedStatus);
-  console.log(jobData);
-  console.log(currUserId);
-  // useEffect(() => {
-  //   appliedStatus(currJobListingId);
-  // }, [currJobListingId]);
+
+  const jobApplications = jobData?.applications;
+  //console.log(jobApplications);
+  const existingApplication = jobApplications?.find(
+    (a) => a.applicant.toString() === currUserId
+  );
+
+  useEffect(() => {
+    if (existingApplication) {
+      setApplied(true);
+    }
+  }, []);
 
   const { days, hours, minutes, seconds } = timeRep(
     new Date() - new Date(jobData?.postedDate)
@@ -91,6 +96,10 @@ export default function JobDetail({ job }) {
           </div>
         </div>
 
+        <div className="jobfitstats">
+          We'll create our job fit analyzer here.
+        </div>
+
         <div className="job_btns">
           {currUserId !== jobData?.postedBy &&
             (applied ? (
@@ -110,7 +119,10 @@ export default function JobDetail({ job }) {
             ) : (
               <Button
                 btnText="Apply"
-                onClick={() => navigate(`/jobs/${jobData._id}/apply`)}
+                onClick={() => {
+                  setApplied(true);
+                  navigate(`/jobs/${jobData._id}/apply`);
+                }}
               />
             ))}
 

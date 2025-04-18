@@ -1,16 +1,35 @@
 import "./FullApplication.css";
 import { useParams } from "react-router-dom";
 import useJobStore from "../../stores/Job";
-import Button from "../Button.";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function FullApplication() {
   const { id, appId } = useParams();
+  const navigate = useNavigate();
   const jobs = useJobStore((state) => state.jobs);
   const job = jobs.find((job) => job._id === id);
   const applicants = useJobStore((state) => state.applicants);
 
   const application = applicants.find((app) => app._id === appId);
-  console.log(application);
+
+  const [reviewed, setReviewed] = useState(false);
+
+  useEffect(() => {
+    if (application.status === "Reviewed") {
+      setReviewed(true);
+    }
+  }, []);
+
+  const showProfile = (userId) => {
+    navigate(`/profile/${userId}`);
+  };
+
+  const markAsReviewed = useJobStore((state) => state.markAsReviewed);
+
+  const rejectUserApplication = useJobStore(
+    (state) => state.rejectUserApplication
+  );
 
   const downloadResume = () => {
     window.open(
@@ -55,12 +74,16 @@ export default function FullApplication() {
                 {application?.applicant?.profile.headline}
               </div>
               <div style={{ fontSize: "0.85rem" }}>
-                <a
-                  href="#"
-                  style={{ color: "#0a66c2", textDecoration: "none" }}
+                <span
+                  style={{
+                    color: "#0a66c2",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => showProfile(application?.applicant._id)}
                 >
                   View Profile
-                </a>
+                </span>
               </div>
             </div>
           </div>
@@ -111,8 +134,34 @@ export default function FullApplication() {
         </div>
 
         <div className="fullapplication-actions">
-          <button className="btn-download">MarkAsReviewed</button>
-          <button className="btn-download">Reject</button>
+          {reviewed ? (
+            <button
+              className="btn-download-hover"
+              onClick={() => {
+                markAsReviewed(id, appId);
+                setReviewed(false);
+              }}
+            >
+              Reviewed
+            </button>
+          ) : (
+            <button
+              className="btn-download"
+              onClick={() => {
+                markAsReviewed(id, appId);
+                setReviewed(true);
+              }}
+            >
+              MarkAsReviewed
+            </button>
+          )}
+
+          <button
+            className="btn-download"
+            onClick={() => rejectUserApplication(id, appId, navigate)}
+          >
+            Reject
+          </button>
         </div>
       </div>
     </div>

@@ -151,6 +151,11 @@ function App() {
           removeMessage(data);
         });
 
+        socketInstance.on("application-rejected", (data) => {
+          console.log(data);
+          addNoti(data);
+        });
+
         // Cleanup: Disconnect when the component unmounts
         return () => {
           //socket.removeAllListeners();

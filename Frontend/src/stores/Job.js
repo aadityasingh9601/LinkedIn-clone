@@ -32,12 +32,6 @@ const useJobStore = create(
         set({ currJobListingId: value });
       },
 
-      applied: false,
-
-      setApplied: (value) => {
-        set({ applied: value });
-      },
-
       createJob: async (jobData) => {
         console.log("inside createJob in job store.");
         try {
@@ -179,22 +173,14 @@ const useJobStore = create(
         }
       },
 
-      appliedStatus: async (jobId) => {
-        console.log("inside appliedStatus in job store.");
-        console.log(jobId);
+      markAsReviewed: async (jobId, applicationId) => {
         try {
-          const response = await axios.get(
-            `http://localhost:8000/jobs/${jobId}/checkapplied`,
-
+          const response = await axios.post(
+            `http://localhost:8000/jobs/${jobId}/markReviewed/${applicationId}`,
+            {},
             { withCredentials: true }
           );
           console.log(response);
-          if (response.data === "yes") {
-            set({ applied: true });
-          }
-          if (response.data === "no") {
-            set({ applied: false });
-          }
         } catch (e) {
           console.log(e);
           return toast.error(e.message);
@@ -202,7 +188,7 @@ const useJobStore = create(
       },
 
       unapplyFromJob: async (jobId) => {
-        console.log("inside unapplyfrom job in the store.");
+        console.log(jobId);
         try {
           const response = await axios.delete(
             `http://localhost:8000/jobs/${jobId}/unapply`,
@@ -216,8 +202,8 @@ const useJobStore = create(
                 if (job._id === jobId) {
                   return {
                     ...job,
-                    applicants: job.applicants.filter(
-                      (a) => a._id !== currUserId
+                    applicants: job.applications.filter(
+                      (a) => a.applicant !== currUserId
                     ),
                   };
                 }
@@ -236,8 +222,6 @@ const useJobStore = create(
       },
 
       deleteJob: async (jobId) => {
-        console.log("inside deleteJob in job store.");
-        console.log(jobId);
         try {
           const response = await axios.delete(
             `http://localhost:8000/jobs/${jobId}`,
@@ -250,6 +234,31 @@ const useJobStore = create(
               jobs: state.jobs.filter((j) => j._id !== jobId),
             }));
             return toast.success("Job deleted successfully!");
+          }
+        } catch (e) {
+          console.log(e);
+          return toast.error(e.message);
+        }
+      },
+
+      rejectUserApplication: async (jobId, applicationId, navigate) => {
+        console.log("inside deleteJob in job store.");
+        console.log(jobId);
+        try {
+          const response = await axios.delete(
+            `http://localhost:8000/jobs/${jobId}/reject/${applicationId}`,
+
+            { withCredentials: true }
+          );
+          console.log(response);
+          if (response.status === 200) {
+            //Delete the application data from local storage and also update the state variable also.
+            set((state) => ({
+              applicants: state.applicants.filter((a) => a._id !== applicantId),
+            }));
+
+            navigate(`/jobs/${jobId}/applications`);
+            return toast.success(response.data);
           }
         } catch (e) {
           console.log(e);

@@ -64,10 +64,20 @@
   transition: background-color 0.3s ease;
 }
 
+.btn-download-hover {
+  padding: 0.3rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid #0a66c2;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  background-color: #0a66c2;
+  color: white;
+}
+
 .btn-download:hover {
   background-color: #0a66c2;
   color: white;
-  border: none;
 }
 
 .fullapplication-actions {

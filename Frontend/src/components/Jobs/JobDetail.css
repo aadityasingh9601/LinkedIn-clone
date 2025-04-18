@@ -32,6 +32,12 @@
   flex-direction: column;
 }
 
+.jobfitstats {
+  border: 1px solid black;
+  padding-inline: 1rem;
+  margin: 0 0 1rem 0;
+}
+
 .job_btns {
   margin: 0 0 0.7rem 0;
 }

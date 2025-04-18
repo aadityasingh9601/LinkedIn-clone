@@ -32,7 +32,7 @@ router
   .delete(protect, wrapAsync(jobController.deleteJob));
 
 router
-  .get("/:id/checkapplied", protect, wrapAsync(jobController.isApplied))
+
   .get("/alljobs", protect, wrapAsync(jobController.getAllJobs))
   .get("/myjobs", protect, wrapAsync(jobController.getMyJobs))
   .get("/:jobId/applicants", protect, applicationController.getAllApplications)
@@ -45,7 +45,17 @@ router
     protect,
     wrapAsync(applicationController.applyToJob)
   )
-  .delete("/:jobId/unapply", protect, wrapAsync(jobController.unapplyFromJob));
+  .post(
+    "/:jobId/markReviewed/:id",
+    protect,
+    wrapAsync(applicationController.markReviewed)
+  )
+  .delete("/:jobId/unapply", protect, wrapAsync(jobController.unapplyFromJob))
+  .delete(
+    "/:jobId/reject/:id",
+    protect,
+    wrapAsync(applicationController.rejectUserApplication)
+  );
 
 //Respond to a applicant(attach your dm feature to this, they will interact with dm.)
 //Add a view full profile & dm button by clicking on the applicant & the applicant can view the full profile

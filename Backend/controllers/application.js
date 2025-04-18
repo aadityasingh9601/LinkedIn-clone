@@ -1,8 +1,9 @@
 import Application from "../models/Application.js";
+import Notification from "../models/Notification.js";
 import mongoose from "mongoose";
 import Job from "../models/Job.js";
 import Profile from "../models/Profile.js";
-import { ObjectId } from "mongodb";
+import { io, userSocketMap } from "../server.js";
 
 let bucket;
 (() => {
@@ -95,8 +96,65 @@ const getUserResume = async (req, res) => {
   //res.status(200).send(downloadStream);
 };
 
+const markReviewed = async (req, res) => {
+  console.log("inside markreviewed");
+  const { jobId, id } = req.params;
+
+  const application = await Application.findById(id);
+  application.status = "Reviewed";
+  await application.save();
+
+  res.send("inside markReviewed");
+};
+
+const rejectUserApplication = async (req, res) => {
+  console.log("inside rejectUserApplication");
+  const { jobId, id } = req.params;
+  const currUserId = req.user._id.toString();
+
+  const job = await Job.findById(jobId);
+  const application = await Application.findById(id);
+  const applicantId = application.applicant.toString();
+  console.log("Applicant Id is" + applicantId);
+
+  if (!job.applications.includes(id)) {
+    return res
+      .status(400)
+      .send("You can't reject a user who hasn't applied to the job!");
+  }
+
+  if (currUserId === job.postedBy.toString()) {
+    await Job.findByIdAndUpdate(jobId, {
+      $pull: { applications: id },
+    });
+
+    await Application.findByIdAndDelete(id);
+  }
+
+  //Add a middleware in application schema so that wheneer a application gets deleted it's corresponding
+  //resume also gets deleted from the database from db.uploads.files and db.uploads.chunks like you have done
+  //in postSchema.
+
+  //Emit socket event to notify the user that their appication has been rejected.
+  const newNoti = new Notification({
+    recipient: applicantId,
+    sender: job.postedBy.toString(),
+    message: "Your application has been rejected!",
+    notiType: "job",
+  });
+  await newNoti.save();
+
+  const socketId = userSocketMap[applicantId];
+
+  io.to(socketId).emit("application-rejected", newNoti);
+
+  res.status(200).send("Application rejected!");
+};
+
 export default {
   applyToJob,
   getAllApplications,
   getUserResume,
+  markReviewed,
+  rejectUserApplication,
 };

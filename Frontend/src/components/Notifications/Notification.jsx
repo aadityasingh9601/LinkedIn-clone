@@ -2,6 +2,7 @@ import "./Notification.css";
 import axios from "axios";
 import Button from "../Button.";
 import useNotificationStore from "../../stores/Notification";
+import { timeRep } from "../../utils/helper";
 
 export default function Notification({ noti }) {
   const deleteNoti = useNotificationStore((state) => state.deleteNoti);
@@ -42,17 +43,9 @@ export default function Notification({ noti }) {
     }
   }
 
-  const timeRep = (time) => {
-    const seconds = Math.floor(time / 1000); //Converting to seconds
-    const minutes = Math.floor(seconds / 60); //Converting to minutes
-    const hours = Math.floor(minutes / 60); //Converting to hours
-    const days = Math.floor(hours / 24); //Converting to days.
-    return seconds, minutes, hours, days;
-  };
   const currDate = new Date();
   const createdDate = new Date(noti.sentDate);
-  const returnedValue = timeRep(currDate - createdDate);
-  console.log(returnedValue);
+  const { seconds, minutes, hours, days } = timeRep(currDate - createdDate);
 
   let styles = { fontSize: "1.3rem" };
   let styles2 = { fontSize: "0.75rem", marginLeft: "1rem" };
@@ -65,13 +58,13 @@ export default function Notification({ noti }) {
           <Button btnText="Accept" onClick={handleResponse} />
           <Button btnText="Reject" onClick={handleResponse} />
         </div>
-      ) : noti.notiType === "response" ? (
+      ) : (
         <i
           className="fa-solid fa-xmark"
           style={styles}
           onClick={() => deleteNoti(noti.id)}
         ></i>
-      ) : null}
+      )}
 
       <div style={styles2}>
         {days > 0

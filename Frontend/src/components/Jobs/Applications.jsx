@@ -15,9 +15,22 @@ export default function Applications() {
   return (
     <>
       <div className="applications">
-        {applicants?.map((a) => {
-          return <Application application={a} key={a._id} jobId={id} />;
-        })}
+        {applicants?.length == 0 ? (
+          <div
+            style={{
+              fontSize: "1.5rem",
+              border: "1px solid black",
+              backgroundColor: "white",
+              padding: "1rem",
+            }}
+          >
+            Oops! Looks like there are no applicants for this job currently!
+          </div>
+        ) : (
+          applicants?.map((a) => {
+            return <Application application={a} key={a._id} jobId={id} />;
+          })
+        )}
       </div>
     </>
   );

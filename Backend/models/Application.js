@@ -30,6 +30,11 @@ const applicationSchema = new Schema({
       required: true,
     },
   },
+  status: {
+    type: String,
+    enum: ["New", "Reviewed"],
+    default: "New",
+  },
   appliedAt: {
     type: Date,
     default: new Date(),
