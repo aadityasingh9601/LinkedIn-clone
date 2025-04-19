@@ -208,7 +208,7 @@ export default function Profile({ socket }) {
     console.log(sectionId);
     try {
       const response = await axios.delete(
-        `http://localhost:8000/profile/${userId}?skill=${skill}&section=${section}&sectionId=${sectionId}`,
+        `http://localhost:8000/profile/${currUserId}?skill=${skill}&section=${section}&sectionId=${sectionId}`,
 
         { withCredentials: true }
       );

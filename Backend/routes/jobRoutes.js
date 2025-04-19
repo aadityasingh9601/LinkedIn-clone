@@ -36,7 +36,8 @@ router
   .get("/alljobs", protect, wrapAsync(jobController.getAllJobs))
   .get("/myjobs", protect, wrapAsync(jobController.getMyJobs))
   .get("/:jobId/applicants", protect, applicationController.getAllApplications)
-  .get("/resume/:resumeId", protect, applicationController.getUserResume);
+  .get("/resume/:resumeId", protect, applicationController.getUserResume)
+  .get("/:jobId/jobfitstats", protect, applicationController.jobFitStats);
 
 router
   .post(
@@ -50,7 +51,11 @@ router
     protect,
     wrapAsync(applicationController.markReviewed)
   )
-  .delete("/:jobId/unapply", protect, wrapAsync(jobController.unapplyFromJob))
+  .delete(
+    "/:jobId/unapply",
+    protect,
+    wrapAsync(applicationController.unapplyFromJob)
+  )
   .delete(
     "/:jobId/reject/:id",
     protect,

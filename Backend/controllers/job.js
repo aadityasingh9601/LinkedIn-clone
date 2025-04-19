@@ -65,36 +65,11 @@ const getMyJobs = async (req, res) => {
 };
 
 const getAllJobs = async (req, res) => {
+  console.log("inside getalljobs");
   const jobs = await Job.find().populate("applications");
   //console.log(jobs);
 
   res.status(200).send(jobs);
-};
-
-const unapplyFromJob = async (req, res) => {
-  const { jobId } = req.params;
-  const currUserId = req.user._id;
-  const job = await Job.findById(jobId).populate("applications");
-  const jobApplications = job.applications;
-  //console.log(jobApplications);
-  const existingApplication = jobApplications?.find(
-    (a) => a.applicant.toString() === currUserId.toString()
-  );
-  console.log("existing appication is" + existingApplication);
-
-  if (!existingApplication) {
-    return res.status(400).send("U havent' applied yet!");
-  }
-
-  //Delete the application also.
-  await Application.findByIdAndDelete(existingApplication);
-
-  //Remove the application from job.
-  await Job.findByIdAndUpdate(jobId, {
-    $pull: { applications: existingApplication },
-  });
-
-  res.status(200).send("Unapplied!");
 };
 
 export default {
@@ -103,5 +78,4 @@ export default {
   deleteJob,
   getAllJobs,
   getMyJobs,
-  unapplyFromJob,
 };

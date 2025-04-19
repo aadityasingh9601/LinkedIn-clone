@@ -34,8 +34,23 @@
 
 .jobfitstats {
   border: 1px solid black;
-  padding-inline: 1rem;
+  padding: 1rem;
   margin: 0 0 1rem 0;
+}
+
+.jobfitstats > div {
+  border-radius: 0.3rem;
+  padding: 0.25rem 0.4rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.jobfitstats .note {
+  background-color: #f8f9fa;
+  padding: 0.625rem 1rem;
+  border-left: 3px solid #0d6efd;
+  border-radius: 0.625rem;
+  font-size: 0.75rem;
+  margin-top: 0.625rem;
 }
 
 .job_btns {

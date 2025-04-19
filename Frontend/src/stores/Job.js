@@ -13,6 +13,8 @@ const useJobStore = create(
 
       applicants: [],
 
+      jobFitStats: {},
+
       postJob: false,
 
       setpostJob: (value) => {
@@ -181,6 +183,24 @@ const useJobStore = create(
             { withCredentials: true }
           );
           console.log(response);
+        } catch (e) {
+          console.log(e);
+          return toast.error(e.message);
+        }
+      },
+
+      fetchJobFitStats: async (jobId) => {
+        try {
+          const response = await axios.get(
+            `http://localhost:8000/jobs/${jobId}/jobfitstats`,
+
+            { withCredentials: true }
+          );
+          console.log(response);
+          if (response.status === 200) {
+            //Update the state.
+            set({ jobFitStats: response.data });
+          }
         } catch (e) {
           console.log(e);
           return toast.error(e.message);

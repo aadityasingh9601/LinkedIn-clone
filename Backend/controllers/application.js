@@ -54,6 +54,36 @@ const applyToJob = async (req, res) => {
   }
 };
 
+const unapplyFromJob = async (req, res) => {
+  const { jobId } = req.params;
+  const currUserId = req.user._id;
+  const job = await Job.findById(jobId).populate("applications");
+  const jobApplications = job.applications;
+
+  const existingApplication = jobApplications?.find(
+    (a) => a.applicant.toString() === currUserId.toString()
+  );
+
+  const resumePdfId = existingApplication.resume.id;
+
+  if (!existingApplication) {
+    return res.status(400).send("U havent' applied yet!");
+  }
+
+  //Delete the resume pdf from the database.
+  await bucket.delete(resumePdfId);
+
+  //Delete the application also.
+  await Application.findByIdAndDelete(existingApplication);
+
+  //Remove the application from job.
+  await Job.findByIdAndUpdate(jobId, {
+    $pull: { applications: existingApplication },
+  });
+
+  res.status(200).send("Unapplied!");
+};
+
 const getAllApplications = async (req, res) => {
   const { jobId } = req.params;
   console.log(jobId);
@@ -116,6 +146,7 @@ const rejectUserApplication = async (req, res) => {
   const application = await Application.findById(id);
   const applicantId = application.applicant.toString();
   console.log("Applicant Id is" + applicantId);
+  const resumePdfId = application.resume.id;
 
   if (!job.applications.includes(id)) {
     return res
@@ -124,11 +155,20 @@ const rejectUserApplication = async (req, res) => {
   }
 
   if (currUserId === job.postedBy.toString()) {
+    //Use GridFsStorage bucket api to delete the resume pdf from the database,as application gets deleted.
+    await bucket.delete(resumePdfId);
+
     await Job.findByIdAndUpdate(jobId, {
       $pull: { applications: id },
     });
 
+    //Deleted the application
     await Application.findByIdAndDelete(id);
+
+    //Remove the application from job.
+    await Job.findByIdAndUpdate(jobId, {
+      $pull: { applications: existingApplication },
+    });
   }
 
   //Add a middleware in application schema so that wheneer a application gets deleted it's corresponding
@@ -151,10 +191,48 @@ const rejectUserApplication = async (req, res) => {
   res.status(200).send("Application rejected!");
 };
 
+const jobFitStats = async (req, res) => {
+  console.log("jobfitrstats");
+  const { jobId } = req.params;
+  const userId = req.user._id;
+
+  const job = await Job.findById(jobId);
+  const userProfile = await Profile.findOne({ userId: userId });
+
+  const jobSkills = job.skills;
+  const userSkills = userProfile.skills;
+
+  console.log(jobSkills);
+  console.log(userSkills);
+
+  let matchedSkills = [];
+  let missingSkills = [];
+
+  jobSkills.forEach((s) => {
+    if (userSkills.includes(s.trim())) {
+      matchedSkills.push(s.trim());
+    } else {
+      missingSkills.push(s.trim());
+    }
+  });
+
+  console.log("These are our matched skills", matchedSkills);
+  console.log("These are our missing skills", missingSkills);
+
+  const matchedScore = Math.ceil(
+    (matchedSkills.length / jobSkills.length) * 100
+  );
+  console.log(matchedScore);
+
+  res.status(200).send({ matchedScore, missingSkills, matchedSkills });
+};
+
 export default {
   applyToJob,
+  unapplyFromJob,
   getAllApplications,
   getUserResume,
   markReviewed,
   rejectUserApplication,
+  jobFitStats,
 };
