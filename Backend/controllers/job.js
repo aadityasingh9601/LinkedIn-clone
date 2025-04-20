@@ -39,12 +39,9 @@ const deleteJob = async (req, res) => {
   const { id } = req.params;
   const job = await Job.findById(id);
   if (req.user._id.toString() === job.postedBy.toString()) {
-    for (let each of job.applicants) {
-      const profiles = await Profile.findByIdAndUpdate(each, {
-        $pull: { myJobs: id },
-      });
-      await profiles.save();
-    }
+    // Add a middleware to delete all the applicants related to this job or decide what to do with the
+    //applicantions later after searching on the internet.
+
     await job.deleteOne();
     res.status(200).send({ message: "Job deleted successfully!" });
   } else {
@@ -55,13 +52,27 @@ const deleteJob = async (req, res) => {
 };
 
 const getMyJobs = async (req, res) => {
-  console.log("inside getmyjobs on the backend!");
+  const { q } = req.query;
+  console.log(q);
+  let fullJobs;
+  const currUserProfile = await Profile.findOne({ userId: req.user._id });
 
-  const myJobs = await Job.find({ applicants: req.user._id });
+  if (q === "saved") {
+    const savedJobs = currUserProfile.myJobs.saved;
+    fullJobs = await Job.find({ _id: { $in: savedJobs } });
+    res.status(200).send(fullJobs);
+  }
+  if (q === "applied") {
+    const appliedJobs = currUserProfile.myJobs.applied;
+    fullJobs = await Job.find({ _id: { $in: appliedJobs } });
+    res.status(200).send(fullJobs);
+  }
+  if (q === "myjobpostings") {
+    const myJobPostings = await Job.find({ postedBy: req.user._id });
+    console.log(myJobPostings);
 
-  console.log(myJobs);
-
-  res.status(200).send(myJobs);
+    res.status(200).send(myJobPostings);
+  }
 };
 
 const getAllJobs = async (req, res) => {
@@ -72,10 +83,34 @@ const getAllJobs = async (req, res) => {
   res.status(200).send(jobs);
 };
 
+const saveJob = async (req, res) => {
+  const { jobId } = req.params;
+
+  const currUserProfile = await Profile.findOne({ userId: req.user._id });
+
+  console.log(currUserProfile.myJobs);
+
+  const savedJobs = currUserProfile.myJobs.saved;
+
+  //If user has already saved the job then--
+  if (savedJobs.includes(jobId)) {
+    //unsave the job from myJobs.
+    let idxOfJob = savedJobs.indexOf(jobId);
+    currUserProfile.myJobs.saved.splice(idxOfJob, 1);
+    await currUserProfile.save();
+    res.status(200).send("Unsaved!");
+  } else {
+    savedJobs.push(jobId);
+    await currUserProfile.save();
+    res.status(200).send("Job saved successfully!");
+  }
+};
+
 export default {
   createJob,
   editJob,
   deleteJob,
   getAllJobs,
   getMyJobs,
+  saveJob,
 };

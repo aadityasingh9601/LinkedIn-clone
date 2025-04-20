@@ -4,8 +4,7 @@ import useJobStore from "../../stores/Job";
 import { useEffect } from "react";
 import Button from "../Button.";
 
-export default function CreateJobForm({ jobData }) {
-  const job = jobData[0];
+export default function CreateJobForm({ job }) {
   const setpostJob = useJobStore((state) => state.setpostJob);
   const seteditJob = useJobStore((state) => state.seteditJob);
   const createJob = useJobStore((state) => state.createJob);

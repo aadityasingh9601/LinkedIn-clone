@@ -46,7 +46,7 @@ const applyToJob = async (req, res) => {
     //console.log(newApplication);
 
     job.applications.push(newApplication);
-    currUser.myJobs.push(job._id);
+    currUser.myJobs.applied.push(job._id);
     await job.save();
     await currUser.save();
 
@@ -69,6 +69,11 @@ const unapplyFromJob = async (req, res) => {
   if (!existingApplication) {
     return res.status(400).send("U havent' applied yet!");
   }
+
+  //Pull the jobId from applied jobs from user profile also.
+  await Profile.findByIdAndUpdate(currUserId, {
+    $pull: { "myJobs.applied": jobId },
+  });
 
   //Delete the resume pdf from the database.
   await bucket.delete(resumePdfId);
@@ -138,7 +143,6 @@ const markReviewed = async (req, res) => {
 };
 
 const rejectUserApplication = async (req, res) => {
-  console.log("inside rejectUserApplication");
   const { jobId, id } = req.params;
   const currUserId = req.user._id.toString();
 
@@ -160,6 +164,11 @@ const rejectUserApplication = async (req, res) => {
 
     await Job.findByIdAndUpdate(jobId, {
       $pull: { applications: id },
+    });
+
+    //Update the status.
+    await Profile.findByIdAndUpdate(currUserId, {
+      $pull: { "myJobs.applied.status": "Rejected" },
     });
 
     //Deleted the application

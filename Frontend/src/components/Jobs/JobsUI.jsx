@@ -9,14 +9,19 @@ import JobDetail from "./JobDetail";
 
 export default function JobsUI() {
   const jobs = useJobStore((state) => state.jobs);
+  // console.log(jobs);
   const postJob = useJobStore((state) => state.postJob);
   const setpostJob = useJobStore((state) => state.setpostJob);
   const fetchAllJobs = useJobStore((state) => state.fetchAllJobs);
   const fetchMyJobs = useJobStore((state) => state.fetchMyJobs);
   const currJobListingId = useJobStore((state) => state.currJobListingId);
+  //console.log(currJobListingId);
   const setcurrJobListingId = useJobStore((state) => state.setcurrJobListingId);
-  const currJobDetails = jobs.filter((job) => job._id === currJobListingId);
+  const currJobDetails = jobs.find((job) => job._id === currJobListingId);
+  // console.log(currJobDetails);
   const editJob = useJobStore((state) => state.editJob);
+  const fetchMyJobPostings = useJobStore((state) => state.fetchMyJobPostings);
+  const [myJobs, setmyJobs] = useState(false);
 
   useEffect(() => {
     fetchAllJobs();
@@ -26,17 +31,34 @@ export default function JobsUI() {
     <>
       <div className="jobOptions">
         <Button
-          btnText="My jobs"
+          btnText="All jobs"
           onClick={() => {
-            console.log("clicked");
-            fetchMyJobs();
+            fetchAllJobs();
           }}
         />
+        <Button
+          btnText="My jobs"
+          onClick={() => {
+            setmyJobs(!myJobs);
+          }}
+        />
+        {myJobs && (
+          <div className="myjobsoptions">
+            <Button btnText="Saved" onClick={() => fetchMyJobs("saved")} />
+            <Button btnText="Applied" onClick={() => fetchMyJobs("applied")} />
+          </div>
+        )}
         <Button
           btnText="Post a free job"
           onClick={() => {
             setcurrJobListingId("");
             setpostJob(true);
+          }}
+        />
+        <Button
+          btnText="Manage job posts"
+          onClick={() => {
+            fetchMyJobs("myjobpostings");
           }}
         />
       </div>

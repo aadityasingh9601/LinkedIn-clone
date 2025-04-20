@@ -46,6 +46,7 @@ router
     protect,
     wrapAsync(applicationController.applyToJob)
   )
+  .post("/:jobId/save", protect, wrapAsync(jobController.saveJob))
   .post(
     "/:jobId/markReviewed/:id",
     protect,

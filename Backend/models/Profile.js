@@ -112,12 +112,26 @@ const profileSchema = new Schema({
       ref: "Chat",
     },
   ],
-  myJobs: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Job",
-    },
-  ],
+  myJobs: {
+    saved: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Job",
+      },
+    ],
+    applied: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Job",
+        status: {
+          type: String,
+          enum: ["Applied", "Rejected"],
+          default: "Applied",
+        },
+      },
+    ],
+  },
+
   //It'll save groups the user is a member of , that also includes the groups created by the user itself.
   myGroups: [
     {

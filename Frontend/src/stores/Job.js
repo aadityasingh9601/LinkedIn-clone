@@ -103,15 +103,14 @@ const useJobStore = create(
         }
       },
 
-      fetchMyJobs: async () => {
-        console.log("inside fetchMyJobs in job store.");
+      fetchMyJobs: async (type) => {
         try {
           const response = await axios.get(
-            `http://localhost:8000/jobs/myjobs`,
+            `http://localhost:8000/jobs/myjobs?q=${type}`,
 
             { withCredentials: true }
           );
-          console.log(response);
+          //console.log(response);
 
           //Update the state variable here accordingly.
 
@@ -149,6 +148,26 @@ const useJobStore = create(
             //Navigate.
             navigate("/jobs");
             return toast.success("Applied successfully!");
+          }
+        } catch (e) {
+          console.log(e);
+          return toast.error(e.message);
+        }
+      },
+
+      saveJob: async (jobId) => {
+        console.log(jobId);
+        try {
+          const response = await axios.post(
+            `http://localhost:8000/jobs/${jobId}/save`,
+            {},
+            {
+              withCredentials: true,
+            }
+          );
+          console.log(response);
+          if (response.status === 200) {
+            return toast.success(response.data);
           }
         } catch (e) {
           console.log(e);

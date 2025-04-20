@@ -1,6 +1,7 @@
 import "./jobDetail.css";
 import useJobStore from "../../stores/Job";
 import useUserStore from "../../stores/User";
+import useProfileStore from "../../stores/Profile";
 
 import Button from "../Button.";
 import { timeRep } from "../../utils/helper";
@@ -10,10 +11,15 @@ import { useEffect, useState } from "react";
 
 export default function JobDetail({ job }) {
   const navigate = useNavigate();
-  const jobData = job[0];
-  //console.log(jobData);
+
+  //console.log(job);
   const currUserId = useUserStore((state) => state.currUserId);
+
+  const userProfile = useProfileStore((state) => state.profile);
+
   const [applied, setApplied] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const saveJob = useJobStore((state) => state.saveJob);
 
   const unapplyFromJob = useJobStore((state) => state.unapplyFromJob);
 
@@ -21,35 +27,35 @@ export default function JobDetail({ job }) {
 
   const matchedScore = jobFitStats?.matchedScore;
 
-  console.log(matchedScore);
+  //console.log(matchedScore);
 
   const fetchJobFitStats = useJobStore((state) => state.fetchJobFitStats);
 
-  const jobApplications = jobData?.applications;
-  //console.log(jobApplications);
-  // const existingApplication = jobApplications?.find(
-  //   (a) => a.applicant.toString() === currUserId
-  // );
+  const jobApplications = job?.applications;
+
+  const existingApplication = jobApplications?.find(
+    (a) => a?.applicant?.toString() === currUserId
+  );
 
   useEffect(() => {
-    fetchJobFitStats(jobData._id);
-  }, [jobData._id]);
+    fetchJobFitStats(job._id);
+  }, [job._id]);
 
-  // useEffect(() => {
-  //   if (existingApplication) {
-  //     setApplied(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (existingApplication) {
+      setApplied(true);
+    }
+  }, []);
 
   const { days, hours, minutes, seconds } = timeRep(
-    new Date() - new Date(jobData?.postedDate)
+    new Date() - new Date(job?.postedDate)
   );
 
   return (
     <div className="jobDetail">
       <div className="aa">
-        <img src={jobData?.companyLogo} />
-        <span>{jobData?.company}</span>
+        <img src={job?.companyLogo} />
+        <span>{job?.company}</span>
       </div>
       <div className="bb">
         <div
@@ -59,7 +65,7 @@ export default function JobDetail({ job }) {
             margin: "1rem 0 0.35rem 0",
           }}
         >
-          {jobData?.title}
+          {job?.title}
         </div>
         <div
           style={{
@@ -70,7 +76,7 @@ export default function JobDetail({ job }) {
             margin: "0 0 0.7rem 0",
           }}
         >
-          {jobData?.location} <Dot />
+          {job?.location} <Dot />
           {days > 0
             ? `${days} days `
             : hours > 0
@@ -80,10 +86,10 @@ export default function JobDetail({ job }) {
             : `${seconds} s`}
           ago
           <Dot />
-          {jobData?.applicants?.length} people clicked apply
+          {job?.applications?.length} people clicked apply
         </div>
         <div style={{ display: "flex", margin: "0 0 0.85rem 0" }}>
-          {/* <div>₹{jobData?.salary}/month</div> */}
+          {/* <div>₹{job?.salary}/month</div> */}
           <div
             style={{
               backgroundColor: "rgb(232,232,232)",
@@ -93,7 +99,7 @@ export default function JobDetail({ job }) {
               margin: "0 0.3rem 0 0 ",
             }}
           >
-            {jobData?.mode}
+            {job?.mode}
           </div>
           <div
             style={{
@@ -104,11 +110,11 @@ export default function JobDetail({ job }) {
             }}
           >
             <i class="fa-solid fa-check" style={{ marginRight: "0.3rem" }}></i>
-            {jobData?.jobType}
+            {job?.jobType}
           </div>
         </div>
 
-        {currUserId !== jobData?.postedBy && (
+        {currUserId !== job?.postedBy && (
           <div className="jobfitstats">
             <div
               style={{
@@ -123,8 +129,8 @@ export default function JobDetail({ job }) {
                 backgroundColor: "rgb(232,232,232)",
               }}
             >
-              {jobFitStats?.matchedSkills?.length} out of{" "}
-              {jobData?.skills.length} skills matched:
+              {jobFitStats?.matchedSkills?.length} out of {job?.skills.length}{" "}
+              skills matched:
               {jobFitStats?.matchedSkills?.map((s) => {
                 return "✅" + s + " ";
               })}
@@ -180,18 +186,20 @@ export default function JobDetail({ job }) {
         )}
 
         <div className="job_btns">
-          {currUserId !== jobData?.postedBy &&
+          {currUserId !== job?.postedBy &&
             (applied ? (
               <Button
                 btnText={
                   <>
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <span>Applied</span> <i class="fa-solid fa-check"></i>
+                      <span>
+                        Applied <i class="fa-solid fa-check"></i>
+                      </span>
                     </div>
                   </>
                 }
                 onClick={() => {
-                  unapplyFromJob(jobData._id);
+                  unapplyFromJob(job._id);
                   setApplied(false);
                 }}
               />
@@ -200,12 +208,12 @@ export default function JobDetail({ job }) {
                 btnText="Apply"
                 onClick={() => {
                   setApplied(true);
-                  navigate(`/jobs/${jobData._id}/apply`);
+                  navigate(`/jobs/${job._id}/apply`);
                 }}
               />
             ))}
 
-          <Button btnText="Save" />
+          <Button btnText="Save" onClick={() => saveJob(job._id)} />
         </div>
       </div>
 
@@ -224,7 +232,7 @@ export default function JobDetail({ job }) {
 
           <div>
             {" "}
-            {jobData?.skills?.map((q) => {
+            {job?.skills?.map((q) => {
               return <li>{q}</li>;
             })}
           </div>
@@ -232,13 +240,13 @@ export default function JobDetail({ job }) {
 
         <div className="subsection">
           <span className="subtitle">Company overview</span>
-          <div> {jobData?.companydescription}</div>
+          <div> {job?.companydescription}</div>
         </div>
 
         <div className="subsection">
           <span className="subtitle">Required qualifications</span>
           <div>
-            {jobData?.qualifications?.map((q) => {
+            {job?.qualifications?.map((q) => {
               return <li>{q}</li>;
             })}
           </div>
@@ -246,10 +254,10 @@ export default function JobDetail({ job }) {
 
         <div className="subsection">
           <span className="subtitle">Job overview</span>
-          <div> {jobData?.jobdescription}</div>
+          <div> {job?.jobdescription}</div>
         </div>
 
-        {currUserId === jobData?.postedBy && (
+        {currUserId === job?.postedBy && (
           <div
             style={{
               backgroundColor: "green",
@@ -260,7 +268,7 @@ export default function JobDetail({ job }) {
           >
             <Button
               btnText="View Applicants"
-              onClick={() => navigate(`/jobs/${jobData._id}/applications`)}
+              onClick={() => navigate(`/jobs/${job._id}/applications`)}
             />
           </div>
         )}
