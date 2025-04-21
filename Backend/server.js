@@ -6,8 +6,6 @@ import mongoose from "mongoose";
 import { createServer, request } from "node:http";
 import { Server } from "socket.io";
 
-import Group from "./models/Group.js";
-
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -20,7 +18,6 @@ import chatRouter from "./routes/chatRoutes.js";
 import postRouter from "./routes/postRoutes.js";
 import commentRouter from "./routes/commentRoutes.js";
 import likeRouter from "./routes/likeRoutes.js";
-import groupRouter from "./routes/groupRoutes.js";
 import followRouter from "./routes/followRoutes.js";
 import jobRouter from "./routes/jobRoutes.js";
 import connectionRouter from "./routes/connectionRoutes.js";
@@ -86,10 +83,6 @@ io.on("connection", (socket) => {
     console.log(`User ${userId} joined room ${roomId}`);
   });
 
-  socket.on("msg", (newMsg, groupId) => {
-    io.to(groupId).emit("msg", newMsg);
-  });
-
   socket.on("disconnect", () => {
     delete userSocketMap[userId];
     socket.removeAllListeners();
@@ -101,7 +94,6 @@ app.use("/users", userRouter);
 app.use("/connection", connectionRouter);
 app.use("/chat", chatRouter);
 app.use("/jobs", jobRouter);
-app.use("/groups", groupRouter);
 app.use("/post", postRouter);
 app.use("/post/:id/like", likeRouter);
 app.use("/post/:id/comment", commentRouter);
@@ -110,43 +102,6 @@ app.use("/profile", profileRouter);
 app.use("/follow", followRouter);
 app.use("/analytics", analyticRouter);
 app.use("/poll", pollRouter);
-
-// Function to notify group admins
-const notifyAdmins = async (data) => {
-  const group = await Group.findById(data.to);
-  group.admins.forEach((admin) => {
-    const newNotification = new Notification({
-      recipient: admin._id,
-      message: data.message,
-      sender: data.from,
-      notiType: data.type,
-    });
-    newNotification.save().then(() => {
-      //console.log(newNotification);
-      const socketId = userSocketMap[admin._id]; // Get admin's socketId from mapping
-      //console.log(socketId);
-      if (socketId) {
-        io.to(socketId).emit("groupJoinReq", newNotification);
-      }
-    });
-  });
-};
-
-const notifyUser = async (data) => {
-  const newNotification = new Notification({
-    recipient: data.to,
-    message: data.message,
-    sender: data.from,
-    notiType: data.type,
-  });
-  await newNotification.save();
-
-  const socketId = userSocketMap[data.to];
-  // console.log(socketId);
-  if (socketId) {
-    io.to(socketId).emit("joinReqRes", newNotification);
-  }
-};
 
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page not found!"));
@@ -161,4 +116,4 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-export { notifyAdmins, notifyUser, userSocketMap, io };
+export { userSocketMap, io };

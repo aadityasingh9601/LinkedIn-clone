@@ -26,6 +26,9 @@ dist-ssr
 .env
 Frontend/node_modules
 Backend/node_modules
+Backend/controllers/group.js
+Backend/models/Group.js
+Backend/routes/groupRoutes.js
 Lessons.txt
 TodayWork.txt
 

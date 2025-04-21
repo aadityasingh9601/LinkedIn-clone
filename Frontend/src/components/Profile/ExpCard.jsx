@@ -2,29 +2,26 @@ import { useState } from "react";
 import "./ExpCard.css";
 import { useForm } from "react-hook-form";
 import Button from "../Button.";
+import { formatDate } from "../../utils/helper";
 
 export default function ExpCard({ experience, editProfile, deleteProfile }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ defaultValues: experience });
+  } = useForm({
+    defaultValues: {
+      ...experience,
+      started: experience.started.split("T")[0],
+      ended: experience.ended.split("T")[0],
+    },
+  });
 
   const [editExperience, setEditExperience] = useState(false);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = date.toLocaleString("en-US", { month: "short" });
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
-  };
-
   const startDate = formatDate(experience.started);
   const endDate = formatDate(experience.ended);
 
   const onSubmit = (data) => {
-    console.log(data);
     editProfile({
       section: "experience",
       sectionId: experience._id,

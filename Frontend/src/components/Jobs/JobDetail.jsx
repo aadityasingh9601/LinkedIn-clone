@@ -38,14 +38,14 @@ export default function JobDetail({ job }) {
   );
 
   useEffect(() => {
-    fetchJobFitStats(job._id);
-  }, [job._id]);
-
-  useEffect(() => {
     if (existingApplication) {
       setApplied(true);
     }
   }, []);
+
+  useEffect(() => {
+    fetchJobFitStats(job._id);
+  }, [job._id]);
 
   const { days, hours, minutes, seconds } = timeRep(
     new Date() - new Date(job?.postedDate)

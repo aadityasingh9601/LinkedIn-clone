@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./EducationCard.css";
 import { useForm } from "react-hook-form";
 import Button from "../Button.";
+import { formatDate } from "../../utils/helper";
 
 export default function EducationCard({
   education,
@@ -12,17 +13,15 @@ export default function EducationCard({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ defaultValues: education });
+  } = useForm({
+    defaultValues: {
+      ...education,
+      started: education.started.split("T")[0],
+      ended: education.ended.split("T")[0],
+    },
+  });
 
   const [editEducation, setEditEducation] = useState(false);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = date.toLocaleString("en-US", { month: "short" });
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
-  };
 
   const startDate = formatDate(education.started);
   const endDate = formatDate(education.ended);

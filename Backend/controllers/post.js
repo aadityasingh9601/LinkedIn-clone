@@ -1,5 +1,4 @@
 import Post from "../models/Post.js";
-import Group from "../models/Group.js";
 import { postSchema } from "../schema.js";
 import { v2 as cloudinary } from "cloudinary";
 import cron from "node-cron";
@@ -227,11 +226,6 @@ const deletePost = async (req, res) => {
 
     await Post.findByIdAndDelete(postId);
 
-    if (post.groupId) {
-      const group = await Group.findByIdAndUpdate(post.groupId, {
-        $pull: { posts: postId },
-      });
-    }
     res.status(200).send({ message: "Post deleted successfully" });
   } else {
     res.status(401).send({ message: "You are not the owner of the post." });

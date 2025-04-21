@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import EducationCard from "./EducationCard";
 import ExpCard from "./ExpCard";
 import Modal from "../Modal";
-import Chart from "../analytics/Chart";
 import ProfileHeadForm from "./ProfileHeadForm";
 import useProfileStore from "../../stores/Profile";
 import useFollowStore from "../../stores/Follow";
@@ -16,28 +15,46 @@ import useUserStore from "../../stores/User";
 import useChatStore from "../../stores/Chat";
 import PDF from "./Pdf";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-
 import useAnalyticStore from "../../stores/Analytic";
 
 export default function Profile({ socket }) {
+  console.log("rendered");
   const { id: currProfileId } = useParams();
-  console.log(currProfileId);
-
   const navigate = useNavigate();
+  const profile = useProfileStore((state) => state.profile);
+  const handleChange1 = useProfileStore((state) => state.handleChange1);
+  const fetchProfileData = useProfileStore((state) => state.fetchProfileData);
+  const createProfile = useProfileStore((state) => state.createProfile);
+  const editProfile = useProfileStore((state) => state.editProfile);
+  const deleteProfile = useProfileStore((state) => state.deleteProfile);
+
   const currUserId = useUserStore((state) => state.currUserId);
   const fetchAllMsg = useChatStore((state) => state.fetchAllMsg);
+
+  const newSkill = useProfileStore((state) => state.newSkill);
+  const setNewSkill = useProfileStore((state) => state.setNewSkill);
+
+  const editSkills = useProfileStore((state) => state.editSkills);
+  const setEditSkills = useProfileStore((state) => state.setEditSkills);
+
+  const editAbout = useProfileStore((state) => state.editAbout);
+  const setEditAbout = useProfileStore((state) => state.setEditAbout);
+
+  const editHead = useProfileStore((state) => state.editHead);
+  const setEditHead = useProfileStore((state) => state.setEditHead);
+
+  const addExperience = useProfileStore((state) => state.addExperience);
+  const setAddExperience = useProfileStore((state) => state.setAddExperience);
+
+  const addEducation = useProfileStore((state) => state.addEducation);
+  const setAddEducation = useProfileStore((state) => state.setAddEducation);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({});
-
-  const profile = useProfileStore((state) => state.profile);
-  const handleChange1 = useProfileStore((state) => state.handleChange1);
-  const fetchProfileData = useProfileStore((state) => state.fetchProfileData);
-  const currProfileUserId = useProfileStore((state) => state.currProfileUserId);
-  console.log(currProfileUserId);
 
   const [isConnected, setIsConnected] = useState(false);
 
@@ -73,188 +90,10 @@ export default function Profile({ socket }) {
     checkFollow(currProfileId);
   }, []);
 
-  const [editAbout, setEditAbout] = useState(false);
-  const [editHead, setEditHead] = useState(false);
-
-  const [editSkills, setEditSkills] = useState(false);
-  const [newSkill, setNewSkill] = useState("");
-
-  const [addEducation, setAddEducation] = useState(false);
-  const [addExperience, setAddExperience] = useState(false);
-
   const isFollowed = useFollowStore((state) => state.isFollowed);
   const checkFollow = useFollowStore((state) => state.checkFollow);
   const follow = useFollowStore((state) => state.follow);
   const unfollow = useFollowStore((state) => state.unfollow);
-
-  const handleChange2 = (e) => {
-    setNewSkill(e.target.value);
-  };
-
-  const createProfile = async (data) => {
-    console.log(data);
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/profile/${currUserId}`,
-        {
-          data,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      );
-      console.log(response);
-      if (response.status === 200) {
-        if (data.skill) {
-          setProfile((prevProfile) => {
-            return { ...profile, skills: [...prevProfile.skills, newSkill] };
-          });
-          setNewSkill("");
-          setEditSkills(false);
-        }
-
-        if (data.education) {
-          setProfile((prevProfile) => {
-            return {
-              ...prevProfile,
-
-              education: response.data.education,
-              //Our backend is sending the whole profile object , so the most we can do is to just replace the
-              //whole education array with the updated education array, and it won't compromising performance
-              //that much , because of the reason ChatGPT told u , add that to notes later.
-            };
-          });
-          setAddEducation(false);
-        }
-
-        if (data.experience) {
-          setProfile((prevProfile) => {
-            return {
-              ...prevProfile,
-
-              experience: response.data.experience,
-            };
-          });
-          setAddExperience(false);
-        } else {
-          //Update the profile object here in a way that doesn't ruin performance of the app.
-
-          setProfile((prevProfile) => {
-            return {
-              ...prevProfile,
-
-              name: response.data.name,
-              headline: response.data.headline,
-              location: response.data.location,
-              contactInfo: response.data.contactInfo,
-              profileImage: response.data.profileImage,
-              bannerImage: response.data.bannerImage,
-            };
-          });
-
-          setEditHead(false);
-        }
-
-        return toast.success("Added successfully!");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const editProfile = async (data) => {
-    console.log(data);
-    const { section, sectionId } = data;
-    try {
-      const response = await axios.patch(
-        `http://localhost:8000/profile/${userId}`,
-        { data },
-        { withCredentials: true }
-      );
-
-      console.log(response);
-      if (response.status === 200) {
-        if (section === "about") {
-          setEditAbout(false);
-          return toast.success("Updated successfully");
-        }
-
-        if (section === "education") {
-          setProfile((prevProfile) => {
-            return { ...prevProfile, education: response.data.education };
-          });
-          return toast.success("Updated successfully");
-        }
-
-        if (section === "experience") {
-          setProfile((prevProfile) => {
-            return { ...prevProfile, experience: response.data.experience };
-          });
-          return toast.success("Updated successfully");
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  //Delete method doesn't supports a request body, so we are using query parameters instead.
-  const deleteProfile = async (data) => {
-    let { skill, section, sectionId } = data;
-    console.log(section);
-    console.log(sectionId);
-    try {
-      const response = await axios.delete(
-        `http://localhost:8000/profile/${currUserId}?skill=${skill}&section=${section}&sectionId=${sectionId}`,
-
-        { withCredentials: true }
-      );
-      console.log(response);
-      if (response.status === 200) {
-        if (skill) {
-          setProfile((prevProfile) => {
-            return {
-              ...prevProfile,
-              skills: prevProfile.skills.filter((s) => s !== skill),
-            };
-          });
-        }
-
-        if (section === "education") {
-          setProfile((prevProfile) => {
-            const updatedEducation = prevProfile.education.filter(
-              (e) => e._id !== sectionId
-            );
-
-            return {
-              ...prevProfile,
-              education: updatedEducation,
-            };
-          });
-        }
-
-        if (section === "experience") {
-          setProfile((prevProfile) => {
-            const updatedExperience = prevProfile.experience.filter(
-              (e) => e._id !== sectionId
-            );
-
-            return {
-              ...prevProfile,
-              experience: updatedExperience,
-            };
-          });
-        }
-
-        return toast.success("Deleted successfully!");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const onSubmit = (education) => {
     console.log(education);
@@ -369,6 +208,7 @@ export default function Profile({ socket }) {
               margin: "0 0.7rem 0 0",
               color: "rgba(135, 130, 130)",
               fontSize: "0.9rem",
+              cursor: "pointer",
             }}
           >
             {profile.connCount} connections
@@ -560,7 +400,9 @@ export default function Profile({ socket }) {
               <input
                 value={newSkill}
                 placeholder="Skill"
-                onChange={handleChange2}
+                onChange={(e) => {
+                  setNewSkill(e.target.value);
+                }}
               />
               <Button btnText="Cancel" onClick={() => setEditSkills(false)} />
               <Button

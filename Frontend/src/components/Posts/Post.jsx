@@ -17,7 +17,7 @@ import useFollowStore from "../../stores/Follow";
 //object and everything started working properly again.
 
 export default function Post({ post, postRef }) {
-  const currUserId = localStorage.getItem("currUserId");
+  const currUserId = useUserStore((state) => state.currUserId);
   console.log(post._id);
   const [toggle, setToggle] = useState(false);
   const [deleteModal, setdeleteModal] = useState(false);
