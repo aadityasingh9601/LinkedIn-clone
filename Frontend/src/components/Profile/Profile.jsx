@@ -16,17 +16,24 @@ import useChatStore from "../../stores/Chat";
 import PDF from "./Pdf";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import useAnalyticStore from "../../stores/Analytic";
+import useConnectionStore from "../../stores/Connection";
+import Textarea from "../Textarea";
+import ExperienceForm from "./ExperienceForm";
+import EducationForm from "./EducationForm";
 
 export default function Profile({ socket }) {
   console.log("rendered");
   const { id: currProfileId } = useParams();
   const navigate = useNavigate();
   const profile = useProfileStore((state) => state.profile);
-  const handleChange1 = useProfileStore((state) => state.handleChange1);
+
   const fetchProfileData = useProfileStore((state) => state.fetchProfileData);
   const createProfile = useProfileStore((state) => state.createProfile);
   const editProfile = useProfileStore((state) => state.editProfile);
   const deleteProfile = useProfileStore((state) => state.deleteProfile);
+
+  const sendConnReq = useConnectionStore((state) => state.sendConnReq);
+  const checkConn = useConnectionStore((state) => state.checkConn);
 
   const currUserId = useUserStore((state) => state.currUserId);
   const fetchAllMsg = useChatStore((state) => state.fetchAllMsg);
@@ -66,23 +73,6 @@ export default function Profile({ socket }) {
   }, [currProfileId]);
 
   useEffect(() => {
-    async function checkConn(userId) {
-      try {
-        console.log(userId);
-        const response = await axios.post(
-          `http://localhost:8000/connection/checkConn/${userId}`,
-          {},
-          { withCredentials: true }
-        );
-        console.log(response);
-        if (response.data === "yes") {
-          setIsConnected(true);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
     checkConn(currProfileId);
   }, [currProfileId]);
 
@@ -94,58 +84,6 @@ export default function Profile({ socket }) {
   const checkFollow = useFollowStore((state) => state.checkFollow);
   const follow = useFollowStore((state) => state.follow);
   const unfollow = useFollowStore((state) => state.unfollow);
-
-  const onSubmit = (education) => {
-    console.log(education);
-    createProfile({ education: education });
-    reset();
-  };
-
-  const onSubmit2 = (experience) => {
-    console.log(experience);
-    createProfile({ experience: experience });
-    reset();
-  };
-
-  async function sendConnReq(userId) {
-    console.log(userId);
-    try {
-      let response = await axios.post(
-        `http://localhost:8000/connection/${userId}`,
-        {},
-        {
-          withCredentials: true, // This includes cookies and credentials in the request, and our cookie has our
-          //token in it, so we don't need to send our headers anymore.
-        }
-      );
-
-      console.log(response);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async function handleMessage() {
-    console.log("inside handlemsg");
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/chat/createchat/${currProfileId}`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(response);
-      setfullChat(true, response.data.chatId);
-
-      fetchAllMsg(response.data.chatId);
-      //Emit socket event to join the user in the currChatId room.
-      socket.emit("join-room", response.data.chatId);
-    } catch (err) {
-      console.log(err);
-      return toast.error(err.message);
-    }
-  }
 
   //To ensure that we can't scroll the page while the modal is open.
   if (editHead) {
@@ -281,7 +219,7 @@ export default function Profile({ socket }) {
         <div className="bodyy">
           {editAbout ? (
             <>
-              <textarea
+              <Textarea
                 name="about"
                 value={profile.about}
                 onChange={handleChange1}
@@ -312,62 +250,7 @@ export default function Profile({ socket }) {
           </div>
         </div>
         <div className="bodyy">
-          {addEducation && (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <input
-                type="text"
-                placeholder="Enter institution"
-                {...register("institution", {
-                  required: "Institution is required",
-                  minLength: {
-                    value: 5,
-                    message: "Institution should be at least 5 characters",
-                  },
-                })}
-              />
-              {errors.institution && <p>{errors.institution.message}</p>}
-
-              <input
-                placeholder="Enter degree"
-                {...register("degree", {
-                  required: "Degree is required",
-                  minLength: {
-                    value: 2,
-                    message: "Degree should be at least 2 characters",
-                  },
-                })}
-              />
-
-              <input
-                placeholder="Enter start date (yyyy-mm-dd) "
-                {...register("started", {
-                  required: "Date is required",
-                  pattern: {
-                    value: /^\d{4}-\d{2}-\d{2}$/,
-                    message: "Date must be in yyyy-mm-dd format",
-                  },
-                })}
-              />
-
-              {errors.started && <p>{errors.started.message}</p>}
-
-              <input
-                placeholder="Enter end date (yyyy-mm-dd)"
-                {...register("ended", {
-                  required: "Date is required",
-                  pattern: {
-                    value: /^\d{4}-\d{2}-\d{2}$/,
-                    message: "Date must be in yyyy-mm-dd format",
-                  },
-                })}
-              />
-
-              {errors.ended && <p>{errors.ended.message}</p>}
-
-              <Button btnText="Cancel" onClick={() => setAddEducation(false)} />
-              <Button btnText="Add" />
-            </form>
-          )}
+          {addEducation && <EducationForm />}
           <div className="educationList">
             {profile.education?.map((education) => {
               return (
@@ -440,69 +323,7 @@ export default function Profile({ socket }) {
           </div>
         </div>
         <div className="bodyy">
-          {addExperience && (
-            <form onSubmit={handleSubmit(onSubmit2)}>
-              <input
-                placeholder="Enter company name"
-                {...register("companyName", {
-                  required: "Company name is required",
-                  minLength: {
-                    value: 5,
-                    message: "Company name should be at least 5 characters",
-                  },
-                })}
-              />
-              {errors.companyName && <p>{errors.companyName.message}</p>}
-
-              <input
-                placeholder="Enter job title"
-                {...register("jobTitle", {
-                  required: "Job title is required",
-                  minLength: {
-                    value: 2,
-                    message: "Job title should be at least 2 characters",
-                  },
-                })}
-              />
-
-              <input
-                placeholder="Enter start date (yyyy-mm-dd) "
-                {...register("started", {
-                  required: "Date is required",
-                  pattern: {
-                    value: /^\d{4}-\d{2}-\d{2}$/,
-                    message: "Date must be in yyyy-mm-dd format",
-                  },
-                })}
-              />
-
-              {errors.started && <p>{errors.started.message}</p>}
-
-              <input
-                placeholder="Enter end date (yyyy-mm-dd)"
-                {...register("ended", {
-                  required: "Date is required",
-                  pattern: {
-                    value: /^\d{4}-\d{2}-\d{2}$/,
-                    message: "Date must be in yyyy-mm-dd format",
-                  },
-                })}
-              />
-
-              {errors.ended && <p>{errors.ended.message}</p>}
-
-              <textarea
-                placeholder="Write your job description here..."
-                {...register("description")}
-              />
-
-              <Button
-                btnText="Cancel"
-                onClick={() => setAddExperience(false)}
-              />
-              <Button btnText="Add" />
-            </form>
-          )}
+          {addExperience && <ExperienceForm />}
           <div className="educationList">
             {profile.experience?.map((experience) => {
               return (

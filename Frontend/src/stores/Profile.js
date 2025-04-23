@@ -118,7 +118,7 @@ const useProfileStore = create((set, get) => ({
             },
           }));
 
-          set().setAddExperience(false);
+          get().setAddExperience(false);
         } else {
           //Update the profile object here in a way that doesn't ruin performance of the app.
 
@@ -182,6 +182,7 @@ const useProfileStore = create((set, get) => ({
   //Delete method doesn't supports a request body, so we are using query parameters instead.
   deleteProfile: async (data) => {
     let { skill, section, sectionId } = data;
+    console.log(skill, section, sectionId);
 
     try {
       const response = await axios.delete(
@@ -195,44 +196,40 @@ const useProfileStore = create((set, get) => ({
           set((state) => ({
             profile: {
               ...state.profile,
-              skills: prevProfile.skills.filter((s) => s !== skill),
+              skills: state.skills.filter((s) => s !== skill),
             },
           }));
-
-          if (section === "education") {
-            set((state) => ({
-              profile: {
-                ...state.profile,
-                education: state.profile.education.filter(
-                  (e) => e._id !== sectionId
-                ),
-              },
-            }));
-          }
-
-          if (section === "experience") {
-            set((state) => ({
-              profile: {
-                ...state.profile,
-                experience: state.profile.experience.filter(
-                  (e) => e._id !== sectionId
-                ),
-              },
-            }));
-          }
-
-          return toast.success("Deleted successfully!");
         }
+
+        if (section === "education") {
+          console.log("triggered");
+          set((state) => ({
+            profile: {
+              ...state.profile,
+              education: state.profile.education.filter(
+                (e) => e._id !== sectionId
+              ),
+            },
+          }));
+        }
+
+        if (section === "experience") {
+          console.log("triggered");
+          set((state) => ({
+            profile: {
+              ...state.profile,
+              experience: state.profile.experience.filter(
+                (e) => e._id !== sectionId
+              ),
+            },
+          }));
+        }
+
+        return toast.success("Deleted successfully!");
       }
     } catch (err) {
       console.log(err);
     }
-  },
-
-  handleChange1: (e) => {
-    set((state) => ({
-      profile: { ...state.profile, [e.target.name]: e.target.value },
-    }));
   },
 }));
 

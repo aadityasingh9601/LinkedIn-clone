@@ -54,35 +54,6 @@ function App() {
 
   const currUserId = useUserStore((state) => state.currUserId);
 
-  function groupNotiDeletion(id) {
-    //Deleting the notifications from database.
-    console.log("notiDeletion triggered", id);
-    async function handleDeletion() {
-      try {
-        const response = await axios.delete(
-          `http://localhost:8000/notification/group/${id}`,
-
-          {
-            withCredentials: true,
-          }
-        );
-        console.log(response);
-      } catch (err) {
-        console.log(err);
-        if (err.response.status === 401) {
-          newAccessToken();
-          return toast.error("Something went wrong! Please try again.");
-        }
-        return toast.error(err.message);
-      }
-    }
-    handleDeletion();
-    //Handling deletion on state variable too.
-    setNotifications((prevNotifications) => {
-      return prevNotifications.filter((noti) => noti.id !== id);
-    });
-  }
-
   useEffect(() => {
     fetchNotifications();
   }, [currUserId]);
@@ -96,39 +67,6 @@ function App() {
           },
         });
         setSocket(socketInstance);
-
-        socketInstance.on("groupJoinReq", (noti) => {
-          setNotifications((prevNotifications) => [
-            ...prevNotifications,
-            {
-              id: noti._id,
-              from: noti.sender,
-              message: noti.message,
-              to: noti.recipient,
-              type: noti.notiType,
-              read: false,
-              sentDate: noti.sentDate,
-            },
-          ]);
-
-          return toast.success(noti.message);
-        });
-
-        socketInstance.on("joinReqRes", (noti) => {
-          setNotifications((prevNotifications) => [
-            ...prevNotifications,
-            {
-              id: noti._id,
-              from: noti.sender,
-              message: noti.message,
-              to: noti.recipient,
-              type: noti.notiType,
-              read: false,
-              sentDate: noti.sentDate,
-            },
-          ]);
-          return toast(noti.message);
-        });
 
         socketInstance.on("connReq", (noti) => {
           addNoti(noti);
@@ -209,12 +147,7 @@ function App() {
             </Route>
             <Route path="/createpost" element={<PostForm />} />
 
-            <Route
-              path="/notifications"
-              element={
-                <NotificationBox groupNotiDeletion={groupNotiDeletion} />
-              }
-            />
+            <Route path="/notifications" element={<NotificationBox />} />
           </Routes>
         </AppWraper>
       </Router>

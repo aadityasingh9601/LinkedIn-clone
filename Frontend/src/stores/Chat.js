@@ -20,6 +20,27 @@ const useChatStore = create((set) => ({
     set({ fullChat: value });
   },
 
+  handleMessage: async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/chat/createchat/${currProfileId}`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response);
+      setfullChat(true, response.data.chatId);
+
+      fetchAllMsg(response.data.chatId);
+      //Emit socket event to join the user in the currChatId room.
+      socket.emit("join-room", response.data.chatId);
+    } catch (err) {
+      console.log(err);
+      return toast.error(err.message);
+    }
+  },
+
   fetchChatData: async (chatId) => {
     //console.log(chatId);
     try {

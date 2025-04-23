@@ -69,7 +69,6 @@ export default function Homepage() {
 
   //Intersection Observer part starts here.
 
-  //const [viewedPostIds, setViewedPostIds] = useState(new Set());
   const viewedPostIds = useRef(new Set());
   const observer = useRef(null); //Create your observer for posts.
 

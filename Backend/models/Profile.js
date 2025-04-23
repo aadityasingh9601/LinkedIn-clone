@@ -76,6 +76,10 @@ const profileSchema = new Schema({
         type: String,
         required: true,
       },
+      description: {
+        type: String,
+      },
+
       started: Date,
       ended: Date,
     },
