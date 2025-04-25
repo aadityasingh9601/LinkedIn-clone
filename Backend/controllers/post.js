@@ -108,7 +108,7 @@ const allPosts = async (req, res) => {
     console.log("Post Id:-" + post._id);
   }
 
-  console.log("These are our all posts " + posts);
+  //console.log("These are our all posts " + posts);
 
   res.status(200).send(posts);
 };
@@ -130,7 +130,7 @@ const allScheduledPosts = async (req, res) => {
         select: "headline name profileImage", // Include only `headline` and `name` fields in the `profile`
       },
     });
-  console.log(schPosts);
+  //console.log(schPosts);
 
   res.status(200).send(schPosts);
 };

@@ -1,17 +1,20 @@
 import "./Homepage.css";
-import { useEffect, useState, useCallback, useRef } from "react";
-import axios from "axios";
-import PostForm from "./Posts/PostForm";
+import { useEffect, useState, useCallback, useRef, lazy } from "react";
 import usePostStore from "../stores/Post"; //Import the store first.
-import Post from "./Posts/Post";
+import { debounce } from "lodash";
+import PostForm from "./Posts/PostForm";
+import usePollStore from "../stores/Poll";
 import useUserStore from "../stores/User";
 import useAnalyticStore from "../stores/Analytic";
-import usePollStore from "../stores/Poll";
+
+//const Post = lazy(() => "./Posts/Post");
+import Post from "./Posts/Post";
+//const InfiniteScroll = lazy(() => "react-infinite-scroll-component");
 import InfiniteScroll from "react-infinite-scroll-component";
+//const PostFormPreview = lazy(() => "./Posts/PostFormPreview");
 import PostFormPreview from "./Posts/PostFormPreview";
-import Modal from "./Modal";
-import Poll from "./Polls/Poll";
-import { debounce } from "lodash";
+//const Modal = lazy(() => "./Modal");
+//const Poll = lazy(() => "./Polls/Poll");
 
 export default function Homepage() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -28,6 +31,7 @@ export default function Homepage() {
   const setPostFormModal = usePostStore((state) => state.setPostFormModal);
   const getAllLikedPosts = useUserStore((state) => state.getAllLikedPosts);
   const allLikedPosts = useUserStore((state) => state.allLikedPosts);
+  const getAllFollowed = useUserStore((state) => state.getAllFollowed);
   const setshowSchPosts = usePostStore((state) => state.setshowSchPosts);
   //console.log(allLikedPosts);
 
@@ -41,6 +45,7 @@ export default function Homepage() {
   useEffect(() => {
     if (isLoggedIn) {
       getAllLikedPosts();
+      getAllFollowed();
     }
   }, [currUserId]);
 
@@ -132,9 +137,9 @@ export default function Homepage() {
 
   //To ensure that we can't scroll the page while the modal is open.
   if (postFormModal) {
-    document.body.classList.add("no-scroll");
+    document.body.style.overflow = "hidden";
   } else {
-    document.body.classList.remove("no-scroll");
+    document.body.style.overflow = "unset";
   }
 
   return (

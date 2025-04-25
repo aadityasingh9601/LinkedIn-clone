@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import Modal from "../Modal";
 import useUserStore from "../../stores/User";
+import { timeRep } from "../../utils/helper";
 
 export default function Comment({ comment, updateComments }) {
   const [toggle, setToggle] = useState(false);
@@ -12,14 +13,11 @@ export default function Comment({ comment, updateComments }) {
   const [commentEdit, setCommentEdit] = useState(false);
   const [deleteModal, setdeleteModal] = useState(false);
   const newAccessToken = useUserStore((state) => state.newAccessToken);
-  const userId = localStorage.getItem("userId");
+  const currUserId = useUserStore((state) => state.currUserId);
 
-  const currDate = new Date();
-  const createdDate = new Date(comment.createdAt); //See the reason and all that date related information in ChatGPT. Take notes.
-  const seconds = Math.floor((currDate - createdDate) / 1000); //Converting to seconds
-  const minutes = Math.floor(seconds / 60); //Converting to minutes
-  const hours = Math.floor(minutes / 60); //Converting to hours
-  const days = Math.floor(hours / 24); //Converting to days.
+  const { days, hours, minutes, seconds } = timeRep(
+    new Date() - new Date(comment.createdAt)
+  );
 
   const showOptions = (value) => {
     setToggle(value);
@@ -100,7 +98,7 @@ export default function Comment({ comment, updateComments }) {
               : `${seconds}s`}
           </span>
         </div>
-        {userId === comment.author._id && (
+        {currUserId === comment.author._id && (
           <button className="options" onClick={() => showOptions(!toggle)}>
             <i class="fa-solid fa-ellipsis"></i>
           </button>

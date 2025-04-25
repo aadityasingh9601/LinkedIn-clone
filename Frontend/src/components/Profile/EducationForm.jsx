@@ -1,5 +1,6 @@
 import useProfileStore from "../../stores/Profile";
 import Textarea from "../Textarea";
+import Input from "../Input";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
 
@@ -21,52 +22,60 @@ export default function EducationForm() {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="text"
+        <Input
           placeholder="Enter institution"
-          {...register("institution", {
+          register={register}
+          name="institution"
+          options={{
             required: "Institution is required",
             minLength: {
               value: 5,
               message: "Institution should be at least 5 characters",
             },
-          })}
+          }}
         />
+
         {errors.institution && <p>{errors.institution.message}</p>}
 
-        <input
+        <Input
+          name="degree"
           placeholder="Enter degree"
-          {...register("degree", {
+          register={register}
+          options={{
             required: "Degree is required",
             minLength: {
               value: 2,
               message: "Degree should be at least 2 characters",
             },
-          })}
+          }}
         />
 
-        <input
-          placeholder="Enter start date (yyyy-mm-dd) "
-          {...register("started", {
+        <Input
+          placeholder="Enter start date (yyyy-mm-dd)"
+          register={register}
+          name="started"
+          options={{
             required: "Date is required",
             pattern: {
               value: /^\d{4}-\d{2}-\d{2}$/,
               message: "Date must be in yyyy-mm-dd format",
             },
-          })}
+          }}
         />
 
         {errors.started && <p>{errors.started.message}</p>}
 
-        <input
+        <Input
           placeholder="Enter end date (yyyy-mm-dd)"
-          {...register("ended", {
+          name="ended"
+          register={register}
+          options={{
             required: "Date is required",
             pattern: {
               value: /^\d{4}-\d{2}-\d{2}$/,
               message: "Date must be in yyyy-mm-dd format",
             },
-          })}
+          }}
         />
 
         {errors.ended && <p>{errors.ended.message}</p>}

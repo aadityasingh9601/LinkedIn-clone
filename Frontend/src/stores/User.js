@@ -105,17 +105,65 @@ const useUserStore = create((set) => ({
       //console.log(response);
       //Save to local storage to persist state and to identify the posts liked by the user and update the state.
 
-      const usePostStore = (await import("./Post")).default; //dynamically import here
-      const posts = usePostStore.getState().posts;
+      // const usePostStore = (await import("./Post")).default; //dynamically import here
+      // const posts = usePostStore.getState().posts;
 
-      let postIds = posts.map((p) => {
-        return p._id;
-      });
+      // let postIds = posts.map((p) => {
+      //   return p._id;
+      // });
 
-      console.log(postIds);
+      // console.log(postIds);
 
       let allLikedPosts = response.data;
       localStorage.setItem("allLikedPosts", JSON.stringify(allLikedPosts));
+    } catch (err) {
+      console.log(err);
+      return toast.error(err.message);
+    }
+  },
+
+  allFollowed: new Set(JSON.parse(localStorage.getItem("allFollowed") || "[]")),
+
+  setAllFollowed: (action, userId) => {
+    const followedUserIds = JSON.parse(
+      localStorage.getItem("allFollowed") || "[]"
+    ); //returns an array.
+    const followedSet = new Set(followedUserIds); //Create set from the array.
+
+    if (action === "follow") {
+      followedSet.add(userId);
+    }
+
+    if (action === "unfollow") {
+      followedSet.delete(userId);
+    }
+
+    // Update localStorage,Set isn't a plain JS object so we havae to serialize it like this in an array.
+    localStorage.setItem("allFollowed", JSON.stringify([...followedSet]));
+
+    // Update the state
+    set({ allFollowed: followedSet });
+
+    console.log("Updated followed :", followedSet);
+  },
+
+  getAllFollowed: async () => {
+    try {
+      let response = await axios.get(
+        "http://localhost:8000/follow/following",
+
+        {
+          withCredentials: true,
+        }
+      );
+      //console.log(response);
+
+      //Save to local storage to persist state and to identify the users followed by the user.
+      let allFollowed = response.data.map((f) => {
+        return f.userFollowed._id;
+      });
+
+      localStorage.setItem("allFollowed", JSON.stringify(allFollowed));
     } catch (err) {
       console.log(err);
       return toast.error(err.message);

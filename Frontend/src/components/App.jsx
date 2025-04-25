@@ -1,22 +1,24 @@
 import "./App.css";
+import { lazy, Suspense } from "react";
 
 import Homepage from "./Homepage";
-import Profile from "./Profile/Profile";
+const Profile = lazy(() => import("./Profile/Profile"));
+
 import Signup from "./Auth/Signup";
 import Login from "./Auth/Login";
 import AppWraper from "./AppWraper";
-import PostForm from "./Posts/PostForm";
-import NotificationBox from "./Notifications/NotificationBox";
-import PreLogin from "./Auth/PreLogin";
+const PostForm = lazy(() => "./Posts/PostForm");
+const NotificationBox = lazy(() => "./Notifications/NotificationBox");
+const PreLogin = lazy(() => "./Auth/PreLogin");
 import PrivateRoutes from "./PrivateRoutes";
-import Followers from "./Network/Followers";
-import Following from "./Network/Following";
-import Connections from "./Network/Connections";
-import JobsUI from "./Jobs/JobsUI";
-import Analytics from "./Analytics/Analytics";
-import ApplicationForm from "./Jobs/ApplicationForm";
-import Applications from "./Jobs/Applications";
-import FullApplication from "./Jobs/fullApplication";
+const Followers = lazy(() => "./Network/Followers");
+const Following = lazy(() => "./Network/Following");
+const Connections = lazy(() => "./Network/Connections");
+const JobsUI = lazy(() => "./Jobs/JobsUI");
+const Analytics = lazy(() => "./Analytics/Analytics");
+const ApplicationForm = lazy(() => "./Jobs/ApplicationForm");
+const Applications = lazy(() => import("./Jobs/Applications"));
+const FullApplication = lazy(() => import("./Jobs/fullApplication"));
 
 import {
   BrowserRouter as Router,
@@ -127,10 +129,12 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route element={<PrivateRoutes isLoggedIn={isLoggedIn} />}>
               <Route path="/home" element={<Homepage />} />
+
               <Route
                 path="/profile/:id"
                 element={<Profile socket={socket} />}
               />
+
               <Route path="/jobs/:id/apply" element={<ApplicationForm />} />
               <Route path="/jobs/:id/applications" element={<Applications />} />
               <Route

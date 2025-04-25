@@ -76,20 +76,18 @@ export default function Profile({ socket }) {
     checkConn(currProfileId);
   }, [currProfileId]);
 
-  useEffect(() => {
-    checkFollow(currProfileId);
-  }, []);
+  //Add a useEffect here to check if the currUser has followed the user of the current profile or not.
 
   const isFollowed = useFollowStore((state) => state.isFollowed);
-  const checkFollow = useFollowStore((state) => state.checkFollow);
+
   const follow = useFollowStore((state) => state.follow);
   const unfollow = useFollowStore((state) => state.unfollow);
 
   //To ensure that we can't scroll the page while the modal is open.
   if (editHead) {
-    document.body.classList.add("no-scroll");
+    document.body.style.overflow = "hidden";
   } else {
-    document.body.classList.remove("no-scroll");
+    document.body.style.overflow = "unset";
   }
 
   let styles = {

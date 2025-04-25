@@ -228,16 +228,6 @@ const usePostStore = create((set) => ({
     }
   },
 
-  //State variable to store the users who have liked a post.
-  //likedUsers:[];
-  //The problem with this method is that u r storing this as a global state so for each post , each post's likedusers
-  //will be shown because every post is using a single global state, so instead of creating a global state, we
-  // have to create a local state for storing likedUsers , in this way every post will have their own likedUsers
-  //array. Remember this for the future also, add to the notes and decide carefully from now on that when to
-  //create global state and when to create local state. You can't just put everything together in the zustand store.
-  //
-  //
-
   likePost: async (postId) => {
     console.log(postId);
     try {

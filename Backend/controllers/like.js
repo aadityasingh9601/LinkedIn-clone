@@ -50,6 +50,7 @@ const getAllLikes = async (req, res) => {
     "user",
     "name profileImage headline"
   );
+  console.log(likes);
   res.status(200).send(likes);
 };
 

@@ -1,6 +1,7 @@
 // AppWrapper.js
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { Suspense } from "react";
 import Layout from "./Layout";
 
 const AppWrapper = ({ children, handleLogout, socket }) => {
@@ -13,11 +14,27 @@ const AppWrapper = ({ children, handleLogout, socket }) => {
   const useLayout = !noLayoutRoutes.includes(location.pathname);
 
   return useLayout ? (
-    <Layout handleLogout={handleLogout} socket={socket}>
-      {children}
-    </Layout>
+    <Suspense
+      fallback={
+        <h1 style={{ position: "absolute", top: "20rem", left: "50rem" }}>
+          Loading...
+        </h1>
+      }
+    >
+      <Layout handleLogout={handleLogout} socket={socket}>
+        {children}
+      </Layout>
+    </Suspense>
   ) : (
-    <>{children}</>
+    <Suspense
+      fallback={
+        <h1 style={{ position: "absolute", top: "20rem", left: "50rem" }}>
+          Loading...
+        </h1>
+      }
+    >
+      <>{children}</>
+    </Suspense>
   );
 };
 

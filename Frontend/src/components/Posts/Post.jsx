@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import useComment from "../../hooks/useComment";
 import useUserStore from "../../stores/User";
 import useFollowStore from "../../stores/Follow";
+import { timeRep } from "../../utils/helper";
 
 //The error was occuring because I was accessing props like this,"function Post(post) " and because of that
 //the whole props object was getting logged on the console and post.createdBy was printing undefined , while when
@@ -18,15 +19,16 @@ import useFollowStore from "../../stores/Follow";
 
 export default function Post({ post, postRef }) {
   const currUserId = useUserStore((state) => state.currUserId);
-  console.log(post._id);
+
+  const [isFollowed, setIsFollowed] = useState(false);
+  //console.log(post._id);
   const [toggle, setToggle] = useState(false);
   const [deleteModal, setdeleteModal] = useState(false);
   const [editModal, seteditModal] = useState(false);
   const [likeModal, setlikeModal] = useState(false);
   const [isLiked, setisLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likeCount);
-  const isFollowed = useFollowStore((state) => state.isFollowed);
-  const checkFollow = useFollowStore((state) => state.checkFollow);
+
   const follow = useFollowStore((state) => state.follow);
   const unfollow = useFollowStore((state) => state.unfollow);
 
@@ -39,23 +41,20 @@ export default function Post({ post, postRef }) {
   const newAccessToken = useUserStore((state) => state.newAccessToken);
 
   const allLikedPosts = useUserStore((state) => state.allLikedPosts);
+  const allFollowed = useUserStore((state) => state.allFollowed);
 
   const { comments, setComments, showComments, setshowComments, addComment } =
     useComment(post._id);
 
   //To ensure that we can't scroll the page while the modal is open.
   if (deleteModal || likeModal || editModal) {
-    document.body.classList.add("no-scroll");
+    document.body.style.overflow = "hidden";
   } else {
-    document.body.classList.remove("no-scroll");
+    document.body.style.overflow = "unset";
   }
-
-  const currDate = new Date();
-  const createdDate = new Date(post.createdAt); //See the reason and all that date related information in ChatGPT. Take notes.
-  const seconds = Math.floor((currDate - createdDate) / 1000); //Converting to seconds
-  const minutes = Math.floor(seconds / 60); //Converting to minutes
-  const hours = Math.floor(minutes / 60); //Converting to hours
-  const days = Math.floor(hours / 24); //Converting to days.
+  const { days, hours, minutes, seconds } = timeRep(
+    new Date() - new Date(post.createdAt)
+  );
 
   const toggleEditModal = () => {
     seteditModal(!editModal);
@@ -77,53 +76,30 @@ export default function Post({ post, postRef }) {
     setLikeCount(likeCount - 1);
   };
 
+  const setFollower = (userId) => {
+    follow(userId);
+    setIsFollowed(true);
+  };
+
+  const unsetFollower = (userId) => {
+    unfollow(userId);
+    setIsFollowed(false);
+  };
+
   useEffect(() => {
     if (allLikedPosts.has(post._id)) {
       setisLiked(true);
     } else {
       setisLiked(false);
     }
+
+    //Update the state.
+    if (allFollowed.has(post.createdBy._id)) {
+      setIsFollowed(true);
+    } else {
+      setIsFollowed(false);
+    }
   }, []);
-
-  //Creating a useEffect to check if the current user has liked the post or not so update the state on the
-  //frontend accordingly, maybe there's a better way to do this , but for now let's just do this.
-  //Usually we persist state on the frontend by using our local storage, but that's good only for storing some
-  //states like login state, u can't store every user's state in local storage because of storage issues.
-  //So, use a backend route to check , similarly do for following & followers. As, time goes by if u find a
-  //better way to do this, switch to that, but for now just focus on the functionality part first.
-  // useEffect(() => {
-  //   async function checkLike(postId) {
-  //     try {
-  //       const response = await axios.get(
-  //         `http://localhost:8000/post/${postId}/like/checklike`,
-  //         {
-  //           withCredentials: true,
-  //         }
-  //       );
-
-  //       if (response.data === "yes") {
-  //         return setisLiked(true);
-  //       } else {
-  //         return setisLiked(false);
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //       //Handle 401, if 401 occurs, newAccessToken is generated and error message is shown to the user to
-  //       //try again.Now when user tries again, it will work because new access token is generated already.
-  //       //Understand the flow carefully and handle this part in all the backend requests.
-  //       if (err.response.status === 401) {
-  //         newAccessToken();
-  //       }
-  //       return toast.error("Something went wrong!Try again.");
-  //     }
-  //   }
-
-  //   checkLike(post._id);
-  // }, []);
-
-  useEffect(() => {
-    checkFollow(post.createdBy._id);
-  }, [post]);
 
   //Fetch likes related to a post when like modal shows up.
   useEffect(() => {
@@ -157,15 +133,6 @@ export default function Post({ post, postRef }) {
     );
   };
 
-  //How to persist state in react _?
-  //const example= () => {
-  // const [state, setState] = useState(() => {
-  //   const savedState = localStorage.getItem('state');
-  //   return savedState ? JSON.parse(savedState) : {};
-  // });
-  // put it in a useEffect hook , now whenever page refreshes , state will keep persisitng and won't be lost
-  // try yourself, to persist the isLiked state of the post.
-
   return (
     <div className="post" data-post-id={post._id} ref={postRef}>
       <div className="header">
@@ -195,7 +162,7 @@ export default function Post({ post, postRef }) {
           (isFollowed ? (
             <button
               className="followedBtn"
-              onClick={() => unfollow(post.createdBy._id)}
+              onClick={() => unsetFollower(post.createdBy._id)}
             >
               Following
               <i class="fa-solid fa-check" style={{ marginLeft: "0.4rem" }}></i>
@@ -203,7 +170,7 @@ export default function Post({ post, postRef }) {
           ) : (
             <button
               className="followBtn"
-              onClick={() => follow(post.createdBy._id)}
+              onClick={() => setFollower(post.createdBy._id)}
             >
               <i className="fa-solid fa-plus"></i>Follow
             </button>
@@ -250,7 +217,10 @@ export default function Post({ post, postRef }) {
         <div className="postInfo">
           <div>
             <span onClick={() => togglelikeModal(true)}>{likeCount} likes</span>
-            ,<span>{commentCount} comments</span>
+            ,
+            <span onClick={() => setshowComments(!showComments)}>
+              {commentCount} comments
+            </span>
           </div>
         </div>
       </div>
