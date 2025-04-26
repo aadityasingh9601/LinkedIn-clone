@@ -1,16 +1,16 @@
 import "./App.css";
 import { lazy, Suspense } from "react";
 
-import Homepage from "./Homepage";
+const Homepage = lazy(() => import("./Homepage"));
+import PrivateRoutes from "./PrivateRoutes";
+import AppWraper from "./AppWraper";
 const Profile = lazy(() => import("./Profile/Profile"));
 
-import Signup from "./Auth/Signup";
-import Login from "./Auth/Login";
-import AppWraper from "./AppWraper";
+const Signup = lazy(() => import("./Auth/Signup"));
+const Login = lazy(() => import("./Auth/Login"));
 const PostForm = lazy(() => "./Posts/PostForm");
-const NotificationBox = lazy(() => "./Notifications/NotificationBox");
-const PreLogin = lazy(() => "./Auth/PreLogin");
-import PrivateRoutes from "./PrivateRoutes";
+const NotificationBox = lazy(() => import("./Notifications/NotificationBox"));
+const PreLogin = lazy(() => import("./Auth/PreLogin"));
 const Followers = lazy(() => "./Network/Followers");
 const Following = lazy(() => "./Network/Following");
 const Connections = lazy(() => "./Network/Connections");

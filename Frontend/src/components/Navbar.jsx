@@ -197,8 +197,14 @@ export default function Navbar() {
       <Link to={"/notifications"}>
         <NotiIcon />
 
-        <span>Notifications</span>
-        {notiCount > 0 ? <span id="bellIcon-badge">{notiCount}</span> : null}
+        <span style={{ position: "relative" }}>
+          Notifications
+          {notiCount > 0 ? (
+            <div id="bellIcon-badge">
+              <div>{notiCount}</div>
+            </div>
+          ) : null}
+        </span>
       </Link>
       <button
         style={{ backgroundColor: "transparent", border: "none" }}

@@ -20,6 +20,33 @@ const useNotificationStore = create((set) => ({
     }));
   },
 
+  handleConnRes: async (noti, action) => {
+    if (noti.notiType === "connection") {
+      try {
+        const response = await axios.post(
+          `http://localhost:8000/connection/respond/${noti.sender}`,
+          { response: action, to: noti.sender, notiId: noti._id },
+          {
+            withCredentials: true,
+          }
+        );
+        console.log(response);
+        if (response.status === 200) {
+          //Update the state as well.
+          set((state) => ({
+            notifications: state.notifications.filter(
+              (n) => n._id !== noti._id
+            ),
+          }));
+        }
+      } catch (err) {
+        console.log(err);
+        alert("Failed to accept or reject request");
+        return;
+      }
+    }
+  },
+
   fetchNotifications: async function () {
     try {
       let response = await axios.get(

@@ -1,4 +1,5 @@
 import Post from "../models/Post.js";
+import Connection from "../models/Connection.js";
 import { postSchema } from "../schema.js";
 import { v2 as cloudinary } from "cloudinary";
 import cron from "node-cron";
@@ -88,7 +89,7 @@ const allPosts = async (req, res) => {
   console.log("55", page);
   const skip = (page - 1) * 2;
 
-  const posts = await Post.find({ published: true })
+  const posts = await Post.find({ published: true, postType: "Everyone" })
     .sort({ createdAt: -1 })
     .populate({
       path: "createdBy",

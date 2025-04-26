@@ -72,12 +72,6 @@ export default function Profile({ socket }) {
     fetchProfileData(currProfileId);
   }, [currProfileId]);
 
-  useEffect(() => {
-    checkConn(currProfileId);
-  }, [currProfileId]);
-
-  //Add a useEffect here to check if the currUser has followed the user of the current profile or not.
-
   const isFollowed = useFollowStore((state) => state.isFollowed);
 
   const follow = useFollowStore((state) => state.follow);

@@ -28,23 +28,6 @@ const useConnectionStore = create((set, get) => ({
       console.log(err);
     }
   },
-
-  checkConn: async (userId) => {
-    try {
-      console.log(userId);
-      const response = await axios.post(
-        `http://localhost:8000/connection/checkConn/${userId}`,
-        {},
-        { withCredentials: true }
-      );
-      console.log(response);
-      if (response.data === "yes") {
-        setIsConnected(true);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  },
 }));
 
 export default useConnectionStore;

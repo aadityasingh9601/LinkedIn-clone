@@ -23,7 +23,8 @@ const checkConnection = async (req, res) => {
 
 const sendConnRequest = async (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
+  console.log("26", userId);
+  console.log("27", req.user._id);
   const user = await User.findById(userId);
   const currUser = await User.findById(req.user._id);
   //console.log(req.user._id, userId);
@@ -38,6 +39,7 @@ const sendConnRequest = async (req, res) => {
     res
       .status(400)
       .send({ message: "You are already connected to this user!" });
+    return;
   } else {
     const message = `${currUser.name} would like to connect with you!`;
     //Save the notification in database.

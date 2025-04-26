@@ -18,6 +18,7 @@ import { timeRep } from "../../utils/helper";
 //object and everything started working properly again.
 
 export default function Post({ post, postRef }) {
+  console.log("rendered");
   const currUserId = useUserStore((state) => state.currUserId);
 
   const [isFollowed, setIsFollowed] = useState(false);
@@ -99,7 +100,7 @@ export default function Post({ post, postRef }) {
     } else {
       setIsFollowed(false);
     }
-  }, []);
+  }, [allFollowed]);
 
   //Fetch likes related to a post when like modal shows up.
   useEffect(() => {

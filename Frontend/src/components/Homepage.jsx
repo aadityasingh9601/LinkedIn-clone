@@ -7,14 +7,11 @@ import usePollStore from "../stores/Poll";
 import useUserStore from "../stores/User";
 import useAnalyticStore from "../stores/Analytic";
 
-//const Post = lazy(() => "./Posts/Post");
-import Post from "./Posts/Post";
-//const InfiniteScroll = lazy(() => "react-infinite-scroll-component");
-import InfiniteScroll from "react-infinite-scroll-component";
-//const PostFormPreview = lazy(() => "./Posts/PostFormPreview");
-import PostFormPreview from "./Posts/PostFormPreview";
-//const Modal = lazy(() => "./Modal");
-//const Poll = lazy(() => "./Polls/Poll");
+const Post = lazy(() => import("./Posts/Post"));
+const InfiniteScroll = lazy(() => import("react-infinite-scroll-component"));
+const PostFormPreview = lazy(() => import("./Posts/PostFormPreview"));
+const Modal = lazy(() => import("./Modal"));
+const Poll = lazy(() => import("./Polls/Poll"));
 
 export default function Homepage() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -85,7 +82,7 @@ export default function Homepage() {
       // console.log(entry);
       if (entry.isIntersecting) {
         const postId = entry.target.getAttribute("data-post-id");
-        console.log(postId);
+        //console.log(postId);
         if (postId && !viewedPostIds.current.has(postId)) {
           viewedPostIds.current.add(postId); // Prevent duplicates
           //console.log(viewedPostIds.current);
