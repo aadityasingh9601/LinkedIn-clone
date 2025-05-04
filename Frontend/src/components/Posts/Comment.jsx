@@ -6,6 +6,7 @@ import axios from "axios";
 import Modal from "../Modal";
 import useUserStore from "../../stores/User";
 import { timeRep } from "../../utils/helper";
+import Avatar from "../Avatar";
 
 export default function Comment({ comment, updateComments }) {
   const [toggle, setToggle] = useState(false);
@@ -76,9 +77,7 @@ export default function Comment({ comment, updateComments }) {
   return (
     <div className="comment">
       <div className="header">
-        <div className="img">
-          <img src={comment.author.profile.profileImage.url} alt="" />
-        </div>
+        <Avatar url={comment.author.profile.profileImage.url} />
         <div className="headline">
           <span>
             <b>{comment.author.profile.name}</b>

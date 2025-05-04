@@ -76,9 +76,7 @@ export default function Following() {
       )}
       {followings.map((following) => (
         <div className="follower">
-          <div className="img">
-            <img src={following.userFollowed.profile.profileImage.url} alt="" />
-          </div>
+          <Avatar url={following.userFollowed.profile.profileImage.url} />
           <div className="headline">
             <span
               onClick={() => showProfile(following.userFollowed.profile.userId)}

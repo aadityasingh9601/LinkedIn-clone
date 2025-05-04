@@ -17,13 +17,6 @@
   position: relative;
 }
 
-.header .img img {
-  height: 3.6rem;
-  width: 3.6rem;
-  border-radius: 50%;
-  margin-right: 0.8rem;
-}
-
 .followBtn {
   position: absolute;
   right: 3.5rem;

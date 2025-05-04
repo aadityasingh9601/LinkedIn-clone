@@ -1,16 +1,18 @@
 import "./Post.css";
+import { lazy } from "react";
 import { useState, useEffect, useRef } from "react";
 import usePostStore from "../../stores/Post";
 import Modal from "../Modal";
-import Button from "../Button.";
-import PostEditForm from "./PostEditForm";
-import CommentSection from "./CommentSection";
+const Button = lazy(() => import("../Button."));
+const PostEditForm = lazy(() => import("./PostEditForm"));
+const CommentSection = lazy(() => import("./CommentSection"));
 import axios from "axios";
 import { toast } from "react-toastify";
 import useComment from "../../hooks/useComment";
 import useUserStore from "../../stores/User";
 import useFollowStore from "../../stores/Follow";
 import { timeRep } from "../../utils/helper";
+import Avatar from "../Avatar";
 
 //The error was occuring because I was accessing props like this,"function Post(post) " and because of that
 //the whole props object was getting logged on the console and post.createdBy was printing undefined , while when
@@ -137,9 +139,7 @@ export default function Post({ post, postRef }) {
   return (
     <div className="post" data-post-id={post._id} ref={postRef}>
       <div className="header">
-        <div className="img">
-          <img src={post.createdBy.profile.profileImage.url} alt="" />
-        </div>
+        <Avatar url={post.createdBy.profile.profileImage.url} />
         <div className="headline">
           <span>
             <b>{post.createdBy.profile.name}</b>

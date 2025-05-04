@@ -1,7 +1,8 @@
 import "./Navbar.css";
 import Button from "./Button.";
 import { useNavigate } from "react-router-dom";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, lazy } from "react";
+
 import { Link } from "react-router-dom";
 
 import axios from "axios";
@@ -17,6 +18,7 @@ import UsersIcon from "../icons/UsersIcon";
 import JobIcon from "../icons/JobIcon";
 import MsgIcon from "../icons/MsgIcon";
 import NotiIcon from "../icons/NotiIcon";
+const Avatar = lazy(() => import("./Avatar"));
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -137,9 +139,7 @@ export default function Navbar() {
           ></i>
           {userProfiles.map((profile) => (
             <div className="userProfile">
-              <div className="img">
-                <img src={profile.profileImage.url} alt="" />
-              </div>
+              <Avatar url={profile.profileImage.url} />
               <div className="headline">
                 <span onClick={() => showProfile(profile.userId)}>
                   <b>{profile.name}</b>

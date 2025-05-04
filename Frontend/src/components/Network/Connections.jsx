@@ -6,6 +6,7 @@ import Button from "../Button.";
 import useUserStore from "../../stores/User";
 import useProfileStore from "../../stores/Profile";
 import { useNavigate } from "react-router-dom";
+import Avatar from "../Avatar";
 
 export default function Followers() {
   const navigate = useNavigate();
@@ -85,9 +86,8 @@ export default function Followers() {
 
         return (
           <div className="follower" key={connection._id}>
-            <div className="img">
-              <img src={otherPerson.profile?.profileImage?.url} alt="" />
-            </div>
+            <Avatar url={otherPerson.profile?.profileImage?.url} />
+
             <div className="headline">
               <span onClick={() => showProfile(otherPerson._id)}>
                 <b>{otherPerson.profile?.name}</b>

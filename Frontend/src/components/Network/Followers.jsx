@@ -5,6 +5,7 @@ import axios from "axios";
 import Button from "../Button.";
 import useProfileStore from "../../stores/Profile";
 import { useNavigate } from "react-router-dom";
+import Avatar from "../Avatar";
 
 export default function Followers() {
   const navigate = useNavigate();
@@ -75,9 +76,7 @@ export default function Followers() {
       )}
       {followers.map((follower) => (
         <div className="follower">
-          <div className="img">
-            <img src={follower.user.profile.profileImage.url} alt="" />
-          </div>
+          <Avatar url={follower.user.profile.profileImage.url} />
           <div className="headline">
             <span onClick={() => showProfile(follower.user.profile.userId)}>
               <b>{follower.user.profile.name}</b>

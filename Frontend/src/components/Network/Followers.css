@@ -22,13 +22,6 @@
   cursor: pointer;
 }
 
-.follower .img img {
-  height: 3.6rem;
-  width: 3.6rem;
-  border-radius: 50%;
-  margin-right: 0.8rem;
-}
-
 .follower button {
   position: absolute !important;
   right: 0;
