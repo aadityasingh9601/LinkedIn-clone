@@ -2,6 +2,7 @@ import Post from "../models/Post.js";
 import Connection from "../models/Connection.js";
 import { postSchema } from "../schema.js";
 import { v2 as cloudinary } from "cloudinary";
+import { io, userSocketMap } from "../server.js";
 import cron from "node-cron";
 
 function convertDateToCron(date) {
@@ -65,6 +66,19 @@ const createPost = async (req, res) => {
       //Set published to true, and it'll b now displayed to the users.
       newPost.published = true;
       await newPost.save();
+
+      let fullPost = await Post.findById(newPost._id).populate({
+        path: "createdBy",
+        select: "profile",
+        populate: {
+          path: "profile",
+          select: "name profileImage headline",
+        },
+      });
+
+      //As post gets created, emit a socket event to update the state on the frontend.
+      const socketId = userSocketMap[req.user._id.toString()];
+      io.to(socketId).emit("post_created", fullPost);
     });
 
     //console.log(task);

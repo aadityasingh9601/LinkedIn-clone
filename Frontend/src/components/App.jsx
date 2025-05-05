@@ -35,6 +35,7 @@ import useNotificationStore from "../stores/Notification";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import usePostStore from "../stores/Post";
 
 function App() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -44,6 +45,7 @@ function App() {
   const updateLastMsg = useChatStore((state) => state.updateLastMsg);
   const editMessage = useChatStore((state) => state.editMessage);
   const removeMessage = useChatStore((state) => state.removeMessage);
+  const updatePost = usePostStore((state) => state.updatePost);
 
   const notifications = useNotificationStore((state) => state.notifications);
   const fetchNotifications = useNotificationStore(
@@ -89,6 +91,11 @@ function App() {
         socketInstance.on("deleteMsg", (data) => {
           console.log(data);
           removeMessage(data);
+        });
+
+        socketInstance.on("post_created", (data) => {
+          console.log(data);
+          updatePost(data);
         });
 
         socketInstance.on("application-rejected", (data) => {

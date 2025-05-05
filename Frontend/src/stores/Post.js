@@ -83,6 +83,12 @@ const usePostStore = create((set) => ({
     }
   },
 
+  updatePost: (data) => {
+    set((state) => ({
+      posts: [data, ...state.posts],
+    }));
+  },
+
   getScheduledPosts: async (userId) => {
     try {
       const response = await axios.get(
