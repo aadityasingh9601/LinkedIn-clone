@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function JobDetail({ job }) {
+  console.log(job);
   const navigate = useNavigate();
 
   //console.log(job);
@@ -43,9 +44,9 @@ export default function JobDetail({ job }) {
     }
   }, []);
 
-  useEffect(() => {
-    fetchJobFitStats(job._id);
-  }, [job._id]);
+  // useEffect(() => {
+  //   fetchJobFitStats(job._id);
+  // }, [job._id]);
 
   const { days, hours, minutes, seconds } = timeRep(
     new Date() - new Date(job?.postedDate)

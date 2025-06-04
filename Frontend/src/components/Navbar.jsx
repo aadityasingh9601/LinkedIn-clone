@@ -175,13 +175,13 @@ export default function Navbar() {
           >
             Manage your network
           </div>
-          <div onClick={() => navigate("/connections")}>
+          <div onClick={() => navigate("/network/connections")}>
             <i class="fa-solid fa-users"></i>Connections
           </div>
-          <div onClick={() => navigate("/followers")}>
+          <div onClick={() => navigate("/network/followers")}>
             <i class="fa-solid fa-user"></i>Followers
           </div>
-          <div onClick={() => navigate("/following")}>
+          <div onClick={() => navigate("/network/following")}>
             <i class="fa-solid fa-user"></i>Following
           </div>
         </div>

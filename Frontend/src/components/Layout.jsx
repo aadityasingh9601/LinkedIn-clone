@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "./Navbar"; // Your navigation bar component
 import { ToastContainer } from "react-toastify";
 import ChatUI from "./Messaging/ChatUI";

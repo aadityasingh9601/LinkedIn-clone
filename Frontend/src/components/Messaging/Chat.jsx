@@ -1,6 +1,5 @@
 import "./Chat.css";
 import useChatStore from "../../stores/Chat";
-import ChatUI from "./ChatUI";
 import { useState } from "react";
 import Button from "../Button.";
 

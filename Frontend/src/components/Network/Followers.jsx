@@ -6,6 +6,7 @@ import Button from "../Button.";
 import useProfileStore from "../../stores/Profile";
 import { useNavigate } from "react-router-dom";
 import Avatar from "../Avatar";
+import User from "../User";
 
 export default function Followers() {
   const navigate = useNavigate();
@@ -76,21 +77,16 @@ export default function Followers() {
       )}
       {followers.map((follower) => (
         <div className="follower">
-          <Avatar url={follower.user.profile.profileImage.url} />
-          <div className="headline">
-            <span onClick={() => showProfile(follower.user.profile.userId)}>
-              <b>{follower.user.profile.name}</b>
-            </span>
-            <br />
-            <span style={{ fontSize: "0.85rem", color: "rgba(0,0,0,0.65)" }}>
-              {follower.user.profile.headline}
-            </span>
-            <br />
-            <Button
-              btnText="Remove"
-              onClick={() => removeFollower(follower._id)}
-            />
-          </div>
+          <User
+            url={follower.user.profile.profileImage.url}
+            headline={follower.user.profile.headline}
+            username={follower.user.profile.name}
+            userId={follower.user.profile.userId}
+          />
+          <Button
+            btnText="Remove"
+            onClick={() => removeFollower(follower._id)}
+          />
         </div>
       ))}
     </div>

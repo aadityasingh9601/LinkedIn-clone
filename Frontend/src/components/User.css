@@ -1,0 +1,15 @@
+.user {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.username:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.headline {
+  font-size: 0.85rem;
+  color: #000000a6;
+}

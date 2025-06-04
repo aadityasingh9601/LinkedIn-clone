@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import Button from "../Button.";
 import useProfileStore from "../../stores/Profile";
+import Avatar from "../Avatar";
 import { useNavigate } from "react-router-dom";
 
 export default function Following() {

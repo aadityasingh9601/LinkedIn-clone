@@ -4,7 +4,7 @@
   height: fit-content;
   height: 45.9rem;
   width: 75%;
-  position: relative;
+  position: absolute;
   top: 3rem;
   margin: auto;
 }

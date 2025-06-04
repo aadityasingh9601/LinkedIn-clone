@@ -2,3 +2,68 @@
   font-family: Arial, sans-serif;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
+
+.messaging {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 50;
+  background-color: white;
+  height: 85%;
+  width: 16rem;
+  position: fixed;
+  bottom: 0rem;
+  right: 0.6rem;
+  border: 1px solid gray;
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
+}
+
+.top {
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 7%;
+  width: 16rem;
+  border-bottom: 1px solid gray;
+}
+
+.chats {
+  height: 93%;
+  width: inherit;
+  position: absolute;
+  top: 3rem;
+  background-color: green;
+}
+
+.a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.a img {
+  height: 2.2rem;
+  width: 2.4rem;
+  border-radius: 50%;
+}
+
+.a div {
+  font-size: 0.85rem;
+}
+
+.b i {
+  margin: 0 0.65rem 0 0;
+  font-size: 1.2rem;
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+.position {
+  position: fixed;
+  bottom: -39.1rem;
+}
