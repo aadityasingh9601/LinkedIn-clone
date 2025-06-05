@@ -11,9 +11,7 @@ const Login = lazy(() => import("./Auth/Login"));
 const PostForm = lazy(() => import("./Posts/PostForm"));
 const NotificationBox = lazy(() => import("./Notifications/NotificationBox"));
 import PreLogin from "./Auth/PreLogin";
-const Followers = lazy(() => import("./Network/Followers"));
-const Following = lazy(() => import("./Network/Following"));
-const Connections = lazy(() => import("./Network/Connections"));
+const Network = lazy(() => import("./Network/Network"));
 const JobsUI = lazy(() => import("./Jobs/JobsUI"));
 const Analytics = lazy(() => import("./Analytics/Analytics"));
 const ApplicationForm = lazy(() => import("./Jobs/ApplicationForm"));
@@ -148,9 +146,7 @@ function App() {
                 path="/jobs/:id/applications/:appId"
                 element={<FullApplication />}
               />
-              <Route path="/network/followers" element={<Followers />} />
-              <Route path="/network/following" element={<Following />} />
-              <Route path="/network/connections" element={<Connections />} />
+              <Route path="/network/:type" element={<Network />} />
 
               <Route path="/jobs" element={<JobsUI />} />
 

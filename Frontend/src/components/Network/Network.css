@@ -1,4 +1,4 @@
-.followers {
+.networks {
   background-color: white;
   height: fit-content;
   min-height: 15rem;
@@ -9,7 +9,7 @@
   padding: 1rem 1.5rem;
 }
 
-.follower {
+.network {
   display: flex;
   align-items: center;
   position: relative;
@@ -22,7 +22,7 @@
   cursor: pointer;
 }
 
-.follower button {
+.network button {
   position: absolute !important;
   right: 0;
   top: 1.3rem;

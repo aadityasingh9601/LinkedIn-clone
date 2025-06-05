@@ -30,7 +30,7 @@ router.get(
 );
 
 router.delete(
-  "/:connectionId",
+  "/:userId",
   protect,
   wrapAsync(connectionController.removeConnection)
 );

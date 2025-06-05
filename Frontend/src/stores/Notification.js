@@ -25,7 +25,7 @@ const useNotificationStore = create((set) => ({
       try {
         const response = await axios.post(
           `http://localhost:8000/connection/respond/${noti.sender}`,
-          { response: action, to: noti.sender, notiId: noti._id },
+          { response: action, notiId: noti._id },
           {
             withCredentials: true,
           }

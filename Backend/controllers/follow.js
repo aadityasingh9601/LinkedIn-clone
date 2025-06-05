@@ -55,7 +55,7 @@ const unfollow = async (req, res) => {
     return;
   } else {
     await follow.deleteOne();
-    res.status(200).send({ message: "User unfollowed successfully" });
+    res.status(200).send({ deletedId: follow._id });
   }
 };
 
@@ -63,8 +63,13 @@ const unfollow = async (req, res) => {
 const removeFollower = async (req, res) => {
   console.log("inside removeFollower");
   const { followerId } = req.params;
+  console.log(followerId);
 
-  const follow = await Follow.findById(followerId);
+  const follow = await Follow.findOne({
+    user: followerId,
+    userFollowed: req.user._id,
+  });
+
   if (!follow) {
     res
       .status(400)
@@ -72,7 +77,7 @@ const removeFollower = async (req, res) => {
     return;
   } else {
     await follow.deleteOne();
-    res.status(200).send({ message: "Follower removed successfully" });
+    res.status(200).send({ deletedId: follow._id });
   }
 };
 

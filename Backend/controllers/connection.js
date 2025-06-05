@@ -68,7 +68,8 @@ const sendConnRequest = async (req, res) => {
 const respondToConnRequest = async (req, res) => {
   const { userId } = req.params;
 
-  const { response, to, notiId } = req.body;
+  const { response, notiId } = req.body;
+  console.log(req.body);
 
   const user = await Profile.findOne({ userId: userId });
   const currUser = await Profile.findOne({ userId: req.user._id });
@@ -81,7 +82,7 @@ const respondToConnRequest = async (req, res) => {
 
     const newConnection = new Connection({
       user: userId,
-      connectedUser: to,
+      connectedUser: req.user._id,
     });
 
     await newConnection.save();
@@ -148,31 +149,28 @@ const getAllConnections = async (req, res) => {
 };
 
 const removeConnection = async (req, res) => {
-  const { connectionId } = req.params;
-  console.log(connectionId);
-  const connection = await Connection.findById(connectionId);
+  const { userId } = req.params;
+  console.log(userId);
+  const connection = await Connection.findOne({
+    $and: [
+      { user: { $in: [req.user._id, userId] } },
+      { connectedUser: { $in: [userId, req.user._id] } },
+    ],
+  });
   if (!connection) {
     res.status(404).send({ message: "Connection not found!" });
-    return; // If connection not found, do not continue to delete it.
+    return;
   }
-  if (
-    req.user._id.toString() === connection.user.toString() ||
-    req.user._id.toString() === connection.connectedUser.toString()
-  ) {
-    await Connection.findByIdAndDelete(connectionId);
-    const user1 = await Profile.findOne({ userId: connection.user });
-    user1.connCount -= 1;
-    await user1.save();
 
-    const user2 = await Profile.findOne({ userId: connection.connectedUser });
-    user2.connCount -= 1;
-    await user2.save();
-    res.status(200).send({ message: "Connection removed successfully!" });
-  } else {
-    res.status(403).send({
-      message: "You are not authorized to remove this connection.",
-    });
-  }
+  await connection.deleteOne();
+  const user1 = await Profile.findOne({ userId: connection.user });
+  user1.connCount -= 1;
+  await user1.save();
+
+  const user2 = await Profile.findOne({ userId: connection.connectedUser });
+  user2.connCount -= 1;
+  await user2.save();
+  res.status(200).send({ deletedId: connection._id });
 };
 
 export default {
