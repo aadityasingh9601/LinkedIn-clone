@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { toast } from "react-toastify";
-import axios from "axios";
+import { tryCatchWrapper, apiPost } from "../utils/helper";
 
 const useAnalyticStore = create((set) => ({
   analyticsEvent: localStorage.getItem("analyticsEvent"),
@@ -12,19 +11,10 @@ const useAnalyticStore = create((set) => ({
   },
 
   logEvent: async (data) => {
-    console.log(data);
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/analytics`,
-        {
-          eventData: data,
-        },
-        { withCredentials: true }
-      );
+    tryCatchWrapper(async () => {
+      const response = await apiPost("/analytics", { eventData: data }, {});
       console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
+    });
   },
 }));
 

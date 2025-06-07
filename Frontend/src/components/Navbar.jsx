@@ -93,14 +93,6 @@ export default function Navbar() {
     setShowNetworks(!showNetwork);
   };
 
-  //So what we are finally doing is that we have kept the useEffect in profile.jsx to fetch the profile data same,
-  //we have defined a new variable named currProfileUserId that stores the userId of the person, whose profile we
-  //want to visit, and passed this variable to our useEffect , that re-renders the component each time our
-  //currUserProfile changes , currUserProfile is a state variable that gets it's value from the local storage
-  //and as someone tries to visit a user's profile, then the value of currUserProfileId gets updated in the local
-  //storage and the state variable as well, means the profile component now re-renders and fetches new data from the
-  //backend.Remember this to implement later too whenever needed.
-  //We don't need local storage for this now, we can use dynamic routes.
   const showProfile = (userId) => {
     navigate(`/profile/${userId}`);
   };
@@ -141,7 +133,7 @@ export default function Navbar() {
             <div className="userProfile">
               <Avatar url={profile.profileImage.url} />
               <div className="headline">
-                <span onClick={() => showProfile(profile.userId)}>
+                <span onClick={() => navigate(`/profile/${profile.userId}`)}>
                   <b>{profile.name}</b>
                 </span>
                 <br />
@@ -209,7 +201,7 @@ export default function Navbar() {
       <button
         style={{ backgroundColor: "transparent", border: "none" }}
         onClick={() => {
-          showProfile(currUserId);
+          navigate(`/profile/${currUserId}`);
         }}
       >
         <img

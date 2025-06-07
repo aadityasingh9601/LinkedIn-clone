@@ -1,6 +1,12 @@
 import { create } from "zustand";
-import axios from "axios";
 import { toast } from "react-toastify";
+import {
+  tryCatchWrapper,
+  apiDelete,
+  apiGet,
+  apiPost,
+  apiPatch,
+} from "../utils/helper";
 
 import useUserStore from "./User";
 
@@ -39,20 +45,16 @@ const usePostStore = create((set) => ({
   createPost: async (postData) => {
     let post;
     console.log(postData);
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/post",
+    tryCatchWrapper(async () => {
+      const response = await apiPost(
+        "/post",
         { postData },
-
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
+          "Content-Type": "multipart/form-data",
         }
       );
 
-      //console.log(response);
+      console.log(response);
       post = response.data;
       if (response.status === 201) {
         set({ postFormModal: false });
@@ -73,14 +75,7 @@ const usePostStore = create((set) => ({
           return toast.success("Post scheduled!");
         }
       }
-    } catch (err) {
-      console.log(err);
-      if (err.response.status === 401) {
-        newAccessToken();
-        return toast.error("Something went wrong! Please try again.");
-      }
-      return toast.error(err.message);
-    }
+    });
   },
 
   updatePost: (data) => {
@@ -90,13 +85,9 @@ const usePostStore = create((set) => ({
   },
 
   getScheduledPosts: async (userId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/post/scheduled/${userId}`,
-        {
-          withCredentials: true,
-        }
-      );
+    tryCatchWrapper(async () => {
+      const response = await apiGet(`/post/scheduled/${userId}`);
+
       console.log(response);
       if (response.status == 200) {
         set({ scheduledPosts: response.data });
@@ -104,21 +95,13 @@ const usePostStore = create((set) => ({
       // console.log(response.data);
       //the map & forEach functions are used when updating the state or showing them somewhere, or making some
       //change to them, they are not needed to just normally set state.
-    } catch (err) {
-      console.log(err);
-
-      return toast.error(err.message);
-    }
+    });
   },
 
   fetchPosts: async (userId, page) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/post/${userId}?page=${page}`,
-        {
-          withCredentials: true,
-        }
-      );
+    tryCatchWrapper(async () => {
+      const response = await apiGet(`/post/${userId}?page=${page}`);
+
       console.log(response.data.length);
       // console.log(response.data);
       //the map & forEach functions are used when updating the state or showing them somewhere, or making some
@@ -129,27 +112,16 @@ const usePostStore = create((set) => ({
       }));
       set({ page: page + 1 });
       set({ hasMore: response.data.length > 0 });
-    } catch (err) {
-      console.log(err);
-      if (err.response.status === 401) {
-        newAccessToken();
-        return toast.error("Something went wrong! Please try again.");
-      }
-      return toast.error(err.message);
-    }
+    });
   },
 
   editPost: async (postId, postData) => {
-    console.log(postData);
-    try {
-      const response = await axios.patch(
-        `http://localhost:8000/post/${postId}`,
+    tryCatchWrapper(async () => {
+      const response = await apiPatch(
+        `/post/${postId}`,
         { postData },
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
+          "Content-Type": "multipart/form-data",
         }
       );
 
@@ -194,25 +166,12 @@ const usePostStore = create((set) => ({
 
         return toast.success("Post updated successfully!");
       }
-    } catch (err) {
-      console.log(err);
-      if (err.response.status === 401) {
-        newAccessToken();
-        return toast.error("Something went wrong! Please try again.");
-      }
-      return toast.error(err.message);
-    }
+    });
   },
 
   deletePost: async (postId) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:8000/post/${postId}`,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(response.status);
+    tryCatchWrapper(async () => {
+      const response = await apiDelete(`/post/${postId}`);
 
       if (response.status === 200) {
         set((state) => ({
@@ -226,63 +185,26 @@ const usePostStore = create((set) => ({
       if (response.status === 401) {
         return toast.error("You are not the owner of this post.");
       }
-    } catch (err) {
-      console.log(err);
-      if (err.response.status === 401) {
-        newAccessToken();
-        return toast.error("Something went wrong! Please try again.");
-      }
-      return toast.error(err.message);
-    }
+    });
   },
 
   likePost: async (postId) => {
-    console.log(postId);
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/post/${postId}/like`,
-        {},
-        { withCredentials: true }
-      );
+    tryCatchWrapper(async () => {
+      const response = await apiPost(`/post/${postId}/like`, {}, {});
       console.log(response);
       //Add the postId that is liked into the allLikedPosts stored in the localStorage to persist state.
       setAllLikedPosts("add", postId);
-    } catch (err) {
-      console.log(err);
-      if (err.response.status === 401) {
-        newAccessToken();
-        return toast.error("Something went wrong! Please try again.");
-      }
-      return toast.error(err.message);
-    }
+    });
   },
 
   unlikePost: async (postId) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:8000/post/${postId}/like`,
-        { withCredentials: true }
-      );
+    tryCatchWrapper(async () => {
+      const response = await apiDelete(`/post/${postId}/like`);
       console.log(response);
       //Delete the postId that is unliked from the allLikedPosts stored in the localStorage to persist state.
       setAllLikedPosts("remove", postId);
-    } catch (err) {
-      console.log(err);
-      if (err.response.status === 401) {
-        newAccessToken();
-        return toast.error("Something went wrong! Please try again.");
-      }
-      return toast.error(err.message);
-    }
+    });
   },
-
-  //Add a comment.Transfered to post component, to update comments(local state variable).
-
-  //Get all comments.
-
-  //Edit comment.
-
-  //Delete comment.
 }));
 
 export default usePostStore;

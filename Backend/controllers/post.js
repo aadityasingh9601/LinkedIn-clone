@@ -15,7 +15,10 @@ function convertDateToCron(date) {
 }
 
 const createPost = async (req, res) => {
+  console.log("inside createPost");
+
   const { postData } = req.body;
+  console.log(req.headers);
   const { date, time } = postData;
   //console.log(date, time);
   //Converting date and time into proper format.
@@ -159,6 +162,7 @@ const singlePost = async (req, res) => {
 const updatePost = async (req, res) => {
   const { postId } = req.params;
   const { postData } = req.body;
+  console.log(req.body);
   const { date, time } = postData;
   //console.log(date, time);
   //Converting date and time into proper format.
@@ -222,6 +226,7 @@ const updatePost = async (req, res) => {
 };
 
 const deletePost = async (req, res) => {
+  console.log("inside delete post");
   const { postId } = req.params;
   const post = await Post.findById(postId);
   //We have used findByIdAndDelete in order to trigger the mongoose middleware that will delete all the comments
