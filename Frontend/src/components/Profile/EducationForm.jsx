@@ -1,8 +1,9 @@
 import useProfileStore from "../../stores/Profile";
-import Textarea from "../Textarea";
+
 import Input from "../Input";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
+import RHFtextarea from "../RHFtextarea";
 
 export default function EducationForm() {
   const {
@@ -80,13 +81,13 @@ export default function EducationForm() {
 
         {errors.ended && <p>{errors.ended.message}</p>}
 
-        <Textarea
-          placeholder="Add some more details..."
-          name="description"
+        <RHFtextarea
           register={register}
+          errors={errors}
+          name="description"
+          placeholder="Add some more details..."
+          rules={{}}
         />
-
-        {errors.description && <p>{errors.description.message}</p>}
 
         <Button btnText="Cancel" onClick={() => setAddEducation(false)} />
         <Button btnText="Add" />

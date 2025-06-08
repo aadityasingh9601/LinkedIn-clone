@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import useJobStore from "../../stores/Job";
 import { useEffect } from "react";
 import Button from "../Button.";
+import RHFtextarea from "../RHFtextarea";
 
 export default function CreateJobForm({ job }) {
   const setpostJob = useJobStore((state) => state.setpostJob);
@@ -95,19 +96,15 @@ export default function CreateJobForm({ job }) {
           {...register("companyLogo")}
         />
 
-        <textarea
-          type="text"
-          placeholder="Enter company description"
-          {...register("companydescription", {
+        <RHFtextarea
+          register={register}
+          errors={errors}
+          name="companydescription"
+          rules={{
             required: "Company description is required",
-          })}
+          }}
+          placeholder="Enter company description"
         />
-
-        {errors.companydescription && (
-          <p>{errors.companydescription.message}</p>
-        )}
-
-        <br />
 
         <input
           type="text"
@@ -161,16 +158,15 @@ export default function CreateJobForm({ job }) {
 
         <br />
 
-        <textarea
-          type="text"
+        <RHFtextarea
+          register={register}
+          errors={errors}
+          name="qualifications"
           placeholder="Enter qualifications"
-          {...register("qualifications", {
+          rules={{
             required: "Qualifications are required",
-          })}
+          }}
         />
-
-        {errors.qualifications && <p>{errors.qualifications.message}</p>}
-        <br />
 
         <input
           type="text"
@@ -182,15 +178,15 @@ export default function CreateJobForm({ job }) {
         {errors.skills && <p>{errors.skills.message}</p>}
         <br />
 
-        <textarea
-          type="text"
+        <RHFtextarea
+          register={register}
+          errors={errors}
+          name="jobdescription"
           placeholder="Enter job description"
-          {...register("jobdescription", {
+          rules={{
             required: "Job description is required",
-          })}
+          }}
         />
-        {errors.description && <p>{errors.description.message}</p>}
-        <br />
 
         <br />
 

@@ -4,6 +4,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useState } from "react";
 import usePollStore from "../../stores/Poll";
 import poll from "../../../../Backend/controllers/poll";
+import RHFtextarea from "../RHFtextarea";
 
 export default function PollForm() {
   const setPoll = usePollStore((state) => state.setPoll);
@@ -48,17 +49,19 @@ export default function PollForm() {
           <span>
             Your question<span style={{ color: "red" }}>*</span>
           </span>
-          <textarea
+          <RHFtextarea
             placeholder="Eg. How do you commute to work?"
-            {...register("question", {
+            name="question"
+            register={register}
+            errors={errors}
+            rules={{
               required: "Question is required",
               minLength: {
                 value: 10,
                 message: "Question should be atleast 10 characters long.",
               },
-            })}
+            }}
           />
-          {errors.question && <p>{errors.question.message}</p>}
 
           {fields.map((field, index) => (
             <div key={field.id}>

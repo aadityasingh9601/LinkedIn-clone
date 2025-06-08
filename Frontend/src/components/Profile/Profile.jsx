@@ -17,12 +17,11 @@ import PDF from "./Pdf";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import useAnalyticStore from "../../stores/Analytic";
 import useConnectionStore from "../../stores/Connection";
-import Textarea from "../Textarea";
+import ControlledTextarea from "../ControlledTextarea";
 import ExperienceForm from "./ExperienceForm";
 import EducationForm from "./EducationForm";
 
 export default function Profile({ socket }) {
-  console.log("rendered");
   const { id: currProfileId } = useParams();
   const navigate = useNavigate();
   const profile = useProfileStore((state) => state.profile);
@@ -211,10 +210,10 @@ export default function Profile({ socket }) {
         <div className="bodyy">
           {editAbout ? (
             <>
-              <Textarea
+              <ControlledTextarea
                 name="about"
                 value={profile.about}
-                onChange={handleChange1}
+                onChange={(e) => {}}
               />
               <Button btnText="Cancel" onClick={() => setEditAbout(false)} />
               <Button

@@ -1,6 +1,13 @@
 import { create } from "zustand";
 import { toast } from "react-toastify";
 import axios from "axios";
+import {
+  tryCatchWrapper,
+  apiDelete,
+  apiGet,
+  apiPost,
+  apiPatch,
+} from "../utils/helper";
 
 const useUserStore = create((set) => ({
   isLoggedIn: localStorage.getItem("isLoggedIn"),
@@ -14,41 +21,28 @@ const useUserStore = create((set) => ({
   },
 
   checkToken: async (navigate) => {
-    const { setIsLoggedIn } = useUserStore.getState();
-    const response = await axios.get(
-      "http://localhost:8000/users/checkaccesstoken",
-      { withCredentials: true }
-    );
-    console.log(response);
-    if (response.data === "yes") {
-      localStorage.setItem("isLoggedIn", true);
-      navigate("/home");
-      setIsLoggedIn(true);
-      //console.log("token is present.");
-    }
-    if (response.data === "no") {
-      //console.log("token is not present.");
-      localStorage.setItem("isLoggedIn", false);
-      return toast.warn("Your session has expired.");
-    }
+    tryCatchWrapper(async () => {
+      const { setIsLoggedIn } = useUserStore.getState();
+      const response = await apiGet("/users/checkaccesstoken");
+      console.log(response);
+      if (response.data === "yes") {
+        localStorage.setItem("isLoggedIn", true);
+        navigate("/home");
+        setIsLoggedIn(true);
+        //console.log("token is present.");
+      }
+      if (response.data === "no") {
+        //console.log("token is not present.");
+        localStorage.setItem("isLoggedIn", false);
+        return toast.warn("Your session has expired.");
+      }
+    });
   },
 
   newAccessToken: async () => {
-    //const setIsLoggedIn = useUserStore((state) => state.setIsLoggedIn);
-    //using hooks like this violates the rules of hooks , see in chatGPT for more information.
-    //Instead, use like this shown below, why it's working? see in chatGPT and on internet.
-    //Search why this is ok ,but the other way it wasn't working, ALSO EXPLORE MORE METHODS AND FUNCTIONS OF
-    //ZUSTAND FOR MORE INFORMATION AND ADD TO YOUR NOTES.
     const { setIsLoggedIn } = useUserStore.getState();
-
     try {
-      let response = await axios.get(
-        "http://localhost:8000/users/newaccesstoken",
-
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await apiGet(`/users/newaccesstoken`);
       console.log(response);
     } catch (err) {
       console.log(err);
@@ -94,32 +88,12 @@ const useUserStore = create((set) => ({
   },
 
   getAllLikedPosts: async () => {
-    try {
-      let response = await axios.get(
-        "http://localhost:8000/users/allLikedPosts",
-
-        {
-          withCredentials: true,
-        }
-      );
-      //console.log(response);
+    tryCatchWrapper(async () => {
+      const response = await apiGet(`/users/allLikedPosts`);
       //Save to local storage to persist state and to identify the posts liked by the user and update the state.
-
-      // const usePostStore = (await import("./Post")).default; //dynamically import here
-      // const posts = usePostStore.getState().posts;
-
-      // let postIds = posts.map((p) => {
-      //   return p._id;
-      // });
-
-      // console.log(postIds);
-
       let allLikedPosts = response.data;
       localStorage.setItem("allLikedPosts", JSON.stringify(allLikedPosts));
-    } catch (err) {
-      console.log(err);
-      return toast.error(err.message);
-    }
+    });
   },
 
   allFollowed: new Set(JSON.parse(localStorage.getItem("allFollowed") || "[]")),
@@ -148,36 +122,20 @@ const useUserStore = create((set) => ({
   },
 
   getAllFollowed: async () => {
-    try {
-      let response = await axios.get(
-        "http://localhost:8000/follow/following",
-
-        {
-          withCredentials: true,
-        }
-      );
-      //console.log(response);
-
+    tryCatchWrapper(async () => {
+      const response = await apiGet("/follow/following");
       //Save to local storage to persist state and to identify the users followed by the user.
       let allFollowed = response.data.map((f) => {
         return f.userFollowed._id;
       });
 
       localStorage.setItem("allFollowed", JSON.stringify(allFollowed));
-    } catch (err) {
-      console.log(err);
-      return toast.error(err.message);
-    }
+    });
   },
 
   logout: async (navigate) => {
-    console.log("triggered logout function");
-
     try {
-      const response = await axios.delete(
-        `http://localhost:8000/users/logout`,
-        { withCredentials: true }
-      );
+      const response = await apiDelete(`/users/logout`);
       console.log(response);
       if (response.status === 200) {
         localStorage.removeItem("currUserId");

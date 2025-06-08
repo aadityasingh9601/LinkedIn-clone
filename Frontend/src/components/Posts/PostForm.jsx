@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import PollForm from "../Polls/PollForm";
 import usePollStore from "../../stores/Poll";
 import SchPostsUI from "./SchPostsUI";
+import RHFtextarea from "../RHFtextarea";
 
 export default function PostForm() {
   const {
@@ -84,19 +85,19 @@ export default function PostForm() {
           <div className="form">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="formBody">
-                <textarea
+                <RHFtextarea
                   placeholder="Write your post here"
-                  {...register("content", {
+                  register={register}
+                  name="content"
+                  rules={{
                     required: "Content is required",
                     minLength: {
                       value: 50,
                       message: "Content should be at least 50 characters",
                     },
-                  })}
+                  }}
+                  errors={errors}
                 />
-
-                {errors.content && <p>{errors.content.message}</p>}
-                <br />
 
                 {file && (
                   <div className="previewImg">

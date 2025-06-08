@@ -2,24 +2,10 @@ import "./PostEditForm.css";
 import usePostStore from "../../stores/Post";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
+import { parseISODate } from "../../utils/helper";
+import RHFtextarea from "../RHFtextarea";
 
 export default function PostEditForm({ post }) {
-  function parseISODate(isoDate) {
-    const date = new Date(isoDate);
-
-    const day = date.getDate().toString().padStart(2, "0"); // dd
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // mm
-    const year = date.getFullYear(); // yyyy
-
-    const hours = date.getHours().toString().padStart(2, "0"); // HH
-    const minutes = date.getMinutes().toString().padStart(2, "0"); // mm
-
-    return {
-      date: `${day}-${month}-${year}`, // dd-mm-yyyy
-      time: `${hours}:${minutes}`, // HH:mm
-    };
-  }
-
   const { date, time } = parseISODate(post?.scheduledTime);
   const schedule = usePostStore((state) => state.schedule);
   const setSchedule = usePostStore((state) => state.setSchedule);
@@ -63,16 +49,18 @@ export default function PostEditForm({ post }) {
     <div className="posteditform">
       <h3>Edit your post.</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <textarea
-          type="text"
+        <RHFtextarea
           placeholder="Write your post here..."
-          {...register("content", {
+          register={register}
+          errors={errors}
+          name="content"
+          rules={{
             required: "Content is required",
             minLength: {
               value: 50,
               message: "Content should be at least 50 characters",
             },
-          })}
+          }}
         />
 
         {errors.content && <p>{errors.content.message}</p>}

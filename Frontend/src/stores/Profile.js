@@ -3,6 +3,13 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import useAnalyticStore from "./Analytic";
 import useUserStore from "./User";
+import {
+  tryCatchWrapper,
+  apiGet,
+  apiPost,
+  apiPatch,
+  apiDelete,
+} from "../utils/helper";
 
 const logEvent = useAnalyticStore.getState().logEvent;
 const currUserId = useUserStore.getState().currUserId;
@@ -47,45 +54,30 @@ const useProfileStore = create((set, get) => ({
   },
 
   fetchProfileData: async (userId) => {
-    //LOGIC TO ENSURE THAT WHENEVER A USER VISITS SOME OTHER USER'S PROFILE, A EVENT GETS LOGGED IN THE
-    //DATABASE, THAT CAN BE USED LATER TO SHOW ANALYTICS DATA.
+    tryCatchWrapper(async () => {
+      //LOGIC TO ENSURE THAT WHENEVER A USER VISITS SOME OTHER USER'S PROFILE, A EVENT GETS LOGGED IN THE
+      //DATABASE, THAT CAN BE USED LATER TO SHOW ANALYTICS DATA.
 
-    if (currUserId !== userId) {
-      let eventData = {
-        userId: userId,
-        eventType: "profile_view",
-      };
-      logEvent(eventData);
-    }
-
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/profile/${userId}`,
-        { withCredentials: true }
-      );
-
+      if (currUserId !== userId) {
+        let eventData = {
+          userId: userId,
+          eventType: "profile_view",
+        };
+        logEvent(eventData);
+      }
+      const response = await apiGet(`/profile/${userId}`);
       console.log(response);
       set({ profile: response.data });
-    } catch (err) {
-      console.log(err);
-      return toast.err(err.message);
-    }
+    });
   },
 
   createProfile: async (data) => {
-    console.log(data);
-
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/profile/${currUserId}`,
+    tryCatchWrapper(async () => {
+      const response = await apiPost(
+        `/profile/${currUserId}`,
+        { data },
         {
-          data,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
+          "Content-Type": "multipart/form-data",
         }
       );
       console.log(response);
@@ -139,21 +131,13 @@ const useProfileStore = create((set, get) => ({
 
         return toast.success("Added successfully!");
       }
-    } catch (err) {
-      console.log(err);
-    }
+    });
   },
 
   editProfile: async (data) => {
-    console.log(data);
-    const { section, sectionId } = data;
-    try {
-      const response = await axios.patch(
-        `http://localhost:8000/profile/${currUserId}`,
-        { data },
-        { withCredentials: true }
-      );
-
+    tryCatchWrapper(async () => {
+      const { section, sectionId } = data;
+      const response = apiPatch(`/profile/${currUserId}`, { data }, {});
       console.log(response);
       if (response.status === 200) {
         if (section === "about") {
@@ -174,21 +158,15 @@ const useProfileStore = create((set, get) => ({
         }
         return toast.success("Updated successfully");
       }
-    } catch (err) {
-      console.log(err);
-    }
+    });
   },
 
   //Delete method doesn't supports a request body, so we are using query parameters instead.
   deleteProfile: async (data) => {
-    let { skill, section, sectionId } = data;
-    console.log(skill, section, sectionId);
-
-    try {
-      const response = await axios.delete(
-        `http://localhost:8000/profile/${currUserId}?skill=${skill}&section=${section}&sectionId=${sectionId}`,
-
-        { withCredentials: true }
+    tryCatchWrapper(async () => {
+      let { skill, section, sectionId } = data;
+      const apiDelete = await apiDelete(
+        `/profile/${currUserId}?skill=${skill}&section=${section}&sectionId=${sectionId}`
       );
       console.log(response);
       if (response.status === 200) {
@@ -227,9 +205,7 @@ const useProfileStore = create((set, get) => ({
 
         return toast.success("Deleted successfully!");
       }
-    } catch (err) {
-      console.log(err);
-    }
+    });
   },
 }));
 

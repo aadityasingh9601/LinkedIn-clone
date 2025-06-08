@@ -64,6 +64,22 @@ const timeRep = (time) => {
   return { seconds, minutes, hours, days };
 };
 
+function parseISODate(isoDate) {
+  const date = new Date(isoDate);
+
+  const day = date.getDate().toString().padStart(2, "0"); // dd
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // mm
+  const year = date.getFullYear(); // yyyy
+
+  const hours = date.getHours().toString().padStart(2, "0"); // HH
+  const minutes = date.getMinutes().toString().padStart(2, "0"); // mm
+
+  return {
+    date: `${day}-${month}-${year}`, // dd-mm-yyyy
+    time: `${hours}:${minutes}`, // HH:mm
+  };
+}
+
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, "0");
@@ -75,6 +91,7 @@ const formatDate = (dateString) => {
 export {
   timeRep,
   formatDate,
+  parseISODate,
   tryCatchWrapper,
   apiGet,
   apiPost,

@@ -18,6 +18,7 @@ import UsersIcon from "../icons/UsersIcon";
 import JobIcon from "../icons/JobIcon";
 import MsgIcon from "../icons/MsgIcon";
 import NotiIcon from "../icons/NotiIcon";
+import User from "./User";
 const Avatar = lazy(() => import("./Avatar"));
 
 export default function Navbar() {
@@ -130,20 +131,12 @@ export default function Navbar() {
             onClick={() => setSearchResult(false)}
           ></i>
           {userProfiles.map((profile) => (
-            <div className="userProfile">
-              <Avatar url={profile.profileImage.url} />
-              <div className="headline">
-                <span onClick={() => navigate(`/profile/${profile.userId}`)}>
-                  <b>{profile.name}</b>
-                </span>
-                <br />
-                <span
-                  style={{ fontSize: "0.85rem", color: "rgba(0,0,0,0.65)" }}
-                >
-                  {profile.headline}
-                </span>
-              </div>
-            </div>
+            <User
+              url={profile.profileImage.url}
+              userId={profile.userId}
+              username={profile.name}
+              headline={profile.headline}
+            />
           ))}
         </div>
       )}

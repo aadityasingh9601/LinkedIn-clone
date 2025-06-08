@@ -7,6 +7,7 @@ import Modal from "../Modal";
 import useUserStore from "../../stores/User";
 import { timeRep } from "../../utils/helper";
 import Avatar from "../Avatar";
+import User from "../User";
 
 export default function Comment({ comment, updateComments }) {
   const [toggle, setToggle] = useState(false);
@@ -77,26 +78,30 @@ export default function Comment({ comment, updateComments }) {
   return (
     <div className="comment">
       <div className="header">
-        <Avatar url={comment.author.profile.profileImage.url} />
-        <div className="headline">
-          <span>
-            <b>{comment.author.profile.name}</b>
-          </span>
-          <br />
-          <span style={{ fontSize: "0.8rem" }}>
-            {comment.author.profile.headline}
-          </span>
-          <br />
-          <span style={{ fontSize: "0.8rem", color: "rgba(0,0,0,0.65)" }}>
-            {days > 0
-              ? `${days}d `
-              : hours > 0
-              ? `${hours}h `
-              : minutes > 0
-              ? `${minutes}m`
-              : `${seconds}s`}
-          </span>
-        </div>
+        <User
+          url={comment.author.profile.profileImage.url}
+          username={comment.author.profile.name}
+          userId={comment.author.profile.userId}
+          headline={comment.author.profile.headline}
+        />
+        <span
+          style={{
+            position: "absolute",
+            left: "4.5rem",
+            top: "2.9rem",
+            fontSize: "0.66rem",
+            color: "rgba(0,0,0,0.65)",
+          }}
+        >
+          {days > 0
+            ? `${days}d `
+            : hours > 0
+            ? `${hours}h `
+            : minutes > 0
+            ? `${minutes}m`
+            : `${seconds}s`}
+        </span>
+
         {currUserId === comment.author._id && (
           <button className="options" onClick={() => showOptions(!toggle)}>
             <i class="fa-solid fa-ellipsis"></i>

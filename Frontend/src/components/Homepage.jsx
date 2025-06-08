@@ -27,7 +27,6 @@ export default function Homepage() {
   const postFormModal = usePostStore((state) => state.postFormModal);
   const setPostFormModal = usePostStore((state) => state.setPostFormModal);
   const getAllLikedPosts = useUserStore((state) => state.getAllLikedPosts);
-  const allLikedPosts = useUserStore((state) => state.allLikedPosts);
   const getAllFollowed = useUserStore((state) => state.getAllFollowed);
   const setshowSchPosts = usePostStore((state) => state.setshowSchPosts);
   //console.log(allLikedPosts);

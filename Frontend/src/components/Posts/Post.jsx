@@ -13,6 +13,7 @@ import useUserStore from "../../stores/User";
 import useFollowStore from "../../stores/Follow";
 import { timeRep } from "../../utils/helper";
 import Avatar from "../Avatar";
+import User from "../User";
 
 //The error was occuring because I was accessing props like this,"function Post(post) " and because of that
 //the whole props object was getting logged on the console and post.createdBy was printing undefined , while when
@@ -139,26 +140,30 @@ export default function Post({ post, postRef }) {
   return (
     <div className="post" data-post-id={post._id} ref={postRef}>
       <div className="header">
-        <Avatar url={post.createdBy.profile.profileImage.url} />
-        <div className="headline">
-          <span>
-            <b>{post.createdBy.profile.name}</b>
-          </span>
-          <br />
-          <span style={{ fontSize: "0.85rem", color: "rgba(0,0,0,0.65)" }}>
-            {post.createdBy.profile.headline}
-          </span>
-          <br />
-          <span style={{ fontSize: "0.8rem", color: "rgba(0,0,0,0.65)" }}>
-            {days > 0
-              ? `${days}d `
-              : hours > 0
-              ? `${hours}h `
-              : minutes > 0
-              ? `${minutes}m`
-              : `${seconds}s`}
-          </span>
-        </div>
+        <User
+          url={post.createdBy.profile.profileImage.url}
+          userId={post.createdBy.profile.userId}
+          username={post.createdBy.profile.name}
+          headline={post.createdBy.profile.headline}
+        />
+        <span
+          style={{
+            position: "absolute",
+            left: "4.5rem",
+            top: "2.9rem",
+            fontSize: "0.66rem",
+            color: "rgba(0,0,0,0.65)",
+          }}
+        >
+          {days > 0
+            ? `${days}d `
+            : hours > 0
+            ? `${hours}h `
+            : minutes > 0
+            ? `${minutes}m`
+            : `${seconds}s`}
+        </span>
+
         {currUserId !== post.createdBy._id &&
           (isFollowed ? (
             <button

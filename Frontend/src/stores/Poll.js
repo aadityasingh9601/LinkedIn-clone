@@ -2,6 +2,13 @@ import { create } from "zustand";
 import axios from "axios";
 import { toast } from "react-toastify";
 import usePostStore from "./Post";
+import {
+  tryCatchWrapper,
+  apiDelete,
+  apiGet,
+  apiPost,
+  apiPatch,
+} from "../utils/helper";
 
 const setPostFormModal = usePostStore.getState().setPostFormModal;
 
@@ -15,15 +22,8 @@ const usePollStore = create((set) => ({
   },
 
   createPoll: async (pollData) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/poll/create`,
-        { pollData },
-        {
-          withCredentials: true,
-        }
-      );
-
+    tryCatchWrapper(async () => {
+      const response = await apiPost(`/poll/create`, { pollData }, {});
       console.log(response);
       //Update the polls state variable.
       set((state) => ({
@@ -34,44 +34,25 @@ const usePollStore = create((set) => ({
         setPostFormModal(false);
         return toast.success("Poll created successfully!");
       }
-    } catch (err) {
-      console.log(err);
-      return toast.error(err.message);
-    }
+    });
   },
 
   fetchAllPolls: async () => {
-    console.log("inside fetchAllPolls in the zustand store");
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/poll/all`,
-
-        {
-          withCredentials: true,
-        }
-      );
-
-      //console.log(response);
+    tryCatchWrapper(async () => {
+      const response = await apiGet("/poll/all");
       if (response.status === 200) {
         set({ polls: response.data });
       }
-    } catch (err) {
-      console.log(err);
-      return toast.error(err.message);
-    }
+    });
   },
 
   voteInPoll: async (pollId, optionId) => {
-    console.log("inside voteInPoll in the zustand store");
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/poll/${pollId}/vote/${optionId}`,
+    tryCatchWrapper(async () => {
+      const response = await apiPost(
+        `/poll/${pollId}/vote/${optionId}`,
         {},
-        {
-          withCredentials: true,
-        }
+        {}
       );
-
       console.log(response);
       if (response.status === 200) {
         //Update the poll voters and options votes carefully.
@@ -87,23 +68,12 @@ const usePollStore = create((set) => ({
           ),
         }));
       }
-    } catch (err) {
-      console.log(err);
-      return toast.error(err.message);
-    }
+    });
   },
 
   unVote: async (pollId) => {
-    console.log("inside unvote in the zustand store");
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/poll/${pollId}/unvote`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-
+    tryCatchWrapper(async () => {
+      const response = await apiPost(`/poll/${pollId}/unvote`, {}, {});
       console.log(response);
       if (response.status === 200) {
         //Update the poll voters and options votes carefully.
@@ -120,46 +90,24 @@ const usePollStore = create((set) => ({
         }));
         return false;
       }
-    } catch (err) {
-      console.log(err);
-      return toast.error(err.message);
-    }
+    });
   },
 
   checkVote: async (pollId) => {
-    console.log("inside checkVote in the zustand store");
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/poll/${pollId}/checkvote`,
-
-        {
-          withCredentials: true,
-        }
-      );
-
+    tryCatchWrapper(async () => {
+      const response = await apiGet(`/poll/${pollId}/checkvote`);
       console.log(response);
       if (response.data === "Yes") {
         return true;
       } else {
         return false;
       }
-    } catch (err) {
-      console.log(err);
-      return toast.error(err.message);
-    }
+    });
   },
 
   deletePoll: async (pollId) => {
-    console.log("inside deletePoll in the zustand store");
-    try {
-      const response = await axios.delete(
-        `http://localhost:8000/poll/${pollId}/delete`,
-
-        {
-          withCredentials: true,
-        }
-      );
-
+    tryCatchWrapper(async () => {
+      const response = await apiDelete(`/poll/${pollId}/delete`);
       console.log(response);
       if (response.status === 200) {
         set((state) => ({
@@ -167,10 +115,7 @@ const usePollStore = create((set) => ({
         }));
       }
       return toast.success(response.data);
-    } catch (err) {
-      console.log(err);
-      return toast.error(err.message);
-    }
+    });
   },
 }));
 

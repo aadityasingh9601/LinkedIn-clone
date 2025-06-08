@@ -17,6 +17,10 @@
   position: relative;
 }
 
+.header .user {
+  align-items: normal !important;
+}
+
 .followBtn {
   position: absolute;
   right: 3.5rem;

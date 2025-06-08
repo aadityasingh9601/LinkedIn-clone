@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import useProfileStore from "../../stores/Profile";
-import Textarea from "../Textarea";
+
 import Input from "../Input";
 import Button from "../Button.";
+import RHFtextarea from "../RHFtextarea";
 
 export default function ExperienceForm() {
   const createProfile = useProfileStore((state) => state.createProfile);
@@ -79,10 +80,12 @@ export default function ExperienceForm() {
 
         {errors.ended && <p>{errors.ended.message}</p>}
 
-        <Textarea
-          placeholder="Write your job description here..."
-          name="description"
+        <RHFtextarea
           register={register}
+          errors={errors}
+          name="description"
+          placeholder="Write your job description here..."
+          rules={{}}
         />
 
         <Button btnText="Cancel" onClick={() => setAddExperience(false)} />
