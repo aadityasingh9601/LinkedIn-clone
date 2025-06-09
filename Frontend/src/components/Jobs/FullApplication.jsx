@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import useJobStore from "../../stores/Job";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Envelope from "../../icons/Envelope";
 
 export default function FullApplication() {
   const { id, appId } = useParams();
@@ -96,7 +97,8 @@ export default function FullApplication() {
             }}
           >
             <div style={{ marginLeft: "0.5rem", fontSize: "1.1rem" }}>
-              <i class="fa-solid fa-envelope"></i> jane.doe@example.com
+              <Envelope />
+              jane.doe@example.com
             </div>
             <div
               style={{

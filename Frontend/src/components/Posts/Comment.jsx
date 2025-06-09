@@ -6,7 +6,7 @@ import axios from "axios";
 import Modal from "../Modal";
 import useUserStore from "../../stores/User";
 import { timeRep } from "../../utils/helper";
-import Avatar from "../Avatar";
+import Trash from "../../icons/Trash";
 import User from "../User";
 
 export default function Comment({ comment, updateComments }) {
@@ -122,7 +122,7 @@ export default function Comment({ comment, updateComments }) {
                 setdeleteModal(true), showOptions(false);
               }}
             >
-              <i class="fa-solid fa-trash"></i> Delete
+              <Trash /> Delete
             </button>
           </div>
         ) : null}

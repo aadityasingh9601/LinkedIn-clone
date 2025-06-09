@@ -205,6 +205,13 @@ const usePostStore = create((set) => ({
       setAllLikedPosts("remove", postId);
     });
   },
+
+  getAllLikes: async (postId) => {
+    tryCatchWrapper(async () => {
+      const response = apiGet(`/post/${postId}/like`);
+      setlikedUsers(response.data);
+    });
+  },
 }));
 
 export default usePostStore;

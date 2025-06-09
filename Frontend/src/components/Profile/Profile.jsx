@@ -1,31 +1,28 @@
 import { useEffect, useState } from "react";
 import "./Profile.css";
-import axios from "axios";
 import Button from "../Button.";
-import { toast } from "react-toastify";
-import { useForm } from "react-hook-form";
 import EducationCard from "./EducationCard";
 import ExpCard from "./ExpCard";
-import Modal from "../Modal";
-import ProfileHeadForm from "./ProfileHeadForm";
+
 import useProfileStore from "../../stores/Profile";
 import useFollowStore from "../../stores/Follow";
 import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../../stores/User";
-import useChatStore from "../../stores/Chat";
-import PDF from "./Pdf";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import useAnalyticStore from "../../stores/Analytic";
 import useConnectionStore from "../../stores/Connection";
 import ControlledTextarea from "../ControlledTextarea";
 import ExperienceForm from "./ExperienceForm";
 import EducationForm from "./EducationForm";
+import ProfileHead from "./ProfileHead";
+import Pen from "../../icons/Pen";
+import Trash from "../../icons/Trash";
+import Plus from "../../icons/Plus";
 
 export default function Profile({ socket }) {
   const { id: currProfileId } = useParams();
   const navigate = useNavigate();
   const profile = useProfileStore((state) => state.profile);
-
+  console.log(profile);
   const fetchProfileData = useProfileStore((state) => state.fetchProfileData);
   const createProfile = useProfileStore((state) => state.createProfile);
   const editProfile = useProfileStore((state) => state.editProfile);
@@ -35,7 +32,6 @@ export default function Profile({ socket }) {
   const checkConn = useConnectionStore((state) => state.checkConn);
 
   const currUserId = useUserStore((state) => state.currUserId);
-  const fetchAllMsg = useChatStore((state) => state.fetchAllMsg);
 
   const newSkill = useProfileStore((state) => state.newSkill);
   const setNewSkill = useProfileStore((state) => state.setNewSkill);
@@ -46,26 +42,15 @@ export default function Profile({ socket }) {
   const editAbout = useProfileStore((state) => state.editAbout);
   const setEditAbout = useProfileStore((state) => state.setEditAbout);
 
-  const editHead = useProfileStore((state) => state.editHead);
-  const setEditHead = useProfileStore((state) => state.setEditHead);
-
   const addExperience = useProfileStore((state) => state.addExperience);
   const setAddExperience = useProfileStore((state) => state.setAddExperience);
 
   const addEducation = useProfileStore((state) => state.addEducation);
   const setAddEducation = useProfileStore((state) => state.setAddEducation);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({});
+  const setAbout = useProfileStore((state) => state.setAbout);
 
   const [isConnected, setIsConnected] = useState(false);
-
-  const fullChat = useChatStore((state) => state.fullChat);
-  const setfullChat = useChatStore((state) => state.setfullChat);
 
   useEffect(() => {
     fetchProfileData(currProfileId);
@@ -75,13 +60,6 @@ export default function Profile({ socket }) {
 
   const follow = useFollowStore((state) => state.follow);
   const unfollow = useFollowStore((state) => state.unfollow);
-
-  //To ensure that we can't scroll the page while the modal is open.
-  if (editHead) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "unset";
-  }
 
   let styles = {
     display: currUserId !== currProfileId ? "none" : "inline",
@@ -101,83 +79,13 @@ export default function Profile({ socket }) {
 
   return (
     <div className="profile">
-      <div className="main">
-        <div className="banner">
-          <img src={profile.bannerImage?.url} alt="" />
-        </div>
-        <div className="profilePic">
-          <img src={profile.profileImage?.url} alt="" />
-        </div>
-        <div className="text">
-          <i
-            class="fa-solid fa-pen"
-            style={styles}
-            onClick={() => setEditHead(true)}
-          ></i>
-          <h2>{profile.name}</h2>
-          <p>{profile.headline}</p>
-          <p>
-            {profile.location}
-            <a href="#">
-              <span>{profile.contactInfo?.email}</span>
-              <span>{profile.contactInfo?.phone}</span>
-            </a>
-          </p>
-          <span
-            style={{
-              margin: "0 0.7rem 0 0",
-              color: "rgba(135, 130, 130)",
-              fontSize: "0.9rem",
-            }}
-          >
-            {profile.followerCount} followers
-          </span>
-          <span
-            style={{
-              margin: "0 0.7rem 0 0",
-              color: "rgba(135, 130, 130)",
-              fontSize: "0.9rem",
-              cursor: "pointer",
-            }}
-          >
-            {profile.connCount} connections
-          </span>
-        </div>
-        <div className="allOptions">
-          {currUserId !== profile.userId && (
-            <>
-              {isFollowed ? (
-                <Button
-                  btnText=" Following "
-                  onClick={() => unfollow(currProfileId)}
-                />
-              ) : (
-                <Button
-                  btnText="Follow"
-                  onClick={() => follow(currProfileId)}
-                />
-              )}
-              <Button btnText="Message" onClick={() => handleMessage()} />
-              {!isConnected && (
-                <Button
-                  btnText="Connect"
-                  onClick={() => sendConnReq(profile.userId)}
-                />
-              )}
-            </>
-          )}
-          <button className="downloadPdf">
-            <PDFDownloadLink
-              document={<PDF user={profile} />}
-              fileName="Profile.pdf"
-            >
-              {({ loading }) =>
-                loading ? "Loading document..." : "Download PDF"
-              }
-            </PDFDownloadLink>
-          </button>
-        </div>
-      </div>
+      <ProfileHead
+        profile={profile}
+        styles={styles}
+        createProfile={createProfile}
+        isFollowed={isFollowed}
+        isConnected={isConnected}
+      />
 
       {currUserId === currProfileId && (
         <div className="section">
@@ -189,9 +97,6 @@ export default function Profile({ socket }) {
             <div onClick={showAnalytics}>Post Impressions</div>
             <div onClick={showAnalytics}>Profile Views</div>
             <div onClick={showAnalytics}>Search Appearances</div>
-            {/* <div style={{ backgroundColor: "beige" }}>
-            <Chart data={analyticsData} />
-          </div> */}
           </div>
         </div>
       )}
@@ -200,11 +105,7 @@ export default function Profile({ socket }) {
         <div className="head">
           <span style={{ margin: "0 0 1.5rem 0" }}>About</span>
           <div className="icons">
-            <i
-              class="fa-solid fa-pen"
-              style={styles}
-              onClick={() => setEditAbout(true)}
-            ></i>
+            <Pen styles={styles} onClick={() => setEditAbout(true)} />
           </div>
         </div>
         <div className="bodyy">
@@ -213,7 +114,7 @@ export default function Profile({ socket }) {
               <ControlledTextarea
                 name="about"
                 value={profile.about}
-                onChange={(e) => {}}
+                onChange={(e) => setAbout(e.target.value)}
               />
               <Button btnText="Cancel" onClick={() => setEditAbout(false)} />
               <Button
@@ -233,11 +134,7 @@ export default function Profile({ socket }) {
         <div className="head">
           <span style={{ margin: "0 0 1.5rem 0" }}>Education</span>
           <div className="icons">
-            <i
-              class="fa-solid fa-plus"
-              onClick={() => setAddEducation(true)}
-              style={styles}
-            ></i>
+            <Plus styles={styles} onClick={() => setAddEducation(true)} />
           </div>
         </div>
         <div className="bodyy">
@@ -261,11 +158,7 @@ export default function Profile({ socket }) {
         <div className="head">
           <span style={{ margin: "0 0 1.5rem 0" }}>Skills</span>
           <div className="icons">
-            <i
-              class="fa-solid fa-plus"
-              style={styles}
-              onClick={() => setEditSkills(true)}
-            ></i>
+            <Plus styles={styles} onClick={() => setEditSkills(true)} />
           </div>
         </div>
         <div className="bodyy">
@@ -290,11 +183,10 @@ export default function Profile({ socket }) {
               <div key={index} className="skill">
                 <div>{skill}</div>
                 <div className="icon">
-                  <i
-                    class="fa-solid fa-trash"
-                    style={styles}
+                  <Trash
+                    styles={styles}
                     onClick={() => deleteProfile({ skill: skill })}
-                  ></i>
+                  />
                 </div>
               </div>
             ))}
@@ -306,11 +198,7 @@ export default function Profile({ socket }) {
         <div className="head">
           <span style={{ margin: "0 0 1.5rem 0" }}>Experience</span>
           <div className="icons">
-            <i
-              class="fa-solid fa-plus"
-              style={styles}
-              onClick={() => setAddExperience(true)}
-            ></i>
+            <Plus styles={styles} onClick={() => setAddExperience(true)} />
           </div>
         </div>
         <div className="bodyy">
@@ -329,17 +217,6 @@ export default function Profile({ socket }) {
           </div>
         </div>
       </div>
-
-      {editHead && (
-        <Modal>
-          <i
-            class="fa-solid fa-xmark cross"
-            style={styles}
-            onClick={() => setEditHead(false)}
-          ></i>
-          <ProfileHeadForm profile={profile} createProfile={createProfile} />
-        </Modal>
-      )}
     </div>
   );
 }

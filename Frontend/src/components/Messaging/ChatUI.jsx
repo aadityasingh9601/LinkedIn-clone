@@ -4,6 +4,7 @@ import MsgBox from "./MsgBox";
 
 import useChatStore from "../../stores/Chat";
 import Message from "./Message";
+import Xmark from "../../icons/Xmark";
 
 export default function ChatUI({ socket }) {
   const currChatId = useChatStore((state) => state.currChatId);
@@ -75,16 +76,15 @@ export default function ChatUI({ socket }) {
 
   return (
     <div className="chatui">
-      <i
+      <Xmark
         onClick={() => setfullChat(false)}
-        className="fa-solid fa-xmark"
-        style={{
+        styles={{
           zIndex: "30",
           position: "absolute",
           top: "0.5rem",
           right: "0.5rem",
         }}
-      ></i>
+      />
 
       <div className="receiver">
         <div className="header">

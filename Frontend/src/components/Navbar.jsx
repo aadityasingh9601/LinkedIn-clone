@@ -19,6 +19,7 @@ import JobIcon from "../icons/JobIcon";
 import MsgIcon from "../icons/MsgIcon";
 import NotiIcon from "../icons/NotiIcon";
 import User from "./User";
+import Xmark from "../icons/Xmark";
 const Avatar = lazy(() => import("./Avatar"));
 
 export default function Navbar() {
@@ -126,10 +127,7 @@ export default function Navbar() {
 
       {searchResult && (
         <div className="allUserProfiles">
-          <i
-            class="fa-solid fa-xmark cross"
-            onClick={() => setSearchResult(false)}
-          ></i>
+          <Xmark onClick={() => setSearchResult(false)} />
           {userProfiles.map((profile) => (
             <User
               url={profile.profileImage.url}

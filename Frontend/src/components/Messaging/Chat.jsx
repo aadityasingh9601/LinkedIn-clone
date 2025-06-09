@@ -2,6 +2,8 @@ import "./Chat.css";
 import useChatStore from "../../stores/Chat";
 import { useState } from "react";
 import Button from "../Button.";
+import Ellipsis from "../../icons/Ellipsis";
+import Xmark from "../../icons/Xmark";
 
 export default function Chat({ chat, otherPerson, socket }) {
   const currUserId = localStorage.getItem("currUserId");
@@ -96,17 +98,14 @@ export default function Chat({ chat, otherPerson, socket }) {
             ? `You: ${chat?.lastMessage?.content}`
             : chat?.lastMessage?.content}
         </div>
-        <i
-          class="fa-solid fa-ellipsis"
-          onClick={() => setchatOptions(true)}
-        ></i>
+        <Ellipsis onClick={() => setchatOptions(true)} />
+
         {chatOptions && (
           <div className="chatOptions">
-            <i
-              class="fa-solid fa-xmark"
+            <Xmark
               onClick={() => setchatOptions(false)}
-              style={{ position: "absolute", top: "0.3rem", right: "0.3rem" }}
-            ></i>
+              styles={{ position: "absolute", top: "0.3rem", right: "0.3rem" }}
+            />
 
             <Button btnText="Delete" onClick={() => deleteChat(chat._id)} />
           </div>

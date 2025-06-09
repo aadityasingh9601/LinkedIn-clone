@@ -6,6 +6,7 @@ import PostForm from "./Posts/PostForm";
 import usePollStore from "../stores/Poll";
 import useUserStore from "../stores/User";
 import useAnalyticStore from "../stores/Analytic";
+import Xmark from "../icons/Xmark";
 
 const Post = lazy(() => import("./Posts/Post"));
 const InfiniteScroll = lazy(() => import("react-infinite-scroll-component"));
@@ -150,12 +151,12 @@ export default function Homepage() {
         {postFormModal && (
           <div>
             <Modal>
-              <i
-                class="fa-solid fa-xmark cross"
+              <Xmark
                 onClick={() => {
                   setPostFormModal(false), setshowSchPosts(false);
                 }}
-              ></i>
+              />
+
               <PostForm />
             </Modal>
           </div>

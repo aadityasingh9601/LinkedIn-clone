@@ -39,12 +39,12 @@ export default function EducationCard({
     <div className="educationCard">
       {editEducation ? (
         <>
-          <i
-            class="fa-solid fa-trash"
+          <Trash
             onClick={() =>
               deleteProfile({ sectionId: education._id, section: "education" })
             }
-          ></i>
+          />
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
               type="text"

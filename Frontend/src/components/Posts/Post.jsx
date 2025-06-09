@@ -14,6 +14,14 @@ import useFollowStore from "../../stores/Follow";
 import { timeRep } from "../../utils/helper";
 import Avatar from "../Avatar";
 import User from "../User";
+import Xmark from "../../icons/Xmark";
+import Pen from "../../icons/Pen";
+import ThumbsupR from "../../icons/ThumbsupR";
+import ThumbsupS from "../../icons/ThumbsupS";
+import PaperPlane from "../../icons/PaperPlane";
+import CommentR from "../../icons/CommentR";
+import Check from "../../icons/Check";
+import Ellipsis from "../../icons/Ellipsis";
 
 //The error was occuring because I was accessing props like this,"function Post(post) " and because of that
 //the whole props object was getting logged on the console and post.createdBy was printing undefined , while when
@@ -41,8 +49,6 @@ export default function Post({ post, postRef }) {
   const likePost = usePostStore((state) => state.likePost);
   const unlikePost = usePostStore((state) => state.unlikePost);
   const [likedUsers, setlikedUsers] = useState([]);
-
-  const newAccessToken = useUserStore((state) => state.newAccessToken);
 
   const allLikedPosts = useUserStore((state) => state.allLikedPosts);
   const allFollowed = useUserStore((state) => state.allFollowed);
@@ -108,24 +114,6 @@ export default function Post({ post, postRef }) {
   //Fetch likes related to a post when like modal shows up.
   useEffect(() => {
     if (likeModal) {
-      async function getAllLikes(postId) {
-        try {
-          const response = await axios.get(
-            `http://localhost:8000/post/${postId}/like`,
-            { withCredentials: true }
-          );
-          console.log(response.data);
-
-          setlikedUsers(response.data);
-        } catch (err) {
-          console.log(err);
-          if (err.status === 401) {
-            newAccessToken();
-            return toast.error("Something went wrong! Please try again.");
-          }
-          return toast.error(err.message);
-        }
-      }
       getAllLikes(post._id);
     }
   }, [likeModal]);
@@ -171,20 +159,21 @@ export default function Post({ post, postRef }) {
               onClick={() => unsetFollower(post.createdBy._id)}
             >
               Following
-              <i class="fa-solid fa-check" style={{ marginLeft: "0.4rem" }}></i>
+              <Check styles={{ marginLeft: "0.4rem" }} />
             </button>
           ) : (
             <button
               className="followBtn"
               onClick={() => setFollower(post.createdBy._id)}
             >
-              <i className="fa-solid fa-plus"></i>Follow
+              <Plus />
+              Follow
             </button>
           ))}
 
         {currUserId === post.createdBy._id && (
           <button className="options" onClick={() => setToggle(!toggle)}>
-            <i class="fa-solid fa-ellipsis"></i>
+            <Ellipsis />
           </button>
         )}
         {toggle ? (
@@ -195,7 +184,7 @@ export default function Post({ post, postRef }) {
                 setToggle(false);
               }}
             >
-              <i class="fa-solid fa-pen"></i>
+              <Pen />
               Edit
             </button>
             <button
@@ -204,7 +193,8 @@ export default function Post({ post, postRef }) {
                 setToggle(false);
               }}
             >
-              <i class="fa-solid fa-trash"></i> Delete
+              <Trash />
+              Delete
             </button>
           </div>
         ) : null}
@@ -233,22 +223,18 @@ export default function Post({ post, postRef }) {
       <div className="footer">
         <button>
           {isLiked ? (
-            <i
-              class="fa-solid fa-thumbs-up"
-              style={{ color: "#0a66c2" }}
-              onClick={unsetLike}
-            ></i>
+            <ThumbsupS onClick={unsetLike} styles={{ color: "#0a66c2" }} />
           ) : (
-            <i className="fa-regular fa-thumbs-up" onClick={setLike}></i>
+            <ThumbsupR onClick={setLike} />
           )}
           Like
         </button>
         <button onClick={() => setshowComments(!showComments)}>
-          <i className="fa-regular fa-comment"></i>
+          <CommentR />
           Comment
         </button>
         <button>
-          <i className="fa-solid fa-paper-plane"></i>
+          <PaperPlane />
           Send
         </button>
       </div>
@@ -263,10 +249,8 @@ export default function Post({ post, postRef }) {
 
       {deleteModal && (
         <Modal>
-          <i
-            class="fa-solid fa-xmark cross"
-            onClick={() => setdeleteModal(false)}
-          ></i>
+          <Xmark onClick={() => setdeleteModal(false)} />
+
           <p style={{ margin: "1rem 0 1rem 0 " }}>
             <b>Are you sure you want to delete this post?</b>
             <br></br>
@@ -279,37 +263,23 @@ export default function Post({ post, postRef }) {
 
       {editModal && (
         <Modal>
-          <i
-            class="fa-solid fa-xmark cross"
-            onClick={() => toggleEditModal(false)}
-          ></i>
+          <Xmark onClick={() => toggleEditModal(false)} />
           <PostEditForm post={post} toggleEditModal={toggleEditModal} />
         </Modal>
       )}
 
       {likeModal && (
         <Modal>
-          <i
-            class="fa-solid fa-xmark cross"
-            onClick={() => togglelikeModal(false)}
-          ></i>
+          <Xmark onClick={() => togglelikeModal(false)} />
           <div className="likeList">
             {likedUsers.map((like) => {
               return (
-                <div key={like.user._id} className="like">
-                  <div className="img">
-                    <img src={like.user.profileImage} alt="" />
-                  </div>
-                  <div className="headline">
-                    <span>
-                      <b>{like.user.name}</b>
-                    </span>
-                    <br />
-                    <span style={{ fontSize: "1rem" }}>
-                      {like.user.headline}
-                    </span>
-                  </div>
-                </div>
+                <User
+                  userId={like.user._id}
+                  url={like.user.profileImage}
+                  username={like.user.name}
+                  headline={like.user.headline}
+                />
               );
             })}
           </div>

@@ -4,6 +4,7 @@ import useJobStore from "../../stores/Job";
 import { useEffect } from "react";
 import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
+import Xmark from "../../icons/Xmark";
 
 export default function CreateJobForm({ job }) {
   const setpostJob = useJobStore((state) => state.setpostJob);
@@ -58,12 +59,11 @@ export default function CreateJobForm({ job }) {
   };
   return (
     <div className="createjobform">
-      <i
-        className="fa-solid fa-xmark"
+      <Xmark
         onClick={() => {
           job ? seteditJob(false) : setpostJob(false);
         }}
-      ></i>
+      />
 
       <h3>This is our post a job form.</h3>
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -3,6 +3,8 @@ import useUserStore from "../../stores/User";
 import useJobStore from "../../stores/Job";
 import { useState } from "react";
 import Button from "../Button.";
+import Ellipsis from "../../icons/Ellipsis";
+import Xmark from "../../icons/Xmark";
 
 export default function Job({ job }) {
   //console.log(job);
@@ -15,16 +17,16 @@ export default function Job({ job }) {
   return (
     <div className="job" key={job._id}>
       {job.postedBy === currUserId && (
-        <i onClick={() => setjobOptions(true)} class="fa-solid fa-ellipsis"></i>
+        <Ellipsis onClick={() => setjobOptions(true)} />
       )}
 
       {jobOptions && (
         <div className="options">
-          <i
-            class="fa-solid fa-xmark"
+          <Xmark
             onClick={() => setjobOptions(false)}
-            style={{ position: "absolute", top: "0rem", right: "0rem" }}
-          ></i>
+            styles={{ position: "absolute", top: "0rem", right: "0rem" }}
+          />
+
           <Button
             btnText="Edit"
             onClick={() => {

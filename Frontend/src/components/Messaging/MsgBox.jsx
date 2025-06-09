@@ -3,6 +3,10 @@ import useChatStore from "../../stores/Chat";
 import { useState } from "react";
 import Button from "../Button.";
 import EmojiPicker from "emoji-picker-react";
+import Xmark from "../../icons/Xmark";
+import SmileS from "../../icons/SmileS";
+import SmileR from "../../icons/SmileR";
+import Paperclip from "../../icons/Paperclip";
 
 export default function MsgBox({ currChatId, socket }) {
   const sendMsg = useChatStore((state) => state.sendMsg);
@@ -62,21 +66,15 @@ export default function MsgBox({ currChatId, socket }) {
         <div className="icons">
           <div className="icon">
             {emojiPicker ? (
-              <i
-                className="fa-solid fa-face-smile"
-                onClick={() => setemojiPicker(false)}
-              ></i>
+              <SmileS onClick={() => setemojiPicker(false)} />
             ) : (
-              <i
-                className="fa-regular fa-face-smile"
-                onClick={() => setemojiPicker(true)}
-              ></i>
+              <SmileR onClick={() => setemojiPicker(true)} />
             )}
           </div>
 
           <div className="icon">
             <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
-              <i className="fa-solid fa-paperclip"></i>
+              <Paperclip />
             </label>
             <input
               id="file-upload"
@@ -88,13 +86,12 @@ export default function MsgBox({ currChatId, socket }) {
             {fileName && (
               <>
                 <div>{fileName}</div>
-                <i
-                  className="fa-solid fa-xmark"
+                <Xmark
                   onClick={() => {
                     setFileName("");
                     setmediaFile("");
                   }}
-                ></i>
+                />
               </>
             )}
           </div>

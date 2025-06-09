@@ -8,6 +8,7 @@ import { timeRep } from "../../utils/helper";
 import Dot from "../Dot";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Check from "../../icons/Check";
 
 export default function JobDetail({ job }) {
   console.log(job);
@@ -110,7 +111,8 @@ export default function JobDetail({ job }) {
               fontSize: "0.9rem",
             }}
           >
-            <i class="fa-solid fa-check" style={{ marginRight: "0.3rem" }}></i>
+            <Check styles={{ marginRight: "0.3rem" }} />
+
             {job?.jobType}
           </div>
         </div>
@@ -194,7 +196,8 @@ export default function JobDetail({ job }) {
                   <>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <span>
-                        Applied <i class="fa-solid fa-check"></i>
+                        Applied
+                        <Check />
                       </span>
                     </div>
                   </>

@@ -74,23 +74,6 @@ export default function Poll({ poll }) {
             <Button btnText="Delete" onClick={() => deletePoll(poll._id)} />
           </div>
         )}
-        {/* {currUserId !== poll.createdBy._id &&
-          (isFollowed ? (
-            <button
-              className="followedBtn"
-              onClick={() => unfollow(post.createdBy._id)}
-            >
-              Following
-              <i class="fa-solid fa-check" style={{ marginLeft: "0.4rem" }}></i>
-            </button>
-          ) : (
-            <button
-              className="followBtn"
-              onClick={() => follow(post.createdBy._id)}
-            >
-              <i className="fa-solid fa-plus"></i>Follow
-            </button>
-          ))} */}
       </div>
       <div className="pollbody">
         <div className="ques">{poll?.question}</div>

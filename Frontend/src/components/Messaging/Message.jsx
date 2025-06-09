@@ -3,6 +3,8 @@ import { useState } from "react";
 import Button from "../Button.";
 import useChatStore from "../../stores/Chat";
 import ExternalLink from "../ExternalLink";
+import Ellipsis from "../../icons/Ellipsis";
+import Xmark from "../../icons/Xmark";
 
 export default function Message({ msg, formatTime }) {
   const [msgOptions, setMsgOptions] = useState(false);
@@ -35,11 +37,10 @@ export default function Message({ msg, formatTime }) {
           <div className="time">{formatTime(msg?.Date)}</div>
         </div>
         {currUserId === msg?.sender._id && (
-          <i
-            class="fa-solid fa-ellipsis"
-            style={{ position: "absolute", right: "0rem", top: "0rem" }}
+          <Ellipsis
+            styles={{ position: "absolute", right: "0rem", top: "0rem" }}
             onClick={() => setMsgOptions(true)}
-          ></i>
+          />
         )}
       </div>
       {editMsg ? (
@@ -92,10 +93,9 @@ export default function Message({ msg, formatTime }) {
 
       {msgOptions && (
         <div className="msgOptions" onClick={() => setMsgOptions(false)}>
-          <i
-            class="fa-solid fa-xmark"
+          <Xmark
             style={{ position: "absolute", top: "0.3rem", right: "0.3rem" }}
-          ></i>
+          />
 
           {timePassed < 60 && (
             <Button btnText="Edit" onClick={() => seteditMsg(true)} />

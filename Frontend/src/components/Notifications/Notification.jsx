@@ -3,6 +3,7 @@ import axios from "axios";
 import Button from "../Button.";
 import useNotificationStore from "../../stores/Notification";
 import { timeRep } from "../../utils/helper";
+import Xmark from "../../icons/Xmark";
 
 export default function Notification({ noti }) {
   const deleteNoti = useNotificationStore((state) => state.deleteNoti);
@@ -30,11 +31,7 @@ export default function Notification({ noti }) {
           />
         </div>
       ) : (
-        <i
-          className="fa-solid fa-xmark"
-          style={styles}
-          onClick={() => deleteNoti(noti._id)}
-        ></i>
+        <Xmark style={styles} onClick={() => deleteNoti(noti._id)} />
       )}
 
       <div style={styles2}>

@@ -4,6 +4,8 @@ import ChatUI from "./Messaging/ChatUI";
 import useChatStore from "../stores/Chat";
 import ChatList from "./Messaging/ChatList";
 import { useEffect } from "react";
+import Ellipsis from "../icons/Ellipsis";
+import CaretUp from "../icons/CaretUp";
 
 function Layout({ children, socket }) {
   const currUserId = localStorage.getItem("currUserId");
@@ -54,11 +56,8 @@ function Layout({ children, socket }) {
             <div>Messaging</div>
           </div>
           <div className="b">
-            <i class="fa-solid fa-ellipsis"></i>
-            <i
-              class="fa-solid fa-caret-up upicon"
-              onClick={() => showMessaging()}
-            ></i>
+            <Ellipsis />
+            <CaretUp onClick={() => showMessaging()} />
           </div>
         </div>
         <div className="chats remove">

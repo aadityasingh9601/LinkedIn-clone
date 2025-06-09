@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function User({ url, userId, username, headline }) {
   const navigate = useNavigate();
   return (
-    <div className="user">
+    <div className="user" key={userId}>
       <Avatar url={url} />
       <div className="details">
         <span

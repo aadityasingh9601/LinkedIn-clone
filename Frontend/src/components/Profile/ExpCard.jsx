@@ -33,15 +33,15 @@ export default function ExpCard({ experience, editProfile, deleteProfile }) {
     <div className="expCard">
       {editExperience ? (
         <>
-          <i
-            class="fa-solid fa-trash"
+          <Trash
             onClick={() =>
               deleteProfile({
                 sectionId: experience._id,
                 section: "experience",
               })
             }
-          ></i>
+          />
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
               type="text"

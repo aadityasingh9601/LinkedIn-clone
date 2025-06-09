@@ -23,6 +23,12 @@ const useProfileStore = create((set, get) => ({
     set({ newSkill: value });
   },
 
+  setAbout: (value) => {
+    set((state) => ({
+      profile: { ...state.profile, about: value },
+    }));
+  },
+
   editSkills: false,
 
   setEditSkills: (value) => {
@@ -137,7 +143,7 @@ const useProfileStore = create((set, get) => ({
   editProfile: async (data) => {
     tryCatchWrapper(async () => {
       const { section, sectionId } = data;
-      const response = apiPatch(`/profile/${currUserId}`, { data }, {});
+      const response = await apiPatch(`/profile/${currUserId}`, { data }, {});
       console.log(response);
       if (response.status === 200) {
         if (section === "about") {
@@ -165,7 +171,7 @@ const useProfileStore = create((set, get) => ({
   deleteProfile: async (data) => {
     tryCatchWrapper(async () => {
       let { skill, section, sectionId } = data;
-      const apiDelete = await apiDelete(
+      const response = await apiDelete(
         `/profile/${currUserId}?skill=${skill}&section=${section}&sectionId=${sectionId}`
       );
       console.log(response);
@@ -174,13 +180,12 @@ const useProfileStore = create((set, get) => ({
           set((state) => ({
             profile: {
               ...state.profile,
-              skills: state.skills.filter((s) => s !== skill),
+              skills: state.skills?.filter((s) => s !== skill),
             },
           }));
         }
 
         if (section === "education") {
-          console.log("triggered");
           set((state) => ({
             profile: {
               ...state.profile,
