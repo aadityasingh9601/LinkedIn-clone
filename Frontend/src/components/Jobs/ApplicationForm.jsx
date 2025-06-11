@@ -4,6 +4,7 @@ import Button from "../Button.";
 import useJobStore from "../../stores/Job";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import RHFInput from "../RHFinput";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -85,14 +86,16 @@ export default function ApplicationForm() {
         <br />
 
         <div>Upload your resume here</div>
-        <input
+        <RHFInput
           style={{ fontWeight: "500" }}
           type="file"
-          {...register("resume", {
+          name="resume"
+          register={register}
+          rules={{
             required: "Resume is required",
-          })}
+          }}
+          errors={errors}
         />
-        {errors.resume && <p>{errors.resume.message}</p>}
         <br />
         <Button btnText="Submit" />
       </form>

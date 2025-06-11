@@ -1,6 +1,7 @@
 import "./CommentBox.css";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
+import RHFInput from "../RHFinput";
 
 export default function CommentBox({ addComment }) {
   const {
@@ -18,17 +19,19 @@ export default function CommentBox({ addComment }) {
   return (
     <div className="commBox">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input
+        <RHFInput
           placeholder="Add a comment..."
-          {...register("comment", {
+          name="comment"
+          register={register}
+          rules={{
             required: "Comment is required",
             maxLength: {
               value: 500,
               message: "Comment should not exceed 500 characters",
             },
-          })}
+          }}
+          errors={errors}
         />
-        {errors.comment && <p>{errors.comment.message}</p>}
         <Button type="submit" btnText="Comment" />
       </form>
       <hr />

@@ -1,6 +1,7 @@
 import "./ProfileHeadForm.css";
 import { useForm } from "react-hook-form";
 import Button from "../Button.";
+import RHFInput from "../RHFinput";
 
 export default function ProfileHeadForm({ profile, createProfile }) {
   const {
@@ -31,56 +32,64 @@ export default function ProfileHeadForm({ profile, createProfile }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="profileHeadForm">
-      <input
+      <RHFInput
         placeholder="Enter your name"
-        {...register("name", {
+        name="name"
+        register={register}
+        rules={{
           required: "Name cannot be empty",
-        })}
+        }}
+        errors={errors}
       />
-      {errors.name && errors.name.message}
       <br></br>
 
       <div className="headFormImages">
         <div className="profileImg">
           <span>Current Profile Image</span> <br></br>
           <img src={profile.profileImage?.url} alt="" />
-          <input type="file" {...register("profileImage")} />
+          <RHFInput type="file" register={register} name="profileImage" />
         </div>
 
         <div className="bannerImg">
           <span>Current Banner Image</span> <br></br>
           <img src={profile.bannerImage?.url} alt="" />
-          <input type="file" {...register("bannerImage")} />
+          <RHFInput type="file" name="bannerImage" register={register} />
         </div>
       </div>
-
-      <input
+      <RHFInput
         type="text"
         placeholder="Enter your headline"
-        {...register("headline")}
+        name="headline"
+        register={register}
       />
       <br></br>
-      <input
+      <RHFInput
         type="text"
         placeholder="Enter your location"
-        {...register("location", {
+        name="location"
+        register={register}
+        rules={{
           required: "Location can't be empty",
           minLength: {
             value: 5,
             message: "Location should be at least 5 characters",
           },
-        })}
+        }}
+        errors={errors}
       />
+
       {errors.location && <p>{errors.location.message}</p>}
       <br></br>
-      <input
+      <RHFInput
         placeholder="Enter your email"
-        {...register("contactInfo[email]")}
+        register={register}
+        name="contactInfo[email]"
       />
       <br></br>
-      <input
+      <RHFInput
         placeholder="Enter your phone"
-        {...register("contactInfo[phone]")}
+        register={register}
+        name="contactInfo[phone]"
       />
       <br></br>
       <Button btnText="Save Changes" />

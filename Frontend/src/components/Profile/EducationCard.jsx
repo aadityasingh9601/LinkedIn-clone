@@ -3,6 +3,9 @@ import "./EducationCard.css";
 import { useForm } from "react-hook-form";
 import Button from "../Button.";
 import { formatDate } from "../../utils/helper";
+import Pen from "../../icons/Pen";
+import RHFInput from "../RHFinput";
+import Trash from "../../icons/Trash";
 
 export default function EducationCard({
   education,
@@ -46,55 +49,60 @@ export default function EducationCard({
           />
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <input
+            <RHFInput
               type="text"
+              name="institution"
               placeholder="Enter your institution"
-              {...register("institution", {
+              register={register}
+              rules={{
                 required: "Institution is required",
                 minLength: {
                   value: 5,
                   message: "Institution should be at least 5 characters",
                 },
-              })}
+              }}
+              errors={errors}
             />
-            {errors.institution && <p>{errors.institution.message}</p>}
-
-            <input
+            <RHFInput
               placeholder="Enter your degree"
-              {...register("degree", {
+              name="degree"
+              register={register}
+              rules={{
                 required: "Degree is required",
                 minLength: {
                   value: 2,
                   message: "Degree should be at least 2 characters",
                 },
-              })}
+              }}
+              errors={errors}
             />
 
-            <input
+            <RHFInput
               placeholder="Start date"
-              {...register("started", {
+              name="started"
+              register={register}
+              rules={{
                 required: "Start Date is required",
                 pattern: {
                   value: /^\d{4}-\d{2}-\d{2}$/,
                   message: "Date must be in yyyy-mm-dd format",
                 },
-              })}
+              }}
+              errors={errors}
             />
-
-            {errors.started && <p>{errors.started.message}</p>}
-
-            <input
+            <RHFInput
               placeholder="End date"
-              {...register("ended", {
+              name="ended"
+              register={register}
+              rules={{
                 required: "End Date is required",
                 pattern: {
                   value: /^\d{4}-\d{2}-\d{2}$/,
                   message: "Date must be in yyyy-mm-dd format",
                 },
-              })}
+              }}
+              errors={errors}
             />
-
-            {errors.ended && <p>{errors.ended.message}</p>}
 
             <Button btnText="Cancel" onClick={() => setEditEducation(false)} />
             <Button btnText="Save changes" type="submit" />
@@ -118,7 +126,7 @@ export default function EducationCard({
               {startDate} - {endDate}
             </span>
           </div>
-          <i class="fa-solid fa-pen" onClick={() => setEditEducation(true)}></i>
+          <Pen onClick={() => setEditEducation(true)} />
         </>
       )}
     </div>

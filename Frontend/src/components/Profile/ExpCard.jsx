@@ -3,6 +3,9 @@ import "./ExpCard.css";
 import { useForm } from "react-hook-form";
 import Button from "../Button.";
 import { formatDate } from "../../utils/helper";
+import Pen from "../../icons/Pen";
+import RHFtextarea from "../RHFtextarea";
+import Trash from "../../icons/Trash";
 
 export default function ExpCard({ experience, editProfile, deleteProfile }) {
   const {
@@ -92,10 +95,11 @@ export default function ExpCard({ experience, editProfile, deleteProfile }) {
             />
 
             {errors.ended && <p>{errors.ended.message}</p>}
-
-            <textarea
+            <RHFtextarea
+              register={register}
+              errors={errors}
+              name="description"
               placeholder="Write your job description here..."
-              {...register("description")}
             />
 
             <Button btnText="Cancel" onClick={() => setEditExperience(false)} />
@@ -122,10 +126,7 @@ export default function ExpCard({ experience, editProfile, deleteProfile }) {
             <br />
             <span>{experience.description}</span>
           </div>
-          <i
-            class="fa-solid fa-pen"
-            onClick={() => setEditExperience(true)}
-          ></i>
+          <Pen onClick={() => setEditExperience(true)} />
         </>
       )}
     </div>

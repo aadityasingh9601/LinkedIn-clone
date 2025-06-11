@@ -17,6 +17,7 @@ import ProfileHead from "./ProfileHead";
 import Pen from "../../icons/Pen";
 import Trash from "../../icons/Trash";
 import Plus from "../../icons/Plus";
+import ControlledInput from "../ControlledInput";
 
 export default function Profile({ socket }) {
   const { id: currProfileId } = useParams();
@@ -164,13 +165,14 @@ export default function Profile({ socket }) {
         <div className="bodyy">
           {editSkills && (
             <>
-              <input
+              <ControlledInput
                 value={newSkill}
                 placeholder="Skill"
                 onChange={(e) => {
                   setNewSkill(e.target.value);
                 }}
               />
+
               <Button btnText="Cancel" onClick={() => setEditSkills(false)} />
               <Button
                 btnText="Add"

@@ -8,6 +8,10 @@ import useUserStore from "../../stores/User";
 import { timeRep } from "../../utils/helper";
 import Trash from "../../icons/Trash";
 import User from "../User";
+import Ellipsis from "../../icons/Ellipsis";
+import Pen from "../../icons/Pen";
+import Xmark from "../../icons/Xmark";
+import ControlledTextarea from "../ControlledTextarea";
 
 export default function Comment({ comment, updateComments }) {
   const [toggle, setToggle] = useState(false);
@@ -104,7 +108,7 @@ export default function Comment({ comment, updateComments }) {
 
         {currUserId === comment.author._id && (
           <button className="options" onClick={() => showOptions(!toggle)}>
-            <i class="fa-solid fa-ellipsis"></i>
+            <Ellipsis />
           </button>
         )}
         {toggle ? (
@@ -114,7 +118,7 @@ export default function Comment({ comment, updateComments }) {
                 setCommentEdit(true), showOptions(false);
               }}
             >
-              <i class="fa-solid fa-pen"></i>
+              <Pen />
               Edit
             </button>
             <button
@@ -131,7 +135,12 @@ export default function Comment({ comment, updateComments }) {
       <div className="txt">
         {commentEdit ? (
           <>
-            <textarea value={commentText} onChange={handleChange} />
+            <ControlledTextarea
+              placeholder="Enter your comment"
+              value={commentText}
+              onChange={handleChange}
+            />
+
             <Button
               btnText="Save Changes"
               onClick={() => editComment(comment._id)}
@@ -143,10 +152,8 @@ export default function Comment({ comment, updateComments }) {
       </div>
       {deleteModal && (
         <Modal>
-          <i
-            class="fa-solid fa-xmark cross"
-            onClick={() => setdeleteModal(false)}
-          ></i>
+          <Xmark onClick={() => setdeleteModal(false)} />
+
           <p style={{ margin: "1rem 0 1rem 0 " }}>
             <b>Are you sure you want to delete this comment?</b>
             <br></br>

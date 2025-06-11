@@ -4,6 +4,8 @@ import Button from "../Button.";
 import usePostStore from "../../stores/Post";
 import PostEditForm from "./PostEditForm";
 import Modal from "../Modal";
+import Ellipsis from "../../icons/Ellipsis";
+import Xmark from "../../icons/Xmark";
 
 export default function SchPost({ schPost }) {
   function formatDate(isoDate) {
@@ -34,11 +36,10 @@ export default function SchPost({ schPost }) {
       >
         <div>{formatDate(schPost?.scheduledTime)}</div>
         <div>
-          <i
-            class="fa-solid fa-ellipsis"
+          <Ellipsis
             onClick={() => setOptions(!options)}
             style={{ fontSize: "1rem" }}
-          ></i>
+          />
         </div>
       </div>
       <div>{schPost?.content.substring(0, 50)}...</div>
@@ -54,10 +55,8 @@ export default function SchPost({ schPost }) {
 
       {editModal && (
         <Modal>
-          <i
-            class="fa-solid fa-xmark cross"
-            onClick={() => seteditModal(false)}
-          ></i>
+          <Xmark onClick={() => seteditModal(false)} />
+
           <PostEditForm post={schPost} />
         </Modal>
       )}

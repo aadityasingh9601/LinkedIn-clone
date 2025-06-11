@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
 import Xmark from "../../icons/Xmark";
+import RHFInput from "../RHFinput";
 
 export default function CreateJobForm({ job }) {
   const setpostJob = useJobStore((state) => state.setpostJob);
@@ -67,33 +68,36 @@ export default function CreateJobForm({ job }) {
 
       <h3>This is our post a job form.</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input
+        <RHFInput
           placeholder="Write job title"
-          {...register("title", {
+          register={register}
+          name="title"
+          rules={{
             required: "Title is required",
             minLength: {
               value: 5,
               message: "Content should be at least 5 characters",
             },
-          })}
+          }}
+          errors={errors}
         />
-        {errors.title && <p>{errors.title.message}</p>}
-        <br />
 
-        <input
-          type="text"
+        <br />
+        <RHFInput
           placeholder="Enter company name"
-          {...register("company", {
+          name="company"
+          register={register}
+          rules={{
             required: "Company is required",
-          })}
+          }}
+          errors={errors}
         />
-        {errors.company && <p>{errors.company.message}</p>}
-        <br />
 
-        <input
-          type="text"
+        <br />
+        <RHFInput
           placeholder="Enter company logo url"
-          {...register("companyLogo")}
+          name="companyLogo"
+          register={register}
         />
 
         <RHFtextarea
@@ -105,15 +109,15 @@ export default function CreateJobForm({ job }) {
           }}
           placeholder="Enter company description"
         />
-
-        <input
-          type="text"
+        <RHFInput
           placeholder="Company location"
-          {...register("location", {
+          name="location"
+          register={register}
+          rules={{
             required: "Location is required",
-          })}
+          }}
+          errors={errors}
         />
-        {errors.location && <p>{errors.location.message}</p>}
         <br />
 
         <label htmlFor="jobType" className="block font-medium mb-1">
@@ -153,9 +157,11 @@ export default function CreateJobForm({ job }) {
         </select>
 
         <br />
-
-        <input type="text" placeholder="Enter salary" {...register("salary")} />
-
+        <RHFInput
+          placeholder="Enter salary"
+          name="salary"
+          register={register}
+        />
         <br />
 
         <RHFtextarea
@@ -168,14 +174,15 @@ export default function CreateJobForm({ job }) {
           }}
         />
 
-        <input
-          type="text"
+        <RHFInput
           placeholder="Enter skills required"
-          {...register("skills", {
+          name="skills"
+          register={register}
+          rules={{
             required: "Skills are required",
-          })}
+          }}
+          errors={errors}
         />
-        {errors.skills && <p>{errors.skills.message}</p>}
         <br />
 
         <RHFtextarea

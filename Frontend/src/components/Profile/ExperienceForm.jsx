@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import useProfileStore from "../../stores/Profile";
 
-import Input from "../Input";
+import Input from "../ControlledInput";
 import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
 

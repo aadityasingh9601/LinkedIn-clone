@@ -69,6 +69,7 @@ export default function PollForm() {
                 Option {index + 1}
                 <span style={{ color: "red" }}>*</span>
               </span>
+
               <input
                 placeholder="Eg. Public transport"
                 {...register(`options.${index}.value`, {

@@ -4,8 +4,8 @@ export default function RHFtextarea({
   placeholder,
   register,
   name,
-  rules,
-  errors,
+  rules = {},
+  errors = {},
 }) {
   return (
     <MyErrorBoundary>

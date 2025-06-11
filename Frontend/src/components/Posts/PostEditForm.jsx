@@ -4,6 +4,9 @@ import Button from "../Button.";
 import { useForm } from "react-hook-form";
 import { parseISODate } from "../../utils/helper";
 import RHFtextarea from "../RHFtextarea";
+import ClockS from "../../icons/ClockS";
+import ClockR from "../../icons/ClockR";
+import RHFInput from "../RHFinput";
 
 export default function PostEditForm({ post }) {
   const { date, time } = parseISODate(post?.scheduledTime);
@@ -72,42 +75,42 @@ export default function PostEditForm({ post }) {
             </span>
             <br />
             <img height="200px" width="200px" src={post.media.url} alt="" />
-            <input
+            <RHFInput
               type="file"
               placeholder="Enter your post image url here"
-              {...register("media")}
+              register={register}
+              name="media"
             />
           </div>
         )}
         <br />
-
-        <input
+        <RHFInput
           type="text"
           style={{ width: "100%" }}
           placeholder="Category"
-          {...register("category", {
+          name="category"
+          register={register}
+          rules={{
             required: "Category is required",
             type: "text",
-          })}
+          }}
+          errors={errors}
         />
-        {errors.category && <p>{errors.category.message}</p>}
         <br />
         <br />
         {/* Show only if post isn't published yet. */}
         {post.published === false && (
           <div style={{ display: "inline" }}>
             {schedule ? (
-              <i
-                class="fa-solid fa-clock"
+              <ClockS
                 onClick={() => setSchedule(false)}
                 style={{ fontSize: "1.2rem" }}
-              ></i>
+              />
             ) : (
-              <i
-                class="fa-regular fa-clock"
+              <ClockR
                 onClick={() => setSchedule(true)}
                 style={{ fontSize: "1.2rem" }}
-              ></i>
+              />
             )}
           </div>
         )}
@@ -125,39 +128,42 @@ export default function PostEditForm({ post }) {
             }}
           >
             <div>Date</div>
-            <input
+            <RHFInput
               placeholder="dd-mm-yyyy"
               style={{
                 margin: "0 0 1rem 0",
                 width: "95%",
               }}
-              {...register("date", {
+              name="date"
+              register={register}
+              rules={{
                 required: schedule ? "Date is required" : false,
                 pattern: {
                   value: /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/,
                   message: "Enter date in dd-mm-yyyy format",
                 },
-              })}
+              }}
+              errors={errors}
             />
-            {errors.date && <p>{errors.date.message}</p>}
 
             <div>Time</div>
-            <input
+            <RHFInput
               placeholder="17:30"
               style={{
                 margin: "0 0 1rem 0",
                 width: "95%",
               }}
-              {...register("time", {
+              name="time"
+              register={register}
+              rules={{
                 required: schedule ? "Time is required" : false,
                 pattern: {
                   value: /^([01]\d|2[0-3]):([0-5]\d)$/,
                   message: "Enter time in 24-hour format (HH:mm)",
                 },
-              })}
+              }}
+              errors={errors}
             />
-            {errors.time && <p>{errors.time.message}</p>}
-
             <Button
               onClick={() => {
                 setshowSchPosts(true), console.log("clikced");

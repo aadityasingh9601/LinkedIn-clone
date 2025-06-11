@@ -7,6 +7,14 @@ import PollForm from "../Polls/PollForm";
 import usePollStore from "../../stores/Poll";
 import SchPostsUI from "./SchPostsUI";
 import RHFtextarea from "../RHFtextarea";
+import Xmark from "../../icons/Xmark";
+import SmileR from "../../icons/SmileR";
+import SmileS from "../../icons/SmileS";
+import ClockS from "../../icons/ClockS";
+import ClockR from "../../icons/ClockR";
+import Poll from "../../icons/Poll";
+import ImageIcon from "../../icons/ImageIcon";
+import RHFInput from "../RHFinput";
 
 export default function PostForm() {
   const {
@@ -109,54 +117,51 @@ export default function PostForm() {
                         fontSize: "1.25rem",
                       }}
                     >
-                      <i
-                        className="fa-solid fa-xmark"
+                      <Xmark
                         style={{ zIndex: "10" }}
                         onClick={() => {
                           setValue("media", "");
                         }}
-                      ></i>
+                      />
                     </div>
 
                     <img src={preview} />
                   </div>
                 )}
               </div>
-
-              <input
+              <RHFInput
                 type="text"
                 placeholder="Add some hashtags..."
-                {...register("category", {
+                name="category"
+                register={register}
+                rules={{
                   required: "Category is required",
                   type: "text",
-                })}
+                }}
+                errors={errors}
               />
-              {errors.category && <p>{errors.category.message}</p>}
-
               <br />
 
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div className="optionss">
                   <div>
-                    <i className="fa-regular fa-face-smile"></i>
+                    <SmileR />
                   </div>
                   <div>
                     <label htmlFor="mediaInput">
-                      <i class="fa-regular fa-image"></i>
+                      <ImageIcon />
                     </label>
-                    <input
+                    <RHFInput
                       id="mediaInput"
                       type="file"
                       style={{ display: "none" }}
                       placeholder="Enter your post image url here"
-                      {...register("media")}
+                      name="media"
+                      register={register}
                     />
                   </div>
                   <div>
-                    <i
-                      class="fa-solid fa-square-poll-vertical"
-                      onClick={() => setPoll(true)}
-                    ></i>
+                    <Poll onClick={() => setPoll(true)} />
                   </div>
                 </div>
 
@@ -168,17 +173,15 @@ export default function PostForm() {
                   }}
                 >
                   {schedule ? (
-                    <i
-                      class="fa-solid fa-clock"
+                    <ClockS
                       onClick={() => setSchedule(false)}
                       style={{ fontSize: "1.2rem" }}
-                    ></i>
+                    />
                   ) : (
-                    <i
-                      class="fa-regular fa-clock"
+                    <ClockR
                       onClick={() => setSchedule(true)}
                       style={{ fontSize: "1.2rem" }}
-                    ></i>
+                    />
                   )}
 
                   <Button btnText="Post" />
@@ -196,38 +199,39 @@ export default function PostForm() {
                     }}
                   >
                     <span>Date</span>
-                    <input
+                    <RHFInput
                       placeholder="dd-mm-yyyy"
                       style={{
                         margin: "0 0 1rem 0",
                       }}
-                      {...register("date", {
+                      name="date"
+                      register={register}
+                      rules={{
                         required: schedule ? "Date is required" : false,
                         pattern: {
                           value:
                             /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/,
                           message: "Enter date in dd-mm-yyyy format",
                         },
-                      })}
+                      }}
+                      errors={errors}
                     />
-                    {errors.date && <p>{errors.date.message}</p>}
-
                     <span>Time</span>
-                    <input
+                    <RHFInput
                       placeholder="17:30"
                       style={{
                         margin: "0 0 1rem 0",
                       }}
-                      {...register("time", {
+                      name="time"
+                      rules={{
                         required: schedule ? "Time is required" : false,
                         pattern: {
                           value: /^([01]\d|2[0-3]):([0-5]\d)$/,
                           message: "Enter time in 24-hour format (HH:mm)",
                         },
-                      })}
+                      }}
+                      errors={errors}
                     />
-                    {errors.time && <p>{errors.time.message}</p>}
-
                     <Button
                       onClick={() => {
                         setshowSchPosts(true), console.log("clikced");

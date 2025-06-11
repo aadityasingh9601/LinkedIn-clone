@@ -4,6 +4,7 @@ import PollOption from "./PollOption";
 import useUserStore from "../../stores/User";
 import { useEffect, useState } from "react";
 import Button from "../Button.";
+import Ellipses from "../../icons/Ellipsis";
 
 export default function Poll({ poll }) {
   const [voted, setVoted] = useState(false);
@@ -57,8 +58,7 @@ export default function Poll({ poll }) {
         </div>
         <div>
           {currUserId === poll.createdBy._id && (
-            <i
-              class="fa-solid fa-ellipsis"
+            <Ellipsis
               onClick={() => setToggle(!toggle)}
               style={{
                 position: "absolute",
@@ -66,7 +66,7 @@ export default function Poll({ poll }) {
                 right: "0rem",
                 fontSize: "1.4rem",
               }}
-            ></i>
+            />
           )}
         </div>
         {toggle && (

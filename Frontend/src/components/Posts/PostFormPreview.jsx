@@ -1,5 +1,8 @@
 import "./PostFormPreview.css";
 import usePostStore from "../../stores/Post";
+import ImageIcon from "../../icons/ImageIcon";
+import Poll from "../../icons/Poll";
+import ControlledInput from "../ControlledInput";
 
 export default function PostFormPreview() {
   const postFormModal = usePostStore((state) => state.postFormModal);
@@ -11,7 +14,7 @@ export default function PostFormPreview() {
           <img src="https://tse3.mm.bing.net/th?id=OIP.puMo9ITfruXP8iQx9cYcqwHaGJ&pid=Api&P=0&h=180" />
         </div>
         <div>
-          <input
+          <ControlledInput
             placeholder="Start a post"
             onClick={() => setPostFormModal(true)}
           />
@@ -19,14 +22,11 @@ export default function PostFormPreview() {
       </div>
       <div className="icons">
         <div>
-          <i class="fa-regular fa-image" style={{ color: "#0a66c2" }}></i>
+          <ImageIcon style={{ color: "#0a66c2" }} />
           <span style={{ margin: "0 0 0 0.4rem" }}>Media</span>
         </div>
         <div>
-          <i
-            class="fa-solid fa-square-poll-vertical"
-            style={{ color: "#c37d16" }}
-          ></i>
+          <Poll style={{ color: "#c37d16" }} />
           <span style={{ margin: "0 0 0 0.4rem" }}>Poll</span>
         </div>
       </div>

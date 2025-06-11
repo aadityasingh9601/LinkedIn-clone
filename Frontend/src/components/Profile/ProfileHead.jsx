@@ -6,6 +6,8 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import useProfileStore from "../../stores/Profile";
 import Modal from "../Modal";
 import ProfileHeadForm from "./ProfileHeadForm";
+import Pen from "../../icons/Pen";
+import Xmark from "../../icons/Xmark";
 
 export default function ProfileHead({
   profile,
@@ -34,11 +36,8 @@ export default function ProfileHead({
         <img src={profile.profileImage?.url} alt="" />
       </div>
       <div className="text">
-        <i
-          class="fa-solid fa-pen"
-          style={styles}
-          onClick={() => setEditHead(true)}
-        ></i>
+        <Pen style={styles} onClick={() => setEditHead(true)} />
+
         <h2>{profile.name}</h2>
         <p>{profile.headline}</p>
         <p>
@@ -101,11 +100,7 @@ export default function ProfileHead({
       </div>
       {editHead && (
         <Modal>
-          <i
-            class="fa-solid fa-xmark cross"
-            style={styles}
-            onClick={() => setEditHead(false)}
-          ></i>
+          <Xmark style={styles} onClick={() => setEditHead(false)} />
           <ProfileHeadForm profile={profile} createProfile={createProfile} />
         </Modal>
       )}

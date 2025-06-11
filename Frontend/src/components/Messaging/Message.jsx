@@ -5,6 +5,7 @@ import useChatStore from "../../stores/Chat";
 import ExternalLink from "../ExternalLink";
 import Ellipsis from "../../icons/Ellipsis";
 import Xmark from "../../icons/Xmark";
+import ControlledInput from "../ControlledInput";
 
 export default function Message({ msg, formatTime }) {
   const [msgOptions, setMsgOptions] = useState(false);
@@ -14,9 +15,6 @@ export default function Message({ msg, formatTime }) {
   const updateMsg = useChatStore((state) => state.updateMsg);
   const deleteMsg = useChatStore((state) => state.deleteMsg);
 
-  const handleChange = (e) => {
-    setnewMsg(e.target.value);
-  };
   const timePassed = (new Date() - new Date(msg.Date)) / 60000;
 
   return (
@@ -45,7 +43,12 @@ export default function Message({ msg, formatTime }) {
       </div>
       {editMsg ? (
         <>
-          <input value={newMsg} onChange={handleChange} />
+          <ControlledInput
+            value={newMsg}
+            onChange={(e) => {
+              setnewMsg(e.target.value);
+            }}
+          />
 
           <Button btnText="Cancel" onClick={() => seteditMsg(false)} />
           <Button

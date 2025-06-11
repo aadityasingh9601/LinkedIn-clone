@@ -1,4 +1,4 @@
-export default function SmileR({ styles = {}, onClick }) {
+export default function SmileR({ styles = {}, onClick = () => {} }) {
   return (
     <div>
       <i

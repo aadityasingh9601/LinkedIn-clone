@@ -7,6 +7,8 @@ import Xmark from "../../icons/Xmark";
 import SmileS from "../../icons/SmileS";
 import SmileR from "../../icons/SmileR";
 import Paperclip from "../../icons/Paperclip";
+import ControlledTextarea from "../ControlledTextarea";
+import ControlledInput from "../ControlledInput";
 
 export default function MsgBox({ currChatId, socket }) {
   const sendMsg = useChatStore((state) => state.sendMsg);
@@ -17,11 +19,6 @@ export default function MsgBox({ currChatId, socket }) {
   const [fileName, setFileName] = useState("");
 
   const [mediaFile, setmediaFile] = useState("");
-
-  const handleChange2 = (e) => {
-    setFileName(e.target.files[0]?.name || "");
-    setmediaFile(e.target.files[0]);
-  };
 
   function handleChange(event) {
     setnewMsg(event.target.value);
@@ -44,11 +41,11 @@ export default function MsgBox({ currChatId, socket }) {
         </div>
       )}
       <div style={{ display: "flex", alignItems: "center" }}>
-        <textarea
+        <ControlledTextarea
           placeholder="Write a message"
           value={newMsg}
           onChange={handleChange}
-        ></textarea>
+        />
 
         <Button
           btnText="Send"
@@ -76,11 +73,14 @@ export default function MsgBox({ currChatId, socket }) {
             <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
               <Paperclip />
             </label>
-            <input
+            <ControlledInput
               id="file-upload"
               type="file"
               style={{ display: "none" }}
-              onChange={handleChange2}
+              onChange={(e) => {
+                setFileName(e.target.files[0]?.name || "");
+                setmediaFile(e.target.files[0]);
+              }}
             />
 
             {fileName && (
