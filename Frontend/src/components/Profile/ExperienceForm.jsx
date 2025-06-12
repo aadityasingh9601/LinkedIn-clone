@@ -4,8 +4,13 @@ import useProfileStore from "../../stores/Profile";
 import Input from "../ControlledInput";
 import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
+import RHFInput from "../RHFinput";
 
-export default function ExperienceForm() {
+export default function ExperienceForm({
+  experience = {},
+  updateVisState,
+  onSubmitProp,
+}) {
   const createProfile = useProfileStore((state) => state.createProfile);
 
   const {
@@ -13,7 +18,13 @@ export default function ExperienceForm() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({});
+  } = useForm({
+    defaultValues: {
+      ...experience,
+      started: experience?.started?.split("T")[0],
+      ended: experience?.ended?.split("T")[0],
+    },
+  });
 
   const onSubmit = (experience) => {
     console.log(experience);
@@ -22,53 +33,53 @@ export default function ExperienceForm() {
   };
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
+      <form onSubmit={handleSubmit(onSubmitProp || onSubmit)}>
+        <RHFInput
           placeholder="Enter company name"
           name="companyName"
           register={register}
-          options={{
+          rules={{
             required: "Company name is required",
             minLength: {
               value: 5,
               message: "Company name should be at least 5 characters",
             },
           }}
+          errors={errors}
         />
-        {errors.companyName && <p>{errors.companyName.message}</p>}
 
-        <Input
+        <RHFInput
           placeholder="Enter job title"
           name="jobTitle"
           register={register}
-          options={{
+          rules={{
             required: "Job title is required",
             minLength: {
               value: 2,
               message: "Job title should be at least 2 characters",
             },
           }}
+          errors={errors}
         />
 
-        <Input
+        <RHFInput
           placeholder="Enter start date (yyyy-mm-dd) "
           register={register}
           name="started"
-          options={{
+          rules={{
             required: "Date is required",
             pattern: {
               value: /^\d{4}-\d{2}-\d{2}$/,
               message: "Date must be in yyyy-mm-dd format",
             },
           }}
+          errors={errors}
         />
 
-        {errors.started && <p>{errors.started.message}</p>}
-
-        <Input
+        <RHFInput
           register={register}
           name="ended"
-          options={{
+          rules={{
             required: "Date is required",
             pattern: {
               value: /^\d{4}-\d{2}-\d{2}$/,
@@ -76,9 +87,8 @@ export default function ExperienceForm() {
             },
           }}
           placeholder="Enter end date (yyyy-mm-dd)"
+          errors={errors}
         />
-
-        {errors.ended && <p>{errors.ended.message}</p>}
 
         <RHFtextarea
           register={register}
@@ -88,7 +98,7 @@ export default function ExperienceForm() {
           rules={{}}
         />
 
-        <Button btnText="Cancel" onClick={() => setAddExperience(false)} />
+        <Button btnText="Cancel" onClick={() => updateVisState(false)} />
         <Button btnText="Add" />
       </form>
     </div>

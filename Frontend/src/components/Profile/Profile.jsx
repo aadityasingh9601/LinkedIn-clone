@@ -139,7 +139,13 @@ export default function Profile({ socket }) {
           </div>
         </div>
         <div className="bodyy">
-          {addEducation && <EducationForm />}
+          {addEducation && (
+            <EducationForm
+              updateVisState={(value) => {
+                setAddEducation(value);
+              }}
+            />
+          )}
           <div className="educationList">
             {profile.education?.map((education) => {
               return (
@@ -204,7 +210,11 @@ export default function Profile({ socket }) {
           </div>
         </div>
         <div className="bodyy">
-          {addExperience && <ExperienceForm />}
+          {addExperience && (
+            <ExperienceForm
+              updateVisState={(value) => setAddExperience(value)}
+            />
+          )}
           <div className="educationList">
             {profile.experience?.map((experience) => {
               return (

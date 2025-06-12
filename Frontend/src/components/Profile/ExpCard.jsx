@@ -1,28 +1,17 @@
 import { useState } from "react";
 import "./ExpCard.css";
-import { useForm } from "react-hook-form";
-import Button from "../Button.";
 import { formatDate } from "../../utils/helper";
 import Pen from "../../icons/Pen";
-import RHFtextarea from "../RHFtextarea";
 import Trash from "../../icons/Trash";
+import ExperienceForm from "./ExperienceForm";
 
 export default function ExpCard({ experience, editProfile, deleteProfile }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      ...experience,
-      started: experience.started.split("T")[0],
-      ended: experience.ended.split("T")[0],
-    },
-  });
-
   const [editExperience, setEditExperience] = useState(false);
   const startDate = formatDate(experience.started);
   const endDate = formatDate(experience.ended);
+  const updateEditExperience = (value) => {
+    setEditExperience(value);
+  };
 
   const onSubmit = (data) => {
     editProfile({
@@ -45,66 +34,11 @@ export default function ExpCard({ experience, editProfile, deleteProfile }) {
             }
           />
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              type="text"
-              placeholder="Enter your companyName"
-              {...register("companyName", {
-                required: "Company name is required",
-                minLength: {
-                  value: 5,
-                  message: "Company name should be at least 5 characters",
-                },
-              })}
-            />
-            {errors.companyName && <p>{errors.companyName.message}</p>}
-
-            <input
-              placeholder="Enter your job title"
-              {...register("jobTitle", {
-                required: "Job Title is required",
-                minLength: {
-                  value: 2,
-                  message: "Job Title should be at least 3 characters",
-                },
-              })}
-            />
-
-            <input
-              placeholder="Start date"
-              {...register("started", {
-                required: "Start Date is required",
-                pattern: {
-                  value: /^\d{4}-\d{2}-\d{2}$/,
-                  message: "Date must be in yyyy-mm-dd format",
-                },
-              })}
-            />
-
-            {errors.started && <p>{errors.started.message}</p>}
-
-            <input
-              placeholder="End date"
-              {...register("ended", {
-                required: "End Date is required",
-                pattern: {
-                  value: /^\d{4}-\d{2}-\d{2}$/,
-                  message: "Date must be in yyyy-mm-dd format",
-                },
-              })}
-            />
-
-            {errors.ended && <p>{errors.ended.message}</p>}
-            <RHFtextarea
-              register={register}
-              errors={errors}
-              name="description"
-              placeholder="Write your job description here..."
-            />
-
-            <Button btnText="Cancel" onClick={() => setEditExperience(false)} />
-            <Button btnText="Save changes" type="submit" />
-          </form>
+          <ExperienceForm
+            experience={experience}
+            updateVisState={updateEditExperience}
+            onSubmitProp={onSubmit}
+          />
         </>
       ) : (
         <>
@@ -126,7 +60,7 @@ export default function ExpCard({ experience, editProfile, deleteProfile }) {
             <br />
             <span>{experience.description}</span>
           </div>
-          <Pen onClick={() => setEditExperience(true)} />
+          <Pen onClick={() => updateEditExperience(true)} />
         </>
       )}
     </div>

@@ -22,11 +22,11 @@ export default function PostFormPreview() {
       </div>
       <div className="icons">
         <div>
-          <ImageIcon style={{ color: "#0a66c2" }} />
+          <ImageIcon styles={{ color: "#0a66c2" }} />
           <span style={{ margin: "0 0 0 0.4rem" }}>Media</span>
         </div>
         <div>
-          <Poll style={{ color: "#c37d16" }} />
+          <Poll styles={{ color: "#c37d16" }} />
           <span style={{ margin: "0 0 0 0.4rem" }}>Poll</span>
         </div>
       </div>

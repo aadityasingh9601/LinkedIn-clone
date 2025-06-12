@@ -52,7 +52,7 @@ const tryCatchWrapper = async (fn) => {
       newAccessToken();
       return toast.error("Something went wrong! Please try again.");
     }
-    return toast.err(err.message);
+    return toast.error(err.message);
   }
 };
 
