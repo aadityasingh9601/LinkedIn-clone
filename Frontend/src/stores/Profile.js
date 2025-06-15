@@ -17,28 +17,10 @@ const currUserId = useUserStore.getState().currUserId;
 const useProfileStore = create((set, get) => ({
   profile: {},
 
-  newSkill: "",
-
-  setNewSkill: (value) => {
-    set({ newSkill: value });
-  },
-
-  setAbout: (value) => {
-    set((state) => ({
-      profile: { ...state.profile, about: value },
-    }));
-  },
-
   editSkills: false,
 
   setEditSkills: (value) => {
     set({ editSkills: value });
-  },
-
-  editAbout: false,
-
-  setEditAbout: (value) => {
-    set({ editAbout: value });
   },
 
   addEducation: false,
@@ -95,7 +77,6 @@ const useProfileStore = create((set, get) => ({
               skills: [...state.profile.skills, data.skill],
             },
           }));
-          get().setNewSkill("");
         }
 
         if (data.education) {
@@ -147,7 +128,6 @@ const useProfileStore = create((set, get) => ({
       console.log(response);
       if (response.status === 200) {
         if (section === "about") {
-          get().setEditAbout(false);
           return toast.success("Updated successfully");
         }
 

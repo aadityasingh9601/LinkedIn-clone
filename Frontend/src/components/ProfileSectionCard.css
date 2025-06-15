@@ -1,4 +1,4 @@
-.educationCard {
+.profileSectionCard {
   height: fit-content;
   width: 100%;
   display: flex;
@@ -7,20 +7,30 @@
   padding: 0.6rem 0;
 }
 
-.educationCard span {
+.profileSectionCard span {
   font-size: 0.9rem;
 }
 
-.educationCard .img {
+.profileSectionCard p {
+  margin: 0;
+  color: black;
+  font-size: 1.05rem;
+}
+
+.profileSectionCard .date {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.profileSectionCard .img {
   margin: 0 0.7rem 0 0;
 }
 
-.educationCard .img img {
+.profileSectionCard .img img {
   height: 3.5rem;
   width: 3.5rem;
 }
 
-.educationCard i {
+.profileSectionCard i {
   font-size: 1.2rem;
   position: absolute;
   right: 1.6rem;
