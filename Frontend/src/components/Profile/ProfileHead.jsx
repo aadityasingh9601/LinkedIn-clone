@@ -8,6 +8,8 @@ import Modal from "../Modal";
 import ProfileHeadForm from "./ProfileHeadForm";
 import Pen from "../../icons/Pen";
 import Xmark from "../../icons/Xmark";
+import useFollowStore from "../../stores/Follow";
+import useConnectionStore from "../../stores/Connection";
 
 export default function ProfileHead({
   profile,
@@ -17,9 +19,12 @@ export default function ProfileHead({
   createProfile,
 }) {
   const currUserId = useUserStore((state) => state.currUserId);
-
+  const follow = useFollowStore((state) => state.follow);
+  const unfollow = useFollowStore((state) => state.unfollow);
   const editHead = useProfileStore((state) => state.editHead);
   const setEditHead = useProfileStore((state) => state.setEditHead);
+
+  const sendConnReq = useConnectionStore((state) => state.sendConnReq);
 
   //To ensure that we can't scroll the page while the modal is open.
   if (editHead) {

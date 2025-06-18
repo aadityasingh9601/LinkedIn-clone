@@ -1,79 +1,21 @@
 import "./Network.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import axios from "axios";
 import Button from "../Button.";
 import User from "../User";
 import useUserStore from "../../stores/User";
+import useNetworkStore from "../../stores/Network";
 
 export default function Network() {
   const { type } = useParams(); // "followers" or "following"
-  const [network, setNetwork] = useState([]);
+  const network = useNetworkStore((state) => state.network);
   const currUserId = useUserStore((state) => state.currUserId);
+  const fetchNetwork = useNetworkStore((state) => state.fetchNetwork);
+  const handleRemove = useNetworkStore((state) => state.handleRemove);
 
   useEffect(() => {
-    async function fetchNetwork() {
-      const endpoint =
-        type === "followers"
-          ? "http://localhost:8000/follow/followers"
-          : type === "following"
-          ? "http://localhost:8000/follow/following"
-          : type === "connections"
-          ? `http://localhost:8000/connection/${currUserId}`
-          : null;
-
-      try {
-        const response = await axios.get(endpoint, {
-          withCredentials: true,
-        });
-
-        setNetwork(response.data);
-      } catch (err) {
-        console.log(err);
-        toast.error("Failed to fetch data: " + err.message);
-      }
-    }
-
-    fetchNetwork();
+    fetchNetwork(type, currUserId);
   }, [type]);
-
-  const handleRemove = async (id) => {
-    try {
-      const url =
-        type === "followers"
-          ? `http://localhost:8000/follow/${id}/remove`
-          : type === "following"
-          ? `http://localhost:8000/follow/${id}`
-          : type === "connections"
-          ? `http://localhost:8000/connection/${id}`
-          : null;
-
-      const response = await axios.delete(url, {
-        withCredentials: true,
-      });
-
-      console.log(response.data);
-
-      if (response.status === 200) {
-        setNetwork((prev) =>
-          prev.filter((item) => item._id !== response.data.deletedId)
-        );
-        toast.success(
-          type === "followers"
-            ? "Follower removed!"
-            : type === "following"
-            ? "Unfollowed successfully!"
-            : type === "connections"
-            ? "Connection removed!"
-            : null
-        );
-      }
-    } catch (err) {
-      console.log(err);
-      toast.error(err.message);
-    }
-  };
 
   return (
     <div className="networks">
@@ -122,7 +64,7 @@ export default function Network() {
               />
               <Button
                 btnText={type === "following" ? "Unfollow" : "Remove"}
-                onClick={() => handleRemove(user._id)}
+                onClick={() => handleRemove(type, user._id)}
               />
             </div>
           );

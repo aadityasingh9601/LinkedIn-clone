@@ -1,7 +1,8 @@
 import "./PostFormPreview.css";
 import usePostStore from "../../stores/Post";
 import ImageIcon from "../../icons/ImageIcon";
-import Poll from "../../icons/Poll";
+import Pollicon from "../../icons/PollIcon";
+
 import ControlledInput from "../ControlledInput";
 
 export default function PostFormPreview() {
@@ -26,7 +27,8 @@ export default function PostFormPreview() {
           <span style={{ margin: "0 0 0 0.4rem" }}>Media</span>
         </div>
         <div>
-          <Poll styles={{ color: "#c37d16" }} />
+          <Pollicon styles={{ color: "#c37d16" }} />
+
           <span style={{ margin: "0 0 0 0.4rem" }}>Poll</span>
         </div>
       </div>

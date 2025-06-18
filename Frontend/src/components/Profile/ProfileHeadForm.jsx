@@ -9,15 +9,7 @@ export default function ProfileHeadForm({ profile, createProfile }) {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      name: profile.name,
-      headline: profile.headline,
-      location: profile.location,
-      contactInfo: {
-        email: profile.contactInfo?.email,
-        phone: profile.contactInfo?.phone,
-      },
-    },
+    defaultValues: profile,
   });
 
   const onSubmit = (profileData) => {

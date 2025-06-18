@@ -1,17 +1,11 @@
-export default function PollIcon() {
+export default function Pollicon({ styles = {}, onClick = () => {} }) {
   return (
     <div>
-      <svg
-        role="none"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        data-supported-dps="24x24"
-        data-test-icon="image-medium"
-        type="image"
-      ></svg>
+      <i
+        class="fa-solid fa-square-poll-vertical"
+        onClick={onClick}
+        style={styles}
+      ></i>
     </div>
   );
 }

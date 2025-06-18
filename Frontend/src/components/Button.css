@@ -8,3 +8,12 @@
   margin-left: 1rem;
   font-size: 0.9rem;
 }
+
+.btn {
+  padding: 0.3rem;
+  border-radius: 1rem;
+  color: #0a66c2;
+  width: fit-content;
+  border: 1px solid #0a66c2;
+  background-color: transparent;
+}

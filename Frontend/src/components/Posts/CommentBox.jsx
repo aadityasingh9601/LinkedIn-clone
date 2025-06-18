@@ -2,8 +2,10 @@ import "./CommentBox.css";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
 import RHFInput from "../RHFinput";
+import useCommentStore from "../../stores/Comment";
 
-export default function CommentBox({ addComment }) {
+export default function CommentBox({ postId }) {
+  const addComment = useCommentStore((state) => state.addComment);
   const {
     register,
     handleSubmit,
@@ -14,7 +16,7 @@ export default function CommentBox({ addComment }) {
   const onSubmit = (comment) => {
     console.log(comment);
     reset();
-    addComment(comment);
+    addComment(postId, comment);
   };
   return (
     <div className="commBox">

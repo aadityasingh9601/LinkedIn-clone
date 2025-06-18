@@ -61,7 +61,8 @@ const timeRep = (time) => {
   const minutes = Math.floor(seconds / 60); //Converting to minutes
   const hours = Math.floor(minutes / 60); //Converting to hours
   const days = Math.floor(hours / 24); //Converting to days.
-  return { seconds, minutes, hours, days };
+  const weeks = Math.floor(days / 7); //Converting to weeks.
+  return { seconds, minutes, hours, days, weeks };
 };
 
 function parseISODate(isoDate) {

@@ -4,7 +4,8 @@ import PollOption from "./PollOption";
 import useUserStore from "../../stores/User";
 import { useEffect, useState } from "react";
 import Button from "../Button.";
-import Ellipses from "../../icons/Ellipsis";
+import Ellipsis from "../../icons/Ellipsis";
+import TimePassed from "../TimePassed";
 
 export default function Poll({ poll }) {
   const [voted, setVoted] = useState(false);
@@ -17,19 +18,6 @@ export default function Poll({ poll }) {
   const setVoteState = (value) => {
     setVoted(value);
   };
-
-  const timeRep = (time) => {
-    const seconds = Math.floor(time / 1000); //Converting to seconds
-    const minutes = Math.floor(seconds / 60); //Converting to minutes
-    const hours = Math.floor(minutes / 60); //Converting to hours
-    const days = Math.floor(hours / 24); //Converting to days.
-    const weeks = Math.floor(days / 7); //Converting to weeks.
-    return { seconds, minutes, hours, days, weeks };
-  };
-
-  const { seconds, minutes, hours, days, weeks } = timeRep(
-    new Date(poll.expiresAt) - new Date()
-  );
 
   useEffect(() => {
     async function checkVoteStatus() {
@@ -95,15 +83,7 @@ export default function Poll({ poll }) {
         <div className="pollInfo">
           {" "}
           {poll.voters.length} votes .
-          {weeks > 0
-            ? `${weeks}w `
-            : days > 0
-            ? `${days}d `
-            : hours > 0
-            ? `${hours}h `
-            : minutes > 0
-            ? `${minutes}m`
-            : `${seconds}s`}
+          <TimePassed timePassed={poll.expiresAt} />
           left.{" "}
           {voted && (
             <span

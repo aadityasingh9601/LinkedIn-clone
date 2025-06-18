@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import "./ProfileSection.css";
+import { useState, useEffect } from "react";
 import EducationCard from "./Profile/EducationCard";
 import ExpCard from "./Profile/ExpCard";
 import EducationForm from "./Profile/EducationForm";
@@ -33,7 +33,7 @@ export default function ProfileSection({
     }
   }, [profile.about]);
   return (
-    <div className="section">
+    <div className="profileSection">
       <div className="head">
         <span>{title}</span>
         <div className="icons">
@@ -44,7 +44,7 @@ export default function ProfileSection({
           )}
         </div>
       </div>
-      <div className="bodyy">
+      <div>
         {addSection &&
           (title.toLowerCase() == "education" ? (
             <EducationForm updateVisState={updateVisState} />
@@ -86,7 +86,7 @@ export default function ProfileSection({
             />
           </>
         )}
-        <div className="educationList">
+        <div>
           {title.toLowerCase() == "education"
             ? profile.education?.map((education) => {
                 return (

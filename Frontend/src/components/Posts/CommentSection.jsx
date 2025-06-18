@@ -2,14 +2,10 @@ import "./CommentSection.css";
 import CommentBox from "./CommentBox";
 import Comment from "./Comment";
 
-export default function CommentSection({
-  addComment,
-  comments,
-  updateComments,
-}) {
+export default function CommentSection({ postId, comments, updateComments }) {
   return (
     <div className="commSection">
-      <CommentBox addComment={addComment} />
+      <CommentBox postId={postId} />
       <div className="comments">
         {comments.map((comment) => {
           return (

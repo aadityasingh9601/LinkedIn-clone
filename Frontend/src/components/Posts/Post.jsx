@@ -6,10 +6,8 @@ import Modal from "../Modal";
 const Button = lazy(() => import("../Button."));
 const PostEditForm = lazy(() => import("./PostEditForm"));
 const CommentSection = lazy(() => import("./CommentSection"));
-import useComment from "../../hooks/useComment";
 import useUserStore from "../../stores/User";
 import useFollowStore from "../../stores/Follow";
-import { timeRep } from "../../utils/helper";
 import User from "../User";
 import Xmark from "../../icons/Xmark";
 import Pen from "../../icons/Pen";
@@ -21,6 +19,8 @@ import Check from "../../icons/Check";
 import Ellipsis from "../../icons/Ellipsis";
 import Trash from "../../icons/Trash";
 import Plus from "../../icons/Plus";
+import TimePassed from "../TimePassed";
+import useCommentStore from "../../stores/Comment";
 
 //The error was occuring because I was accessing props like this,"function Post(post) " and because of that
 //the whole props object was getting logged on the console and post.createdBy was printing undefined , while when
@@ -28,7 +28,6 @@ import Plus from "../../icons/Plus";
 //object and everything started working properly again.
 
 export default function Post({ post, postRef }) {
-  console.log("rendered");
   const currUserId = useUserStore((state) => state.currUserId);
 
   const [isFollowed, setIsFollowed] = useState(false);
@@ -48,12 +47,12 @@ export default function Post({ post, postRef }) {
   const likePost = usePostStore((state) => state.likePost);
   const unlikePost = usePostStore((state) => state.unlikePost);
   const [likedUsers, setlikedUsers] = useState([]);
+  const [showComments, setshowComments] = useState(false);
+
+  const comments = useCommentStore((state) => state.comments);
 
   const allLikedPosts = useUserStore((state) => state.allLikedPosts);
   const allFollowed = useUserStore((state) => state.allFollowed);
-
-  const { comments, setComments, showComments, setshowComments, addComment } =
-    useComment(post._id);
 
   //To ensure that we can't scroll the page while the modal is open.
   if (deleteModal || likeModal || editModal) {
@@ -61,9 +60,6 @@ export default function Post({ post, postRef }) {
   } else {
     document.body.style.overflow = "unset";
   }
-  const { days, hours, minutes, seconds } = timeRep(
-    new Date() - new Date(post.createdAt)
-  );
 
   const toggleEditModal = () => {
     seteditModal(!editModal);
@@ -133,23 +129,7 @@ export default function Post({ post, postRef }) {
           username={post.createdBy.profile.name}
           headline={post.createdBy.profile.headline}
         />
-        <span
-          style={{
-            position: "absolute",
-            left: "4.5rem",
-            top: "2.9rem",
-            fontSize: "0.66rem",
-            color: "rgba(0,0,0,0.65)",
-          }}
-        >
-          {days > 0
-            ? `${days}d `
-            : hours > 0
-            ? `${hours}h `
-            : minutes > 0
-            ? `${minutes}m`
-            : `${seconds}s`}
-        </span>
+        <TimePassed timePassed={post.createdAt} />
 
         {currUserId !== post.createdBy._id &&
           (isFollowed ? (
@@ -240,7 +220,7 @@ export default function Post({ post, postRef }) {
 
       {showComments && (
         <CommentSection
-          addComment={addComment}
+          postId={post._id}
           comments={comments}
           updateComments={updateComments}
         />

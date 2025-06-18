@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 import "./Profile.css";
-import Button from "../Button.";
-import EducationCard from "./EducationCard";
-import ExpCard from "./ExpCard";
 
 import useProfileStore from "../../stores/Profile";
 import useFollowStore from "../../stores/Follow";
@@ -10,17 +7,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../../stores/User";
 import useAnalyticStore from "../../stores/Analytic";
 import useConnectionStore from "../../stores/Connection";
-import ControlledTextarea from "../ControlledTextarea";
-import ExperienceForm from "./ExperienceForm";
-import EducationForm from "./EducationForm";
 import ProfileHead from "./ProfileHead";
-import Pen from "../../icons/Pen";
-import Trash from "../../icons/Trash";
-import Plus from "../../icons/Plus";
-import ControlledInput from "../ControlledInput";
 import ProfileSection from "../ProfileSection";
 
-export default function Profile({ socket }) {
+export default function Profile() {
   const { id: currProfileId } = useParams();
   const navigate = useNavigate();
   const profile = useProfileStore((state) => state.profile);
@@ -30,16 +20,8 @@ export default function Profile({ socket }) {
   const editProfile = useProfileStore((state) => state.editProfile);
   const deleteProfile = useProfileStore((state) => state.deleteProfile);
 
-  const sendConnReq = useConnectionStore((state) => state.sendConnReq);
   const checkConn = useConnectionStore((state) => state.checkConn);
   const currUserId = useUserStore((state) => state.currUserId);
-
-  const editSkills = useProfileStore((state) => state.editSkills);
-  const setEditSkills = useProfileStore((state) => state.setEditSkills);
-  const addExperience = useProfileStore((state) => state.addExperience);
-  const setAddExperience = useProfileStore((state) => state.setAddExperience);
-  const addEducation = useProfileStore((state) => state.addEducation);
-  const setAddEducation = useProfileStore((state) => state.setAddEducation);
 
   const [isConnected, setIsConnected] = useState(false);
 
@@ -48,9 +30,6 @@ export default function Profile({ socket }) {
   }, [currProfileId]);
 
   const isFollowed = useFollowStore((state) => state.isFollowed);
-
-  const follow = useFollowStore((state) => state.follow);
-  const unfollow = useFollowStore((state) => state.unfollow);
 
   let styles = {
     display: currUserId !== currProfileId ? "none" : "inline",
@@ -79,7 +58,7 @@ export default function Profile({ socket }) {
       />
 
       {currUserId === currProfileId && (
-        <div className="section">
+        <div className="profileSection">
           <div className="head">
             <span>Analytics</span>
           </div>

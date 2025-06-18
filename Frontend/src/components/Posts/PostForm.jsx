@@ -12,9 +12,9 @@ import SmileR from "../../icons/SmileR";
 import SmileS from "../../icons/SmileS";
 import ClockS from "../../icons/ClockS";
 import ClockR from "../../icons/ClockR";
-import Poll from "../../icons/Poll";
 import ImageIcon from "../../icons/ImageIcon";
 import RHFInput from "../RHFinput";
+import Pollicon from "../../icons/PollIcon";
 
 export default function PostForm() {
   const {
@@ -161,7 +161,7 @@ export default function PostForm() {
                     />
                   </div>
                   <div>
-                    <Poll onClick={() => setPoll(true)} />
+                    <Pollicon onClick={() => setPoll(true)} />
                   </div>
                 </div>
 

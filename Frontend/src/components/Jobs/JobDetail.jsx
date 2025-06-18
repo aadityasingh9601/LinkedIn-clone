@@ -4,11 +4,11 @@ import useUserStore from "../../stores/User";
 import useProfileStore from "../../stores/Profile";
 
 import Button from "../Button.";
-import { timeRep } from "../../utils/helper";
 import Dot from "../Dot";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Check from "../../icons/Check";
+import TimePassed from "../TimePassed";
 
 export default function JobDetail({ job }) {
   console.log(job);
@@ -45,13 +45,9 @@ export default function JobDetail({ job }) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   fetchJobFitStats(job._id);
-  // }, [job._id]);
-
-  const { days, hours, minutes, seconds } = timeRep(
-    new Date() - new Date(job?.postedDate)
-  );
+  useEffect(() => {
+    fetchJobFitStats(job._id);
+  }, [job._id]);
 
   return (
     <div className="jobDetail">
@@ -79,13 +75,7 @@ export default function JobDetail({ job }) {
           }}
         >
           {job?.location} <Dot />
-          {days > 0
-            ? `${days} days `
-            : hours > 0
-            ? `${hours} hrs `
-            : minutes > 0
-            ? `${minutes} min`
-            : `${seconds} s`}
+          <TimePassed timePassed={job.postedDate} />
           ago
           <Dot />
           {job?.applications?.length} people clicked apply
