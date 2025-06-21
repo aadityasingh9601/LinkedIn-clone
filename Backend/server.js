@@ -9,8 +9,6 @@ import { Server } from "socket.io";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-
-import ExpressError from "./utils/ExpressError.js";
 import Notification from "./models/Notification.js";
 
 import userRouter from "./routes/userRoutes.js";
@@ -103,8 +101,8 @@ app.use("/follow", followRouter);
 app.use("/analytics", analyticRouter);
 app.use("/poll", pollRouter);
 
-app.all("*", (req, res, next) => {
-  next(new ExpressError(404, "Page not found!"));
+app.all("*", (req, res) => {
+  throw new ExpressError(404, "Page not found!");
 });
 
 //Error handling middleware.

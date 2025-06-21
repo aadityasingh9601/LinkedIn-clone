@@ -1,17 +1,18 @@
 import "./Signup.css";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
-import { toast, ToastContainer } from "react-toastify";
-import axios from "axios";
+import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import RHFInput from "../RHFinput";
 import LinkedInIcon from "../../icons/LinkedInIcon";
+import useUserStore from "../../stores/User";
 
 //We don't use controlled components while using our react-hook-form library, else it compromises with the performance and other benefits
 //provided by the library.
 
 export default function Signup() {
   const navigate = useNavigate();
+  const signUp = useUserStore((state) => state.signUp);
   const {
     register,
     handleSubmit,
@@ -19,32 +20,15 @@ export default function Signup() {
   } = useForm();
 
   const onSubmit = async (signupData) => {
-    console.log(signupData);
-
-    try {
-      const response = await axios.post("http://localhost:8000/users/signup", {
-        signupData,
-      });
-      console.log(response.request.status);
-      if (response.request.status === 200) {
-        toast.success(response.data.message);
-      }
-      setTimeout(() => {
-        navigate("/login"); // Navigate to home page.
-      }, 2000); // 2-second delay for the toast to appear
-
-      // Redirect to login page after successful signup.
-    } catch (e) {
-      console.log(e);
-      return toast.error(e.message);
-    }
+    signUp(navigate, signupData);
   };
+
   return (
     <>
       <ToastContainer
         position="bottom-left"
         autoClose={5000}
-        hideProgressBar={false}
+        hideProgressBar={true}
         newestOnTop={false}
         closeOnClick
         rtl={false}
@@ -57,9 +41,7 @@ export default function Signup() {
       <LinkedInIcon />
 
       <div className="signup">
-        <p style={{ fontSize: "2.2rem", textAlign: "center", color: "black" }}>
-          Make the most out of your professional life
-        </p>
+        <p>Make the most out of your professional life</p>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <span>Your name</span>
           <br />

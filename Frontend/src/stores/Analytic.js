@@ -1,9 +1,20 @@
 import { create } from "zustand";
-import { tryCatchWrapper, apiPost } from "../utils/helper";
+import { tryCatchWrapper, apiPost, apiGet } from "../utils/helper";
 
 const useAnalyticStore = create((set) => ({
   analyticsEvent: localStorage.getItem("analyticsEvent"),
-  //Persisting state.
+
+  analyticsData: [],
+
+  fetchData: async () => {
+    tryCatchWrapper(async () => {
+      const response = await apiGet(
+        `/analytics?q1=${get().analyticsEvent}&q2=${range}`
+      );
+      console.log(response);
+      set({ analyticsData: response.data });
+    });
+  },
 
   setAnalyticsEvent: (value) => {
     localStorage.setItem("analyticsEvent", value);

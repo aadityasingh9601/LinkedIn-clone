@@ -1,42 +1,20 @@
-import React from "react";
 import "./Analytics.css";
 import Chart from "./Chart";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { toast } from "react-toastify";
 import useAnalyticStore from "../../stores/Analytic";
 
 export default function Analytics() {
-  const [analyticsData, setanalyticsData] = useState([]);
   const analyticsEvent = useAnalyticStore((state) => state.analyticsEvent);
+  const analyticsData = useAnalyticStore((state) => state.analyticsData);
+  const fetchData = useAnalyticStore((state) => state.fetchData);
   const [range, setRange] = useState("all");
-  // console.log(analyticsEvent);
-
-  async function fetchData() {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/analytics?q1=${analyticsEvent}&q2=${range}`,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(response);
-      setanalyticsData(response.data);
-    } catch (e) {
-      console.log(e);
-      return toast.error(e.message);
-    }
-  }
 
   useEffect(() => {
     fetchData();
   }, [analyticsEvent, range]);
 
-  // Default to "All"
-
   const handleChange = (event) => {
     const selectedValue = event.target.value;
-    //console.log(selectedValue);
     setRange(selectedValue);
   };
 

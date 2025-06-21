@@ -17,7 +17,7 @@ const useNetworkStore = create((set) => ({
         type === "followers"
           ? "/follow/followers"
           : type === "following"
-          ? "follow/following"
+          ? "/follow/following"
           : type === "connections"
           ? `/connection/${currUserId}`
           : null;

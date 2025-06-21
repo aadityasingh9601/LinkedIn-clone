@@ -1,8 +1,7 @@
 import "./Login.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import useUserStore from "../../stores/User";
 import { useEffect } from "react";
 import RHFInput from "../RHFinput";
@@ -10,8 +9,8 @@ import LinkedInIcon from "../../icons/LinkedInIcon";
 
 export default function Login() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-  const setIsLoggedIn = useUserStore((state) => state.setIsLoggedIn);
   const checkToken = useUserStore((state) => state.checkToken);
+  const login = useUserStore((state) => state.login);
   const navigate = useNavigate();
   const {
     register,
@@ -26,37 +25,7 @@ export default function Login() {
   }, [isLoggedIn]);
 
   async function onSubmit(loginData) {
-    console.log(loginData);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/users/login",
-
-        { loginData },
-
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(response);
-      if (response.request.status === 200) {
-        toast.success("User logged in successfully!");
-        //Storing id in our local storage to use it for the socket connection for now..
-
-        localStorage.setItem("currUserId", response.data.id);
-        localStorage.setItem("isLoggedIn", true);
-        setIsLoggedIn(true);
-        //we removed window.location.href("/" ) from here because that may cause a full page refresh and lose your
-        //component's state, and setIsLoggedIn stays the same as false.
-        // Delay navigation to allow toast to display
-        setTimeout(() => {
-          navigate("/home");
-        }, 1500); //
-      }
-    } catch (err) {
-      console.log(err);
-      return toast.error(err.message);
-    }
+    login(loginData, navigate);
   }
 
   return (
@@ -64,7 +33,7 @@ export default function Login() {
       <ToastContainer
         position="bottom-left"
         autoClose={5000}
-        hideProgressBar={false}
+        hideProgressBar={true}
         newestOnTop={false}
         closeOnClick
         rtl={false}
@@ -77,16 +46,7 @@ export default function Login() {
       <LinkedInIcon />
       <div className="login">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
-          <p
-            style={{
-              fontSize: "2.2rem",
-              textAlign: "center",
-              margin: "0",
-              color: "black",
-            }}
-          >
-            Login
-          </p>
+          <p>Login</p>
           <span>Your email</span>
           <br />
           <RHFInput

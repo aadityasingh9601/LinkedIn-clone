@@ -4,6 +4,7 @@ export default function Input({
   id = {},
   value,
   onChange,
+  onClick = () => {},
   styles = {},
 }) {
   return (
@@ -14,6 +15,7 @@ export default function Input({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onClick={onClick}
         style={styles}
       />
     </div>

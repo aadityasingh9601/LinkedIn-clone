@@ -14,7 +14,7 @@ import ControlledTextarea from "../ControlledTextarea";
 import TimePassed from "../TimePassed";
 import useCommentStore from "../../stores/Comment";
 
-export default function Comment({ comment, updateComments }) {
+export default function Comment({ comment }) {
   const [toggle, setToggle] = useState(false);
   const [commentText, setcommentText] = useState(comment.text);
   const [commentEdit, setCommentEdit] = useState(false);

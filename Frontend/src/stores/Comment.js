@@ -11,6 +11,13 @@ import {
 const useCommentStore = create((set) => ({
   comments: [],
 
+  //Creating function to filter the comments state variable after post deletion.
+  updateComments: (commentId) => {
+    set((state) => ({
+      comments: state.comments.filter((c) => c._id !== commentId),
+    }));
+  },
+
   fetchComments: async () => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/post/${postId}/comment`);

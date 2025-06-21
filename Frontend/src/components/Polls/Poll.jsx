@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Button from "../Button.";
 import Ellipsis from "../../icons/Ellipsis";
 import TimePassed from "../TimePassed";
+import User from "../User";
 
 export default function Poll({ poll }) {
   const [voted, setVoted] = useState(false);
@@ -31,19 +32,12 @@ export default function Poll({ poll }) {
   return (
     <div className="poll">
       <div className="header">
-        <div className="img">
-          <img src={poll?.createdBy.profile.profileImage.url} alt="" />
-        </div>
-        <div className="headline">
-          <span>
-            <b>{poll?.createdBy.profile.name}</b>
-          </span>
-          <br />
-          <span style={{ fontSize: "0.85rem", color: "rgba(0,0,0,0.65)" }}>
-            {poll?.createdBy.profile.headline}
-          </span>
-          <br />
-        </div>
+        <User
+          url={poll?.createdBy.profile.profileImage.url}
+          userId={poll?.createdBy.userId}
+          username={poll?.createdBy.profile.name}
+          headline={poll?.createdBy.profile.headline}
+        />
         <div>
           {currUserId === poll.createdBy._id && (
             <Ellipsis

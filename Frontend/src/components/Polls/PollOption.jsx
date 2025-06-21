@@ -1,6 +1,4 @@
-import { useState } from "react";
 import "./PollOption.css";
-import usePollStore from "../../stores/Poll";
 
 export default function PollOption({
   pollOption,

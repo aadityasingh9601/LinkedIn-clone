@@ -18,7 +18,7 @@ const createPost = async (req, res) => {
   console.log("inside createPost");
 
   const { postData } = req.body;
-  console.log(req.headers);
+  //console.log(req.headers);
   const { date, time } = postData;
   //console.log(date, time);
   //Converting date and time into proper format.
@@ -28,7 +28,7 @@ const createPost = async (req, res) => {
     scheduledAt = new Date(`${year}-${month}-${day}T${time}:00`);
   }
 
-  console.log(scheduledAt);
+  //console.log(scheduledAt);
 
   //console.log(postData);
 
@@ -83,8 +83,6 @@ const createPost = async (req, res) => {
       const socketId = userSocketMap[req.user._id.toString()];
       io.to(socketId).emit("post_created", fullPost);
     });
-
-    //console.log(task);
   }
 
   let fullPost = await Post.findById(newPost._id).populate({
@@ -95,7 +93,7 @@ const createPost = async (req, res) => {
       select: "name profileImage headline",
     },
   });
-  //console.log(fullPost);
+
   res.status(201).send(fullPost);
 };
 

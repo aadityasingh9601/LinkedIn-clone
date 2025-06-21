@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { toast } from "react-toastify";
-import axios from "axios";
 import useAnalyticStore from "./Analytic";
 import useUserStore from "./User";
 import {
@@ -16,6 +15,8 @@ const currUserId = useUserStore.getState().currUserId;
 
 const useProfileStore = create((set, get) => ({
   profile: {},
+
+  userProfiles: [],
 
   editSkills: false,
 
@@ -56,6 +57,29 @@ const useProfileStore = create((set, get) => ({
       const response = await apiGet(`/profile/${userId}`);
       console.log(response);
       set({ profile: response.data });
+    });
+  },
+
+  fetchProfiles: async (username) => {
+    tryCatchWrapper(async () => {
+      const response = await apiPost(`/profile/allUsers`, { username }, {});
+      console.log(response);
+      if (response.status === 200) {
+        set({ userProfiles: response.data });
+
+        let eventData = {
+          eventType: "search_appearance",
+          users: response.data.map((u) => {
+            return u.userId;
+          }),
+        };
+
+        logEvent(eventData);
+      }
+
+      if (response.status === 404) {
+        setUserProfiles("No users found!");
+      }
     });
   },
 

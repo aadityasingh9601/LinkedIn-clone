@@ -11,8 +11,12 @@
   width: 100%;
 }
 
-.searchbar {
+.searchBar {
   background-color: #edf3f8;
+  height: 34px;
+  width: 280px;
+  border: none;
+  margin: 0 8rem 0 0.7rem;
 }
 
 .navbar a {

@@ -8,6 +8,7 @@ import useNetworkStore from "../../stores/Network";
 
 export default function Network() {
   const { type } = useParams(); // "followers" or "following"
+  console.log(type);
   const network = useNetworkStore((state) => state.network);
   const currUserId = useUserStore((state) => state.currUserId);
   const fetchNetwork = useNetworkStore((state) => state.fetchNetwork);

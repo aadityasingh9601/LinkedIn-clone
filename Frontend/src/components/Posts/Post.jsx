@@ -38,6 +38,7 @@ export default function Post({ post, postRef }) {
   const [likeModal, setlikeModal] = useState(false);
   const [isLiked, setisLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likeCount);
+  const updateComments = useCommentStore((state) => state.updateComments);
 
   const follow = useFollowStore((state) => state.follow);
   const unfollow = useFollowStore((state) => state.unfollow);
@@ -112,13 +113,6 @@ export default function Post({ post, postRef }) {
       getAllLikes(post._id);
     }
   }, [likeModal]);
-
-  //Creating function to filter the comments state variable after post delettion.
-  const updateComments = (commentId) => {
-    setComments((prevComments) =>
-      prevComments.filter((comment) => comment._id !== commentId)
-    );
-  };
 
   return (
     <div className="post" data-post-id={post._id} ref={postRef}>
@@ -208,8 +202,8 @@ export default function Post({ post, postRef }) {
           )}
           Like
         </button>
-        <button onClick={() => setshowComments(!showComments)}>
-          <CommentR />
+        <button>
+          <CommentR onClick={() => setshowComments(!showComments)} />
           Comment
         </button>
         <button>
@@ -218,13 +212,7 @@ export default function Post({ post, postRef }) {
         </button>
       </div>
 
-      {showComments && (
-        <CommentSection
-          postId={post._id}
-          comments={comments}
-          updateComments={updateComments}
-        />
-      )}
+      {showComments && <CommentSection postId={post._id} comments={comments} />}
 
       {deleteModal && (
         <Modal>

@@ -8,6 +8,7 @@ import ControlledInput from "../ControlledInput";
 export default function PostFormPreview() {
   const postFormModal = usePostStore((state) => state.postFormModal);
   const setPostFormModal = usePostStore((state) => state.setPostFormModal);
+
   return (
     <div className="postformpreview">
       <div className="form">

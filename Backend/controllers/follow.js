@@ -82,6 +82,7 @@ const removeFollower = async (req, res) => {
 };
 
 const allFollowers = async (req, res) => {
+  console.log("inside all followers");
   const userId = req.user._id;
   console.log(userId);
   const followers = await Follow.find({ userFollowed: userId }).populate({
@@ -97,6 +98,7 @@ const allFollowers = async (req, res) => {
 };
 
 const allFollowing = async (req, res) => {
+  console.log("Inside all following");
   const userId = req.user._id;
   //console.log(userId);
   const following = await Follow.find({ user: userId }).populate({

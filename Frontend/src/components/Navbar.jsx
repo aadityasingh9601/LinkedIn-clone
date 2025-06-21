@@ -2,10 +2,7 @@ import "./Navbar.css";
 import Button from "./Button.";
 import { useNavigate } from "react-router-dom";
 import { useState, useCallback, useEffect, lazy } from "react";
-
 import { Link } from "react-router-dom";
-
-import axios from "axios";
 import { debounce } from "lodash";
 
 import useProfileStore from "../stores/Profile";
@@ -20,20 +17,16 @@ import MsgIcon from "../icons/MsgIcon";
 import NotiIcon from "../icons/NotiIcon";
 import User from "./User";
 import Xmark from "../icons/Xmark";
-const Avatar = lazy(() => import("./Avatar"));
 
 export default function Navbar() {
   const navigate = useNavigate();
-
+  const userProfiles = useProfileStore((state) => state.userProfiles);
+  const fetchProfiles = useProfileStore((state) => state.fetchProfiles);
   const logout = useUserStore((state) => state.logout);
 
   const [showNetwork, setShowNetworks] = useState(false);
 
   const [username, setUsername] = useState("");
-
-  const [userProfiles, setUserProfiles] = useState([]);
-
-  let searchResultUsers;
 
   const [searchResult, setSearchResult] = useState(false);
 
@@ -42,40 +35,6 @@ export default function Navbar() {
   const currUserId = useUserStore((state) => state.currUserId);
 
   const logEvent = useAnalyticStore((state) => state.logEvent);
-
-  async function fetchProfiles(username) {
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/profile/allUsers`,
-        { username },
-        { withCredentials: true }
-      );
-      console.log(response);
-      if (response.status === 200) {
-        setUserProfiles(response.data);
-
-        //Triggering log event for search appearances.
-        searchResultUsers = response.data.map((u) => {
-          return u.userId;
-        });
-
-        let eventData = {
-          eventType: "search_appearance",
-          users: searchResultUsers,
-        };
-
-        logEvent(eventData);
-
-        console.log(searchResultUsers);
-      }
-
-      if (response.status === 404) {
-        setUserProfiles("No users found!");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   //Handle automatic search with debouncing.
   //Using useCallback to ensure the function doesn't gets re-created on every re-render and multipe api calls
@@ -95,14 +54,11 @@ export default function Navbar() {
     setShowNetworks(!showNetwork);
   };
 
-  const showProfile = (userId) => {
-    navigate(`/profile/${userId}`);
-  };
-
   return (
     <div className="navbar">
       <MainLogo />
       <input
+        className="searchBar"
         value={username}
         onChange={(e) => {
           setUsername(e.target.value);
@@ -116,13 +72,6 @@ export default function Navbar() {
         }}
         onClick={handleClick}
         placeholder="Search "
-        style={{
-          backgroundColor: "#edf3f8",
-          height: "34px",
-          width: "280px",
-          border: "none",
-          margin: "0 8rem 0 0.7rem",
-        }}
       />
 
       {searchResult && (

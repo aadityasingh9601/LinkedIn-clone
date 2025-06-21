@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { toast } from "react-toastify";
-import axios from "axios";
 import {
   tryCatchWrapper,
   apiDelete,
@@ -9,7 +8,7 @@ import {
   apiPatch,
 } from "../utils/helper";
 
-const useUserStore = create((set) => ({
+const useUserStore = create((set, get) => ({
   isLoggedIn: localStorage.getItem("isLoggedIn"),
   //We're persisting our state here by storing it in localStorage, backend authentication (checkToken) will
   //be done when user visits the login page or prelogin page only, else the state will persist.
@@ -18,6 +17,49 @@ const useUserStore = create((set) => ({
 
   setIsLoggedIn: (value) => {
     set({ isLoggedIn: value });
+  },
+
+  signUp: async (signupData, navigate) => {
+    tryCatchWrapper(async () => {
+      const response = await apiPost(`/users/signup`, { signupData }, {});
+      console.log(response.request.status);
+      if (response.request.status === 200) {
+        toast.success(response.data.message);
+        navigate("/login");
+      }
+    });
+  },
+
+  login: async (loginData, navigate) => {
+    tryCatchWrapper(async () => {
+      console.log(loginData);
+      const response = await apiPost(`/users/login`, { loginData }, {});
+      console.log(response);
+      if (response.request.status === 200) {
+        toast.success("User logged in successfully!");
+        localStorage.setItem("currUserId", response.data.id);
+        localStorage.setItem("isLoggedIn", true);
+        get().setIsLoggedIn(true);
+        navigate("/home");
+      }
+    });
+  },
+
+  logout: async (navigate) => {
+    try {
+      const response = await apiDelete(`/users/logout`);
+      console.log(response);
+      if (response.status === 200) {
+        localStorage.removeItem("currUserId");
+        get().setIsLoggedIn(false);
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log(err);
+      if (err.response.status === (401 || 403)) {
+        return toast.error(err.logout);
+      }
+    }
   },
 
   checkToken: async (navigate) => {
@@ -131,23 +173,6 @@ const useUserStore = create((set) => ({
 
       localStorage.setItem("allFollowed", JSON.stringify(allFollowed));
     });
-  },
-
-  logout: async (navigate) => {
-    try {
-      const response = await apiDelete(`/users/logout`);
-      console.log(response);
-      if (response.status === 200) {
-        localStorage.removeItem("currUserId");
-        set({ isLoggedIn: false });
-        navigate("/login");
-      }
-    } catch (err) {
-      console.log(err);
-      if (err.response.status === (401 || 403)) {
-        return toast.error(err.logout);
-      }
-    }
   },
 }));
 

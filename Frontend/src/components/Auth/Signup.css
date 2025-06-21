@@ -3,6 +3,12 @@
   left: 33rem;
 }
 
+.signup p {
+  font-size: 2.2rem;
+  text-align: center;
+  color: black;
+}
+
 .form {
   padding: 1.5rem;
   height: fit-content;
@@ -14,9 +20,4 @@ input {
   width: 24rem;
   height: 1.8rem;
   margin: 0 0 1rem 0;
-}
-
-p {
-  color: red;
-  margin: 0;
 }
