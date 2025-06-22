@@ -6,9 +6,9 @@ import { io } from "../server.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const createChat = async (req, res) => {
-  // console.log("inside createChat");
+  console.log("inside createChat");
   const { userId } = req.params;
-  // console.log(userId);
+  console.log(userId);
   const currUserId = req.user._id;
   //First save the currUser's id in a variable only then use it , else mongoose will not include chatList in the
   //currUser, see the reason why_? in ChatGPT.
@@ -93,7 +93,7 @@ const getAllChats = async (req, res) => {
 };
 
 const createMsg = async (req, res) => {
-  // console.log("inside sendMsg");
+  console.log("inside sendMsg");
   const { chatId } = req.params;
   // console.log(req.file);
   // console.log(chatId);

@@ -72,7 +72,10 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
         username={profile.name}
         headline={profile.headline}
       />
-      <TimePassed timePassed={data.createdAt} />
+      <TimePassed
+        timePassed={data.createdAt}
+        styles={{ left: "4.5rem", top: "2.7rem", fontSize: "0.72rem" }}
+      />
 
       {type === "post" ||
         (type === "poll" &&

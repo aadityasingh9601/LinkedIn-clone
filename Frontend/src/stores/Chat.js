@@ -8,7 +8,7 @@ import {
   apiPatch,
 } from "../utils/helper";
 
-const useChatStore = create((set) => ({
+const useChatStore = create((set, get) => ({
   chatData: {},
 
   messages: [],
@@ -25,15 +25,11 @@ const useChatStore = create((set) => ({
     set({ fullChat: value });
   },
 
-  handleMessage: async () => {
+  handleMessage: async (profileId) => {
     tryCatchWrapper(async () => {
-      const response = await apiPost(
-        `chat/createchat/${currProfileId}`,
-        {},
-        {}
-      );
+      const response = await apiPost(`/chat/createchat/${profileId}`, {}, {});
       console.log(response);
-      setfullChat(true, response.data.chatId);
+      get().setfullChat(true, response.data.chatId);
 
       fetchAllMsg(response.data.chatId);
       //Emit socket event to join the user in the currChatId room.
@@ -92,7 +88,8 @@ const useChatStore = create((set) => ({
 
   sendMsg: async (chatId, data) => {
     tryCatchWrapper(async () => {
-      const response = await apiPost(`/chat/${chatId}`);
+      const response = await apiPost(`/chat/${chatId}`, { data }, {});
+      console.log(response);
     });
   },
 

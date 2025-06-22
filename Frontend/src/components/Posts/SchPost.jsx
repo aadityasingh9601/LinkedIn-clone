@@ -6,7 +6,7 @@ import PostEditForm from "./PostEditForm";
 import Modal from "../Modal";
 import Ellipsis from "../../icons/Ellipsis";
 import Xmark from "../../icons/Xmark";
-import { formatDate2 } from "../../utils/helper";
+import { formatTime, formatDate2 } from "../../utils/helper";
 
 export default function SchPost({ schPost }) {
   const [editModal, seteditModal] = useState(false);
@@ -23,7 +23,9 @@ export default function SchPost({ schPost }) {
           margin: "0 0 0.7rem 0",
         }}
       >
-        <div>{formatDate2(schPost?.scheduledTime)}</div>
+        <div>{`${formatDate2(schPost?.scheduledTime)} at ${formatTime(
+          schPost?.scheduledTime
+        )}`}</div>
         <div>
           <Ellipsis
             onClick={() => setOptions(!options)}

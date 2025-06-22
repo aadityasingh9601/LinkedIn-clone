@@ -5,6 +5,7 @@ import MsgBox from "./MsgBox";
 import useChatStore from "../../stores/Chat";
 import Message from "./Message";
 import Xmark from "../../icons/Xmark";
+import User from "../User";
 
 export default function ChatUI({ socket }) {
   const currChatId = useChatStore((state) => state.currChatId);
@@ -80,31 +81,18 @@ export default function ChatUI({ socket }) {
         onClick={() => setfullChat(false)}
         styles={{
           zIndex: "30",
-          position: "absolute",
           top: "0.5rem",
           right: "0.5rem",
         }}
       />
 
-      <div className="receiver">
-        <div className="header">
-          <div className="img">
-            <img src={otherPerson?.profile.profileImage?.url} alt="" />
-          </div>
-          <div className="headline">
-            <span>
-              <b>{otherPerson?.profile.name}</b>
-            </span>
-            <br />
-            <span
-              style={{ fontSize: "0.85rem", color: "rgba(184, 17, 17, 0.65)" }}
-            >
-              {otherPerson?.profile.headline}
-            </span>
-            <br />
-          </div>
-        </div>
-      </div>
+      <User
+        userId={otherPerson?.profile.userId}
+        username={otherPerson?.profile.name}
+        url={otherPerson?.profile.profileImage?.url}
+        headline={otherPerson?.profile.headline}
+      />
+
       <div className="allMsg" ref={chatContainerRef}>
         {messages?.map((msg) => {
           const messageDate = formatDate(msg?.Date);

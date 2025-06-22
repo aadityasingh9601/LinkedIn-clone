@@ -64,6 +64,28 @@ const timeRep = (time) => {
   return { seconds, minutes, hours, days, weeks };
 };
 
+const formatTime = (time) => {
+  // Convert the string into a Date object
+  const date = new Date(time);
+
+  // Extract hours and minutes
+  let hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+
+  // Convert hours to 12-hour format
+  hours = hours % 12;
+  hours = hours ? hours : 12; // If hours is 0, set it to 12
+
+  // Format the minutes with leading zero if needed
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  // Combine the results
+  const formattedTime = `${hours}:${formattedMinutes} ${ampm}`;
+  //console.log(formattedTime);
+  return formattedTime;
+};
+
 function parseISODate(isoDate) {
   const date = new Date(isoDate);
 
@@ -93,16 +115,14 @@ const formatDate2 = (isoDate) => {
   const options = { weekday: "short", month: "short", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
-  const hours = date.getHours().toString().padStart(2, "0"); //padStart 2 to ensure numbers are atleast two
-  const minutes = date.getMinutes().toString().padStart(2, "0"); //digits long by adding leading zeroes.
-
-  return `${formattedDate.replace(",", "")} at ${hours}:${minutes}`;
+  return formattedDate;
 };
 
 export {
   timeRep,
   formatDate,
   formatDate2,
+  formatTime,
   parseISODate,
   tryCatchWrapper,
   apiGet,

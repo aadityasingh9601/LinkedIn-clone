@@ -20,7 +20,6 @@ export default function Profile() {
   const editProfile = useProfileStore((state) => state.editProfile);
   const deleteProfile = useProfileStore((state) => state.deleteProfile);
 
-  const checkConn = useConnectionStore((state) => state.checkConn);
   const currUserId = useUserStore((state) => state.currUserId);
 
   const [isConnected, setIsConnected] = useState(false);

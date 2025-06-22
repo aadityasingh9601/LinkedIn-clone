@@ -10,6 +10,7 @@ import Pen from "../../icons/Pen";
 import Xmark from "../../icons/Xmark";
 import useFollowStore from "../../stores/Follow";
 import useConnectionStore from "../../stores/Connection";
+import useChatStore from "../../stores/Chat";
 
 export default function ProfileHead({
   profile,
@@ -23,7 +24,7 @@ export default function ProfileHead({
   const unfollow = useFollowStore((state) => state.unfollow);
   const editHead = useProfileStore((state) => state.editHead);
   const setEditHead = useProfileStore((state) => state.setEditHead);
-
+  const handleMessage = useChatStore((state) => state.handleMessage);
   const sendConnReq = useConnectionStore((state) => state.sendConnReq);
 
   //To ensure that we can't scroll the page while the modal is open.
@@ -78,12 +79,15 @@ export default function ProfileHead({
             {isFollowed ? (
               <Button
                 btnText=" Following "
-                onClick={() => unfollow(currProfileId)}
+                onClick={() => unfollow(profile.userId)}
               />
             ) : (
-              <Button btnText="Follow" onClick={() => follow(currProfileId)} />
+              <Button btnText="Follow" onClick={() => follow(profile.userId)} />
             )}
-            <Button btnText="Message" onClick={() => handleMessage()} />
+            <Button
+              btnText="Message"
+              onClick={() => handleMessage(profile.userId)}
+            />
             {!isConnected && (
               <Button
                 btnText="Connect"

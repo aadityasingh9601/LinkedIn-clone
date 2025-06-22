@@ -4,6 +4,7 @@ import { useState } from "react";
 import Button from "../Button.";
 import Ellipsis from "../../icons/Ellipsis";
 import Xmark from "../../icons/Xmark";
+import { formatTime, formatDate2 } from "../../utils/helper";
 
 export default function Chat({ chat, otherPerson, socket }) {
   const currUserId = localStorage.getItem("currUserId");
@@ -14,39 +15,9 @@ export default function Chat({ chat, otherPerson, socket }) {
 
   const deleteChat = useChatStore((state) => state.deleteChat);
 
-  const formatTime = (time) => {
-    // Convert the string into a Date object
-    const date = new Date(time);
-
-    // Extract hours and minutes
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-
-    // Convert hours to 12-hour format
-    hours = hours % 12;
-    hours = hours ? hours : 12; // If hours is 0, set it to 12
-
-    // Format the minutes with leading zero if needed
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-    // Combine the results
-    const formattedTime = `${hours}:${formattedMinutes} ${ampm}`;
-    //console.log(formattedTime);
-    return formattedTime;
-  };
-
-  const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    }); // E.g., "Wednesday, January 22, 2025"
-  };
-
   let Time = formatTime(chat?.lastMessage?.Date);
-  let chatDate = formatDate(chat?.lastMessage?.Date);
-  let currDate = formatDate(new Date());
+  let chatDate = formatDate2(chat?.lastMessage?.Date);
+  let currDate = formatDate2(new Date());
 
   const isNewDay = currDate !== chatDate;
   const [chatOptions, setchatOptions] = useState(false);

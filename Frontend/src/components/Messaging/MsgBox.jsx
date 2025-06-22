@@ -76,7 +76,7 @@ export default function MsgBox({ currChatId, socket }) {
             <ControlledInput
               id="file-upload"
               type="file"
-              style={{ display: "none" }}
+              styles={{ display: "none" }}
               onChange={(e) => {
                 setFileName(e.target.files[0]?.name || "");
                 setmediaFile(e.target.files[0]);
