@@ -1,0 +1,75 @@
+.postHead {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.postHead .user {
+  align-items: normal !important;
+}
+
+.followBtn {
+  position: absolute;
+  right: 3.5rem;
+  background-color: white;
+  color: #0a66c2;
+  border: none;
+  font-size: 1rem;
+}
+
+.followBtn:hover {
+  text-decoration: underline;
+}
+
+.followedBtn {
+  position: absolute;
+  right: 3.5rem;
+  background-color: rgb(219, 212, 212);
+  color: black;
+  border: none;
+  font-size: 1rem;
+}
+
+.options {
+  position: absolute;
+  right: 0rem;
+  top: 0rem;
+  background-color: white;
+  border: none;
+  font-size: 1.4rem;
+}
+
+.options-box {
+  position: absolute;
+  top: 2rem;
+  right: 0rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  background-color: antiquewhite;
+  border-radius: 0.6rem;
+  padding: 0.7rem;
+}
+
+.options-box button {
+  background-color: antiquewhite;
+  width: 6rem;
+  padding: 0.3rem;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+}
+
+.options-box button:hover {
+  background-color: white;
+}
+
+.options-box button i {
+  font-size: 1.3rem;
+}
+
+.followBtn i {
+  margin-right: 0.3rem;
+  font-size: 1.1rem;
+}
