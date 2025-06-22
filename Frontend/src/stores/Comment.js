@@ -10,7 +10,6 @@ import {
 
 const useCommentStore = create((set) => ({
   comments: [],
-
   //Creating function to filter the comments state variable after post deletion.
   updateComments: (commentId) => {
     set((state) => ({
@@ -18,8 +17,9 @@ const useCommentStore = create((set) => ({
     }));
   },
 
-  fetchComments: async () => {
+  fetchComments: async (postId) => {
     tryCatchWrapper(async () => {
+      console.log(postId);
       const response = await apiGet(`/post/${postId}/comment`);
       set({ comments: response.data });
     });
@@ -29,7 +29,11 @@ const useCommentStore = create((set) => ({
     let newComment;
 
     tryCatchWrapper(async () => {
-      const response = apiPost(`/post/${postId}/comment`, { comment }, {});
+      const response = await apiPost(
+        `/post/${postId}/comment`,
+        { comment },
+        {}
+      );
       console.log(response.data);
       newComment = response.data;
       if (response.status === 201) {
@@ -41,16 +45,20 @@ const useCommentStore = create((set) => ({
     });
   },
 
-  editComment: async (postId, commentId) => {
+  editComment: async (postId, commentId, newComment, updateCommEdit) => {
     tryCatchWrapper(async () => {
       const response = await apiPatch(
         `/post/${postId}/comment/${commentId}`,
-        { commentText },
+        { newComment },
         {}
       );
       if (response.status === 200) {
-        setcommentText(response.data.message);
-        setCommentEdit(false);
+        set((state) => ({
+          comments: state.comments.map((c) => {
+            return c._id === commentId ? { ...c, text: response.data } : c;
+          }),
+        }));
+        updateCommEdit(false);
         return toast.success("Comment updated!");
       }
     });
@@ -58,12 +66,12 @@ const useCommentStore = create((set) => ({
 
   deleteComment: async (postId, commentId) => {
     tryCatchWrapper(async () => {
-      const response = apiDelete(`/post/${postId}/comment/${commentId}`);
+      const response = await apiDelete(`/post/${postId}/comment/${commentId}`);
       console.log(response);
       if (response.status === 200) {
-        //Updating the state.
-        updateComments(commentId);
-        setdeleteModal(false);
+        set((state) => ({
+          comments: state.comments.filter((c) => c._id !== commentId),
+        }));
         return toast.success("Comment deleted!");
       }
     });

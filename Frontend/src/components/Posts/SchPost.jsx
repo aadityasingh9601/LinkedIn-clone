@@ -6,20 +6,9 @@ import PostEditForm from "./PostEditForm";
 import Modal from "../Modal";
 import Ellipsis from "../../icons/Ellipsis";
 import Xmark from "../../icons/Xmark";
+import { formatDate2 } from "../../utils/helper";
 
 export default function SchPost({ schPost }) {
-  function formatDate(isoDate) {
-    const date = new Date(isoDate);
-    const options = { weekday: "short", month: "short", day: "numeric" };
-    const formattedDate = date.toLocaleDateString("en-US", options);
-
-    const hours = date.getHours().toString().padStart(2, "0"); //padStart 2 to ensure numbers are atleast two
-    const minutes = date.getMinutes().toString().padStart(2, "0"); //digits long by adding leading zeroes.
-
-    return `${formattedDate.replace(",", "")} at ${hours}:${minutes}`;
-  }
-
-  //console.log(schPost);
   const [editModal, seteditModal] = useState(false);
   const deletePost = usePostStore((state) => state.deletePost);
   const [options, setOptions] = useState(false);
@@ -34,7 +23,7 @@ export default function SchPost({ schPost }) {
           margin: "0 0 0.7rem 0",
         }}
       >
-        <div>{formatDate(schPost?.scheduledTime)}</div>
+        <div>{formatDate2(schPost?.scheduledTime)}</div>
         <div>
           <Ellipsis
             onClick={() => setOptions(!options)}
@@ -56,7 +45,6 @@ export default function SchPost({ schPost }) {
       {editModal && (
         <Modal>
           <Xmark onClick={() => seteditModal(false)} />
-
           <PostEditForm post={schPost} />
         </Modal>
       )}

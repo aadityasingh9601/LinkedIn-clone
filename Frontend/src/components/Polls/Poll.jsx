@@ -7,6 +7,7 @@ import Button from "../Button.";
 import Ellipsis from "../../icons/Ellipsis";
 import TimePassed from "../TimePassed";
 import User from "../User";
+import PostHead from "../Posts/PostHead";
 
 export default function Poll({ poll }) {
   const [voted, setVoted] = useState(false);
@@ -31,32 +32,8 @@ export default function Poll({ poll }) {
   }, []);
   return (
     <div className="poll">
-      <div className="header">
-        <User
-          url={poll?.createdBy.profile.profileImage.url}
-          userId={poll?.createdBy.userId}
-          username={poll?.createdBy.profile.name}
-          headline={poll?.createdBy.profile.headline}
-        />
-        <div>
-          {currUserId === poll.createdBy._id && (
-            <Ellipsis
-              onClick={() => setToggle(!toggle)}
-              style={{
-                position: "absolute",
-                top: "0rem",
-                right: "0rem",
-                fontSize: "1.4rem",
-              }}
-            />
-          )}
-        </div>
-        {toggle && (
-          <div style={{ position: "absolute", right: "0rem", top: "1.5rem" }}>
-            <Button btnText="Delete" onClick={() => deletePoll(poll._id)} />
-          </div>
-        )}
-      </div>
+      <PostHead data={poll} type="poll" />
+
       <div className="pollbody">
         <div className="ques">{poll?.question}</div>
         <div className="choices">
@@ -77,11 +54,18 @@ export default function Poll({ poll }) {
         <div className="pollInfo">
           {" "}
           {poll.voters.length} votes .
-          <TimePassed timePassed={poll.expiresAt} />
-          left.{" "}
+          <TimePassed
+            timePassed={poll.expiresAt}
+            styles={{
+              position: "absolute",
+              top: "0.1rem",
+              left: "3.3rem",
+              fontSize: "0.8rem",
+            }}
+          />
           {voted && (
             <span
-              style={{ color: "#0a66c2", fontWeight: "500", cursor: "pointer" }}
+              className="undo"
               onClick={() => {
                 unVote(poll._id);
                 setVoted(false);

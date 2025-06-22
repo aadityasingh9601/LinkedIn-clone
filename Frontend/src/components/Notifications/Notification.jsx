@@ -1,8 +1,8 @@
 import "./Notification.css";
 import Button from "../Button.";
 import useNotificationStore from "../../stores/Notification";
-import Xmark from "../../icons/Xmark";
 import TimePassed from "../TimePassed";
+import Xmark from "../../icons/Xmark";
 
 export default function Notification({ noti }) {
   const deleteNoti = useNotificationStore((state) => state.deleteNoti);
@@ -25,14 +25,18 @@ export default function Notification({ noti }) {
         </div>
       ) : (
         <Xmark
-          style={{ fontSize: "1.3rem" }}
+          styles={{
+            fontSize: "1.3rem",
+            zIndex: "100",
+            right: "1.8rem",
+          }}
           onClick={() => deleteNoti(noti._id)}
         />
       )}
 
       <TimePassed
         timePassed={noti.sentDate}
-        styles={{ fontSize: "0.75rem", marginLeft: "1rem" }}
+        styles={{ fontSize: "0.75rem", right: "0.5rem" }}
       />
     </div>
   );

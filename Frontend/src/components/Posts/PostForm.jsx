@@ -222,6 +222,7 @@ export default function PostForm() {
                       style={{
                         margin: "0 0 1rem 0",
                       }}
+                      register={register}
                       name="time"
                       rules={{
                         required: schedule ? "Time is required" : false,

@@ -208,7 +208,7 @@ const usePostStore = create((set) => ({
 
   getAllLikes: async (postId) => {
     tryCatchWrapper(async () => {
-      const response = apiGet(`/post/${postId}/like`);
+      const response = await apiGet(`/post/${postId}/like`);
       setlikedUsers(response.data);
     });
   },

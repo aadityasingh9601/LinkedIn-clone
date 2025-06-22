@@ -28,7 +28,9 @@ const createComment = async (req, res) => {
 };
 
 const getComments = async (req, res) => {
+  console.log("inside get comments");
   const { id } = req.params;
+  console.log(id);
   const comments = await Comment.find({ postId: id }).populate({
     path: "author",
     select: "profile",
@@ -39,15 +41,16 @@ const getComments = async (req, res) => {
 };
 
 const updateComment = async (req, res) => {
+  console.log("inside updatecomment");
   const { commentId } = req.params;
-  const { commentText } = req.body;
+  const { newComment } = req.body;
 
   const comment = await Comment.findById(commentId);
   //Check if the author of the comment is trying to update the comment , not any intruder.
   if (comment.author.toString() === req.user._id.toString()) {
-    comment.text = commentText;
+    comment.text = newComment;
     await comment.save();
-    res.status(200).send({ message: comment.text });
+    res.status(200).send(newComment);
   } else {
     res
       .status(401)

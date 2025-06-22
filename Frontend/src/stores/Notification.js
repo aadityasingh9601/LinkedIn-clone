@@ -65,11 +65,14 @@ const useNotificationStore = create((set) => ({
 
   deleteNoti: async function (id) {
     tryCatchWrapper(async () => {
-      const response = apiDelete(`/notification/${id}`);
+      const response = await apiDelete(`/notification/${id}`);
       //Update the state as well.
-      set((state) => ({
-        notifications: state.notifications.filter((noti) => noti._id !== id),
-      }));
+      if (response.status === 200) {
+        set((state) => ({
+          notifications: state.notifications.filter((noti) => noti._id !== id),
+        }));
+        return toast.success("Deleted!");
+      }
     });
   },
 }));

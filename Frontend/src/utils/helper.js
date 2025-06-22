@@ -14,7 +14,7 @@ const apiGet = async (endPoint) => {
 };
 
 const apiPost = async (endPoint, reqBody, reqHeaders) => {
-  console.log(reqHeaders);
+  //console.log(reqHeaders);
   const response = await axios.post(
     `${BACKEND_URL}${endPoint}`,
     reqBody,
@@ -52,7 +52,6 @@ const tryCatchWrapper = async (fn) => {
       newAccessToken();
       return toast.error("Something went wrong! Please try again.");
     }
-    return toast.error(err.message);
   }
 };
 
@@ -68,16 +67,16 @@ const timeRep = (time) => {
 function parseISODate(isoDate) {
   const date = new Date(isoDate);
 
-  const day = date.getDate().toString().padStart(2, "0"); // dd
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // mm
-  const year = date.getFullYear(); // yyyy
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
 
-  const hours = date.getHours().toString().padStart(2, "0"); // HH
-  const minutes = date.getMinutes().toString().padStart(2, "0"); // mm
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
 
   return {
-    date: `${day}-${month}-${year}`, // dd-mm-yyyy
-    time: `${hours}:${minutes}`, // HH:mm
+    date: `${day}-${month}-${year}`,
+    time: `${hours}:${minutes}`,
   };
 }
 
@@ -89,9 +88,21 @@ const formatDate = (dateString) => {
   return `${day} ${month} ${year}`;
 };
 
+const formatDate2 = (isoDate) => {
+  const date = new Date(isoDate);
+  const options = { weekday: "short", month: "short", day: "numeric" };
+  const formattedDate = date.toLocaleDateString("en-US", options);
+
+  const hours = date.getHours().toString().padStart(2, "0"); //padStart 2 to ensure numbers are atleast two
+  const minutes = date.getMinutes().toString().padStart(2, "0"); //digits long by adding leading zeroes.
+
+  return `${formattedDate.replace(",", "")} at ${hours}:${minutes}`;
+};
+
 export {
   timeRep,
   formatDate,
+  formatDate2,
   parseISODate,
   tryCatchWrapper,
   apiGet,

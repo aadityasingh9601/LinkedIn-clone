@@ -29,6 +29,15 @@
 }
 
 .pollbody .pollInfo {
+  position: relative;
   font-size: 0.85rem;
   color: #666666;
+}
+
+.pollInfo .undo {
+  position: absolute;
+  right: 0.5rem;
+  color: #0a66c2;
+  font-weight: 500;
+  cursor: pointer;
 }

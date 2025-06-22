@@ -3,7 +3,6 @@ import Button from "../Button.";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useState } from "react";
 import usePollStore from "../../stores/Poll";
-import poll from "../../../../Backend/controllers/poll";
 import RHFtextarea from "../RHFtextarea";
 
 export default function PollForm() {

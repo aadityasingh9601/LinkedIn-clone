@@ -29,13 +29,6 @@ export default function PostEditForm({ post }) {
   const editPost = usePostStore((state) => state.editPost);
 
   const onSubmit = async (data) => {
-    // const postData = {
-    //   content: data.content,
-    //   media: data.media[0],
-    //   category: data.category,
-    //   postType: data.postType,
-    // };
-
     const postData = {
       ...data,
     };
