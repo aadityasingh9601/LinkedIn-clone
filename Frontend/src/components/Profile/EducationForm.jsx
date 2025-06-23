@@ -21,12 +21,12 @@ export default function EducationForm({
       ended: education?.ended?.split("T")[0],
     },
   });
-
+  // console.log(updateVisState);
   const createProfile = useProfileStore((state) => state.createProfile);
 
   const onSubmit = (education) => {
     console.log(education);
-    createProfile({ education: education });
+    createProfile({ education }, updateVisState);
     reset();
   };
   return (
@@ -97,7 +97,7 @@ export default function EducationForm({
         />
 
         <Button btnText="Cancel" onClick={() => updateVisState(false)} />
-        <Button btnText="Add" />
+        <Button btnText="Save" />
       </form>
     </div>
   );

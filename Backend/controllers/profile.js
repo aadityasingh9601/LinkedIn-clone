@@ -18,7 +18,7 @@ const getAllUserProfiles = async (req, res) => {
   console.log("inside getAllUserProfiles ");
   const { username } = req.body;
 
-  console.log(req.body);
+  //console.log(req.body);
   const users = await Profile.find({
     name: { $regex: username, $options: "i" }, // Case-insensitive search
   })
@@ -49,7 +49,9 @@ const getAllUserGroups = async (req, res) => {
 };
 
 const createProfile = async (req, res) => {
+  console.log("inside createProfile on backend");
   const { userId } = req.params;
+  console.log("54", userId);
   //console.log(req.files);
   //console.log(req.files["data[profileImage]"]);
 
@@ -66,9 +68,9 @@ const createProfile = async (req, res) => {
       contactInfo,
       location,
     } = data;
-    console.log(req.body);
+    //console.log(req.body);
 
-    console.log(data);
+    // console.log(data);
 
     if (name) {
       profile.name = name;
@@ -153,14 +155,15 @@ const createProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
+  console.log("inside update profile on backend");
   const { userId } = req.params;
   const { data } = req.body;
   const profile = await Profile.findOne({ userId: userId });
   if (req.user._id.toString() === profile.userId.toString()) {
     const { section, sectionId, newData } = data;
-    console.log(section);
-    console.log(sectionId);
-    console.log(newData);
+    //console.log(section);
+    // console.log(sectionId);
+    //console.log(newData);
 
     if (section === "about") {
       profile.about = newData;

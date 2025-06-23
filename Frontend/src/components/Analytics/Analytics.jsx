@@ -10,7 +10,7 @@ export default function Analytics() {
   const [range, setRange] = useState("all");
 
   useEffect(() => {
-    fetchData();
+    fetchData(range);
   }, [analyticsEvent, range]);
 
   const handleChange = (event) => {

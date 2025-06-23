@@ -81,7 +81,12 @@ export default function ProfileSection({
             <Button
               btnText="Save Changes"
               onClick={() => {
-                editProfile({ section: "about", newData: newAbout });
+                editProfile(
+                  { section: "about", newData: newAbout },
+                  (value) => {
+                    setEditSection(value);
+                  }
+                );
               }}
             />
           </>

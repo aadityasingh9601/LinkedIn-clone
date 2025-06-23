@@ -22,13 +22,9 @@ export default function Profile() {
 
   const currUserId = useUserStore((state) => state.currUserId);
 
-  const [isConnected, setIsConnected] = useState(false);
-
   useEffect(() => {
     fetchProfileData(currProfileId);
   }, [currProfileId]);
-
-  const isFollowed = useFollowStore((state) => state.isFollowed);
 
   let styles = {
     display: currUserId !== currProfileId ? "none" : "inline",
@@ -52,8 +48,6 @@ export default function Profile() {
         profile={profile}
         styles={styles}
         createProfile={createProfile}
-        isFollowed={isFollowed}
-        isConnected={isConnected}
       />
 
       {currUserId === currProfileId && (

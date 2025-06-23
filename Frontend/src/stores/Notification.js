@@ -11,6 +11,8 @@ import {
   apiPatch,
 } from "../utils/helper";
 
+const setAllConnections = useUserStore.getState().setAllConnections;
+
 const useNotificationStore = create((set) => ({
   notifications: [],
 
@@ -36,11 +38,13 @@ const useNotificationStore = create((set) => ({
       );
 
       console.log(response);
+      let { user1, user2 } = response.data;
       if (response.status === 200) {
         //Update the state as well.
         set((state) => ({
           notifications: state.notifications.filter((n) => n._id !== noti._id),
         }));
+        setAllConnections("add", user1, user2);
       }
     });
   },

@@ -24,18 +24,6 @@ const useProfileStore = create((set, get) => ({
     set({ editSkills: value });
   },
 
-  addEducation: false,
-
-  setAddEducation: (value) => {
-    set({ addEducation: value });
-  },
-
-  addExperience: false,
-
-  setAddExperience: (value) => {
-    set({ addExperience: value });
-  },
-
   editHead: false,
 
   setEditHead: (value) => {
@@ -83,10 +71,11 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  createProfile: async (data) => {
+  createProfile: async (userId, data, updateVisState) => {
     tryCatchWrapper(async () => {
+      console.log(userId);
       const response = await apiPost(
-        `/profile/${currUserId}`,
+        `/profile/${userId}`,
         { data },
         {
           "Content-Type": "multipart/form-data",
@@ -110,7 +99,7 @@ const useProfileStore = create((set, get) => ({
               education: response.data.education,
             },
           }));
-          get().setAddEducation(false);
+          updateVisState(false);
         }
 
         if (data.experience) {
@@ -120,8 +109,7 @@ const useProfileStore = create((set, get) => ({
               experience: response.data.experience,
             },
           }));
-
-          get().setAddExperience(false);
+          updateVisState(false);
         } else {
           //Update the profile object here in a way that doesn't ruin performance of the app.
 
@@ -145,13 +133,14 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  editProfile: async (data) => {
+  editProfile: async (data, updateVisState) => {
     tryCatchWrapper(async () => {
       const { section, sectionId } = data;
       const response = await apiPatch(`/profile/${currUserId}`, { data }, {});
       console.log(response);
       if (response.status === 200) {
         if (section === "about") {
+          updateVisState(false);
           return toast.success("Updated successfully");
         }
 
@@ -159,12 +148,14 @@ const useProfileStore = create((set, get) => ({
           set((state) => ({
             profile: { ...state.profile, education: response.data.education },
           }));
+          updateVisState(false);
         }
 
         if (section === "experience") {
           set((state) => ({
             profile: { ...state.profile, experience: response.data.experience },
           }));
+          updateVisState(false);
         }
         return toast.success("Updated successfully");
       }
@@ -184,7 +175,7 @@ const useProfileStore = create((set, get) => ({
           set((state) => ({
             profile: {
               ...state.profile,
-              skills: state.skills?.filter((s) => s !== skill),
+              skills: state.profile.skills?.filter((s) => s !== skill),
             },
           }));
         }

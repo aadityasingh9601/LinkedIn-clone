@@ -88,8 +88,15 @@ const useChatStore = create((set, get) => ({
 
   sendMsg: async (chatId, data) => {
     tryCatchWrapper(async () => {
-      const response = await apiPost(`/chat/${chatId}`, { data }, {});
-      console.log(response);
+      console.log(data);
+      const response = await apiPost(
+        `/chat/${chatId}`,
+        { data },
+        {
+          "Content-Type": "multipart/form-data",
+        }
+      );
+      //console.log(response);
     });
   },
 

@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { tryCatchWrapper, apiPost, apiGet } from "../utils/helper";
 
-const useAnalyticStore = create((set) => ({
+const useAnalyticStore = create((set, get) => ({
   analyticsEvent: localStorage.getItem("analyticsEvent"),
 
   analyticsData: [],
 
-  fetchData: async () => {
+  fetchData: async (range) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(
         `/analytics?q1=${get().analyticsEvent}&q2=${range}`

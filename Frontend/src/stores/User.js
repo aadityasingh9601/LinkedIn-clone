@@ -174,6 +174,47 @@ const useUserStore = create((set, get) => ({
       localStorage.setItem("allFollowed", JSON.stringify(allFollowed));
     });
   },
+
+  allConnections: new Set(
+    JSON.parse(localStorage.getItem("allConnections") || "[]")
+  ),
+
+  setAllConnections: (action, userId1, userId2) => {
+    const connectionsUserIds = JSON.parse(
+      localStorage.getItem("allConnections") || "[]"
+    ); //returns an array.
+    const connectionsSet = new Set(connectionsUserIds); //Create set from the array.
+    const key = [userId1, userId2].sort().join("-");
+    //We'll create a single unique key so it'll be easier to identify and look up for.
+
+    if (action === "add") {
+      connectionsSet.add(key);
+    }
+
+    if (action === "remove") {
+      connectionsSet.delete(key);
+    }
+
+    // Update localStorage,Set isn't a plain JS object so we havae to serialize it like this in an array.
+    localStorage.setItem("allConnections", JSON.stringify([...connectionsSet]));
+
+    // Update the state
+    set({ allConnections: connectionsSet });
+
+    console.log("Updated connections :", connectionsSet);
+  },
+
+  getAllConnections: async (userId) => {
+    tryCatchWrapper(async () => {
+      const response = await apiGet(`/connection/${userId}`);
+      //Save to local storage to persist state and to identify the users followed by the user.
+      let allConnections = response.data.map((c) => {
+        return [c.user, c.connectedUser].sort().join("-");
+      });
+
+      localStorage.setItem("allConnections", JSON.stringify(allConnections));
+    });
+  },
 }));
 
 export default useUserStore;

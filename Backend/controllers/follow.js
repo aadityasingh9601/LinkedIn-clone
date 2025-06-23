@@ -1,3 +1,4 @@
+import Profile from "../models/Profile.js";
 import Follow from "../models/Follow.js";
 
 //To check if the current logged in user has followed a certain user or not.
@@ -21,6 +22,7 @@ const follow = async (req, res) => {
   console.log(userId);
   console.log(req.user._id);
   console.log("inside follow");
+  const userProfile = await Profile.findOne({ userId: userId });
   const follow = await Follow.findOne({
     user: req.user._id,
     userFollowed: userId,
@@ -37,6 +39,8 @@ const follow = async (req, res) => {
       userFollowed: userId,
     });
     await newFollow.save();
+    userProfile.followerCount++;
+    await userProfile.save();
     res.status(200).send({ message: "User followed successfully" });
   }
 };
@@ -46,6 +50,7 @@ const unfollow = async (req, res) => {
   console.log("inside unfollow");
   const { userId } = req.params;
   console.log(userId);
+  const userProfile = await Profile.findOne({ userId: userId });
   const follow = await Follow.findOne({
     user: req.user._id,
     userFollowed: userId,
@@ -55,6 +60,8 @@ const unfollow = async (req, res) => {
     return;
   } else {
     await follow.deleteOne();
+    userProfile.followerCount--;
+    await userProfile.save();
     res.status(200).send({ deletedId: follow._id });
   }
 };
@@ -64,6 +71,7 @@ const removeFollower = async (req, res) => {
   console.log("inside removeFollower");
   const { followerId } = req.params;
   console.log(followerId);
+  const userProfile = await Profile.findOne({ userId: req.user._id });
 
   const follow = await Follow.findOne({
     user: followerId,
@@ -77,6 +85,8 @@ const removeFollower = async (req, res) => {
     return;
   } else {
     await follow.deleteOne();
+    userProfile.followerCount--;
+    await userProfile.save();
     res.status(200).send({ deletedId: follow._id });
   }
 };

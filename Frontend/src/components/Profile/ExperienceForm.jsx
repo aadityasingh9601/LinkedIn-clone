@@ -26,7 +26,7 @@ export default function ExperienceForm({
 
   const onSubmit = (experience) => {
     console.log(experience);
-    createProfile({ experience: experience });
+    createProfile({ experience }, updateVisState);
     reset();
   };
   return (
@@ -97,7 +97,7 @@ export default function ExperienceForm({
         />
 
         <Button btnText="Cancel" onClick={() => updateVisState(false)} />
-        <Button btnText="Add" />
+        <Button btnText="Save" />
       </form>
     </div>
   );

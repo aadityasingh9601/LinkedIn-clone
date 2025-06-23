@@ -49,8 +49,40 @@
   border-radius: 0.5rem;
 }
 
+.profileHead .details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 1rem 0 0 0;
+}
+
+.profileHead .details .name {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
 .allOptions {
   position: absolute;
   bottom: 1.5rem;
   left: 2rem;
+}
+
+.contactInfo {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.contactInfo span {
+  color: #0a66c2;
+  text-decoration: underline;
+}
+
+.socials {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.socials span {
+  color: rgba(135, 130, 130);
+  font-size: 0.9rem;
 }

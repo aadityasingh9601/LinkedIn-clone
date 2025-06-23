@@ -3,7 +3,11 @@ import { useForm } from "react-hook-form";
 import Button from "../Button.";
 import RHFInput from "../RHFinput";
 
-export default function ProfileHeadForm({ profile, createProfile }) {
+export default function ProfileHeadForm({
+  profile,
+  createProfile,
+  currUserId,
+}) {
   const {
     register,
     handleSubmit,
@@ -14,12 +18,20 @@ export default function ProfileHeadForm({ profile, createProfile }) {
 
   const onSubmit = (profileData) => {
     console.log(profileData);
+    //We should extract and select only the fields we want for the current form to edit,not all of the complete
+    //profile object directly as it can cause issues, and some unwanted fields will get overriden too.
     const data = {
-      ...profileData,
-      profileImage: profileData.profileImage[0],
-      bannerImage: profileData.bannerImage[0],
+      name: profileData.name,
+      headline: profileData.headline,
+      location: profileData.location,
+      contactInfo: {
+        email: profileData.contactInfo?.email,
+        phone: profileData.contactInfo?.phone,
+      },
+      profileImage: profileData.profileImage?.[0], // optional chaining just in case
+      bannerImage: profileData.bannerImage?.[0],
     };
-    createProfile(data);
+    createProfile(currUserId, data);
   };
 
   return (

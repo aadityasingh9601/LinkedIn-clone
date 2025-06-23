@@ -112,8 +112,7 @@ const respondToConnRequest = async (req, res) => {
   if (socketId) {
     io.to(socketId).emit("connReq", newNotification);
   }
-
-  res.status(200).send({ message: "Connection response sent successfully!" });
+  res.status(200).send({ user1: userId, user2: req.user._id });
 };
 
 const getAllConnections = async (req, res) => {
@@ -170,7 +169,9 @@ const removeConnection = async (req, res) => {
   const user2 = await Profile.findOne({ userId: connection.connectedUser });
   user2.connCount -= 1;
   await user2.save();
-  res.status(200).send({ deletedId: connection._id });
+  res
+    .status(200)
+    .send({ deletedId: connection._id, user1: userId, user2: req.user._id });
 };
 
 export default {

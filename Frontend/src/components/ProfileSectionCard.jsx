@@ -22,6 +22,7 @@ export default function ProfileSectionCard({
   const [editing, setEditing] = useState(false);
 
   const updateEditing = (value) => {
+    console.log("triggered");
     setEditing(value);
   };
 
@@ -29,11 +30,14 @@ export default function ProfileSectionCard({
   const endDate = formatDate(data[fields.endKey]);
 
   const onSubmit = (newData) => {
-    editProfile({
-      section,
-      sectionId: data._id,
-      newData: newData,
-    });
+    editProfile(
+      {
+        section,
+        sectionId: data._id,
+        newData: newData,
+      },
+      updateEditing
+    );
   };
 
   return (
@@ -66,7 +70,7 @@ export default function ProfileSectionCard({
             <br />
             <span>{data[fields.descriptionKey]}</span>
           </div>
-          <Pen onClick={() => setEditing(true)} />
+          <Pen onClick={() => updateEditing(true)} />
         </>
       )}
     </div>

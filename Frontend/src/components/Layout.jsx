@@ -56,7 +56,6 @@ function Layout({ children, socket }) {
             <div>Messaging</div>
           </div>
           <div className="b">
-            <Ellipsis />
             <CaretUp onClick={() => showMessaging()} />
           </div>
         </div>

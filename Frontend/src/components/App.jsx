@@ -30,6 +30,7 @@ import axios from "axios";
 import useUserStore from "../stores/User";
 import useChatStore from "../stores/Chat";
 import useNotificationStore from "../stores/Notification";
+import { BACKEND_URL } from "../utils/config";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -63,7 +64,7 @@ function App() {
   useEffect(
     function sideEffect() {
       if (isLoggedIn) {
-        const socketInstance = io("http://localhost:8000", {
+        const socketInstance = io(BACKEND_URL, {
           query: {
             userId: currUserId,
           },

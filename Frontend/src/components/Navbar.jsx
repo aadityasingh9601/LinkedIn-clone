@@ -76,7 +76,10 @@ export default function Navbar() {
 
       {searchResult && (
         <div className="allUserProfiles">
-          <Xmark onClick={() => setSearchResult(false)} />
+          <Xmark
+            onClick={() => setSearchResult(false)}
+            styles={{ zIndex: "100" }}
+          />
           {userProfiles.map((profile) => (
             <User
               url={profile.profileImage.url}

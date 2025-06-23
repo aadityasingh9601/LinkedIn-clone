@@ -77,26 +77,25 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
         styles={{ left: "4.5rem", top: "2.7rem", fontSize: "0.72rem" }}
       />
 
-      {type === "post" ||
-        (type === "poll" &&
-          currUserId !== profileUserId &&
-          (isFollowed ? (
-            <button
-              className="followedBtn"
-              onClick={() => unsetFollower(profileUserId)}
-            >
-              Following
-              <Check styles={{ marginLeft: "0.4rem" }} />
-            </button>
-          ) : (
-            <button
-              className="followBtn"
-              onClick={() => setFollower(profileUserId)}
-            >
-              <Plus />
-              Follow
-            </button>
-          )))}
+      {(type === "post" || type === "poll") &&
+        currUserId !== profileUserId &&
+        (isFollowed ? (
+          <button
+            className="followedBtn"
+            onClick={() => unsetFollower(profileUserId)}
+          >
+            Following
+            <Check styles={{ marginLeft: "0.4rem" }} />
+          </button>
+        ) : (
+          <button
+            className="followBtn"
+            onClick={() => setFollower(profileUserId)}
+          >
+            <Plus />
+            Follow
+          </button>
+        ))}
 
       {currUserId === profileUserId && (
         <button className="options" onClick={() => setToggle(!toggle)}>

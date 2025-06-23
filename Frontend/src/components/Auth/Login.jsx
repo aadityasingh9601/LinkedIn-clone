@@ -63,7 +63,6 @@ export default function Login() {
             }}
           />
 
-          <br />
           <span>Your password</span>
           <br />
           <RHFInput

@@ -29,6 +29,7 @@ export default function Homepage() {
   const setPostFormModal = usePostStore((state) => state.setPostFormModal);
   const getAllLikedPosts = useUserStore((state) => state.getAllLikedPosts);
   const getAllFollowed = useUserStore((state) => state.getAllFollowed);
+  const getAllConnections = useUserStore((state) => state.getAllConnections);
   const setshowSchPosts = usePostStore((state) => state.setshowSchPosts);
   //console.log(allLikedPosts);
 
@@ -43,6 +44,7 @@ export default function Homepage() {
     if (isLoggedIn) {
       getAllLikedPosts();
       getAllFollowed();
+      getAllConnections();
     }
   }, [currUserId]);
 

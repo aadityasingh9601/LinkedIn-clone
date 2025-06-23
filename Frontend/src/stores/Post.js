@@ -12,8 +12,6 @@ import useUserStore from "./User";
 
 const setAllLikedPosts = useUserStore.getState().setAllLikedPosts;
 
-const { newAccessToken } = useUserStore.getState();
-
 const usePostStore = create((set) => ({
   posts: [],
 
