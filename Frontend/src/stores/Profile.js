@@ -44,6 +44,10 @@ const useProfileStore = create((set, get) => ({
       }
       const response = await apiGet(`/profile/${userId}`);
       console.log(response);
+      //We'll persist the data of the current user's profile to use that later.
+      if (userId === currUserId) {
+        localStorage.setItem("currUserProfile", JSON.stringify(response.data));
+      }
       set({ profile: response.data });
     });
   },
@@ -71,11 +75,11 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  createProfile: async (userId, data, updateVisState) => {
+  createProfile: async (data, updateVisState) => {
     tryCatchWrapper(async () => {
-      console.log(userId);
+      // console.log(userId);
       const response = await apiPost(
-        `/profile/${userId}`,
+        `/profile/${currUserId}`,
         { data },
         {
           "Content-Type": "multipart/form-data",

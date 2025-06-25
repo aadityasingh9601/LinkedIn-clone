@@ -3,12 +3,14 @@ import Button from "../Button.";
 import { useForm } from "react-hook-form";
 import RHFtextarea from "../RHFtextarea";
 import RHFInput from "../RHFinput";
+import useUserStore from "../../stores/User";
 
 export default function EducationForm({
   education = {},
   updateVisState,
   onSubmitProp,
 }) {
+  const currUserId = useUserStore((state) => state.currUserId);
   const {
     register,
     handleSubmit,

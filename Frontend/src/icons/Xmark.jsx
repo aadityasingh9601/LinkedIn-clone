@@ -1,10 +1,10 @@
 export default function Xmark({ styles = {}, onClick = () => {} }) {
   return (
-    <div>
+    <div style={{ display: "inline-block" }}>
       <i
         class="fa-solid fa-xmark cross"
         onClick={onClick}
-        style={{ position: "absolute", ...styles }}
+        style={{ position: "absolute", display: "inline-block", ...styles }}
       ></i>
     </div>
   );

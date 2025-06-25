@@ -1,8 +1,8 @@
 import "./ProfileSectionCard.css";
 import { useState } from "react";
-import { formatDate } from "../utils/helper";
-import Pen from "../icons/Pen";
-import Trash from "../icons/Trash";
+import { formatDate } from "../../utils/helper";
+import Pen from "../../icons/Pen";
+import Trash from "../../icons/Trash";
 
 export default function ProfileSectionCard({
   data,

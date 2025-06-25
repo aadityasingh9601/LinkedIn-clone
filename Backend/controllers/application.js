@@ -203,37 +203,42 @@ const rejectUserApplication = async (req, res) => {
 const jobFitStats = async (req, res) => {
   console.log("jobfitrstats");
   const { jobId } = req.params;
+  console.log(jobId);
   const userId = req.user._id;
 
   const job = await Job.findById(jobId);
-  const userProfile = await Profile.findOne({ userId: userId });
+  if (job) {
+    const userProfile = await Profile.findOne({ userId: userId });
 
-  const jobSkills = job.skills;
-  const userSkills = userProfile.skills;
+    const jobSkills = job.skills;
+    const userSkills = userProfile.skills;
 
-  console.log(jobSkills);
-  console.log(userSkills);
+    console.log(jobSkills);
+    console.log(userSkills);
 
-  let matchedSkills = [];
-  let missingSkills = [];
+    let matchedSkills = [];
+    let missingSkills = [];
 
-  jobSkills.forEach((s) => {
-    if (userSkills.includes(s.trim())) {
-      matchedSkills.push(s.trim());
-    } else {
-      missingSkills.push(s.trim());
-    }
-  });
+    jobSkills.forEach((s) => {
+      if (userSkills.includes(s.trim())) {
+        matchedSkills.push(s.trim());
+      } else {
+        missingSkills.push(s.trim());
+      }
+    });
 
-  console.log("These are our matched skills", matchedSkills);
-  console.log("These are our missing skills", missingSkills);
+    console.log("These are our matched skills", matchedSkills);
+    console.log("These are our missing skills", missingSkills);
 
-  const matchedScore = Math.ceil(
-    (matchedSkills.length / jobSkills.length) * 100
-  );
-  console.log(matchedScore);
+    const matchedScore = Math.ceil(
+      (matchedSkills.length / jobSkills.length) * 100
+    );
+    console.log(matchedScore);
 
-  res.status(200).send({ matchedScore, missingSkills, matchedSkills });
+    res.status(200).send({ matchedScore, missingSkills, matchedSkills });
+  } else {
+    res.status(400).send({ message: "NO such job Id exists." });
+  }
 };
 
 export default {

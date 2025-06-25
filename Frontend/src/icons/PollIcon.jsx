@@ -1,10 +1,10 @@
 export default function Pollicon({ styles = {}, onClick = () => {} }) {
   return (
-    <div>
+    <div style={{ display: "inline-block" }}>
       <i
         class="fa-solid fa-square-poll-vertical"
         onClick={onClick}
-        style={styles}
+        style={{ ...styles, display: "inline-block" }}
       ></i>
     </div>
   );

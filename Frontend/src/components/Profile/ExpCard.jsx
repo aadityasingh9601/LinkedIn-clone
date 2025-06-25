@@ -1,5 +1,5 @@
 import ExperienceForm from "./ExperienceForm";
-import ProfileSectionCard from "../ProfileSectionCard";
+import ProfileSectionCard from "./ProfileSectionCard";
 
 export default function ExpCard({ experience, editProfile, deleteProfile }) {
   return (

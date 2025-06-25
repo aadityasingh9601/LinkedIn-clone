@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import "./Profile.css";
 
 import useProfileStore from "../../stores/Profile";
-import useFollowStore from "../../stores/Follow";
 import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../../stores/User";
 import useAnalyticStore from "../../stores/Analytic";
 import useConnectionStore from "../../stores/Connection";
 import ProfileHead from "./ProfileHead";
-import ProfileSection from "../ProfileSection";
+import ProfileSection from "./ProfileSection";
 
 export default function Profile() {
   const { id: currProfileId } = useParams();

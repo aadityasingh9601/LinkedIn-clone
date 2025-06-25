@@ -2,7 +2,7 @@ import React from "react";
 
 export default function MediaIcon() {
   return (
-    <div>
+    <div style={{ display: "inline-block" }}>
       <svg
         role="none"
         aria-hidden="true"

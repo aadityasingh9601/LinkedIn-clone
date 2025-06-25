@@ -1,10 +1,10 @@
 export default function SmileR({ styles = {}, onClick = () => {} }) {
   return (
-    <div>
+    <div style={{ display: "inline-block" }}>
       <i
         className="fa-regular fa-face-smile"
         onClick={onClick}
-        style={styles}
+        style={{ ...styles, display: "inline-block" }}
       ></i>
     </div>
   );

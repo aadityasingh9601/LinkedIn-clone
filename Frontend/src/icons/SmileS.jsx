@@ -1,9 +1,9 @@
 export default function SmileS({ styles = {}, onClick = () => {} }) {
   return (
-    <div>
+    <div style={{ display: "inline-block" }}>
       <i
         className="fa-solid fa-face-smile"
-        style={styles}
+        style={{ ...styles, display: "inline-block" }}
         onClick={onClick}
       ></i>
     </div>

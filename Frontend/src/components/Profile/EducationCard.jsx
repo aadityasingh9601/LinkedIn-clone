@@ -1,5 +1,5 @@
 import EducationForm from "./EducationForm";
-import ProfileSectionCard from "../ProfileSectionCard";
+import ProfileSectionCard from "./ProfileSectionCard";
 
 export default function EducationCard({
   education,

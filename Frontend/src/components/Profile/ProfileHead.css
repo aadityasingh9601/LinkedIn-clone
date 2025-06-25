@@ -67,6 +67,20 @@
   left: 2rem;
 }
 
+.downloadPdf {
+  position: absolute;
+  left: 38rem;
+  bottom: 0rem;
+  padding: 0.4rem 0.4rem;
+  width: 7rem;
+  border: none;
+  background-color: white;
+  border: 1px solid #0a66c2;
+  border-radius: 1.5rem;
+  margin-left: 1rem;
+  font-size: 0.9rem;
+}
+
 .contactInfo {
   display: flex;
   gap: 0.7rem;

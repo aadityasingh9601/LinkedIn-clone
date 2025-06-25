@@ -1,15 +1,15 @@
 import "./ProfileSection.css";
 import { useState, useEffect } from "react";
-import EducationCard from "./Profile/EducationCard";
-import ExpCard from "./Profile/ExpCard";
-import EducationForm from "./Profile/EducationForm";
-import ExperienceForm from "./Profile/ExperienceForm";
-import Plus from "../icons/Plus";
-import Pen from "../icons/Pen";
-import Trash from "../icons/Trash";
-import ControlledTextarea from "./ControlledTextarea";
-import ControlledInput from "./ControlledInput";
-import Button from "./Button.";
+import EducationCard from "./EducationCard";
+import ExpCard from "./ExpCard";
+import EducationForm from "./EducationForm";
+import ExperienceForm from "./ExperienceForm";
+import Plus from "../../icons/Plus";
+import Pen from "../../icons/Pen";
+import Trash from "../../icons/Trash";
+import ControlledTextarea from "../ControlledTextarea";
+import ControlledInput from "../ControlledInput";
+import Button from "../Button.";
 
 export default function ProfileSection({
   title,
@@ -25,6 +25,10 @@ export default function ProfileSection({
 
   const updateVisState = (value) => {
     setAddSection(value);
+  };
+
+  const updateEditSection = (value) => {
+    setEditSection(value);
   };
 
   useEffect(() => {
@@ -83,9 +87,7 @@ export default function ProfileSection({
               onClick={() => {
                 editProfile(
                   { section: "about", newData: newAbout },
-                  (value) => {
-                    setEditSection(value);
-                  }
+                  updateEditSection
                 );
               }}
             />

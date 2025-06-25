@@ -51,7 +51,8 @@ const getAllUserGroups = async (req, res) => {
 const createProfile = async (req, res) => {
   console.log("inside createProfile on backend");
   const { userId } = req.params;
-  console.log("54", userId);
+  console.log("This is params", req.params);
+  console.log("This is body", req.body);
   //console.log(req.files);
   //console.log(req.files["data[profileImage]"]);
 
@@ -146,7 +147,7 @@ const createProfile = async (req, res) => {
     }
 
     await profile.save();
-    console.log(profile);
+    //console.log(profile);
     //res.status(200).send({ message: "Profile updated successfully" });
     res.status(200).send(profile);
   } else {
@@ -157,6 +158,7 @@ const createProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
   console.log("inside update profile on backend");
   const { userId } = req.params;
+  // console.log(req.params);
   const { data } = req.body;
   const profile = await Profile.findOne({ userId: userId });
   if (req.user._id.toString() === profile.userId.toString()) {

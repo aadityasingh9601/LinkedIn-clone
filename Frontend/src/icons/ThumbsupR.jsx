@@ -2,10 +2,10 @@ import React from "react";
 
 export default function ThumbsupR({ styles = {}, onClick = () => {} }) {
   return (
-    <div>
+    <div style={{ display: "inline-block" }}>
       <i
         className="fa-regular fa-thumbs-up"
-        style={styles}
+        style={{ ...styles, display: "inline-block" }}
         onClick={onClick}
       ></i>
     </div>

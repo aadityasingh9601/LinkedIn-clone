@@ -18,7 +18,6 @@ export default function JobsUI() {
   //console.log(currJobListingId);
   const setcurrJobListingId = useJobStore((state) => state.setcurrJobListingId);
   const currJobDetails = jobs.find((job) => job._id === currJobListingId);
-  // console.log(currJobDetails);
   const editJob = useJobStore((state) => state.editJob);
   const fetchMyJobPostings = useJobStore((state) => state.fetchMyJobPostings);
   const [myJobs, setmyJobs] = useState(false);
@@ -79,12 +78,12 @@ export default function JobsUI() {
       </div>
       {postJob && (
         <Modal>
-          <CreateJobForm jobData={currJobDetails} />
+          <CreateJobForm job={currJobDetails} />
         </Modal>
       )}
       {editJob && (
         <Modal>
-          <CreateJobForm jobData={currJobDetails} />
+          <CreateJobForm job={currJobDetails} />
         </Modal>
       )}
     </>

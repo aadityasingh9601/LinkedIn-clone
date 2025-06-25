@@ -9,15 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Check from "../../icons/Check";
 import TimePassed from "../TimePassed";
+import JobFitStats from "./JobFitStats";
 
 export default function JobDetail({ job }) {
-  console.log(job);
   const navigate = useNavigate();
-
-  //console.log(job);
   const currUserId = useUserStore((state) => state.currUserId);
-
-  const userProfile = useProfileStore((state) => state.profile);
+  //Getting the currUser's profile data from the local storage.
+  const userProfile = JSON.parse(localStorage.getItem("currUserProfile"));
 
   const [applied, setApplied] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -26,10 +24,6 @@ export default function JobDetail({ job }) {
   const unapplyFromJob = useJobStore((state) => state.unapplyFromJob);
 
   const jobFitStats = useJobStore((state) => state.jobFitStats);
-
-  const matchedScore = jobFitStats?.matchedScore;
-
-  //console.log(matchedScore);
 
   const fetchJobFitStats = useJobStore((state) => state.fetchJobFitStats);
 
@@ -43,11 +37,16 @@ export default function JobDetail({ job }) {
     if (existingApplication) {
       setApplied(true);
     }
-  }, []);
+
+    //Check if the userProfile equeals to the userProfile of the currUser only.
+    if (userProfile?.myJobs?.saved.includes(job?._id)) {
+      setSaved(true);
+    }
+  }, [job, userProfile, currUserId]);
 
   useEffect(() => {
-    fetchJobFitStats(job._id);
-  }, [job._id]);
+    fetchJobFitStats(job?._id);
+  }, [job]);
 
   return (
     <div className="jobDetail">
@@ -75,7 +74,10 @@ export default function JobDetail({ job }) {
           }}
         >
           {job?.location} <Dot />
-          <TimePassed timePassed={job.postedDate} />
+          <TimePassed
+            timePassed={job?.postedDate}
+            styles={{ position: "relative", margin: "0 0.3rem 0 0" }}
+          />{" "}
           ago
           <Dot />
           {job?.applications?.length} people clicked apply
@@ -108,74 +110,7 @@ export default function JobDetail({ job }) {
         </div>
 
         {currUserId !== job?.postedBy && (
-          <div className="jobfitstats">
-            <div
-              style={{
-                backgroundColor: "rgb(218, 235, 209)",
-              }}
-            >
-              📊Match score: {matchedScore}%
-            </div>
-
-            <div
-              style={{
-                backgroundColor: "rgb(232,232,232)",
-              }}
-            >
-              {jobFitStats?.matchedSkills?.length} out of {job?.skills.length}{" "}
-              skills matched:
-              {jobFitStats?.matchedSkills?.map((s) => {
-                return "✅" + s + " ";
-              })}
-            </div>
-
-            <div
-              style={{
-                backgroundColor: "#fddcdc",
-              }}
-            >
-              You're missing:
-              {jobFitStats?.missingSkills?.map((s) => {
-                return "❌" + s + " ";
-              })}
-            </div>
-
-            <div
-              style={{
-                backgroundColor: "#fef9c3",
-              }}
-            >
-              💡Suggested actions:
-              {jobFitStats?.missingSkills?.map((s) => {
-                return "[ Learn " + s + " ]";
-              })}
-              [ Apply anyway ].
-            </div>
-
-            <div
-              style={{
-                backgroundColor: " #e0f2fe",
-              }}
-            >
-              📌Recommended resources to learn{" "}
-            </div>
-
-            <div>
-              {matchedScore >= 80
-                ? "🎯 You’re highly likely to be a great fit for this job!"
-                : matchedScore >= 60 && matchedScore < 80
-                ? "💪 You meet most requirements – consider applying!"
-                : matchedScore >= 40 && matchedScore < 60
-                ? "⚠️ You match some skills - try upskilling or apply with a strong case."
-                : "🌱 You currently lack many of the required skills - learning them can help a lot!"}
-            </div>
-
-            <div className="note">
-              <span style={{ fontWeight: "bold" }}>ℹ️ Note:</span> This is just
-              an automated estimate. Actual job success depends on various
-              factors like experience, portfolio, and communication skills too.
-            </div>
-          </div>
+          <JobFitStats jobFitStats={jobFitStats} jobSkills={job?.skills} />
         )}
 
         <div className="job_btns">
@@ -207,7 +142,21 @@ export default function JobDetail({ job }) {
               />
             ))}
 
-          <Button btnText="Save" onClick={() => saveJob(job._id)} />
+          {saved ? (
+            <Button
+              btnText="Saved"
+              onClick={() => {
+                saveJob(job._id), setSaved(false);
+              }}
+            />
+          ) : (
+            <Button
+              btnText="Save"
+              onClick={() => {
+                saveJob(job._id), setSaved(true);
+              }}
+            />
+          )}
         </div>
       </div>
 

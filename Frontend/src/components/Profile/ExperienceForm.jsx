@@ -3,6 +3,7 @@ import useProfileStore from "../../stores/Profile";
 import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
 import RHFInput from "../RHFinput";
+import useUserStore from "../../stores/User";
 
 export default function ExperienceForm({
   experience = {},
@@ -10,6 +11,7 @@ export default function ExperienceForm({
   onSubmitProp,
 }) {
   const createProfile = useProfileStore((state) => state.createProfile);
+  const currUserId = useUserStore((state) => state.currUserId);
 
   const {
     register,

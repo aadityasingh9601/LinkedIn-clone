@@ -4,7 +4,6 @@ import ChatUI from "./Messaging/ChatUI";
 import useChatStore from "../stores/Chat";
 import ChatList from "./Messaging/ChatList";
 import { useEffect } from "react";
-import Ellipsis from "../icons/Ellipsis";
 import CaretUp from "../icons/CaretUp";
 
 function Layout({ children, socket }) {

@@ -31,7 +31,7 @@ export default function ProfileHeadForm({
       profileImage: profileData.profileImage?.[0], // optional chaining just in case
       bannerImage: profileData.bannerImage?.[0],
     };
-    createProfile(currUserId, data);
+    createProfile(data);
   };
 
   return (

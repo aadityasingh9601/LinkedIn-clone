@@ -35,9 +35,21 @@ router
 
   .get("/alljobs", protect, wrapAsync(jobController.getAllJobs))
   .get("/myjobs", protect, wrapAsync(jobController.getMyJobs))
-  .get("/:jobId/applicants", protect, applicationController.getAllApplications)
-  .get("/resume/:resumeId", protect, applicationController.getUserResume)
-  .get("/:jobId/jobfitstats", protect, applicationController.jobFitStats);
+  .get(
+    "/:jobId/applicants",
+    protect,
+    wrapAsync(applicationController.getAllApplications)
+  )
+  .get(
+    "/resume/:resumeId",
+    protect,
+    wrapAsync(applicationController.getUserResume)
+  )
+  .get(
+    "/:jobId/jobfitstats",
+    protect,
+    wrapAsync(applicationController.jobFitStats)
+  );
 
 router
   .post(

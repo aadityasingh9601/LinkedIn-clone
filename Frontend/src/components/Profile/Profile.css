@@ -28,14 +28,3 @@
 .bodyyy div:hover {
   cursor: pointer;
 }
-
-.downloadPdf {
-  padding: 0.4rem 0.75rem;
-  width: fit-content;
-  border: none;
-  background-color: white;
-  border: 1px solid #0a66c2;
-  border-radius: 1.5rem;
-  margin-left: 1rem;
-  font-size: 0.9rem;
-}
