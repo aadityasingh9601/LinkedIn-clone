@@ -17,7 +17,7 @@ export default function FullApplication() {
   const [reviewed, setReviewed] = useState(false);
 
   useEffect(() => {
-    if (application.status === "Reviewed") {
+    if (application?.status === "Reviewed") {
       setReviewed(true);
     }
   }, []);

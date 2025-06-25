@@ -197,6 +197,7 @@ const useJobStore = create(
 
       rejectUserApplication: async (jobId, applicationId, navigate) => {
         tryCatchWrapper(async () => {
+          console.log(jobId, applicationId);
           const response = await apiDelete(
             `/jobs/${jobId}/reject/${applicationId}`
           );

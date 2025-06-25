@@ -20,7 +20,7 @@ export default function PostEditForm({ post }) {
   } = useForm({
     defaultValues: {
       content: post.content,
-      category: post.category.map((e) => e + ","),
+      category: post.category.map((e) => e + " "),
       date: date,
       time: time,
     },

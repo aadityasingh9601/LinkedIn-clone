@@ -104,22 +104,21 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
       )}
       {toggle ? (
         <div className="options-box">
-          {type === "post" ||
-            (type == "comment" && (
-              <button
-                onClick={() => {
-                  {
-                    type === "comment"
-                      ? setCommentEdit(true)
-                      : seteditModal(true);
-                    setToggle(false);
-                  }
-                }}
-              >
-                <Pen />
-                Edit
-              </button>
-            ))}
+          {(type === "post" || type == "comment") && (
+            <button
+              onClick={() => {
+                {
+                  type === "comment"
+                    ? setCommentEdit(true)
+                    : seteditModal(true);
+                  setToggle(false);
+                }
+              }}
+            >
+              <Pen />
+              Edit
+            </button>
+          )}
           <button
             onClick={() => {
               setdeleteModal(true);

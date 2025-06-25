@@ -15,6 +15,7 @@ let bucket;
 })();
 
 const applyToJob = async (req, res) => {
+  console.log("Inside applyToJob");
   const { jobId } = req.params;
   const { data } = req.body;
   const { filename, id } = req.file;
@@ -139,11 +140,12 @@ const markReviewed = async (req, res) => {
   application.status = "Reviewed";
   await application.save();
 
-  res.send("inside markReviewed");
+  res.status(200).send("Successfully marked as review1");
 };
 
 const rejectUserApplication = async (req, res) => {
   const { jobId, id } = req.params;
+  console.log(jobId, id);
   const currUserId = req.user._id.toString();
 
   const job = await Job.findById(jobId);
@@ -166,18 +168,8 @@ const rejectUserApplication = async (req, res) => {
       $pull: { applications: id },
     });
 
-    //Update the status.
-    await Profile.findByIdAndUpdate(currUserId, {
-      $pull: { "myJobs.applied.status": "Rejected" },
-    });
-
     //Deleted the application
     await Application.findByIdAndDelete(id);
-
-    //Remove the application from job.
-    await Job.findByIdAndUpdate(jobId, {
-      $pull: { applications: existingApplication },
-    });
   }
 
   //Add a middleware in application schema so that wheneer a application gets deleted it's corresponding
