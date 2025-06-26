@@ -27,16 +27,6 @@
   padding: 0.85rem;
 }
 
-.postform .form textarea {
-  min-height: 20rem;
-  width: 100%;
-}
-
-.postform .form form input {
-  width: 99%;
-  margin: 0;
-}
-
 .postform .form .formBody {
   overflow: auto;
 

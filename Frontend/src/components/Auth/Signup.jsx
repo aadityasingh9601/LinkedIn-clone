@@ -20,7 +20,8 @@ export default function Signup() {
   } = useForm();
 
   const onSubmit = async (signupData) => {
-    signUp(navigate, signupData);
+    //console.log(signupData)
+    signUp(signupData, navigate);
   };
 
   return (

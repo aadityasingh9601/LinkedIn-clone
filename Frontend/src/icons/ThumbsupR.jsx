@@ -5,7 +5,7 @@ export default function ThumbsupR({ styles = {}, onClick = () => {} }) {
     <div style={{ display: "inline-block" }}>
       <i
         className="fa-regular fa-thumbs-up"
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
         onClick={onClick}
       ></i>
     </div>

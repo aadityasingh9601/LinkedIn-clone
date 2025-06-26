@@ -5,6 +5,7 @@ import Pen from "../../icons/Pen";
 import Trash from "../../icons/Trash";
 
 export default function ProfileSectionCard({
+  styles = {},
   data,
   section,
   FormComponent,
@@ -41,7 +42,7 @@ export default function ProfileSectionCard({
   };
 
   return (
-    <div className="profileSectionCard">
+    <div className={`profileSectionCard ${editing ? "editing" : ""}`}>
       {editing ? (
         <>
           <Trash
@@ -70,7 +71,7 @@ export default function ProfileSectionCard({
             <br />
             <span>{data[fields.descriptionKey]}</span>
           </div>
-          <Pen onClick={() => updateEditing(true)} />
+          <Pen onClick={() => updateEditing(true)} styles={styles} />
         </>
       )}
     </div>

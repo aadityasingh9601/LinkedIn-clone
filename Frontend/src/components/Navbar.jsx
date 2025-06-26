@@ -18,7 +18,7 @@ import NotiIcon from "../icons/NotiIcon";
 import User from "./User";
 import Xmark from "../icons/Xmark";
 
-export default function Navbar() {
+export default function Navbar({ showMessaging }) {
   const navigate = useNavigate();
   const userProfiles = useProfileStore((state) => state.userProfiles);
   const fetchProfiles = useProfileStore((state) => state.fetchProfiles);
@@ -125,7 +125,7 @@ export default function Navbar() {
         <JobIcon />
         <span>Jobs</span>
       </Link>
-      <Link>
+      <Link onClick={() => showMessaging()}>
         <MsgIcon />
         <span>Messaging</span>
       </Link>

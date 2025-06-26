@@ -29,15 +29,19 @@ export default function PreLogin() {
         transition:Bounce
       />
       <div className="prelogin">
-        <LinkedInIcon />
+        <LinkedInIcon
+          styles={{
+            position: "absolute",
+            top: "2rem",
+            left: "2rem",
+          }}
+        />
         <div className="landingForm">
           <span className="motto">Welcome to your professional community.</span>
           <br /> <br />
           <button onClick={() => navigate("/login")}>
             Sign in with email
           </button>{" "}
-          <br /> <br />
-          <button>Continue with google</button>
           <br /> <br />
           <span style={{ fontSize: "1.1rem" }}>
             New to LinkedIn?{" "}

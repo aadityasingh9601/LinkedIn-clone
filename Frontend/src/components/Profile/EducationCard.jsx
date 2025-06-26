@@ -5,9 +5,11 @@ export default function EducationCard({
   education,
   editProfile,
   deleteProfile,
+  styles = {},
 }) {
   return (
     <ProfileSectionCard
+      styles={styles}
       data={education}
       section="education"
       editProfile={editProfile}

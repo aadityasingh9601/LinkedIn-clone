@@ -49,6 +49,10 @@ export default function PostEditForm({ post }) {
           placeholder="Write your post here..."
           register={register}
           errors={errors}
+          styles={{
+            minHeight: "20rem",
+            width: "100%",
+          }}
           name="content"
           rules={{
             required: "Content is required",

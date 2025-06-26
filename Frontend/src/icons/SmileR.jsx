@@ -4,7 +4,7 @@ export default function SmileR({ styles = {}, onClick = () => {} }) {
       <i
         className="fa-regular fa-face-smile"
         onClick={onClick}
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
       ></i>
     </div>
   );

@@ -1,6 +1,6 @@
-export default function LinkedInIcon() {
+export default function LinkedInIcon({ styles = {} }) {
   return (
-    <div style={{ display: "inline-block" }}>
+    <div style={styles}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"

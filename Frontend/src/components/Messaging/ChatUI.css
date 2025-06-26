@@ -1,7 +1,7 @@
 .chatui {
   width: 28rem;
   height: 75%;
-  background-color: lightblue;
+  background-color: white;
   position: fixed;
   right: 17.5rem;
   bottom: 0;
@@ -12,9 +12,11 @@
 }
 
 .receiver {
+  display: flex;
   border-bottom: 1px solid gray;
   width: 96%;
   padding: 0.5rem;
+  background-color: #f4f2ee;
   height: 8%;
 }
 
@@ -26,15 +28,15 @@
 }
 
 .allMsg {
-  background-color: salmon;
-  width: 94.5%;
+  background-color: white;
+  width: 94%;
   padding: 0.8rem;
-  height: 65%;
+  height: 64%;
   overflow-y: auto;
 }
 
 .date-divider {
-  background-color: white;
+  background-color: #f4f2ee;
   padding: 0.3rem 0.5rem;
   display: inline-block;
   font-size: 0.85rem;

@@ -4,7 +4,7 @@ export default function Ellipsis({ styles = {}, onClick = () => {} }) {
       <i
         class="fa-solid fa-ellipsis"
         onClick={onClick}
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
       ></i>
     </div>
   );

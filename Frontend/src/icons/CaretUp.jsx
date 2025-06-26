@@ -6,7 +6,7 @@ export default function CaretUp({ styles = {}, onClick = () => {} }) {
       <i
         class="fa-solid fa-caret-up upicon"
         onClick={onClick}
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
       ></i>
     </div>
   );

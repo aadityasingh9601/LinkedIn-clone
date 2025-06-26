@@ -3,7 +3,7 @@ export default function PaperPlane(styles = {}, onClick = () => {}) {
     <div style={{ display: "inline-block" }}>
       <i
         className="fa-solid fa-paper-plane"
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
         onClick={onClick}
       ></i>
     </div>

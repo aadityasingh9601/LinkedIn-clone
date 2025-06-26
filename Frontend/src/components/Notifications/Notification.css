@@ -1,7 +1,7 @@
 .notification {
   position: relative;
   display: flex;
-  background-color: yellow;
+  background-color: #edf3f8;
   height: fit-content;
   padding: 0.3rem;
   width: 85%;

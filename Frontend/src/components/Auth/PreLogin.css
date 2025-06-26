@@ -10,14 +10,6 @@
   background-color: white;
 }
 
-/* Instead of giving height 100% width 100% , you can also write like this to make the element cover the whole page. */
-
-.logo {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-}
-
 .landingForm {
   position: relative;
   bottom: 3rem;

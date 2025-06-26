@@ -1,3 +1,5 @@
+import "./Input.css";
+
 export default function Input({
   placeholder,
   type = "",
@@ -8,7 +10,7 @@ export default function Input({
   styles = {},
 }) {
   return (
-    <div>
+    <div className="input">
       <input
         id={id}
         type={type}

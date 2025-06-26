@@ -44,6 +44,12 @@ export default function MsgBox({ currChatId, socket }) {
         <ControlledTextarea
           placeholder="Write a message"
           value={newMsg}
+          styles={{
+            maxHeight: "4.5rem",
+            width: "22rem",
+            margin: "0.3rem 0 0 0",
+            backgroundColor: "#f4f2ee",
+          }}
           onChange={handleChange}
         />
 

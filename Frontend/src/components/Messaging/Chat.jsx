@@ -9,8 +9,6 @@ import { formatTime, formatDate2 } from "../../utils/helper";
 export default function Chat({ chat, otherPerson, socket }) {
   const currUserId = localStorage.getItem("currUserId");
 
-  const fullChat = useChatStore((state) => state.fullChat);
-
   const setfullChat = useChatStore((state) => state.setfullChat);
 
   const deleteChat = useChatStore((state) => state.deleteChat);

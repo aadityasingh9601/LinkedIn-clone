@@ -23,7 +23,7 @@ const useUserStore = create((set, get) => ({
     tryCatchWrapper(async () => {
       const response = await apiPost(`/users/signup`, { signupData }, {});
       console.log(response.request.status);
-      if (response.request.status === 200) {
+      if (response.request.status === 201) {
         toast.success(response.data.message);
         navigate("/login");
       }
@@ -84,6 +84,7 @@ const useUserStore = create((set, get) => ({
   newAccessToken: async () => {
     const { setIsLoggedIn } = useUserStore.getState();
     try {
+      console.log(window.location);
       const response = await apiGet(`/users/newaccesstoken`);
       console.log(response);
     } catch (err) {
@@ -94,7 +95,9 @@ const useUserStore = create((set, get) => ({
         //ensure it gets redirected to the login page automatically.
         setIsLoggedIn(false);
       }
-      return toast.error(err.message);
+      if (window.location.pathname !== ("/signup" || "/login" || "/")) {
+        return toast.error(err.message);
+      }
     }
   },
 

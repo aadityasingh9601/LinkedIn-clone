@@ -3,7 +3,7 @@ export default function Envelope({ styles = {}, onClick = () => {} }) {
     <div style={{ display: "inline-block" }}>
       <i
         class="fa-solid fa-envelope"
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
         onClick={onClick}
       ></i>
     </div>

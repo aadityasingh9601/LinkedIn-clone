@@ -4,7 +4,7 @@ export default function Pollicon({ styles = {}, onClick = () => {} }) {
       <i
         class="fa-solid fa-square-poll-vertical"
         onClick={onClick}
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
       ></i>
     </div>
   );

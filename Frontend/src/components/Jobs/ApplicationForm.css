@@ -13,11 +13,3 @@
   height: fit-content;
   background-color: pink;
 }
-
-.applicationForm form textarea {
-  height: 5rem;
-}
-
-.applicationForm form input {
-  margin: 0;
-}

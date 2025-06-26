@@ -2,7 +2,7 @@
   background-color: white;
   display: flex;
   padding: 0.5rem;
-  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
   position: relative;
 }
 

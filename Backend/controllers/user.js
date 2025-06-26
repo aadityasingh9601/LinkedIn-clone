@@ -25,6 +25,7 @@ const checkTokenCookie = async (req, res) => {
 
 const signup = async (req, res) => {
   const { signupData } = req.body;
+  console.log(req.body);
   const { error } = signupSchema.validate(req.body);
   if (error) {
     console.log(error);

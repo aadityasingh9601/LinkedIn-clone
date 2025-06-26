@@ -1,9 +1,20 @@
 .createjobform {
   position: relative;
-  background-color: bisque;
   padding: 1rem;
   max-height: 75vh;
+  min-width: 30rem;
   overflow: auto;
+  background-color: #f4f2ee;
+  border-radius: 0.75rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+.createjobform .h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1f2937;
 }
 
 .createjobform i {

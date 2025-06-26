@@ -145,7 +145,7 @@ export default function Homepage() {
     <div className="homepage">
       {/* <Button btnText="Join Group" onClick={handleJoin} />
         <Button btnText="Connect" onClick={sendReq} /> */}
-      <div className="sideTab">This is our sideTab.</div>
+      {/* <div className="sideTab">This is our sideTab.</div> */}
       <div className="feed">
         <PostFormPreview />
         <hr></hr>
@@ -190,7 +190,7 @@ export default function Homepage() {
           </div>
         </InfiniteScroll>
       </div>
-      <div className="sideTab2">This is our sideTab2.</div>
+      {/* <div className="sideTab2">This is our sideTab2.</div> */}
     </div>
   );
 }

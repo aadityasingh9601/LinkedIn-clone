@@ -1,3 +1,5 @@
+import "./Input.css";
+
 export default function RHFInput({
   id = {},
   placeholder = "",
@@ -9,7 +11,7 @@ export default function RHFInput({
   styles = {},
 }) {
   return (
-    <div>
+    <div className="input">
       <input
         id={id}
         type={type}

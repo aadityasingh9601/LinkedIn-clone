@@ -1,7 +1,8 @@
 .msg {
   padding: 0.4rem;
   position: relative;
-  background-color: lightblue;
+  background-color: white;
+  border: 0.5px solid gray;
   margin: 0 0 0.6rem 0;
   width: fit-content;
   min-width: 10rem;

@@ -10,6 +10,7 @@ import Trash from "../../icons/Trash";
 import ControlledTextarea from "../ControlledTextarea";
 import ControlledInput from "../ControlledInput";
 import Button from "../Button.";
+import useUserStore from "../../stores/User";
 
 export default function ProfileSection({
   title,
@@ -18,6 +19,7 @@ export default function ProfileSection({
   editProfile,
   deleteProfile,
 }) {
+  const currUserId = useUserStore((state) => state.currUserId);
   const [addSection, setAddSection] = useState(false);
   const [editSection, setEditSection] = useState(false);
   const [newAbout, setnewAbout] = useState("");
@@ -101,6 +103,7 @@ export default function ProfileSection({
                     key={education._id}
                     education={education}
                     editProfile={editProfile}
+                    styles={styles}
                     deleteProfile={deleteProfile}
                   />
                 );
@@ -113,6 +116,7 @@ export default function ProfileSection({
                     experience={experience}
                     editProfile={editProfile}
                     deleteProfile={deleteProfile}
+                    styles={styles}
                   />
                 );
               })

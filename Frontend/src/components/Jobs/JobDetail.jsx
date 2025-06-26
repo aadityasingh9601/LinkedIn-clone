@@ -28,7 +28,7 @@ export default function JobDetail({ job }) {
   const fetchJobFitStats = useJobStore((state) => state.fetchJobFitStats);
 
   const jobApplications = job?.applications;
-  console.log(jobApplications);
+  //console.log(jobApplications);
   const existingApplication = jobApplications?.find(
     (a) => a?.applicant?.toString() === currUserId
   );

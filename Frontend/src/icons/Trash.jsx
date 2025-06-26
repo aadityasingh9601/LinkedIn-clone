@@ -3,7 +3,7 @@ export default function Trash({ styles = {}, onClick = () => {} }) {
     <div style={{ display: "inline-block" }}>
       <i
         class="fa-solid fa-trash"
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
         onClick={onClick}
       ></i>
     </div>

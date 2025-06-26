@@ -33,18 +33,6 @@
   font-size: 0.8rem;
 }
 
-.pollform .mid form textarea {
-  height: 3rem;
-  margin: 0 0 0.5rem 0;
-}
-
-.pollform .mid form input {
-  width: 98%;
-  padding: 0 0 0 0.4rem;
-  height: 2rem;
-  margin: 0 0 0.5rem 0;
-}
-
 .pollform .pollDropdown {
   width: 100%;
   padding: 0.5rem;

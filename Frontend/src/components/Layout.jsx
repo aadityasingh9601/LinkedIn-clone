@@ -27,7 +27,7 @@ function Layout({ children, socket }) {
 
   return (
     <>
-      <Navbar />
+      <Navbar showMessaging={showMessaging} />
       <ToastContainer
         position="bottom-left"
         autoClose={5000}

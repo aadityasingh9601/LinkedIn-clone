@@ -1,7 +1,7 @@
 .notificationBox {
-  background-color: aqua;
+  background-color: white;
   height: fit-content;
-  min-height: 20rem;
+  min-height: 40rem;
   width: 95%;
   position: relative;
   top: 5rem;

@@ -4,7 +4,7 @@ export default function ClockS({ styles = {}, onClick = () => {} }) {
       <i
         class="fa-solid fa-clock"
         onClick={onClick}
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
       ></i>
     </div>
   );

@@ -66,7 +66,7 @@ export default function CreateJobForm({ job }) {
         }}
       />
 
-      <h3>This is our post a job form.</h3>
+      <div className="h2">Create a job posting</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RHFInput
           placeholder="Write job title"
@@ -120,14 +120,11 @@ export default function CreateJobForm({ job }) {
         />
         <br />
 
-        <label htmlFor="jobType" className="block font-medium mb-1">
-          Job Type
-        </label>
+        <label htmlFor="jobType">Job Type</label>
         <select
           id="jobType"
           value={jobType || ""}
           onChange={handleChange}
-          className="border p-2 rounded w-full"
           {...register("jobType", {
             required: "JobType is required",
           })}
@@ -140,14 +137,11 @@ export default function CreateJobForm({ job }) {
 
         <br />
 
-        <label htmlFor="mode" className="block font-medium mb-1">
-          Mode
-        </label>
+        <label htmlFor="mode">Mode</label>
         <select
           id="mode"
           value={mode || ""}
           onChange={handleChange2}
-          className="border p-2 rounded w-full"
           {...register("mode", {
             required: "Job mode is required",
           })}

@@ -1,9 +1,15 @@
 import ExperienceForm from "./ExperienceForm";
 import ProfileSectionCard from "./ProfileSectionCard";
 
-export default function ExpCard({ experience, editProfile, deleteProfile }) {
+export default function ExpCard({
+  experience,
+  editProfile,
+  deleteProfile,
+  styles = {},
+}) {
   return (
     <ProfileSectionCard
+      styles={styles}
       data={experience}
       section="experience"
       editProfile={editProfile}

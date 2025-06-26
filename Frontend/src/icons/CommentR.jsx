@@ -3,7 +3,7 @@ export default function CommentR({ styles = {}, onClick = () => {} }) {
     <div style={{ display: "inline-block" }}>
       <i
         className="fa-regular fa-comment"
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
         onClick={onClick}
       ></i>
     </div>

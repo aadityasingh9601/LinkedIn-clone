@@ -3,7 +3,7 @@ export default function Plus({ styles = {}, onClick = () => {} }) {
     <div style={{ display: "inline-block" }}>
       <i
         class="fa-solid fa-plus"
-        style={{ ...styles, display: "inline-block" }}
+        style={{ display: "inline-block", ...styles }}
         onClick={onClick}
       ></i>
     </div>

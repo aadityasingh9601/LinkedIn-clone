@@ -57,14 +57,15 @@ const useJobStore = create(
 
       updateJob: async (jobData, jobId) => {
         tryCatchWrapper(async () => {
+          console.log(jobId);
           const response = await apiPatch(`/jobs/${jobId}`, { jobData }, {});
           console.log(response);
           if (response.status === 200) {
             set({ editJob: false });
             set((state) => ({
-              jobs: state.jobs.map((job) =>
-                job._id === jobId ? { ...job, ...response.data } : job
-              ),
+              jobs: state.jobs.map((job) => {
+                return job._id === jobId ? response.data : job;
+              }),
             }));
             return toast.success("Job updated successfully!");
           }

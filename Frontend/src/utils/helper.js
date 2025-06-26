@@ -50,7 +50,9 @@ const tryCatchWrapper = async (fn) => {
     console.log(err);
     if (err.response.status === 401) {
       newAccessToken();
-      return toast.error("Something went wrong! Please try again.");
+      if (window.location.pathname !== ("/signup" || "/login" || "/")) {
+        return toast.error("Something went wrong! Please try again.");
+      }
     }
   }
 };
@@ -112,7 +114,11 @@ const formatDate = (dateString) => {
 
 const formatDate2 = (isoDate) => {
   const date = new Date(isoDate);
-  const options = { weekday: "short", month: "short", day: "numeric" };
+  const options = {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
   return formattedDate;

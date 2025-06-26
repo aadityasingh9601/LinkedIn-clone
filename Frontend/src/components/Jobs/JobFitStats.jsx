@@ -47,13 +47,13 @@ export default function JobFitStats({ jobFitStats, jobSkills }) {
         [ Apply anyway ].
       </div>
 
-      <div
+      {/* <div
         style={{
           backgroundColor: " #e0f2fe",
         }}
       >
         📌Recommended resources to learn{" "}
-      </div>
+      </div> */}
 
       <div>
         {matchedScore >= 80

@@ -6,6 +6,7 @@ import useChatStore from "../../stores/Chat";
 import Message from "./Message";
 import Xmark from "../../icons/Xmark";
 import User from "../User";
+import { formatDate2 } from "../../utils/helper";
 
 export default function ChatUI({ socket }) {
   const currChatId = useChatStore((state) => state.currChatId);
@@ -65,37 +66,29 @@ export default function ChatUI({ socket }) {
 
   let lastDate = null;
 
-  const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString("en-US", {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    }); // E.g., "Wednesday, January 22, 2025"
-  };
-
   return (
     <div className="chatui">
-      <Xmark
-        onClick={() => setfullChat(false)}
-        styles={{
-          zIndex: "30",
-          top: "0.5rem",
-          right: "0.5rem",
-        }}
-      />
+      <div className="receiver">
+        <Xmark
+          onClick={() => setfullChat(false)}
+          styles={{
+            zIndex: "30",
+            top: "0.5rem",
+            right: "0.5rem",
+          }}
+        />
 
-      <User
-        userId={otherPerson?.profile.userId}
-        username={otherPerson?.profile.name}
-        url={otherPerson?.profile.profileImage?.url}
-        headline={otherPerson?.profile.headline}
-      />
+        <User
+          userId={otherPerson?.profile.userId}
+          username={otherPerson?.profile.name}
+          url={otherPerson?.profile.profileImage?.url}
+          headline={otherPerson?.profile.headline}
+        />
+      </div>
 
       <div className="allMsg" ref={chatContainerRef}>
         {messages?.map((msg) => {
-          const messageDate = formatDate(msg?.Date);
+          const messageDate = formatDate2(msg?.Date);
           const isNewDay = lastDate !== messageDate;
           lastDate = messageDate;
           return (
