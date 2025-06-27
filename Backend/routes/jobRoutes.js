@@ -5,9 +5,11 @@ import wrapAsync from "../utils/wrapAsync.js";
 import protect from "../Middleware.js";
 import multer from "multer";
 import { GridFsStorage } from "multer-gridfs-storage";
+import dotenv from "dotenv";
+dotenv.config();
 
 const pdfStorage = new GridFsStorage({
-  url: "mongodb://127.0.0.1:27017/LinkedIn",
+  url: process.env.MONGO_URL,
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       const filename = `${file.originalname}`;

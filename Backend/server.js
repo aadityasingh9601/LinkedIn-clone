@@ -51,7 +51,7 @@ app.use(bodyParser.json());
 app.use(cookieParser("tillu"));
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/LinkedIn");
+  await mongoose.connect(process.env.MONGO_URL);
 }
 
 main()

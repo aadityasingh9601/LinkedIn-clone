@@ -67,13 +67,13 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
   return (
     <div className="postHead">
       <User
-        url={profile.profileImage.url}
+        url={profile?.profileImage?.url}
         userId={profileUserId}
-        username={profile.name}
-        headline={profile.headline}
+        username={profile?.name}
+        headline={profile?.headline}
       />
       <TimePassed
-        timePassed={data.createdAt}
+        timePassed={data?.createdAt}
         styles={{ left: "4.5rem", top: "2.7rem", fontSize: "0.72rem" }}
       />
 

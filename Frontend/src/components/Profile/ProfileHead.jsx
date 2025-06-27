@@ -56,31 +56,31 @@ export default function ProfileHead({ profile, styles, createProfile }) {
   return (
     <div className="profileHead">
       <div className="banner">
-        <img src={profile.bannerImage?.url} alt="" />
+        <img src={profile?.bannerImage?.url} alt="" />
       </div>
       <div className="profilePic">
-        <img src={profile.profileImage?.url} alt="" />
+        <img src={profile?.profileImage?.url} alt="" />
       </div>
       <div className="text">
         {profile.userId === currUserId && (
           <Pen style={styles} onClick={() => setEditHead(true)} />
         )}
         <div className="details">
-          <div className="name">{profile.name}</div>
-          <div>{profile.headline}</div>
-          <div>{profile.location}</div>
+          <div className="name">{profile?.name}</div>
+          <div>{profile?.headline}</div>
+          <div>{profile?.location}</div>
           <div className="contactInfo">
-            <span>{profile.contactInfo?.email}</span>
-            <span>{profile.contactInfo?.phone}</span>
+            <span>{profile?.contactInfo?.email}</span>
+            <span>{profile?.contactInfo?.phone}</span>
           </div>
           <div className="socials">
-            <span>{profile.followerCount} followers</span>
-            <span>{profile.connCount} connections</span>
+            <span>{profile?.followerCount} followers</span>  
+            <span>{profile?.connCount} connections</span>
           </div>
         </div>
       </div>
       <div className="allOptions">
-        {currUserId !== profile.userId && (
+        {currUserId !== profile?.userId && (
           <>
             {isFollowed ? (
               <Button

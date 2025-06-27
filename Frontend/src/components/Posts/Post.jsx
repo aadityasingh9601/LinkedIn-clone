@@ -79,16 +79,16 @@ export default function Post({ post, postRef }) {
   }, [likeModal]);
 
   return (
-    <div className="post" data-post-id={post._id} ref={postRef}>
+    <div className="post" data-post-id={post?._id} ref={postRef}>
       <PostHead data={post} type="post" />
       <div className="body">
-        <div className="body-text">{post.content}</div>
+        <div className="body-text">{post?.content}</div>
         <div className="media">
-          {post.media.mediaType === "image" ? (
-            <img src={post.media.url} alt="" />
-          ) : post.media.mediaType === "video" ? (
+          {post?.media?.mediaType === "image" ? (
+            <img src={post?.media?.url} alt="" />
+          ) : post?.media?.mediaType === "video" ? (
             <video controls>
-              <source src={post.media.url} type="video/mp4" />
+              <source src={post?.media?.url} type="video/mp4" />
             </video>
           ) : null}
         </div>
