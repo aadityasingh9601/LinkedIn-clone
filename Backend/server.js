@@ -102,7 +102,7 @@ app.use("/analytics", analyticRouter);
 app.use("/poll", pollRouter);
 
 app.all("*", (req, res) => {
-  throw new ExpressError(404, "Page not found!");
+  throw new Error(404, "Page not found!");
 });
 
 //Error handling middleware.
