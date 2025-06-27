@@ -37,6 +37,8 @@ const useUserStore = create((set, get) => ({
       console.log(response);
       if (response.request.status === 200) {
         toast.success("User logged in successfully!");
+        set({isLoggedIn:true});
+        set({currUserId:response.data.id})
         localStorage.setItem("currUserId", response.data.id);
         localStorage.setItem("isLoggedIn", true);
         get().setIsLoggedIn(true);
