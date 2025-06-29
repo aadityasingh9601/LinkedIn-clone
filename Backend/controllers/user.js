@@ -11,7 +11,7 @@ dotenv.config();
 const options = {
   httpOnly: true,
   secure: true,
-  sameSite: "Strict",
+  sameSite: "none",
 };
 
 const checkTokenCookie = async (req, res) => {
