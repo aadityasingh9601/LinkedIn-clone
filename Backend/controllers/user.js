@@ -10,8 +10,8 @@ dotenv.config();
 
 const options = {
   httpOnly: true,
-  secure: true,
-  sameSite: "none",
+  secure: true,  // Required for production
+  sameSite: "none", // CSRF attacks are possible but required for cross-origin
 };
 
 const checkTokenCookie = async (req, res) => {

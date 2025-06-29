@@ -159,6 +159,7 @@ const singlePost = async (req, res) => {
 };
 
 const updatePost = async (req, res) => {
+  console.log("inside update post");
   const { postId } = req.params;
   const { postData } = req.body;
   console.log(req.body);
