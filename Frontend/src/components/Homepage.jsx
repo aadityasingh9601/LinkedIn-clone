@@ -44,7 +44,7 @@ export default function Homepage() {
     if (isLoggedIn) {
       getAllLikedPosts();
       getAllFollowed();
-      getAllConnections();
+      getAllConnections(currUserId);
     }
   }, [currUserId]);
 

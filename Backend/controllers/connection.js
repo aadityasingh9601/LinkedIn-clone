@@ -117,6 +117,7 @@ const respondToConnRequest = async (req, res) => {
 
 const getAllConnections = async (req, res) => {
   const { userId } = req.params;
+  console.log(userId);
   const user = await User.findById(userId);
   //Check if the user trying to see the connections is connected to the user.
   const isConnected = await Connection.find({

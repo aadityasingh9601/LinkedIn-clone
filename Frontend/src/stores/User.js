@@ -211,6 +211,7 @@ const useUserStore = create((set, get) => ({
 
   getAllConnections: async (userId) => {
     tryCatchWrapper(async () => {
+      console.log(userId);
       const response = await apiGet(`/connection/${userId}`);
       //Save to local storage to persist state and to identify the users followed by the user.
       let allConnections = response.data.map((c) => {

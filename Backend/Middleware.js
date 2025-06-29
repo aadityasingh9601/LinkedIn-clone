@@ -17,7 +17,7 @@ const protect = async (req, res, next) => {
     try {
       //token = req.headers.authorization.split(" ")[1];
       token = req.cookies.accesstoken;
-      //console.log(token, "1");
+      console.log(token, "1");
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
       req.user = await User.findById(decoded.id).select(
         "-password -refreshToken"

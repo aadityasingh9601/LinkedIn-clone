@@ -24,6 +24,7 @@ const checkTokenCookie = async (req, res) => {
 };
 
 const signup = async (req, res) => {
+  console.log("inside signup function on the backend");
   const { signupData } = req.body;
   console.log(req.body);
   const { error } = signupSchema.validate(req.body);
@@ -82,6 +83,7 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  console.log("inside login function on the backend");
   console.log(req.cookies);
   //console.log(req.headers);
   const { loginData } = req.body;
@@ -144,7 +146,7 @@ const login = async (req, res) => {
 
 const generateNewAccessToken = async (req, res) => {
   const refreshToken = req.cookies.refreshtoken;
-  //console.log(refreshToken);
+  console.log("The refresh token is", refreshToken);
   if (!refreshToken) {
     return res.status(401).send({ message: "No refresh token available." });
   }

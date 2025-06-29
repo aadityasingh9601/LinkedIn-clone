@@ -99,6 +99,7 @@ const createPost = async (req, res) => {
 
 const allPosts = async (req, res) => {
   const { userId } = req.params;
+  console.log(userId);
 
   const page = parseInt(req.query.page) || 1;
   console.log("55", page);

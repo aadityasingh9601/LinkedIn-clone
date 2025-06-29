@@ -34,7 +34,7 @@ export default function FullApplication() {
 
   const downloadResume = () => {
     window.open(
-      `http://localhost:8000/jobs/resume/${application?.resume.id}`,
+      `${BACKEND_URL}/jobs/resume/${application?.resume.id}`,
       "_blank"
     );
   };
