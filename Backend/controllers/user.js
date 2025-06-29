@@ -146,7 +146,7 @@ const login = async (req, res) => {
 
 const generateNewAccessToken = async (req, res) => {
   const refreshToken = req.cookies.refreshtoken;
-  console.log("The refresh token is", refreshToken);
+  console.log("The refresh token is", req.cookies);
   if (!refreshToken) {
     return res.status(401).send({ message: "No refresh token available." });
   }
