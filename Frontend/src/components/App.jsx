@@ -16,7 +16,7 @@ const JobsUI = lazy(() => import("./Jobs/JobsUI"));
 const Analytics = lazy(() => import("./Analytics/Analytics"));
 const ApplicationForm = lazy(() => import("./Jobs/ApplicationForm"));
 const Applications = lazy(() => import("./Jobs/Applications"));
-const FullApplication = lazy(() => import("./Jobs/fullApplication"));
+const FullApplication = lazy(() => import("./Jobs/FullApplication"));
 
 import {
   BrowserRouter as Router,
