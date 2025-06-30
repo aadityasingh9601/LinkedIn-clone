@@ -13,7 +13,7 @@ import SmileS from "../../icons/SmileS";
 import ClockS from "../../icons/ClockS";
 import ClockR from "../../icons/ClockR";
 import ImageIcon from "../../icons/ImageIcon";
-import RHFInput from "../RHFinput";
+import RHFInput from "../RHFInput";
 import Pollicon from "../../icons/PollIcon";
 
 export default function PostForm() {

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { ToastContainer } from "react-toastify";
 import useUserStore from "../../stores/User";
 import { useEffect } from "react";
-import RHFInput from "../RHFinput";
+import RHFInput from "../RHFInput";
 import LinkedInIcon from "../../icons/LinkedInIcon";
 
 export default function Login() {

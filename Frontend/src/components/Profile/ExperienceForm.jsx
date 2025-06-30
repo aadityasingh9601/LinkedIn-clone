@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import useProfileStore from "../../stores/Profile";
 import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
-import RHFInput from "../RHFinput";
+import RHFInput from "../RHFInput";
 import useUserStore from "../../stores/User";
 
 export default function ExperienceForm({

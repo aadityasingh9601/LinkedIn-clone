@@ -1,7 +1,7 @@
 import "./ProfileHeadForm.css";
 import { useForm } from "react-hook-form";
 import Button from "../Button.";
-import RHFInput from "../RHFinput";
+import RHFInput from "../RHFInput";
 
 export default function ProfileHeadForm({
   profile,

@@ -3,7 +3,7 @@ import Button from "../Button.";
 import { useForm } from "react-hook-form";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import RHFInput from "../RHFinput";
+import RHFInput from "../RHFInput";
 import LinkedInIcon from "../../icons/LinkedInIcon";
 import useUserStore from "../../stores/User";
 

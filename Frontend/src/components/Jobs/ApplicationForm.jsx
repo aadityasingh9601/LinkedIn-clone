@@ -4,7 +4,7 @@ import Button from "../Button.";
 import useJobStore from "../../stores/Job";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import RHFInput from "../RHFinput";
+import RHFInput from "../RHFInput";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();

@@ -6,7 +6,7 @@ import { parseISODate } from "../../utils/helper";
 import RHFtextarea from "../RHFtextarea";
 import ClockS from "../../icons/ClockS";
 import ClockR from "../../icons/ClockR";
-import RHFInput from "../RHFinput";
+import RHFInput from "../RHFInput";
 
 export default function PostEditForm({ post }) {
   const { date, time } = parseISODate(post?.scheduledTime);

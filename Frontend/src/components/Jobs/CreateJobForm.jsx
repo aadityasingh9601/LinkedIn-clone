@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
 import Xmark from "../../icons/Xmark";
-import RHFInput from "../RHFinput";
+import RHFInput from "../RHFInput";
 
 export default function CreateJobForm({ job }) {
   const setpostJob = useJobStore((state) => state.setpostJob);
