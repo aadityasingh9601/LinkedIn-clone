@@ -1,4 +1,4 @@
-import "./jobDetail.css";
+import "./JobDetail.css";
 import useJobStore from "../../stores/Job";
 import useUserStore from "../../stores/User";
 import useProfileStore from "../../stores/Profile";
