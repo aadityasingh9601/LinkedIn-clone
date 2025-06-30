@@ -39,7 +39,7 @@ const io = new Server(server, {
 
 app.use(
   cors({
-    origin: "linked-in-clone-omega-cyan.vercel.app", // React frontend URL
+    origin: "https://linked-in-clone-omega-cyan.vercel.app", // React frontend URL
     methods: ["POST", "PATCH", "GET", "DELETE", "OPTIONS", "HEAD"],
     credentials: true, // Allow credentials (cookies) to be sent
   })
