@@ -54,21 +54,18 @@ export default function Homepage() {
 
   //Function to send logEvent requests to the backend.
   const sendToBackend = useCallback(
-    debounce(
-      () => {
-        if (viewedPostIds.current.size > 0) {
-          let eventData = {
-            postIds: Array.from(viewedPostIds.current), // Convert Set to array before sending
-            eventType: "post_impression",
-          };
-          logEvent(eventData);
-          //clear the viewedPostIds after sending request to backend.
-          viewedPostIds.current.clear();
-        }
-      },
-      2000,
-      [] //Add dependency, when this function should create again.
-    )
+    debounce(() => {
+      if (viewedPostIds.current.size > 0) {
+        let eventData = {
+          postIds: Array.from(viewedPostIds.current), // Convert Set to array before sending
+          eventType: "post_impression",
+        };
+        logEvent(eventData);
+        //clear the viewedPostIds after sending request to backend.
+        viewedPostIds.current.clear();
+      }
+    }, 2000),
+    [] //Add dependency, when this function should create again.
   );
 
   //Intersection Observer part starts here.
