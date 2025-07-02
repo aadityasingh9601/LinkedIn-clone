@@ -1,9 +1,7 @@
 import "./ProfileSection.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import EducationCard from "./EducationCard";
 import ExpCard from "./ExpCard";
-import EducationForm from "./EducationForm";
-import ExperienceForm from "./ExperienceForm";
 import Plus from "../../icons/Plus";
 import Pen from "../../icons/Pen";
 import Trash from "../../icons/Trash";
@@ -11,6 +9,9 @@ import ControlledTextarea from "../ControlledTextarea";
 import ControlledInput from "../ControlledInput";
 import Button from "../Button.";
 import useUserStore from "../../stores/User";
+
+const EducationForm = lazy(() => import("./EducationForm"));
+const ExperienceForm = lazy(() => import("./ExperienceForm"));
 
 export default function ProfileSection({
   title,
@@ -53,9 +54,13 @@ export default function ProfileSection({
       <div>
         {addSection &&
           (title.toLowerCase() == "education" ? (
-            <EducationForm updateVisState={updateVisState} />
+            <Suspense fallback={<div>Loading...</div>}>
+              <EducationForm updateVisState={updateVisState} />
+            </Suspense>
           ) : title.toLowerCase() == "experience" ? (
-            <ExperienceForm updateVisState={updateVisState} />
+            <Suspense fallback={<div>Loading...</div>}>
+              <ExperienceForm updateVisState={updateVisState} />
+            </Suspense>
           ) : title.toLowerCase() == "skills" ? (
             <>
               <ControlledInput

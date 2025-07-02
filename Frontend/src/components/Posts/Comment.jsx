@@ -1,13 +1,14 @@
 import Button from "../Button.";
 import "./Comment.css";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import Modal from "../Modal";
 import useUserStore from "../../stores/User";
 import Xmark from "../../icons/Xmark";
-import ControlledTextarea from "../ControlledTextarea";
 import TimePassed from "../TimePassed";
 import useCommentStore from "../../stores/Comment";
 import PostHead from "./PostHead";
+
+const ControlledTextarea = lazy(() => import("../ControlledTextarea"));
 
 export default function Comment({ comment }) {
   const [toggle, setToggle] = useState(false);
@@ -36,11 +37,13 @@ export default function Comment({ comment }) {
       <div className="txt">
         {commentEdit ? (
           <>
-            <ControlledTextarea
-              placeholder="Enter your comment"
-              value={newComm}
-              onChange={handleChange}
-            />
+            <Suspense fallback={<div>Loading...</div>}>
+              <ControlledTextarea
+                placeholder="Enter your comment"
+                value={newComm}
+                onChange={handleChange}
+              />
+            </Suspense>
             <Button btnText="Cancel" onClick={() => setCommentEdit(false)} />
             <Button
               btnText="Save Changes"

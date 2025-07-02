@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import "./SchPost.css";
 import Button from "../Button.";
 import usePostStore from "../../stores/Post";
-import PostEditForm from "./PostEditForm";
 import Modal from "../Modal";
 import Ellipsis from "../../icons/Ellipsis";
 import Xmark from "../../icons/Xmark";
 import { formatTime, formatDate2 } from "../../utils/helper";
+
+const PostEditForm = lazy(() => import("./PostEditForm"));
 
 export default function SchPost({ schPost }) {
   const [editModal, seteditModal] = useState(false);
@@ -47,7 +48,9 @@ export default function SchPost({ schPost }) {
       {editModal && (
         <Modal>
           <Xmark onClick={() => seteditModal(false)} />
-          <PostEditForm post={schPost} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <PostEditForm post={schPost} />
+          </Suspense>
         </Modal>
       )}
     </div>

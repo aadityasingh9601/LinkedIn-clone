@@ -13,7 +13,7 @@ A full-stack LinkedIn clone built with React (Vite) for the frontend and Node.js
 - **Network**: Connect and follow other users.
 - **Analytics**: View analytics related to your activity.
 - **Profile Management**: Add education, experience, and update your profile.
-- **Responsive UI**: Modern, clean, and responsive user interface.
+<!-- - **Responsive UI**: Modern, clean, and responsive user interface. -->
 
 ## Tech Stack
 
@@ -34,7 +34,7 @@ A full-stack LinkedIn clone built with React (Vite) for the frontend and Node.js
 #### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/LinkedIn-clone.git
+git clone git@github.com:aadityasingh9601/LinkedIn-clone.git
 cd LinkedIn-clone
 ```
 
@@ -45,7 +45,7 @@ cd Backend
 npm install
 ```
 
-- Create a `.env` file in the `Backend` directory with your environment variables (e.g., MongoDB URI, JWT secret, Cloudinary keys).
+- Create a `.env` file in the `Backend` directory with your environment variables (e.g., MongoDB URL, JWT secret, Cloudinary keys (See env file on backend)).
 
 #### 3. Setup Frontend
 
@@ -71,7 +71,7 @@ npm run dev
 ```
 
 - The frontend will typically run on http://localhost:5173
-- The backend will typically run on http://localhost:5000 (or as configured)
+- The backend will typically run on http://localhost:8000 (or as configured)
 
 ## Folder Structure
 

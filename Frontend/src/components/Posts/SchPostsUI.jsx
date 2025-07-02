@@ -1,9 +1,10 @@
 import Button from "../Button.";
 import "./SchPostUI.css";
 import usePostStore from "../../stores/Post";
-import SchPost from "./SchPost";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import useUserStore from "../../stores/User";
+
+const SchPost = lazy(() => import("./SchPost"));
 
 export default function SchPostsUI() {
   const currUserId = useUserStore((state) => state.currUserId);
@@ -31,7 +32,11 @@ export default function SchPostsUI() {
           </div>
         ) : (
           scheduledPosts.map((schPost) => {
-            return <SchPost key={schPost._id} schPost={schPost} />;
+            return (
+              <Suspense fallback={<div>Loading...</div>}>
+                <SchPost key={schPost._id} schPost={schPost} />
+              </Suspense>
+            );
           })
         )}
       </div>

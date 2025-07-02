@@ -1,7 +1,7 @@
 import "./PostHead.css";
 import TimePassed from "../TimePassed";
 import User from "../User";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import useUserStore from "../../stores/User";
 import usePostStore from "../../stores/Post";
 import useCommentStore from "../../stores/Comment";
@@ -15,7 +15,8 @@ import Trash from "../../icons/Trash";
 import Modal from "../Modal";
 import Xmark from "../../icons/Xmark";
 import Button from "../Button.";
-import PostEditForm from "./PostEditForm";
+
+const PostEditForm = lazy(() => import("./PostEditForm"));
 
 export default function PostHead({ data, type, setCommentEdit = () => {} }) {
   const [deleteModal, setdeleteModal] = useState(false);
@@ -35,6 +36,8 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
 
   const profileUserId =
     type === "comment" ? data.author?._id : data.createdBy?._id;
+
+  console.log(profileUserId);
 
   const toggleEditModal = () => {
     seteditModal(!editModal);
@@ -134,7 +137,9 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
       {editModal && (
         <Modal>
           <Xmark onClick={() => toggleEditModal(false)} />
-          <PostEditForm post={data} toggleEditModal={toggleEditModal} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <PostEditForm post={data} toggleEditModal={toggleEditModal} />
+          </Suspense>
         </Modal>
       )}
 

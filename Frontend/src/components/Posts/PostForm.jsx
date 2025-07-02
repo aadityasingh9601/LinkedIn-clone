@@ -2,10 +2,7 @@ import "./PostForm.css";
 import usePostStore from "../../stores/Post";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import PollForm from "../Polls/PollForm";
-import usePollStore from "../../stores/Poll";
-import SchPostsUI from "./SchPostsUI";
+import { useEffect, useState, lazy, Suspense } from "react";
 import RHFtextarea from "../RHFtextarea";
 import Xmark from "../../icons/Xmark";
 import SmileR from "../../icons/SmileR";
@@ -15,6 +12,9 @@ import ClockR from "../../icons/ClockR";
 import ImageIcon from "../../icons/ImageIcon";
 import RHFInput from "../RHFInput";
 import Pollicon from "../../icons/PollIcon";
+
+const PollForm = lazy(() => import("../Polls/PollForm"));
+const SchPostsUI = lazy(() => import("./SchPostsUI"));
 
 export default function PostForm() {
   const {
@@ -28,8 +28,8 @@ export default function PostForm() {
 
   const createPost = usePostStore((state) => state.createPost);
 
-  const poll = usePollStore((state) => state.poll);
-  const setPoll = usePollStore((state) => state.setPoll);
+  const poll = usePostStore((state) => state.poll);
+  const setPoll = usePostStore((state) => state.setPoll);
   const schedule = usePostStore((state) => state.schedule);
   const setSchedule = usePostStore((state) => state.setSchedule);
   const showSchPosts = usePostStore((state) => state.showSchPosts);
@@ -67,9 +67,13 @@ export default function PostForm() {
   return (
     <div>
       {poll ? (
-        <PollForm />
+        <Suspense fallback={<div>Loading...</div>}>
+          <PollForm />
+        </Suspense>
       ) : showSchPosts ? (
-        <SchPostsUI />
+        <Suspense fallback={<div>Loading...</div>}>
+          <SchPostsUI />
+        </Suspense>
       ) : (
         <div className="postform">
           <div className="header">

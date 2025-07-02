@@ -5,13 +5,15 @@ import PDF from "./Pdf";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import useProfileStore from "../../stores/Profile";
 import Modal from "../Modal";
-import ProfileHeadForm from "./ProfileHeadForm";
+import { lazy, Suspense } from "react";
 import Pen from "../../icons/Pen";
 import Xmark from "../../icons/Xmark";
 import useFollowStore from "../../stores/Follow";
 import useConnectionStore from "../../stores/Connection";
 import useChatStore from "../../stores/Chat";
 import { useState, useEffect } from "react";
+
+const ProfileHeadForm = lazy(() => import("./ProfileHeadForm"));
 
 export default function ProfileHead({ profile, styles, createProfile }) {
   const [isFollowed, setisFollowed] = useState(false);
@@ -128,11 +130,13 @@ export default function ProfileHead({ profile, styles, createProfile }) {
       {editHead && (
         <Modal>
           <Xmark style={styles} onClick={() => setEditHead(false)} />
-          <ProfileHeadForm
-            profile={profile}
-            createProfile={createProfile}
-            currUserId={currUserId}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <ProfileHeadForm
+              profile={profile}
+              createProfile={createProfile}
+              currUserId={currUserId}
+            />
+          </Suspense>
         </Modal>
       )}
     </div>

@@ -1,8 +1,9 @@
 import "./CommentSection.css";
-import CommentBox from "./CommentBox";
-import Comment from "./Comment";
-import { useEffect } from "react";
+import { lazy, Suspense } from "react";
 import useCommentStore from "../../stores/Comment";
+
+const CommentBox = lazy(() => import("./CommentBox"));
+const Comment = lazy(() => import("./Comment"));
 
 export default function CommentSection({
   postId,
@@ -19,10 +20,16 @@ export default function CommentSection({
 
   return (
     <div className="commSection">
-      <CommentBox postId={postId} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <CommentBox postId={postId} />
+      </Suspense>
       <div className="comments">
         {comments.map((comment) => {
-          return <Comment key={comment._id} comment={comment} />;
+          return (
+            <Suspense fallback={<div>Loading...</div>}>
+              <Comment key={comment._id} comment={comment} />
+            </Suspense>
+          );
         })}
       </div>
     </div>

@@ -17,7 +17,7 @@ export default function RHFInput({
         type={type}
         {...register(name, rules)}
         placeholder={placeholder}
-        style={styles}
+        style={{...styles}}
       />
       {errors[name] && <p>{errors[name].message}</p>}
     </div>
