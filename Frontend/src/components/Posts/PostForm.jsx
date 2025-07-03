@@ -35,6 +35,8 @@ export default function PostForm() {
   const showSchPosts = usePostStore((state) => state.showSchPosts);
   const setshowSchPosts = usePostStore((state) => state.setshowSchPosts);
 
+  const userProfile = JSON.parse(localStorage.getItem("currUserProfile"));
+
   const [postType, setpostType] = useState("Everyone");
   const [preview, setPreview] = useState("");
   // Watch for file changes
@@ -51,12 +53,8 @@ export default function PostForm() {
   const onSubmit = (data) => {
     console.log(data);
     const postData = {
-      content: data.content,
+      ...data,
       media: data.media[0],
-      category: data.category,
-      postType: postType,
-      date: data.date,
-      time: data.time,
     };
     console.log(postData);
     createPost(postData);
@@ -78,9 +76,9 @@ export default function PostForm() {
         <div className="postform">
           <div className="header">
             <div className="img">
-              <img src="https://tse3.mm.bing.net/th?id=OIP.puMo9ITfruXP8iQx9cYcqwHaGJ&pid=Api&P=0&h=180" />
+              <img src={userProfile?.profileImage?.url} />
             </div>
-            <div>Aaditya Singh</div>
+            <div>{userProfile?.name}</div>
             <div>
               <select
                 style={{ display: "inline" }}
