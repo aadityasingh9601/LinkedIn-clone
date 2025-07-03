@@ -214,8 +214,8 @@ const logout = async (req, res) => {
 
   //Delete the cookie from the client.
   res
-    .clearCookie("refreshtoken")
-    .clearCookie("accesstoken")
+    .clearCookie("refreshtoken",options)
+    .clearCookie("accesstoken",options)
     .status(200)
     .send("Logout successfully!");
 };
