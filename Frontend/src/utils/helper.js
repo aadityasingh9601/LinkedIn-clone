@@ -1,13 +1,16 @@
 //Only store those functions in here that are used in multiple files throughout the codebase, store the state specific logic and actions in
 //their respective zustand stores only.
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "./config";
 import axios from "axios";
+import dotenv from "dotenv";
 import useUserStore from "../stores/User";
 const { newAccessToken } = useUserStore.getState();
+dotenv.config();
+
+const BE = process.env.BACKEND_URL;
 
 const apiGet = async (endPoint) => {
-  const response = await axios.get(`${BACKEND_URL}${endPoint}`, {
+  const response = await axios.get(`${BE}${endPoint}`, {
     withCredentials: true,
   });
   return response;
@@ -16,20 +19,20 @@ const apiGet = async (endPoint) => {
 const apiPost = async (endPoint, reqBody, reqHeaders) => {
   //console.log(reqHeaders);
   const response = await axios.post(
-    `${BACKEND_URL}${endPoint}`,
+    `${BE}${endPoint}`,
     reqBody,
 
     {
       headers: reqHeaders,
       withCredentials: true,
-    }
+    },
   );
 
   return response;
 };
 
 const apiPatch = async (endPoint, reqBody, reqHeaders) => {
-  const response = await axios.patch(`${BACKEND_URL}${endPoint}`, reqBody, {
+  const response = await axios.patch(`${BE}${endPoint}`, reqBody, {
     headers: reqHeaders,
     withCredentials: true,
   });
@@ -37,7 +40,7 @@ const apiPatch = async (endPoint, reqBody, reqHeaders) => {
 };
 
 const apiDelete = async (endPoint) => {
-  const response = await axios.delete(`${BACKEND_URL}${endPoint}`, {
+  const response = await axios.delete(`${BE}${endPoint}`, {
     withCredentials: true,
   });
   return response;
