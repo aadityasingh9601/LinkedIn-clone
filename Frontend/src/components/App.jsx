@@ -26,15 +26,12 @@ import {
 } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import axios from "axios";
 import useUserStore from "../stores/User";
 import useChatStore from "../stores/Chat";
 import useNotificationStore from "../stores/Notification";
-import dotenv from "dotenv";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import usePostStore from "../stores/Post";
-dotenv.config();
 
 function App() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);

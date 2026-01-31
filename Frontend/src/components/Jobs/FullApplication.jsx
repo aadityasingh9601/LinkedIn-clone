@@ -4,8 +4,6 @@ import useJobStore from "../../stores/Job";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Envelope from "../../icons/Envelope";
-import dotenv from "dotenv";
-dotenv.config();
 
 export default function FullApplication() {
   const { id, appId } = useParams();

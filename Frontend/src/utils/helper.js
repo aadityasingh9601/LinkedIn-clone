@@ -2,10 +2,8 @@
 //their respective zustand stores only.
 import { toast } from "react-toastify";
 import axios from "axios";
-import dotenv from "dotenv";
 import useUserStore from "../stores/User";
 const { newAccessToken } = useUserStore.getState();
-dotenv.config();
 
 const BE = process.env.BACKEND_URL;
 
