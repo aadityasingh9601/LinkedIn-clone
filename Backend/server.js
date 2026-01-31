@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
-dotenv.config();
+if (process.env.NODE_ENV === "development") {
+  dotenv.config();
+}
 import express, { application } from "express";
 import mongoose from "mongoose";
 import { createServer, request } from "node:http";

@@ -1,7 +1,8 @@
-import jwt from "jsonwebtoken";
-
 import dotenv from "dotenv";
-dotenv.config();
+if (process.env.NODE_ENV === "development") {
+  dotenv.config();
+}
+import jwt from "jsonwebtoken";
 
 const generateAccessToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, {

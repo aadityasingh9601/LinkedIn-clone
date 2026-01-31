@@ -1,9 +1,10 @@
+import dotenv from "dotenv";
+if (process.env.NODE_ENV === "development") {
+  dotenv.config();
+}
 import Profile from "../models/Profile.js";
 import httpStatus from "http-status";
 import { v2 as cloudinary } from "cloudinary";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const getUserProfile = async (req, res) => {
   const { userId } = req.params;
@@ -180,7 +181,7 @@ const updateProfile = async (req, res) => {
       }
       await Profile.updateOne(
         { userId: userId, "experience._id": sectionId },
-        { $set: updateFields }
+        { $set: updateFields },
       );
     }
 
@@ -192,7 +193,7 @@ const updateProfile = async (req, res) => {
       }
       await Profile.updateOne(
         { userId: userId, "education._id": sectionId },
-        { $set: updateFields } // Only update the specified fields
+        { $set: updateFields }, // Only update the specified fields
       );
     }
 
@@ -221,13 +222,13 @@ const deleteProfile = async (req, res) => {
     if (section === "experience") {
       await Profile.updateOne(
         { userId: userId },
-        { $pull: { experience: { _id: sectionId } } }
+        { $pull: { experience: { _id: sectionId } } },
       );
     }
     if (section === "education") {
       await Profile.updateOne(
         { userId: userId },
-        { $pull: { education: { _id: sectionId } } }
+        { $pull: { education: { _id: sectionId } } },
       );
     }
     await profile.save();

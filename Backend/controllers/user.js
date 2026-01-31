@@ -1,16 +1,19 @@
+import dotenv from "dotenv";
+if (process.env.NODE_ENV === "development") {
+  dotenv.config();
+}
+
 import User from "../models/User.js";
 import Like from "../models/Like.js";
 import bcrypt from "bcrypt";
 import { generateAccessToken, generateRefreshToken } from "../utils/Token.js";
 import { signupSchema, loginSchema } from "../schema.js";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import Profile from "../models/Profile.js";
-dotenv.config();
 
 const options = {
   httpOnly: true,
-  secure: true,  // Required for production
+  secure: true, // Required for production
   sameSite: "none", // CSRF attacks are possible but required for cross-origin
 };
 
@@ -110,7 +113,7 @@ const login = async (req, res) => {
 
     const validPassword = await bcrypt.compare(
       loginData.password,
-      user.password
+      user.password,
     );
     if (!validPassword) {
       return res.status(401).send({ message: "Wrong password" });
@@ -208,14 +211,14 @@ const logout = async (req, res) => {
   //Remove the old refresh token from the database.
 
   user.refreshTokens = user.refreshTokens.filter(
-    (token) => token !== oldRefreshToken
+    (token) => token !== oldRefreshToken,
   );
   await user.save();
 
   //Delete the cookie from the client.
   res
-    .clearCookie("refreshtoken",options)
-    .clearCookie("accesstoken",options)
+    .clearCookie("refreshtoken", options)
+    .clearCookie("accesstoken", options)
     .status(200)
     .send("Logout successfully!");
 };

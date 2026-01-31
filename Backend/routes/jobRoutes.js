@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+if (process.env.NODE_ENV === "development") {
+  dotenv.config();
+}
 import { Router } from "express";
 import jobController from "../controllers/job.js";
 import applicationController from "../controllers/application.js";
@@ -5,8 +9,6 @@ import wrapAsync from "../utils/wrapAsync.js";
 import protect from "../Middleware.js";
 import multer from "multer";
 import { GridFsStorage } from "multer-gridfs-storage";
-import dotenv from "dotenv";
-dotenv.config();
 
 const pdfStorage = new GridFsStorage({
   url: process.env.MONGO_URL,
@@ -40,17 +42,17 @@ router
   .get(
     "/:jobId/applicants",
     protect,
-    wrapAsync(applicationController.getAllApplications)
+    wrapAsync(applicationController.getAllApplications),
   )
   .get(
     "/resume/:resumeId",
     protect,
-    wrapAsync(applicationController.getUserResume)
+    wrapAsync(applicationController.getUserResume),
   )
   .get(
     "/:jobId/jobfitstats",
     protect,
-    wrapAsync(applicationController.jobFitStats)
+    wrapAsync(applicationController.jobFitStats),
   );
 
 router
@@ -58,23 +60,23 @@ router
     "/:jobId/apply",
     upload.single("data[resume]"),
     protect,
-    wrapAsync(applicationController.applyToJob)
+    wrapAsync(applicationController.applyToJob),
   )
   .post("/:jobId/save", protect, wrapAsync(jobController.saveJob))
   .post(
     "/:jobId/markReviewed/:id",
     protect,
-    wrapAsync(applicationController.markReviewed)
+    wrapAsync(applicationController.markReviewed),
   )
   .delete(
     "/:jobId/unapply",
     protect,
-    wrapAsync(applicationController.unapplyFromJob)
+    wrapAsync(applicationController.unapplyFromJob),
   )
   .delete(
     "/:jobId/reject/:id",
     protect,
-    wrapAsync(applicationController.rejectUserApplication)
+    wrapAsync(applicationController.rejectUserApplication),
   );
 
 //Respond to a applicant(attach your dm feature to this, they will interact with dm.)
