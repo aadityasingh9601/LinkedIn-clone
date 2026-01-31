@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-
 import express, { application } from "express";
 import mongoose from "mongoose";
 import { createServer, request } from "node:http";
@@ -9,8 +8,6 @@ import { Server } from "socket.io";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import Notification from "./models/Notification.js";
-
 import userRouter from "./routes/userRoutes.js";
 import chatRouter from "./routes/chatRoutes.js";
 import postRouter from "./routes/postRoutes.js";
@@ -28,7 +25,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: `${process.env.FRONTEND_URL}`,
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["*"],
     credentials: true,
@@ -39,10 +36,10 @@ const io = new Server(server, {
 
 app.use(
   cors({
-    origin: "https://linked-in-clone-ipkk.vercel.app", // React frontend URL
+    origin: `${process.env.FRONTEND_URL}`, // React frontend URL
     methods: ["POST", "PATCH", "GET", "DELETE", "OPTIONS", "HEAD"],
     credentials: true, // Allow credentials (cookies) to be sent
-  })
+  }),
 );
 
 app.use(express.json());

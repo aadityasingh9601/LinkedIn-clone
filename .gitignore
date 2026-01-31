@@ -23,7 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-.env
+**/.env
 Frontend/node_modules
 Backend/node_modules
 Lessons.txt
