@@ -30,11 +30,11 @@ import axios from "axios";
 import useUserStore from "../stores/User";
 import useChatStore from "../stores/Chat";
 import useNotificationStore from "../stores/Notification";
-import { BACKEND_URL } from "../utils/config";
-
+import dotenv from "dotenv";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import usePostStore from "../stores/Post";
+dotenv.config();
 
 function App() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -48,7 +48,7 @@ function App() {
 
   const notifications = useNotificationStore((state) => state.notifications);
   const fetchNotifications = useNotificationStore(
-    (state) => state.fetchNotifications
+    (state) => state.fetchNotifications,
   );
   const addNoti = useNotificationStore((state) => state.addNoti);
   const setNotiCount = useNotificationStore((state) => state.setNotiCount);
@@ -64,7 +64,7 @@ function App() {
   useEffect(
     function sideEffect() {
       if (isLoggedIn) {
-        const socketInstance = io(BACKEND_URL, {
+        const socketInstance = io(process.env.BACKEND_URL, {
           query: {
             userId: currUserId,
           },
@@ -111,7 +111,7 @@ function App() {
         };
       }
     },
-    [isLoggedIn]
+    [isLoggedIn],
   );
 
   //To get all the notifications that are unread ,so that we can display the number on the bell icon.

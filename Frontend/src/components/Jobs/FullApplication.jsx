@@ -4,6 +4,8 @@ import useJobStore from "../../stores/Job";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Envelope from "../../icons/Envelope";
+import dotenv from "dotenv";
+dotenv.config();
 
 export default function FullApplication() {
   const { id, appId } = useParams();
@@ -29,13 +31,13 @@ export default function FullApplication() {
   const markAsReviewed = useJobStore((state) => state.markAsReviewed);
 
   const rejectUserApplication = useJobStore(
-    (state) => state.rejectUserApplication
+    (state) => state.rejectUserApplication,
   );
 
   const downloadResume = () => {
     window.open(
-      `${BACKEND_URL}/jobs/resume/${application?.resume.id}`,
-      "_blank"
+      `${process.env.BACKEND_URL}/jobs/resume/${application?.resume.id}`,
+      "_blank",
     );
   };
   return (
