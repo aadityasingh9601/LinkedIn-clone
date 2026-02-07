@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import express, { application } from "express";
+import express from "express";
 import mongoose from "mongoose";
 import { createServer, request } from "node:http";
 import { Server } from "socket.io";
@@ -9,6 +9,7 @@ import { Server } from "socket.io";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import Notification from "./models/Notification.js";
 import userRouter from "./routes/userRoutes.js";
 import chatRouter from "./routes/chatRoutes.js";
 import postRouter from "./routes/postRoutes.js";
