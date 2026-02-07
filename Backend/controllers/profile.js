@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
-if (process.env.NODE_ENV === "development") {
-  dotenv.config();
-}
+dotenv.config();
+
 import Profile from "../models/Profile.js";
 import httpStatus from "http-status";
 import { v2 as cloudinary } from "cloudinary";

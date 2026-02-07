@@ -1,7 +1,4 @@
-import dotenv from "dotenv";
-if (process.env.NODE_ENV === "development") {
-  dotenv.config();
-}
+dotenv.config();
 
 import mongoose from "mongoose";
 import User from "./models/User.js";

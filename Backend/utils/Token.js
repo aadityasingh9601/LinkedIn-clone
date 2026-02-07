@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
-if (process.env.NODE_ENV === "development") {
-  dotenv.config();
-}
+dotenv.config();
+
 import jwt from "jsonwebtoken";
 
 const generateAccessToken = (userId) => {
