@@ -4,6 +4,7 @@ import useJobStore from "../../stores/Job";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Envelope from "../../icons/Envelope";
+import { BACKEND_URL } from "../../utils/config";
 
 export default function FullApplication() {
   const { id, appId } = useParams();
@@ -34,7 +35,7 @@ export default function FullApplication() {
 
   const downloadResume = () => {
     window.open(
-      `${process.env.BACKEND_URL}/jobs/resume/${application?.resume.id}`,
+      `${BACKEND_URL}/jobs/resume/${application?.resume.id}`,
       "_blank",
     );
   };

@@ -32,6 +32,7 @@ import useNotificationStore from "../stores/Notification";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import usePostStore from "../stores/Post";
+import { BACKEND_URL } from "../utils/config";
 
 function App() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -61,7 +62,7 @@ function App() {
   useEffect(
     function sideEffect() {
       if (isLoggedIn) {
-        const socketInstance = io(process.env.BACKEND_URL, {
+        const socketInstance = io(BACKEND_URL, {
           query: {
             userId: currUserId,
           },

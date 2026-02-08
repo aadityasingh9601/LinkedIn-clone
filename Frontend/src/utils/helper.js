@@ -4,8 +4,9 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import useUserStore from "../stores/User";
 const { newAccessToken } = useUserStore.getState();
+import { BACKEND_URL } from "./config";
 
-const BE = process.env.BACKEND_URL;
+const BE = BACKEND_URL;
 
 const apiGet = async (endPoint) => {
   const response = await axios.get(`${BE}${endPoint}`, {
