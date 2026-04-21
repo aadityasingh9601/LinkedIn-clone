@@ -32,7 +32,6 @@ import useNotificationStore from "../stores/Notification";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import usePostStore from "../stores/Post";
-import { BACKEND_URL } from "../utils/config";
 
 function App() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -43,7 +42,6 @@ function App() {
   const editMessage = useChatStore((state) => state.editMessage);
   const removeMessage = useChatStore((state) => state.removeMessage);
   const updatePost = usePostStore((state) => state.updatePost);
-
   const notifications = useNotificationStore((state) => state.notifications);
   const fetchNotifications = useNotificationStore(
     (state) => state.fetchNotifications,
@@ -52,6 +50,8 @@ function App() {
   const setNotiCount = useNotificationStore((state) => state.setNotiCount);
 
   const [socket, setSocket] = useState();
+  const BACKEND_URL =
+    import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
 
   const currUserId = useUserStore((state) => state.currUserId);
 
@@ -113,10 +113,10 @@ function App() {
   );
 
   //To get all the notifications that are unread ,so that we can display the number on the bell icon.
-  useEffect(() => {
-    let unreadOnes = notifications.filter((noti) => noti.isRead === false);
-    setNotiCount(unreadOnes.length);
-  }, [notifications]);
+  // useEffect(() => {
+  //   let unreadOnes = notifications?.filter((noti) => noti.isRead === false);
+  //   setNotiCount(unreadOnes.length);
+  // }, [notifications]);
 
   //As request comes to the website , we have to check first that if the user sending the request has a
   //valid token cookie or not, if they have , then redirect them to the home page , but If they don't redirect

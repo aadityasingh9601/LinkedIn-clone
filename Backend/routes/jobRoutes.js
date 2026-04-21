@@ -10,7 +10,7 @@ import multer from "multer";
 import { GridFsStorage } from "multer-gridfs-storage";
 
 const pdfStorage = new GridFsStorage({
-  url: process.env.MONGO_URL,
+  url: process.env.MONGO_URL || "mongodb://mongo:27017/linkedin",
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       const filename = `${file.originalname}`;

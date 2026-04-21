@@ -4,7 +4,6 @@ import useJobStore from "../../stores/Job";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Envelope from "../../icons/Envelope";
-import { BACKEND_URL } from "../../utils/config";
 
 export default function FullApplication() {
   const { id, appId } = useParams();
@@ -14,6 +13,8 @@ export default function FullApplication() {
   const applicants = useJobStore((state) => state.applicants);
 
   const application = applicants.find((app) => app._id === appId);
+  const BACKEND_URL =
+    import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
 
   const [reviewed, setReviewed] = useState(false);
 

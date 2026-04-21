@@ -38,7 +38,7 @@ const io = new Server(server, {
 
 app.use(
   cors({
-    origin: `${process.env.FRONTEND_URL}`, // React frontend URL
+    origin: `${process.env.FRONTEND_URL}` || "http://localhost:5173", // React frontend URL
     methods: ["POST", "PATCH", "GET", "DELETE", "OPTIONS", "HEAD"],
     credentials: true, // Allow credentials (cookies) to be sent
   }),
@@ -50,7 +50,9 @@ app.use(bodyParser.json());
 app.use(cookieParser("tillu"));
 
 async function main() {
-  await mongoose.connect(process.env.MONGO_URL);
+  await mongoose.connect(
+    process.env.MONGO_URL || "mongodb://localhost:27017/LinkedIn",
+  );
 }
 
 main()
