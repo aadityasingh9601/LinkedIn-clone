@@ -4,7 +4,9 @@
   "description": "\"Project based learning.\"",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-db": "docker compose -f docker-compose-dev.yml up -d",
+    "stop-db": "docker compose -f docker-compose-dev.yml down",
+    "dev": "npm run start-db && node server.js"
   },
   "keywords": [
     "\"Big",

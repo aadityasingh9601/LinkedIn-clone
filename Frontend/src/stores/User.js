@@ -26,6 +26,8 @@ const useUserStore = create((set, get) => ({
       if (response.request.status === 201) {
         toast.success(response.data.message);
         navigate("/login");
+      } else {
+        toast.warn(response.data.message);
       }
     });
   },
@@ -37,8 +39,8 @@ const useUserStore = create((set, get) => ({
       console.log(response);
       if (response.request.status === 200) {
         toast.success("User logged in successfully!");
-        set({isLoggedIn:true});
-        set({currUserId:response.data.id})
+        set({ isLoggedIn: true });
+        set({ currUserId: response.data.id });
         localStorage.setItem("currUserId", response.data.id);
         localStorage.setItem("isLoggedIn", true);
         get().setIsLoggedIn(true);
@@ -108,12 +110,12 @@ const useUserStore = create((set, get) => ({
   //data in our localStorage, so we'll store only those ids that are liked by the user and are present in the
   //current feed.
   allLikedPosts: new Set(
-    JSON.parse(localStorage.getItem("allLikedPosts") || "[]")
+    JSON.parse(localStorage.getItem("allLikedPosts") || "[]"),
   ),
 
   setAllLikedPosts: (action, postId) => {
     const likedPostIds = JSON.parse(
-      localStorage.getItem("allLikedPosts") || "[]"
+      localStorage.getItem("allLikedPosts") || "[]",
     ); //returns an array.
     const likedSet = new Set(likedPostIds); //Create set from the array.
 
@@ -147,7 +149,7 @@ const useUserStore = create((set, get) => ({
 
   setAllFollowed: (action, userId) => {
     const followedUserIds = JSON.parse(
-      localStorage.getItem("allFollowed") || "[]"
+      localStorage.getItem("allFollowed") || "[]",
     ); //returns an array.
     const followedSet = new Set(followedUserIds); //Create set from the array.
 
@@ -181,12 +183,12 @@ const useUserStore = create((set, get) => ({
   },
 
   allConnections: new Set(
-    JSON.parse(localStorage.getItem("allConnections") || "[]")
+    JSON.parse(localStorage.getItem("allConnections") || "[]"),
   ),
 
   setAllConnections: (action, userId1, userId2) => {
     const connectionsUserIds = JSON.parse(
-      localStorage.getItem("allConnections") || "[]"
+      localStorage.getItem("allConnections") || "[]",
     ); //returns an array.
     const connectionsSet = new Set(connectionsUserIds); //Create set from the array.
     const key = [userId1, userId2].sort().join("-");

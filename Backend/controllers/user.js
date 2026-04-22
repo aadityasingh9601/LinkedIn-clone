@@ -24,20 +24,19 @@ const checkTokenCookie = async (req, res) => {
   }
 };
 
+//You can trim down this & move the profile creation logic to a different route like /setup, that users must fulfill first
+//in order to get ahead in the application.
 const signup = async (req, res) => {
-  console.log("inside signup function on the backend");
   const { signupData } = req.body;
-  console.log(req.body);
   const { error } = signupSchema.validate(req.body);
   if (error) {
-    console.log(error);
-    res.status(404).send({
+    res.status(400).send({
       error: error,
     });
     return;
   }
-  console.log(req.body);
-
+  //You can remove this code below maybe as validation has already happened above, or before removing check if this one
+  //really has some purpose here.
   if (!signupData.name || !signupData.email || !signupData.password) {
     console.log("1");
     return res
@@ -48,7 +47,7 @@ const signup = async (req, res) => {
   const existingUser = await User.findOne({ email: signupData.email });
   if (existingUser) {
     console.log("2");
-    return res.status(400).json({ message: "Email already exists" });
+    return res.status(200).json({ message: "Email already exists!" });
   }
 
   try {
@@ -74,12 +73,10 @@ const signup = async (req, res) => {
     newUser.profile = userProfile._id;
     await newUser.save();
 
-    //console.log(userProfile);
-
     res.status(201).send({ message: "User registered successfully!" });
   } catch (err) {
     console.log(err);
-    res.status(500).send({ message: "Error creating user" });
+    res.status(500).send({ message: "Error creating user!" });
   }
 };
 
@@ -147,7 +144,7 @@ const login = async (req, res) => {
 
 const generateNewAccessToken = async (req, res) => {
   const refreshToken = req.cookies.refreshtoken;
-  console.log("The refresh token is", req.cookies);
+  console.log("The refresh token is", refreshToken);
   if (!refreshToken) {
     return res.status(401).send({ message: "No refresh token available." });
   }
@@ -156,7 +153,7 @@ const generateNewAccessToken = async (req, res) => {
   const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
   let user = await User.findById(decoded.id).select("-password  ");
 
-  const valid = user.refreshTokens.includes(refreshToken);
+  const valid = user.refreshTokens?.includes(refreshToken);
   if (!valid) {
     console.log("not valid");
     return res

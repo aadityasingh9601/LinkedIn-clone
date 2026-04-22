@@ -6,7 +6,6 @@ import useUserStore from "../stores/User";
 const { newAccessToken } = useUserStore.getState();
 
 const BE = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
-console.log(BE);
 
 const apiGet = async (endPoint) => {
   const response = await axios.get(`${BE}${endPoint}`, {
@@ -17,15 +16,10 @@ const apiGet = async (endPoint) => {
 
 const apiPost = async (endPoint, reqBody, reqHeaders) => {
   //console.log(reqHeaders);
-  const response = await axios.post(
-    `${BE}${endPoint}`,
-    reqBody,
-
-    {
-      headers: reqHeaders,
-      withCredentials: true,
-    },
-  );
+  const response = await axios.post(`${BE}${endPoint}`, reqBody, {
+    headers: reqHeaders,
+    withCredentials: true,
+  });
 
   return response;
 };
@@ -49,6 +43,8 @@ const tryCatchWrapper = async (fn) => {
   try {
     return await fn();
   } catch (err) {
+    //This logic is very shallow & error prone here, not at all applicable & scalable for all routes. Optimize this to use
+    //this one for all the routes effectively.
     console.log(err);
     if (err.response.status === 401) {
       newAccessToken();

@@ -7,7 +7,7 @@ const signupSchema = Joi.object({
       minDomainSegments: 2,
       tlds: { allow: ["com", "net"] },
     }),
-    password: Joi.string().required().min(3).max(16),
+    password: Joi.string().required().min(6).max(16),
   }).required(),
 });
 
@@ -17,7 +17,7 @@ const loginSchema = Joi.object({
       minDomainSegments: 2,
       tlds: { allow: ["com", "net"] },
     }),
-    password: Joi.string().required().min(3).max(16),
+    password: Joi.string().required().min(6).max(16),
   }).required(),
 });
 
