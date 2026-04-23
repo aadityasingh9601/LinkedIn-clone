@@ -6,6 +6,7 @@ import useUserStore from "../../stores/User";
 import { useEffect } from "react";
 import RHFInput from "../RHFInput";
 import LinkedInIcon from "../../icons/LinkedInIcon";
+import Button from "../Button.";
 
 export default function Login() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -82,6 +83,12 @@ export default function Login() {
           <button className="nav-btn" type="submit">
             Login
           </button>
+          <Button
+            btnText="No account? Signup!"
+            onClick={() => {
+              navigate("/signup");
+            }}
+          />
         </form>
       </div>
     </>

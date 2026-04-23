@@ -63,16 +63,6 @@ const signup = async (req, res) => {
 
     await newUser.save();
 
-    const userProfile = new Profile({
-      userId: newUser._id,
-      name: newUser.name,
-    });
-
-    await userProfile.save();
-
-    newUser.profile = userProfile._id;
-    await newUser.save();
-
     res.status(201).send({ message: "User registered successfully!" });
   } catch (err) {
     console.log(err);
@@ -140,6 +130,55 @@ const login = async (req, res) => {
     console.log(err);
     res.status(500).send({ message: "Error logging in" });
   }
+};
+
+const setupAccount = async (req, res) => {
+  console.log("inside setup account function on the backend");
+  const userId = req.params;
+  const { setupData } = req.body;
+  const { phone, city, country } = setupData;
+  console.log(userId);
+  console.log(setupData);
+
+  //Add proper validation here.
+  // const { error } = loginSchema.validate(req.body);
+  // if (error) {
+  //   console.log(error);
+  //   res.status(404).send({
+  //     error: error,
+  //   });
+  //   return;
+  // }
+
+  // if (!loginData.email || !loginData.password) {
+  //   return res
+  //     .status(400)
+  //     .send({ message: "Please provide both email and password" });
+  // }
+  const user = await User.findOne({ id: userId });
+
+  if (!user) {
+    return res.status(404).send({ message: "User not found" });
+  }
+
+  const userProfile = new Profile({
+    userId: user._id,
+    name: user.name,
+    contactInfo: {
+      phone: phone,
+      email: user.email,
+    },
+    location: city + "," + country,
+  });
+
+  await userProfile.save();
+
+  user.profile = userProfile._id;
+  await user.save();
+
+  return res.status(200).json({
+    message: "Account setup successful!",
+  });
 };
 
 const generateNewAccessToken = async (req, res) => {
@@ -222,6 +261,7 @@ export default {
   checkTokenCookie,
   signup,
   login,
+  setupAccount,
   logout,
   allLikedPosts,
   generateNewAccessToken,

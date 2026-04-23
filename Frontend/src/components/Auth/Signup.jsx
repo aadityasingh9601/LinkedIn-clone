@@ -86,6 +86,12 @@ export default function Signup() {
           <br />
 
           <Button type="submit" btnText="SignUp" />
+          <Button
+            btnText="Existing account? Log in!"
+            onClick={() => {
+              navigate("/login");
+            }}
+          />
         </form>
       </div>
     </>

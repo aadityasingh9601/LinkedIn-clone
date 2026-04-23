@@ -39,14 +39,16 @@ const profileSchema = new Schema({
   contactInfo: {
     phone: {
       type: Number,
+      required: true,
     },
     email: {
       type: String,
+      required: true,
     },
   },
   location: {
     type: String,
-    default: "",
+    required: true,
   },
   followerCount: {
     type: Number,

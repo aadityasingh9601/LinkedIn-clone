@@ -10,7 +10,7 @@ router.get("/checkaccesstoken", wrapAsync(userController.checkTokenCookie));
 router.get(
   "/newaccesstoken",
 
-  wrapAsync(userController.generateNewAccessToken)
+  wrapAsync(userController.generateNewAccessToken),
 );
 
 router.get("/allLikedPosts", protect, wrapAsync(userController.allLikedPosts));
@@ -18,6 +18,8 @@ router.get("/allLikedPosts", protect, wrapAsync(userController.allLikedPosts));
 router.post("/signup", wrapAsync(userController.signup));
 
 router.post("/login", wrapAsync(userController.login));
+
+router.post("/setup/:userId", wrapAsync(userController.setupAccount));
 
 router.delete("/logout", protect, wrapAsync(userController.logout));
 

@@ -44,6 +44,24 @@ const useUserStore = create((set, get) => ({
         localStorage.setItem("currUserId", response.data.id);
         localStorage.setItem("isLoggedIn", true);
         get().setIsLoggedIn(true);
+        navigate(`/setup/${response.data.id}`);
+      }
+    });
+  },
+
+  setupAccount: async (userId, setupData, navigate) => {
+    tryCatchWrapper(async () => {
+      console.log(userId);
+      console.log(setupData);
+      const response = await apiPost(
+        `/users/setup/${userId}`,
+        { setupData },
+        {},
+      );
+      console.log(response);
+      if (response.request.status === 200) {
+        toast.success("Account setup successful!");
+
         navigate("/home");
       }
     });

@@ -8,6 +8,7 @@ const Profile = lazy(() => import("./Profile/Profile"));
 
 const Signup = lazy(() => import("./Auth/Signup"));
 const Login = lazy(() => import("./Auth/Login"));
+const AccountSetup = lazy(() => import("./AccountSetup"));
 const PostForm = lazy(() => import("./Posts/PostForm"));
 const NotificationBox = lazy(() => import("./Notifications/NotificationBox"));
 import PreLogin from "./Auth/PreLogin";
@@ -132,6 +133,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route element={<PrivateRoutes isLoggedIn={isLoggedIn} />}>
+              <Route path="/setup" element={<AccountSetup />} />
               <Route path="/home" element={<Homepage />} />
 
               <Route
