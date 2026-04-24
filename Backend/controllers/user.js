@@ -83,7 +83,7 @@ const login = async (req, res) => {
     });
     return;
   }
-
+  //Code written below isn't needed maybe if you have already added prperly validation above.
   if (!loginData.email || !loginData.password) {
     return res
       .status(400)
@@ -117,12 +117,12 @@ const login = async (req, res) => {
 
     res
       .cookie("accesstoken", accessToken, {
-        ...options, //Spread the options object to combine with the maxAge and create a single object.
+        ...options,
         maxAge: 60 * 60 * 1000, //1hr
       })
       .cookie("refreshtoken", refreshToken, {
         ...options,
-        maxAge: 7 * 24 * 60 * 60 * 1000, //Expiration time must be same as expiration time of jwt token.
+        maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
       })
       .status(200)
       .send({ id });
@@ -190,7 +190,7 @@ const generateNewAccessToken = async (req, res) => {
 
   //Check if the refresh token exists in database or not.
   const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-  let user = await User.findById(decoded.id).select("-password  ");
+  let user = await User.findById(decoded.id).select("-password");
 
   const valid = user.refreshTokens?.includes(refreshToken);
   if (!valid) {

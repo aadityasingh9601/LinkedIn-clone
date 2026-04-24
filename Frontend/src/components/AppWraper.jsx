@@ -1,5 +1,3 @@
-// AppWrapper.js
-import React from "react";
 import { useLocation } from "react-router-dom";
 import { Suspense } from "react";
 import Layout from "./Layout";
@@ -8,7 +6,7 @@ const AppWrapper = ({ children, handleLogout, socket }) => {
   const location = useLocation();
 
   // List of routes to exclude from layout
-  const noLayoutRoutes = ["/", "/login", "/signup"];
+  const noLayoutRoutes = ["/", "/login", "/signup", "/setup"];
 
   // Check if the current route is in the noLayoutRoutes list
   const useLayout = !noLayoutRoutes.includes(location.pathname);
