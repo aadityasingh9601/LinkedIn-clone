@@ -9,14 +9,19 @@ import {
 } from "../utils/helper";
 
 const useUserStore = create((set, get) => ({
+  //We're persisting our state here by storing it in localStorage
   isLoggedIn: localStorage.getItem("isLoggedIn"),
-  //We're persisting our state here by storing it in localStorage, backend authentication (checkToken) will
-  //be done when user visits the login page or prelogin page only, else the state will persist.
-
-  currUserId: localStorage.getItem("currUserId"),
 
   setIsLoggedIn: (value) => {
     set({ isLoggedIn: value });
+  },
+
+  currUserId: localStorage.getItem("currUserId"),
+
+  isSetupComplete: localStorage.getItem("isSetupComplete"),
+
+  setIsSetupComplete: (value) => {
+    set({ isSetupComplete: value });
   },
 
   signUp: async (signupData, navigate) => {
@@ -61,7 +66,12 @@ const useUserStore = create((set, get) => ({
       console.log(response);
       if (response.request.status === 200) {
         toast.success("Account setup successful!");
-
+        set({ isLoggedIn: true });
+        set({ currUserId: response.data.id });
+        localStorage.setItem("currUserId", response.data.id);
+        localStorage.setItem("isLoggedIn", true);
+        get().setIsLoggedIn(true);
+        navigate(`/setup/${response.data.id}`);
         navigate("/home");
       }
     });

@@ -33,10 +33,12 @@ import useNotificationStore from "../stores/Notification";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import usePostStore from "../stores/Post";
+import PublicRoutes from "./PublicRoutes";
 
 function App() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-  const setIsLoggedIn = useUserStore((state) => state.setIsLoggedIn);
+  const isSetupComplete = useUserStore((state) => state.isSetupComplete);
+
   const newAccessToken = useUserStore((state) => state.newAccessToken);
   const addMessage = useChatStore((state) => state.addMessage);
   const updateLastMsg = useChatStore((state) => state.updateLastMsg);
@@ -128,12 +130,31 @@ function App() {
       <Router>
         <AppWraper socket={socket}>
           <Routes>
-            <Route path="/" element={<PreLogin />} />
+            <Route
+              element={
+                <PublicRoutes
+                  isLoggedIn={isLoggedIn}
+                  isSetupComplete={isSetupComplete}
+                />
+              }
+            >
+              <Route path="/" element={<PreLogin />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+            </Route>
+            <Route
+              path="/setup"
+              element={isLoggedIn ? <AccountSetup /> : <Navigate to="/login" />}
+            />
 
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route element={<PrivateRoutes isLoggedIn={isLoggedIn} />}>
-              <Route path="/setup" element={<AccountSetup />} />
+            <Route
+              element={
+                <PrivateRoutes
+                  isLoggedIn={isLoggedIn}
+                  isSetupComplete={isSetupComplete}
+                />
+              }
+            >
               <Route path="/home" element={<Homepage />} />
 
               <Route
