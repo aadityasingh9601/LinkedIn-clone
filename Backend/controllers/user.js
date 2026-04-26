@@ -15,12 +15,18 @@ const options = {
   sameSite: "none", // CSRF attacks are possible but required for cross-origin
 };
 
-const checkTokenCookie = async (req, res) => {
-  //console.log(req.cookies);
-  if (req.cookies && req.cookies.refreshtoken) {
-    res.status(200).send("yes");
+const checkAuthStatus = async (req, res) => {
+  console.log("inside checkauthstatus function on backend");
+  const { userId } = req.params;
+  const user = await User.findOne({ _id: userId });
+  if (req.cookies && req.cookies.accesstoken) {
+    res
+      .status(200)
+      .send({ isLoggedIn: true, isSetupComplete: user.profile !== undefined });
   } else {
-    res.status(200).send("no");
+    res
+      .status(401)
+      .send({ isLoggedIn: false, isSetupComplete: user.profile !== undefined });
   }
 };
 
@@ -72,8 +78,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   console.log("inside login function on the backend");
-  console.log(req.cookies);
-  //console.log(req.headers);
+
   const { loginData } = req.body;
   const { error } = loginSchema.validate(req.body);
   if (error) {
@@ -134,7 +139,7 @@ const login = async (req, res) => {
 
 const setupAccount = async (req, res) => {
   console.log("inside setup account function on the backend");
-  const userId = req.params;
+  const { userId } = req.params;
   const { setupData } = req.body;
   const { phone, city, country } = setupData;
   console.log(userId);
@@ -155,7 +160,7 @@ const setupAccount = async (req, res) => {
   //     .status(400)
   //     .send({ message: "Please provide both email and password" });
   // }
-  const user = await User.findOne({ id: userId });
+  const user = await User.findOne({ _id: userId });
 
   if (!user) {
     return res.status(404).send({ message: "User not found" });
@@ -207,7 +212,7 @@ const generateNewAccessToken = async (req, res) => {
     res
       .cookie("accesstoken", accessToken, {
         ...options, // Ensures the cookie is only sent in a first-party context
-        maxAge: 60 * 60 * 1000,
+        maxAge: 60 * 60 * 1000, //1 hr
       })
       .sendStatus(201);
   } catch (err) {
@@ -230,25 +235,14 @@ const allLikedPosts = async (req, res) => {
 
 const logout = async (req, res) => {
   console.log("inside logout function on the backend");
+  const { userId } = req.params;
   const oldRefreshToken = req.cookies.refreshtoken;
-  console.log(oldRefreshToken);
-  if (!oldRefreshToken) {
-    return res.status(401).send("No refresh token available.");
-  }
-
-  const decoded = jwt.verify(oldRefreshToken, process.env.REFRESH_TOKEN_SECRET);
-  const user = await User.findById(decoded.id).select("-password");
-  if (!user) {
-    return res.status(403).send("Refresh token is expired or invalid.");
-  }
-
+  const user = await User.findById(userId).select("-password");
   //Remove the old refresh token from the database.
-
   user.refreshTokens = user.refreshTokens.filter(
     (token) => token !== oldRefreshToken,
   );
   await user.save();
-
   //Delete the cookie from the client.
   res
     .clearCookie("refreshtoken", options)
@@ -258,7 +252,7 @@ const logout = async (req, res) => {
 };
 
 export default {
-  checkTokenCookie,
+  checkAuthStatus,
   signup,
   login,
   setupAccount,

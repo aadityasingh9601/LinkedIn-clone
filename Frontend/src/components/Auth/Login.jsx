@@ -10,7 +10,6 @@ import Button from "../Button.";
 
 export default function Login() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-  const checkToken = useUserStore((state) => state.checkToken);
   const login = useUserStore((state) => state.login);
   const navigate = useNavigate();
   const {
@@ -18,12 +17,6 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  //Check for refresh token because if refresh token is there, new access token will be created, but if refresh
-  //token is not there, the user must login again.
-  useEffect(() => {
-    checkToken(navigate);
-  }, [isLoggedIn]);
 
   async function onSubmit(loginData) {
     login(loginData, navigate);

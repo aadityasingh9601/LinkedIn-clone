@@ -35,9 +35,62 @@ import "react-toastify/dist/ReactToastify.css";
 import usePostStore from "../stores/Post";
 import PublicRoutes from "./PublicRoutes";
 
-function App() {
+const AppRoutes = () => {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const isSetupComplete = useUserStore((state) => state.isSetupComplete);
+
+  return (
+    <Routes>
+      <Route
+        element={
+          <PublicRoutes
+            isLoggedIn={isLoggedIn}
+            isSetupComplete={isSetupComplete}
+          />
+        }
+      >
+        <Route path="/" element={<PreLogin />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+      </Route>
+      <Route
+        path="/setup"
+        element={isLoggedIn ? <AccountSetup /> : <Navigate to="/login" />}
+      />
+
+      <Route
+        element={
+          <PrivateRoutes
+            isLoggedIn={isLoggedIn}
+            isSetupComplete={isSetupComplete}
+          />
+        }
+      >
+        <Route path="/home" element={<Homepage />} />
+
+        <Route path="/profile/:id" element={<Profile />} />
+
+        <Route path="/jobs/:id/apply" element={<ApplicationForm />} />
+        <Route path="/jobs/:id/applications" element={<Applications />} />
+        <Route
+          path="/jobs/:id/applications/:appId"
+          element={<FullApplication />}
+        />
+        <Route path="/network/:type" element={<Network />} />
+
+        <Route path="/jobs" element={<JobsUI />} />
+
+        <Route path="/analytics" element={<Analytics />} />
+      </Route>
+      <Route path="/createpost" element={<PostForm />} />
+
+      <Route path="/notifications" element={<NotificationBox />} />
+    </Routes>
+  );
+};
+
+function App() {
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
 
   const newAccessToken = useUserStore((state) => state.newAccessToken);
   const addMessage = useChatStore((state) => state.addMessage);
@@ -51,8 +104,8 @@ function App() {
   );
   const addNoti = useNotificationStore((state) => state.addNoti);
   const setNotiCount = useNotificationStore((state) => state.setNotiCount);
-
   const [socket, setSocket] = useState();
+
   const BACKEND_URL =
     import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
 
@@ -62,58 +115,56 @@ function App() {
     fetchNotifications();
   }, [currUserId]);
 
-  useEffect(
-    function sideEffect() {
-      if (isLoggedIn) {
-        const socketInstance = io(BACKEND_URL, {
-          query: {
-            userId: currUserId,
-          },
-        });
-        setSocket(socketInstance);
+  //This contains socket logic, maybe separate it into custom hook too.
+  useEffect(function sideEffect() {
+    if (isLoggedIn) {
+      const socketInstance = io(BACKEND_URL, {
+        query: {
+          userId: currUserId,
+        },
+      });
+      setSocket(socketInstance);
 
-        socketInstance.on("connReq", (noti) => {
-          addNoti(noti);
-          return toast(noti.message);
-        });
+      socketInstance.on("connReq", (noti) => {
+        addNoti(noti);
+        return toast(noti.message);
+      });
 
-        socketInstance.on("newMsg", (data) => {
-          console.log(data);
-          addMessage(data);
-          updateLastMsg(data);
-        });
+      socketInstance.on("newMsg", (data) => {
+        console.log(data);
+        addMessage(data);
+        updateLastMsg(data);
+      });
 
-        socketInstance.on("editMsg", (data) => {
-          console.log(data);
-          editMessage(data);
-        });
+      socketInstance.on("editMsg", (data) => {
+        console.log(data);
+        editMessage(data);
+      });
 
-        socketInstance.on("deleteMsg", (data) => {
-          console.log(data);
-          removeMessage(data);
-        });
+      socketInstance.on("deleteMsg", (data) => {
+        console.log(data);
+        removeMessage(data);
+      });
 
-        socketInstance.on("post_created", (data) => {
-          console.log(data);
-          updatePost(data);
-        });
+      socketInstance.on("post_created", (data) => {
+        console.log(data);
+        updatePost(data);
+      });
 
-        socketInstance.on("application-rejected", (data) => {
-          console.log(data);
-          addNoti(data);
-        });
+      socketInstance.on("application-rejected", (data) => {
+        console.log(data);
+        addNoti(data);
+      });
 
-        // Cleanup: Disconnect when the component unmounts
-        return () => {
-          //socket.removeAllListeners();
-          socketInstance.disconnect();
+      // Cleanup: Disconnect when the component unmounts
+      return () => {
+        //socket.removeAllListeners();
+        socketInstance.disconnect();
 
-          console.log("Socket disconnected");
-        };
-      }
-    },
-    [isLoggedIn],
-  );
+        console.log("Socket disconnected");
+      };
+    }
+  }, []);
 
   //To get all the notifications that are unread ,so that we can display the number on the bell icon.
   // useEffect(() => {
@@ -129,55 +180,7 @@ function App() {
     <>
       <Router>
         <AppWraper socket={socket}>
-          <Routes>
-            <Route
-              element={
-                <PublicRoutes
-                  isLoggedIn={isLoggedIn}
-                  isSetupComplete={isSetupComplete}
-                />
-              }
-            >
-              <Route path="/" element={<PreLogin />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
-            </Route>
-            <Route
-              path="/setup"
-              element={isLoggedIn ? <AccountSetup /> : <Navigate to="/login" />}
-            />
-
-            <Route
-              element={
-                <PrivateRoutes
-                  isLoggedIn={isLoggedIn}
-                  isSetupComplete={isSetupComplete}
-                />
-              }
-            >
-              <Route path="/home" element={<Homepage />} />
-
-              <Route
-                path="/profile/:id"
-                element={<Profile socket={socket} />}
-              />
-
-              <Route path="/jobs/:id/apply" element={<ApplicationForm />} />
-              <Route path="/jobs/:id/applications" element={<Applications />} />
-              <Route
-                path="/jobs/:id/applications/:appId"
-                element={<FullApplication />}
-              />
-              <Route path="/network/:type" element={<Network />} />
-
-              <Route path="/jobs" element={<JobsUI />} />
-
-              <Route path="/analytics" element={<Analytics />} />
-            </Route>
-            <Route path="/createpost" element={<PostForm />} />
-
-            <Route path="/notifications" element={<NotificationBox />} />
-          </Routes>
+          <AppRoutes />
         </AppWraper>
       </Router>
     </>

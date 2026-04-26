@@ -75,7 +75,7 @@ const getAllChats = async (req, res) => {
   // in each document to see if "MongoDB" is one of the values in that array.It's mongodb's default query behavior.
 
   //Here we are sending the chats, whose ids are present in the chatList of the user.
-  const chats = await Chat.find({ _id: { $in: profile.chatList } })
+  const chats = await Chat.find({ _id: { $in: profile?.chatList } })
     .populate({
       path: "participants",
       select: "profile",

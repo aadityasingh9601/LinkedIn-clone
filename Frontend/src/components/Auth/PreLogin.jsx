@@ -8,11 +8,7 @@ import useUserStore from "../../stores/User";
 export default function PreLogin() {
   const navigate = useNavigate();
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-  const checkToken = useUserStore((state) => state.checkToken);
 
-  useEffect(() => {
-    checkToken(navigate);
-  }, [isLoggedIn]);
   return (
     <>
       <ToastContainer

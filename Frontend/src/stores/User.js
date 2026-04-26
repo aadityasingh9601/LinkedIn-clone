@@ -24,6 +24,21 @@ const useUserStore = create((set, get) => ({
     set({ isSetupComplete: value });
   },
 
+  checkAuthStatus: async () => {
+    tryCatchWrapper(async () => {
+      const response = await apiGet(`/users/checkauthstatus/${currUserId}`);
+      setIsSetupComplete(response.data.isSetupComplete);
+      console.log("checkAuthStatus", response);
+      if (response.status === 200) {
+        setIsLoggedIn(true);
+      }
+      if (response.status === 401) {
+        setIsLoggedIn(false);
+      }
+      setIsLoading(false);
+    });
+  },
+
   signUp: async (signupData, navigate) => {
     tryCatchWrapper(async () => {
       const response = await apiPost(`/users/signup`, { signupData }, {});
@@ -42,14 +57,12 @@ const useUserStore = create((set, get) => ({
       console.log(loginData);
       const response = await apiPost(`/users/login`, { loginData }, {});
       console.log(response);
-      if (response.request.status === 200) {
+      if (response.status === 200) {
         toast.success("User logged in successfully!");
-        set({ isLoggedIn: true });
-        set({ currUserId: response.data.id });
+        set({ isLoggedIn: true, currUserId: response.data.id });
         localStorage.setItem("currUserId", response.data.id);
         localStorage.setItem("isLoggedIn", true);
-        get().setIsLoggedIn(true);
-        navigate(`/setup/${response.data.id}`);
+        navigate("/setup");
       }
     });
   },
@@ -66,20 +79,17 @@ const useUserStore = create((set, get) => ({
       console.log(response);
       if (response.request.status === 200) {
         toast.success("Account setup successful!");
-        set({ isLoggedIn: true });
-        set({ currUserId: response.data.id });
-        localStorage.setItem("currUserId", response.data.id);
-        localStorage.setItem("isLoggedIn", true);
-        get().setIsLoggedIn(true);
-        navigate(`/setup/${response.data.id}`);
+        set({ isSetupComplete: true });
+        localStorage.setItem("isSetupComplete", true);
+        get().setIsSetupComplete(true);
         navigate("/home");
       }
     });
   },
 
-  logout: async (navigate) => {
+  logout: async (userId, navigate) => {
     try {
-      const response = await apiDelete(`/users/logout`);
+      const response = await apiDelete(`/users/logout/${userId}`);
       console.log(response);
       if (response.status === 200) {
         localStorage.removeItem("currUserId");
@@ -92,25 +102,6 @@ const useUserStore = create((set, get) => ({
         return toast.error(err.logout);
       }
     }
-  },
-
-  checkToken: async (navigate) => {
-    tryCatchWrapper(async () => {
-      const { setIsLoggedIn } = useUserStore.getState();
-      const response = await apiGet("/users/checkaccesstoken");
-      console.log(response);
-      if (response.data === "yes") {
-        localStorage.setItem("isLoggedIn", true);
-        navigate("/home");
-        setIsLoggedIn(true);
-        //console.log("token is present.");
-      }
-      if (response.data === "no") {
-        //console.log("token is not present.");
-        localStorage.setItem("isLoggedIn", false);
-        return toast.warn("Your session has expired.");
-      }
-    });
   },
 
   newAccessToken: async () => {

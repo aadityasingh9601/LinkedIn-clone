@@ -43,7 +43,7 @@ export default function Navbar({ showMessaging }) {
     debounce((searchValue) => {
       fetchProfiles(searchValue);
     }, 1000),
-    [] //Add dependency, when this function should create again.
+    [], //Add dependency, when this function should create again.
   );
 
   const handleClick = () => {
@@ -158,7 +158,10 @@ export default function Navbar({ showMessaging }) {
       that you are passsing it as a prop //and if u have passed a prop , then
       you also have to receive it in the button component. */}
 
-      <Button btnText="Logout" onClick={() => logout(navigate)}></Button>
+      <Button
+        btnText="Logout"
+        onClick={() => logout(currUserId, navigate)}
+      ></Button>
     </div>
   );
 }
