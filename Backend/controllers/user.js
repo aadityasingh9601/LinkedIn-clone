@@ -12,22 +12,14 @@ import Profile from "../models/Profile.js";
 const options = {
   httpOnly: true,
   secure: true, // Required for production
-  sameSite: "none", // CSRF attacks are possible but required for cross-origin
+  sameSite: "strict", // CSRF attacks are possible but required for cross-origin
 };
 
 const checkAuthStatus = async (req, res) => {
-  console.log("inside checkauthstatus function on backend");
-  const { userId } = req.params;
-  const user = await User.findOne({ _id: userId });
-  if (req.cookies && req.cookies.accesstoken) {
-    res
-      .status(200)
-      .send({ isLoggedIn: true, isSetupComplete: user.profile !== undefined });
-  } else {
-    res
-      .status(401)
-      .send({ isLoggedIn: false, isSetupComplete: user.profile !== undefined });
-  }
+  let accesstoken = req.cookies.accesstoken;
+  let decoded = jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET);
+  const user = await User.findOne({ _id: decoded.id });
+  res.status(200).send({ isSetupComplete: user.profile !== undefined });
 };
 
 //You can trim down this & move the profile creation logic to a different route like /setup, that users must fulfill first
@@ -44,7 +36,6 @@ const signup = async (req, res) => {
   //You can remove this code below maybe as validation has already happened above, or before removing check if this one
   //really has some purpose here.
   if (!signupData.name || !signupData.email || !signupData.password) {
-    console.log("1");
     return res
       .status(400)
       .send({ message: "Please provide all required fields" });
@@ -52,7 +43,6 @@ const signup = async (req, res) => {
 
   const existingUser = await User.findOne({ email: signupData.email });
   if (existingUser) {
-    console.log("2");
     return res.status(200).json({ message: "Email already exists!" });
   }
 
@@ -77,8 +67,6 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  console.log("inside login function on the backend");
-
   const { loginData } = req.body;
   const { error } = loginSchema.validate(req.body);
   if (error) {
@@ -130,7 +118,7 @@ const login = async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
       })
       .status(200)
-      .send({ id });
+      .send({ id, isSetupComplete: user.profile !== undefined });
   } catch (err) {
     console.log(err);
     res.status(500).send({ message: "Error logging in" });
@@ -138,12 +126,9 @@ const login = async (req, res) => {
 };
 
 const setupAccount = async (req, res) => {
-  console.log("inside setup account function on the backend");
   const { userId } = req.params;
   const { setupData } = req.body;
   const { phone, city, country } = setupData;
-  console.log(userId);
-  console.log(setupData);
 
   //Add proper validation here.
   // const { error } = loginSchema.validate(req.body);
@@ -186,47 +171,64 @@ const setupAccount = async (req, res) => {
   });
 };
 
-const generateNewAccessToken = async (req, res) => {
-  const refreshToken = req.cookies.refreshtoken;
-  console.log("The refresh token is", refreshToken);
-  if (!refreshToken) {
+const refreshAccessToken = async (req, res) => {
+  const existingRefreshToken = req.cookies.refreshtoken;
+  if (!existingRefreshToken) {
     return res.status(401).send({ message: "No refresh token available." });
   }
 
-  //Check if the refresh token exists in database or not.
-  const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-  let user = await User.findById(decoded.id).select("-password");
-
-  const valid = user.refreshTokens?.includes(refreshToken);
-  if (!valid) {
-    console.log("not valid");
-    return res
-      .status(403)
-      .send({ message: "Refresh token is invalid or expired." });
-  }
-
+  let decoded;
   try {
-    //Generate new access token if everything is ok.
-    const accessToken = generateAccessToken(user.id);
-
-    res
-      .cookie("accesstoken", accessToken, {
-        ...options, // Ensures the cookie is only sent in a first-party context
-        maxAge: 60 * 60 * 1000, //1 hr
-      })
-      .sendStatus(201);
+    decoded = jwt.verify(
+      existingRefreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+    );
   } catch (err) {
-    console.log(err);
+    // Token expired or invalid — return 401 not 500
     return res
-      .status(403)
-      .send({ message: "Invalid or expired refresh token." });
+      .status(401)
+      .send({ message: "Refresh token expired or invalid." });
   }
+
+  let user = await User.findById(decoded.id).select("-password");
+  if (!user) {
+    return res.status(401).send({ message: "User not found." });
+  }
+
+  let userId = user._id;
+
+  const valid = user.refreshTokens?.includes(existingRefreshToken);
+  if (!valid) {
+    return res
+      .status(401)
+      .send({ message: "Refresh token is invalid or expired!" });
+  }
+  //Generate new access tokens.
+  const newAccessToken = generateAccessToken(userId);
+  const newRefreshToken = generateRefreshToken(userId);
+  //Remove the old refresh token.
+  user.refreshTokens = user.refreshTokens.filter(
+    (token) => token !== existingRefreshToken,
+  );
+  //Save the new refresh token.
+  user.refreshTokens.push(newRefreshToken);
+  await user.save();
+
+  res
+    .cookie("accesstoken", newAccessToken, {
+      ...options,
+      maxAge: 60 * 60 * 1000, //1hr
+    })
+    .cookie("refreshtoken", newRefreshToken, {
+      ...options,
+      maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
+    })
+    .status(200)
+    .send({ userId });
 };
 
 const allLikedPosts = async (req, res) => {
-  console.log("inside allLikedPosts");
   const allLikedPosts = await Like.find({ user: req.user._id });
-  //console.log(allLikedPosts);
   const likedPosts = allLikedPosts.map((p) => {
     return p.postId;
   });
@@ -234,7 +236,6 @@ const allLikedPosts = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  console.log("inside logout function on the backend");
   const { userId } = req.params;
   const oldRefreshToken = req.cookies.refreshtoken;
   const user = await User.findById(userId).select("-password");
@@ -258,5 +259,5 @@ export default {
   setupAccount,
   logout,
   allLikedPosts,
-  generateNewAccessToken,
+  refreshAccessToken,
 };

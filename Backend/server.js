@@ -47,7 +47,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cookieParser("tillu"));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 async function main() {
   await mongoose.connect(

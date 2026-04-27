@@ -6,11 +6,12 @@ import protect from "../Middleware.js";
 const router = Router();
 
 router.get(
-  "/checkauthstatus/:userId",
+  "/checkauthstatus",
+  protect,
   wrapAsync(userController.checkAuthStatus),
 );
 
-router.get("/newaccesstoken", wrapAsync(userController.generateNewAccessToken));
+router.get("/newaccesstoken", wrapAsync(userController.refreshAccessToken));
 
 router.get("/allLikedPosts", protect, wrapAsync(userController.allLikedPosts));
 

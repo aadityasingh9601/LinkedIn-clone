@@ -24,6 +24,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
@@ -34,10 +35,22 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import usePostStore from "../stores/Post";
 import PublicRoutes from "./PublicRoutes";
+import { setNavigate } from "../utils/api/axiosInstance";
 
 const AppRoutes = () => {
+  const navigate = useNavigate();
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const isSetupComplete = useUserStore((state) => state.isSetupComplete);
+  const checkAuthStatus = useUserStore((state) => state.checkAuthStatus);
+
+  useEffect(() => {
+    setNavigate(navigate);
+  }, [navigate]);
+
+  //checks auth status
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
 
   return (
     <Routes>
@@ -52,11 +65,8 @@ const AppRoutes = () => {
         <Route path="/" element={<PreLogin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/setup" element={<AccountSetup />} />
       </Route>
-      <Route
-        path="/setup"
-        element={isLoggedIn ? <AccountSetup /> : <Navigate to="/login" />}
-      />
 
       <Route
         element={
@@ -91,7 +101,6 @@ const AppRoutes = () => {
 
 function App() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-
   const newAccessToken = useUserStore((state) => state.newAccessToken);
   const addMessage = useChatStore((state) => state.addMessage);
   const updateLastMsg = useChatStore((state) => state.updateLastMsg);

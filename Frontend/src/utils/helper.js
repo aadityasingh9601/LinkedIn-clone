@@ -4,38 +4,35 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import useUserStore from "../stores/User";
 const { newAccessToken } = useUserStore.getState();
+import axiosInstance from "./api/axiosInstance";
 
 const BE = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
-const apiGet = async (endPoint) => {
-  const response = await axios.get(`${BE}${endPoint}`, {
-    withCredentials: true,
+const apiGet = async (endPoint, headers = {}) => {
+  const response = await axiosInstance.get(`${endPoint}`, {
+    ...headers,
   });
   return response;
 };
 
 const apiPost = async (endPoint, reqBody, reqHeaders) => {
   //console.log(reqHeaders);
-  const response = await axios.post(`${BE}${endPoint}`, reqBody, {
+  const response = await axiosInstance.post(`${endPoint}`, reqBody, {
     headers: reqHeaders,
-    withCredentials: true,
   });
 
   return response;
 };
 
 const apiPatch = async (endPoint, reqBody, reqHeaders) => {
-  const response = await axios.patch(`${BE}${endPoint}`, reqBody, {
+  const response = await axiosInstance.patch(`${endPoint}`, reqBody, {
     headers: reqHeaders,
-    withCredentials: true,
   });
   return response;
 };
 
 const apiDelete = async (endPoint) => {
-  const response = await axios.delete(`${BE}${endPoint}`, {
-    withCredentials: true,
-  });
+  const response = await axiosInstance.delete(`${endPoint}`);
   return response;
 };
 
@@ -46,12 +43,6 @@ const tryCatchWrapper = async (fn) => {
     //This logic is very shallow & error prone here, not at all applicable & scalable for all routes. Optimize this to use
     //this one for all the routes effectively.
     console.log(err);
-    if (err.response.status === 401) {
-      newAccessToken();
-      if (window.location.pathname !== ("/signup" || "/login" || "/")) {
-        return toast.error("Something went wrong! Please try again.");
-      }
-    }
   }
 };
 
