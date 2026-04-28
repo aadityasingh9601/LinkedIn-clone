@@ -10,9 +10,9 @@ const jobSchema = new Schema({
     default:
       "https://tse4.mm.bing.net/th?id=OIP._pBOCluCuO5MXAp236xmhgHaHw&pid=Api&P=0&h=180",
   },
-  companydescription: { type: String, required: true },
+  companyDescription: { type: String, required: true },
   location: { type: String, required: true },
-  jobdescription: { type: String, required: true },
+  jobDescription: { type: String, required: true },
   qualifications: {
     type: [String], //Means this field is an array of strings.
     required: true,
@@ -25,13 +25,13 @@ const jobSchema = new Schema({
     type: [String], //Means this field is an array of strings.
     required: true,
   },
-  salary: { type: Number },
+  salary: { type: Number, required: true },
   jobType: {
     type: String,
     enum: ["Full-time", "Part-time", "Contract", "Internship"],
     required: true,
   },
-  mode: {
+  jobMode: {
     type: String,
     enum: ["On-site", "Remote"],
     required: true,

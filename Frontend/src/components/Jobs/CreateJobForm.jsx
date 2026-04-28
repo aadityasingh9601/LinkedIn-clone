@@ -6,6 +6,8 @@ import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
 import Xmark from "../../icons/Xmark";
 import RHFInput from "../RHFInput";
+import { JobDataSchema } from "../../../../common/src";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function CreateJobForm({ job }) {
   const setpostJob = useJobStore((state) => state.setpostJob);
@@ -20,6 +22,7 @@ export default function CreateJobForm({ job }) {
     reset, //This method is used to clear up the form fields after the form has been submitted.
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(JobDataSchema),
     defaultValues: {
       ...job,
       skills: job?.skills.join(","),
@@ -49,14 +52,14 @@ export default function CreateJobForm({ job }) {
   };
 
   const jobType = watch("jobType");
-  const mode = watch("mode");
+  const jobMode = watch("jobMode");
 
   const handleChange = (event) => {
     setValue("jobType", event.target.value); // Update the value in React Hook Form
   };
 
   const handleChange2 = (event) => {
-    setValue("mode", event.target.value); // Update the value in React Hook Form
+    setValue("jobMode", event.target.value); // Update the value in React Hook Form
   };
   return (
     <div className="createjobform">
@@ -72,13 +75,6 @@ export default function CreateJobForm({ job }) {
           placeholder="Write job title"
           register={register}
           name="title"
-          rules={{
-            required: "Title is required",
-            minLength: {
-              value: 5,
-              message: "Content should be at least 5 characters",
-            },
-          }}
           errors={errors}
         />
 
@@ -87,9 +83,6 @@ export default function CreateJobForm({ job }) {
           placeholder="Enter company name"
           name="company"
           register={register}
-          rules={{
-            required: "Company is required",
-          }}
           errors={errors}
         />
 
@@ -103,32 +96,19 @@ export default function CreateJobForm({ job }) {
         <RHFtextarea
           register={register}
           errors={errors}
-          name="companydescription"
-          rules={{
-            required: "Company description is required",
-          }}
+          name="companyDescription"
           placeholder="Enter company description"
         />
         <RHFInput
           placeholder="Company location"
           name="location"
           register={register}
-          rules={{
-            required: "Location is required",
-          }}
           errors={errors}
         />
         <br />
 
         <label htmlFor="jobType">Job Type</label>
-        <select
-          id="jobType"
-          value={jobType || ""}
-          onChange={handleChange}
-          {...register("jobType", {
-            required: "JobType is required",
-          })}
-        >
+        <select id="jobType" value={jobType || ""} onChange={handleChange}>
           <option value="Full-time">Full-Time</option>
           <option value="Contract">Contract</option>
           <option value="Part-time">Part-Time</option>
@@ -137,15 +117,8 @@ export default function CreateJobForm({ job }) {
 
         <br />
 
-        <label htmlFor="mode">Mode</label>
-        <select
-          id="mode"
-          value={mode || ""}
-          onChange={handleChange2}
-          {...register("mode", {
-            required: "Job mode is required",
-          })}
-        >
+        <label htmlFor="jobMode">Job Mode</label>
+        <select id="jobMode" value={jobMode || ""} onChange={handleChange2}>
           <option value="On-site">On-site</option>
           <option value="Remote">Remote</option>
         </select>
@@ -163,18 +136,12 @@ export default function CreateJobForm({ job }) {
           errors={errors}
           name="qualifications"
           placeholder="Enter qualifications"
-          rules={{
-            required: "Qualifications are required",
-          }}
         />
 
         <RHFInput
           placeholder="Enter skills required"
           name="skills"
           register={register}
-          rules={{
-            required: "Skills are required",
-          }}
           errors={errors}
         />
         <br />
@@ -182,7 +149,7 @@ export default function CreateJobForm({ job }) {
         <RHFtextarea
           register={register}
           errors={errors}
-          name="jobdescription"
+          name="jobDescription"
           placeholder="Enter job description"
           rules={{
             required: "Job description is required",

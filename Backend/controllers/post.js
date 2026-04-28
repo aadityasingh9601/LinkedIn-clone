@@ -17,6 +17,12 @@ function convertDateToCron(date) {
 const createPost = async (req, res) => {
   console.log("inside createPost");
   const { postData } = req.body;
+  const result = PostDataSchema.safeParse(postData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
   //console.log(req.headers);
   const { date, time } = postData;
   //console.log(date, time);
@@ -31,13 +37,6 @@ const createPost = async (req, res) => {
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
   let filename = req.file ? req.file.filename : "";
-
-  const result = PostDataSchema.safeParse(postData);
-  if (!result.success) {
-    return res.status(400).json({
-      message: result.error.message,
-    });
-  }
 
   const newPost = new Post({
     content: postData.content,
@@ -156,6 +155,12 @@ const updatePost = async (req, res) => {
   console.log("inside update post");
   const { postId } = req.params;
   const { postData } = req.body;
+  const result = PostDataSchema.safeParse(postData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
   console.log(req.body);
   const { date, time } = postData;
   //console.log(date, time);

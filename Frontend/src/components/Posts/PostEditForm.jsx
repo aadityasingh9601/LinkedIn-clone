@@ -7,6 +7,8 @@ import RHFtextarea from "../RHFtextarea";
 import ClockS from "../../icons/ClockS";
 import ClockR from "../../icons/ClockR";
 import RHFInput from "../RHFInput";
+import { PostDataSchema } from "../../../../common/src";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function PostEditForm({ post }) {
   const { date, time } = parseISODate(post?.scheduledTime);
@@ -18,9 +20,9 @@ export default function PostEditForm({ post }) {
     reset, //This method is used to clear up the form fields after the form has been submitted.
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(PostDataSchema),
     defaultValues: {
       content: post.content,
-      category: post.category.map((e) => e + " "),
       date: date,
       time: time,
     },
@@ -163,7 +165,7 @@ export default function PostEditForm({ post }) {
             />
             <Button
               onClick={() => {
-                setshowSchPosts(true), console.log("clikced");
+                (setshowSchPosts(true), console.log("clikced"));
               }}
               btnText="View all scheduled posts"
             />

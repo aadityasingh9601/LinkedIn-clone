@@ -26,7 +26,9 @@ export const PostDataSchema = z.object({
     .min(30, "Content must be atleast 30 characters long!")
     .max(1000, "Content limit reached!"),
   media: z.any(), //After fixing functionalities & stuff, come back & fix it's types too.
-  postType: z.enum(["Everyone", "Connections only"]),
+  postType: z
+    .string("Post type is required!")
+    .enum(["Everyone", "Connections only"]),
   date: z
     .string()
     .regex(
@@ -47,4 +49,30 @@ export const PollDataSchema = z.object({
     value: z.string().min(1, "Can't be empty!"),
   }),
   pollDuration: z.string("Poll duration is required!"),
+});
+
+export const JobDataSchema = z.object({
+  title: z
+    .string("Title is required!")
+    .min(5, "Title should be atleast 5 characters long!"),
+  company: z.string().min(5, "Company is required!"),
+  companyLogo: z.string(),
+  companyDescription: z
+    .string("Company description is required!")
+    .min(100, "Too short!")
+    .max(300, "Too long!"),
+  location: z.string("Location is required!").min(3, "Too short!"),
+  jobType: z.enum(["Full-time", "Part-time", "Contract", "Internship"]),
+  jobMode: z.enum(["On-site", "Remote"]),
+  salary: z.number("Salary is required!"),
+  qualifications: z
+    .array(z.string().min(3, "Too short!"))
+    .min(1, "Qualifications are required!"), //Verify this later, if it's correct type of not, also make it required.
+  skills: z
+    .array(z.string().min(5, "Too short!"))
+    .min(1, "Skills are required"),
+  jobDescription: z
+    .string("Job description is required!")
+    .min(100, "Too short!")
+    .max(300, "Too long!"),
 });

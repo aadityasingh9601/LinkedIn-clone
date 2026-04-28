@@ -2,9 +2,16 @@ import Job from "../models/Job.js";
 import User from "../models/User.js";
 import Application from "../models/Application.js";
 import Profile from "../models/Profile.js";
+import { JobDataSchema } from "../../common/src/index.js";
 
 const createJob = async (req, res) => {
   const { jobData } = req.body;
+  const result = JobDataSchema.safeParse(jobData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
 
   const newJob = new Job({
     ...jobData,
