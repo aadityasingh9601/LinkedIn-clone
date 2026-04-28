@@ -12,6 +12,8 @@ import ClockR from "../../icons/ClockR";
 import ImageIcon from "../../icons/ImageIcon";
 import RHFInput from "../RHFInput";
 import Pollicon from "../../icons/PollIcon";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PostDataSchema } from "../../../../common/src";
 
 const PollForm = lazy(() => import("../Polls/PollForm"));
 const SchPostsUI = lazy(() => import("./SchPostsUI"));
@@ -24,7 +26,7 @@ export default function PostForm() {
     formState: { errors },
     watch,
     setValue,
-  } = useForm();
+  } = useForm({ resolver: zodResolver(PostDataSchema) });
 
   const createPost = usePostStore((state) => state.createPost);
 
@@ -99,13 +101,6 @@ export default function PostForm() {
                   placeholder="Write your post here"
                   register={register}
                   name="content"
-                  rules={{
-                    required: "Content is required",
-                    minLength: {
-                      value: 50,
-                      message: "Content should be at least 50 characters",
-                    },
-                  }}
                   errors={errors}
                 />
 
@@ -136,10 +131,6 @@ export default function PostForm() {
                 placeholder="Add some hashtags..."
                 name="category"
                 register={register}
-                rules={{
-                  required: "Category is required",
-                  type: "text",
-                }}
                 errors={errors}
               />
               <br />
@@ -208,14 +199,6 @@ export default function PostForm() {
                       }}
                       name="date"
                       register={register}
-                      rules={{
-                        required: schedule ? "Date is required" : false,
-                        pattern: {
-                          value:
-                            /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/,
-                          message: "Enter date in dd-mm-yyyy format",
-                        },
-                      }}
                       errors={errors}
                     />
                     <span>Time</span>
@@ -226,18 +209,11 @@ export default function PostForm() {
                       }}
                       register={register}
                       name="time"
-                      rules={{
-                        required: schedule ? "Time is required" : false,
-                        pattern: {
-                          value: /^([01]\d|2[0-3]):([0-5]\d)$/,
-                          message: "Enter time in 24-hour format (HH:mm)",
-                        },
-                      }}
                       errors={errors}
                     />
                     <Button
                       onClick={() => {
-                        setshowSchPosts(true), console.log("clikced");
+                        (setshowSchPosts(true), console.log("clikced"));
                       }}
                       btnText="View all scheduled posts"
                     />

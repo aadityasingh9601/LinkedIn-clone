@@ -35,7 +35,7 @@ const useUserStore = create((set, get) => ({
     tryCatchWrapper(async () => {
       const response = await apiPost(`/users/signup`, { signupData }, {});
 
-      if (response.request.status === 201) {
+      if (response.status === 201) {
         toast.success(response.data.message);
         navigate("/login");
       } else {
@@ -48,7 +48,7 @@ const useUserStore = create((set, get) => ({
     tryCatchWrapper(async () => {
       //console.log(loginData);
       const response = await apiPost(`/users/login`, { loginData }, {});
-      //console.log(response);
+      console.log(response);
       if (response.status === 200) {
         toast.success("User logged in successfully!");
         set({
@@ -58,6 +58,8 @@ const useUserStore = create((set, get) => ({
         });
         localStorage.setItem("currUserId", response.data.id);
         navigate("/setup");
+      } else {
+        return toast.warn(response.data.message);
       }
     });
   },

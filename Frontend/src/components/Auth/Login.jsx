@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import RHFInput from "../RHFInput";
 import LinkedInIcon from "../../icons/LinkedInIcon";
 import Button from "../Button.";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginDataSchema } from "../../../../common/src";
 
 export default function Login() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -16,7 +18,9 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(LoginDataSchema),
+  });
 
   async function onSubmit(loginData) {
     login(loginData, navigate);
@@ -48,13 +52,6 @@ export default function Login() {
             name="email"
             errors={errors}
             register={register}
-            rules={{
-              required: "Email is required!",
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
-                message: "Email is not valid",
-              },
-            }}
           />
 
           <span>Your password</span>
@@ -63,13 +60,6 @@ export default function Login() {
             type="password"
             register={register}
             name="password"
-            rules={{
-              required: "Password is required!",
-              minLength: {
-                value: 3,
-                message: "Password must be at least 3 characters",
-              },
-            }}
             errors={errors}
           />
           <br />

@@ -23,12 +23,6 @@ const postSchema = new Schema({
     type: Boolean,
     required: true,
   },
-  category: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
   postType: {
     type: String,
     enum: ["Everyone", "Connections only"],

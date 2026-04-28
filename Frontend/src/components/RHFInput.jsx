@@ -15,11 +15,11 @@ export default function RHFInput({
       <input
         id={id}
         type={type}
-        {...register(name, rules)}
+        {...register(name, { ...rules })}
         placeholder={placeholder}
-        style={{...styles}}
+        style={{ ...styles }}
       />
-      {errors[name] && <p>{errors[name].message}</p>}
+      {errors[name] && <span>{errors[name].message}</span>}
     </div>
   );
 }

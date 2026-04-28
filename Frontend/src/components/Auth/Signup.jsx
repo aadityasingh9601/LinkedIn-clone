@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import RHFInput from "../RHFInput";
 import LinkedInIcon from "../../icons/LinkedInIcon";
 import useUserStore from "../../stores/User";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SignupDataSchema } from "../../../../common/src";
 
 //We don't use controlled components while using our react-hook-form library, else it compromises with the performance and other benefits
 //provided by the library.
@@ -17,7 +19,9 @@ export default function Signup() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(SignupDataSchema),
+  });
 
   const onSubmit = async (signupData) => {
     const res = await signUp(signupData, navigate);
@@ -51,7 +55,6 @@ export default function Signup() {
             name="name"
             register={register}
             errors={errors}
-            rules={{ required: "Name is required" }}
           />
           <span>Your email</span>
           <br />
@@ -60,13 +63,6 @@ export default function Signup() {
             register={register}
             name="email"
             errors={errors}
-            rules={{
-              required: "Email is required",
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
-                message: "Email is not valid",
-              },
-            }}
           />
           <span>Your password</span>
           <br />
@@ -74,13 +70,6 @@ export default function Signup() {
             type="password"
             register={register}
             name="password"
-            rules={{
-              required: "Password is required",
-              minLength: {
-                value: 3,
-                message: "Password must be at least 3 characters",
-              },
-            }}
             errors={errors}
           />
           <br />

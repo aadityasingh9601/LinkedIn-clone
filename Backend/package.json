@@ -27,7 +27,6 @@
     "express": "^4.21.0",
     "express-session": "^1.18.0",
     "http-status": "^1.7.4",
-    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.9.2",
     "mongoose": "^8.6.2",
@@ -35,7 +34,8 @@
     "multer-gridfs-storage": "^5.0.2",
     "multer-storage-cloudinary": "^4.0.0",
     "node-cron": "^3.0.3",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "zod": "^4.3.6"
   },
   "type": "module"
 }

@@ -4,6 +4,8 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useState } from "react";
 import usePollStore from "../../stores/Poll";
 import RHFtextarea from "../RHFtextarea";
+import { PollDataSchema } from "../../../../common/src";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function PollForm() {
   const setPoll = usePollStore((state) => state.setPoll);
@@ -16,6 +18,7 @@ export default function PollForm() {
     reset, //This method is used to clear up the form fields after the form has been submitted.
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(PollDataSchema),
     defaultValues: {
       options: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }], // Default empty options
     },
@@ -53,13 +56,6 @@ export default function PollForm() {
             name="question"
             register={register}
             errors={errors}
-            rules={{
-              required: "Question is required",
-              minLength: {
-                value: 10,
-                message: "Question should be atleast 10 characters long.",
-              },
-            }}
           />
 
           {fields.map((field, index) => (
@@ -70,6 +66,7 @@ export default function PollForm() {
               </span>
 
               <input
+                name="options"
                 placeholder="Eg. Public transport"
                 {...register(`options.${index}.value`, {
                   required: "This is an required field.",
@@ -80,6 +77,7 @@ export default function PollForm() {
           <span>Poll duration</span>
           <br />
           <select
+            name="pollDuration"
             value={pollDuration}
             onChange={(event) => {
               setpollDuration(event.target.value);
@@ -90,9 +88,7 @@ export default function PollForm() {
             <option value="3">3 days</option>
             <option value="7">7 days</option>
           </select>
-          <p>
-            Fields marked <span style={{ color: "red" }}>*</span> are required
-          </p>
+          <p>Fields marked * are required</p>
         </form>
       </div>
       <div className="foot">

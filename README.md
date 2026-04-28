@@ -18,7 +18,7 @@ A full-stack LinkedIn clone built with React (Vite) for the frontend and Node.js
 ## Tech Stack
 
 - **Frontend**: React, Vite, Zustand, React Hook Form, React Router, Recharts, React Toastify, Socket.io-client
-- **Backend**: Node.js, Express, MongoDB, Mongoose, Socket.io, Cloudinary, JWT, Joi, Multer
+- **Backend**: Node.js, Express, MongoDB, Mongoose, Socket.io, Cloudinary, JWT, Zod, Multer
 - **Other**: ESLint, dotenv
 
 ## Getting Started

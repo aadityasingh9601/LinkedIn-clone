@@ -1,9 +1,9 @@
 import Post from "../models/Post.js";
 import Connection from "../models/Connection.js";
-import { postSchema } from "../schema.js";
 import { v2 as cloudinary } from "cloudinary";
 import { io, userSocketMap } from "../server.js";
 import cron from "node-cron";
+import { PostDataSchema } from "../../common/src/index.js";
 
 function convertDateToCron(date) {
   const minutes = date.getMinutes();
@@ -16,7 +16,6 @@ function convertDateToCron(date) {
 
 const createPost = async (req, res) => {
   console.log("inside createPost");
-
   const { postData } = req.body;
   //console.log(req.headers);
   const { date, time } = postData;
@@ -28,20 +27,16 @@ const createPost = async (req, res) => {
     scheduledAt = new Date(`${year}-${month}-${day}T${time}:00`);
   }
 
-  //console.log(scheduledAt);
-
-  //console.log(postData);
-
   console.log(req.file);
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
   let filename = req.file ? req.file.filename : "";
 
-  const { error } = postSchema.validate(req.body);
-  if (error) {
-    console.log(error);
-    res.status(404).send({ error: error });
-    return;
+  const result = PostDataSchema.safeParse(postData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
   }
 
   const newPost = new Post({
@@ -55,7 +50,6 @@ const createPost = async (req, res) => {
     scheduledTime: scheduledAt,
     postType: postData.postType,
     published: scheduledAt ? false : true,
-    category: postData.category,
   });
 
   await newPost.save();

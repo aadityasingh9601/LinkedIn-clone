@@ -1,12 +1,20 @@
 import Poll from "../models/Poll.js";
+import { PollDataSchema } from "../../common/src/index.js";
 
 const createPoll = async (req, res) => {
   const { pollData } = req.body;
   //console.log(pollData);
   let { pollDuration } = pollData;
 
+  const result = PollDataSchema.safeParse(pollData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
+
   const expiryDate = new Date(
-    Date.now() + pollDuration * 24 * 60 * 60 * 1000
+    Date.now() + pollDuration * 24 * 60 * 60 * 1000,
   ).toISOString();
   //console.log(expiryDate);
 
@@ -65,7 +73,7 @@ const voteInPoll = async (req, res) => {
 
   //Check if the user has already voted or not.
   let existingVoter = poll.voters.find(
-    (voter) => voter.user.toString() === userId
+    (voter) => voter.user.toString() === userId,
   );
 
   if (existingVoter) {
@@ -73,7 +81,7 @@ const voteInPoll = async (req, res) => {
   }
 
   let chosenOption = poll.options.find(
-    (opt) => opt._id.toString() === optionId
+    (opt) => opt._id.toString() === optionId,
   );
 
   poll.voters.push(newVoter);
@@ -90,7 +98,7 @@ const unVote = async (req, res) => {
 
   //Check if the user has even voted or not.
   let existingVoter = poll.voters.find(
-    (voter) => voter.user.toString() === userId
+    (voter) => voter.user.toString() === userId,
   );
 
   if (!existingVoter) {
@@ -98,7 +106,7 @@ const unVote = async (req, res) => {
   }
 
   let chosenOption = poll.options.find(
-    (opt) => opt._id.toString() === existingVoter.optionId.toString()
+    (opt) => opt._id.toString() === existingVoter.optionId.toString(),
   );
 
   poll.voters.pull(existingVoter);
@@ -115,7 +123,7 @@ const checkVote = async (req, res) => {
   const poll = await Poll.findById(id);
 
   const existingVote = poll.voters.find(
-    (voter) => voter.user.toString() === req.user._id.toString()
+    (voter) => voter.user.toString() === req.user._id.toString(),
   );
 
   if (existingVote) {

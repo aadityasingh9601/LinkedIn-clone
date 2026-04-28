@@ -5,9 +5,9 @@ import User from "../models/User.js";
 import Like from "../models/Like.js";
 import bcrypt from "bcrypt";
 import { generateAccessToken, generateRefreshToken } from "../utils/Token.js";
-import { signupSchema, loginSchema } from "../schema.js";
 import jwt from "jsonwebtoken";
 import Profile from "../models/Profile.js";
+import { SignupDataSchema, LoginDataSchema } from "../../common/src/index.js";
 
 const options = {
   httpOnly: true,
@@ -22,28 +22,19 @@ const checkAuthStatus = async (req, res) => {
   res.status(200).send({ isSetupComplete: user.profile !== undefined });
 };
 
-//You can trim down this & move the profile creation logic to a different route like /setup, that users must fulfill first
-//in order to get ahead in the application.
 const signup = async (req, res) => {
   const { signupData } = req.body;
-  const { error } = signupSchema.validate(req.body);
-  if (error) {
-    res.status(400).send({
-      error: error,
+
+  const result = SignupDataSchema.safeParse(signupData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
     });
-    return;
-  }
-  //You can remove this code below maybe as validation has already happened above, or before removing check if this one
-  //really has some purpose here.
-  if (!signupData.name || !signupData.email || !signupData.password) {
-    return res
-      .status(400)
-      .send({ message: "Please provide all required fields" });
   }
 
   const existingUser = await User.findOne({ email: signupData.email });
   if (existingUser) {
-    return res.status(200).json({ message: "Email already exists!" });
+    return res.status(400).json({ message: "Email already exists!" });
   }
 
   try {
@@ -68,19 +59,11 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { loginData } = req.body;
-  const { error } = loginSchema.validate(req.body);
-  if (error) {
-    console.log(error);
-    res.status(404).send({
-      error: error,
+  const result = LoginDataSchema.safeParse(loginData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
     });
-    return;
-  }
-  //Code written below isn't needed maybe if you have already added prperly validation above.
-  if (!loginData.email || !loginData.password) {
-    return res
-      .status(400)
-      .send({ message: "Please provide both email and password" });
   }
 
   try {

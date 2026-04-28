@@ -43,6 +43,7 @@ const tryCatchWrapper = async (fn) => {
     //This logic is very shallow & error prone here, not at all applicable & scalable for all routes. Optimize this to use
     //this one for all the routes effectively.
     console.log(err);
+    return toast.error(err);
   }
 };
 
