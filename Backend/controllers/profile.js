@@ -4,6 +4,11 @@ dotenv.config();
 import Profile from "../models/Profile.js";
 import httpStatus from "http-status";
 import { v2 as cloudinary } from "cloudinary";
+import {
+  EducationDataSchema,
+  ExperienceDataSchema,
+  ProfileHeadDataSchema,
+} from "../../common/src/index.js";
 
 const getUserProfile = async (req, res) => {
   const { userId } = req.params;
@@ -48,6 +53,11 @@ const getAllUserGroups = async (req, res) => {
   }
 };
 
+//This function is too scattered & unfocused, trim it down, make it focused, add better functionality & coverage & ease
+//of usage. Maybe break it into smaller manageable functions. Create it separate or write functionality such that it's
+//clean, readable, fast & follows correct standards.
+
+//Once done with the above work, make sure to add the validate the data using "ProfileHeadDataSchema" too.
 const createProfile = async (req, res) => {
   console.log("inside createProfile on backend");
   const { userId } = req.params;
@@ -69,14 +79,10 @@ const createProfile = async (req, res) => {
       contactInfo,
       location,
     } = data;
-    //console.log(req.body);
-
-    // console.log(data);
 
     if (name) {
       profile.name = name;
     }
-
     if (headline) {
       profile.headline = headline;
     }
@@ -87,9 +93,21 @@ const createProfile = async (req, res) => {
       profile.skills.push(skill);
     }
     if (education) {
+      const result = EducationDataSchema.safeParse(education);
+      if (!result.success) {
+        return res.status(400).json({
+          message: result.error.message,
+        });
+      }
       profile.education.push(education);
     }
     if (experience) {
+      const result = ExperienceDataSchema.safeParse(experience);
+      if (!result.success) {
+        return res.status(400).json({
+          message: result.error.message,
+        });
+      }
       profile.experience.push(experience);
     }
     if (location) {

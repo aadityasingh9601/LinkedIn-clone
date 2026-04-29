@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import Job from "../models/Job.js";
 import Profile from "../models/Profile.js";
 import { io, userSocketMap } from "../server.js";
+import { JobApplicationDataSchema } from "../../common/src/index.js";
 
 let bucket;
 (() => {
@@ -14,6 +15,8 @@ let bucket;
   });
 })();
 
+//Search properly how would you add validation to check for job application data here, can you use JobApplicationDataSchema
+//here?
 const applyToJob = async (req, res) => {
   console.log("Inside applyToJob");
   const { jobId } = req.params;
@@ -27,7 +30,7 @@ const applyToJob = async (req, res) => {
   }
 
   const existingApplication = job.applications.filter(
-    (j) => j.applicant.toString() === userId.toString()
+    (j) => j.applicant.toString() === userId.toString(),
   );
 
   if (existingApplication.length > 0) {
@@ -62,7 +65,7 @@ const unapplyFromJob = async (req, res) => {
   const jobApplications = job.applications;
 
   const existingApplication = jobApplications?.find(
-    (a) => a.applicant.toString() === currUserId.toString()
+    (a) => a.applicant.toString() === currUserId.toString(),
   );
 
   const resumePdfId = existingApplication.resume.id;
@@ -223,7 +226,7 @@ const jobFitStats = async (req, res) => {
     console.log("These are our missing skills", missingSkills);
 
     const matchedScore = Math.ceil(
-      (matchedSkills.length / jobSkills.length) * 100
+      (matchedSkills.length / jobSkills.length) * 100,
     );
     console.log(matchedScore);
 

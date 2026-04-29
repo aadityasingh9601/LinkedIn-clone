@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import RHFtextarea from "../RHFtextarea";
 import RHFInput from "../RHFInput";
 import useUserStore from "../../stores/User";
+import { EducationDataSchema } from "../../../../common/src";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function EducationForm({
   education = {},
@@ -17,6 +19,7 @@ export default function EducationForm({
     reset,
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(EducationDataSchema),
     defaultValues: {
       ...education,
       started: education?.started?.split("T")[0],
@@ -38,13 +41,6 @@ export default function EducationForm({
           placeholder="Enter institution"
           register={register}
           name="institution"
-          rules={{
-            required: "Institution is required",
-            minLength: {
-              value: 5,
-              message: "Institution should be at least 5 characters",
-            },
-          }}
           errors={errors}
         />
 
@@ -52,41 +48,20 @@ export default function EducationForm({
           name="degree"
           placeholder="Enter degree"
           register={register}
-          rules={{
-            required: "Degree is required",
-            minLength: {
-              value: 2,
-              message: "Degree should be at least 2 characters",
-            },
-          }}
           errors={errors}
         />
 
         <RHFInput
-          placeholder="Enter start date (yyyy-mm-dd)"
+          placeholder="Enter start date (DD-MM-YYYY)"
           register={register}
           name="started"
-          rules={{
-            required: "Date is required",
-            pattern: {
-              value: /^\d{4}-\d{2}-\d{2}$/,
-              message: "Date must be in yyyy-mm-dd format",
-            },
-          }}
           errors={errors}
         />
 
         <RHFInput
-          placeholder="Enter end date (yyyy-mm-dd)"
+          placeholder="Enter end date (DD-MM-YYYY)"
           name="ended"
           register={register}
-          rules={{
-            required: "Date is required",
-            pattern: {
-              value: /^\d{4}-\d{2}-\d{2}$/,
-              message: "Date must be in yyyy-mm-dd format",
-            },
-          }}
           errors={errors}
         />
 
@@ -95,7 +70,6 @@ export default function EducationForm({
           errors={errors}
           name="description"
           placeholder="Add some more details..."
-          rules={{}}
         />
 
         <Button btnText="Cancel" onClick={() => updateVisState(false)} />

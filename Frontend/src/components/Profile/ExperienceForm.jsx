@@ -4,6 +4,8 @@ import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
 import RHFInput from "../RHFInput";
 import useUserStore from "../../stores/User";
+import { ExperienceDataSchema } from "../../../../common/src";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function ExperienceForm({
   experience = {},
@@ -19,6 +21,7 @@ export default function ExperienceForm({
     reset,
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(ExperienceDataSchema),
     defaultValues: {
       ...experience,
       started: experience?.started?.split("T")[0],
@@ -38,13 +41,6 @@ export default function ExperienceForm({
           placeholder="Enter company name"
           name="companyName"
           register={register}
-          rules={{
-            required: "Company name is required",
-            minLength: {
-              value: 5,
-              message: "Company name should be at least 5 characters",
-            },
-          }}
           errors={errors}
         />
 
@@ -52,18 +48,11 @@ export default function ExperienceForm({
           placeholder="Enter job title"
           name="jobTitle"
           register={register}
-          rules={{
-            required: "Job title is required",
-            minLength: {
-              value: 2,
-              message: "Job title should be at least 2 characters",
-            },
-          }}
           errors={errors}
         />
 
         <RHFInput
-          placeholder="Enter start date (yyyy-mm-dd) "
+          placeholder="Enter start date (DD-MM-YYYY) "
           register={register}
           name="started"
           rules={{
@@ -86,7 +75,7 @@ export default function ExperienceForm({
               message: "Date must be in yyyy-mm-dd format",
             },
           }}
-          placeholder="Enter end date (yyyy-mm-dd)"
+          placeholder="Enter end date (DD-MM-YYYY)"
           errors={errors}
         />
 

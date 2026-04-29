@@ -5,6 +5,9 @@ import useJobStore from "../../stores/Job";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import RHFInput from "../RHFInput";
+import RHFtextarea from "../RHFtextarea";
+import { JobApplicationDataSchema } from "../../../../common/src";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -14,9 +17,11 @@ export default function ApplicationForm() {
   const {
     register,
     handleSubmit,
-    reset, //This method is used to clear up the form fields after the form has been submitted.
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(JobApplicationFormSchema),
+  });
 
   const onSubmit = (data) => {
     let applicationData = {
@@ -35,55 +40,31 @@ export default function ApplicationForm() {
         </div>
 
         <div>Why are you interested in this role?</div>
-        <textarea
-          type="text"
+        <RHFtextarea
+          name="answers.0"
           placeholder="Write your answer here..."
-          {...register("answers.0", {
-            required: "Answer is required",
-            minLength: {
-              value: 10,
-              message: "Answer should be at least 10 characters",
-            },
-          })}
+          register={register}
+          errors={errors}
         />
-
-        {errors.answers?.[0] && <p>{errors.answers[0].message}</p>}
-        <br />
 
         <div>
           Which skill of yours do you believe will have the most impact in this
           role?
         </div>
-        <textarea
-          type="text"
+        <RHFtextarea
+          name="answers.1"
           placeholder="Write your answer here..."
-          {...register("answers.1", {
-            required: "Answer is required",
-            minLength: {
-              value: 10,
-              message: "Answer should be at least 10 characters",
-            },
-          })}
+          register={register}
+          errors={errors}
         />
-
-        {errors.answers?.[1] && <p>{errors.answers[1].message}</p>}
-        <br />
 
         <div>When would you be able to join if selected?</div>
-        <textarea
-          type="text"
+        <RHFtextarea
+          name="answers.2"
           placeholder="Write your answer here..."
-          {...register("answers.2", {
-            required: "Answer is required",
-            minLength: {
-              value: 10,
-              message: "Answer should be at least 10 characters",
-            },
-          })}
+          register={register}
+          errors={errors}
         />
-
-        {errors.answers?.[2] && <p>{errors.answers[2].message}</p>}
-        <br />
 
         <div>Upload your resume here</div>
         <RHFInput
@@ -91,12 +72,8 @@ export default function ApplicationForm() {
           type="file"
           name="resume"
           register={register}
-          rules={{
-            required: "Resume is required",
-          }}
           errors={errors}
         />
-        <br />
         <Button btnText="Submit" />
       </form>
     </div>

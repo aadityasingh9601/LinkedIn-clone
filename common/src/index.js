@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const MAX_PDF_SIZE = 5 * 1024 * 1024;
+
 export const SignupDataSchema = z.object({
   name: z
     .string()
@@ -61,7 +63,10 @@ export const JobDataSchema = z.object({
     .string("Company description is required!")
     .min(100, "Too short!")
     .max(300, "Too long!"),
-  location: z.string("Location is required!").min(3, "Too short!"),
+  location: z
+    .string("Location is required!")
+    .min(5, "Too short!")
+    .max(20, "Too long!"),
   jobType: z.enum(["Full-time", "Part-time", "Contract", "Internship"]),
   jobMode: z.enum(["On-site", "Remote"]),
   salary: z.number("Salary is required!"),
@@ -75,4 +80,84 @@ export const JobDataSchema = z.object({
     .string("Job description is required!")
     .min(100, "Too short!")
     .max(300, "Too long!"),
+});
+
+export const EducationDataSchema = z.object({
+  institution: z.string().min(5, "Must be atleast 5 characters long!"),
+  degree: z.string().min(3, "Must be atleast 3 characters long!"),
+  description: z
+    .string("Description is required!")
+    .min(50, "Too short!")
+    .max(200, "Too long!"),
+  started: z
+    .string()
+    .regex(
+      /^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$/,
+      "Date must be in DD-MM-YYYY format",
+    ),
+  ended: z
+    .string()
+    .regex(
+      /^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$/,
+      "Date must be in DD-MM-YYYY format",
+    ),
+});
+
+export const ExperienceDataSchema = z.object({
+  companyName: z
+    .string("Company name is required!")
+    .min(5, "Too short!")
+    .max(20, "Too long!"),
+  jobTitle: z
+    .string("Job title is required!")
+    .min(5, "Too short!")
+    .max(25, "Too long!"),
+  description: z
+    .string("Description is required!")
+    .min(50, "Too short!")
+    .max(200, "Too long!"),
+  started: z
+    .string()
+    .regex(
+      /^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$/,
+      "Date must be in DD-MM-YYYY format",
+    ),
+  ended: z
+    .string()
+    .regex(
+      /^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$/,
+      "Date must be in DD-MM-YYYY format",
+    ),
+});
+
+export const ProfileHeadDataSchema = z.object({
+  name: z
+    .string("Name can't be empty!")
+    .min(1, "Too short!")
+    .max(15, "Too long!"),
+  headline: z.string(),
+  location: z
+    .string("Location is required!")
+    .min(5, "Too short!")
+    .max(20, "Too long!"),
+  contactInfo: {
+    email: z.email("Please enter a valid email!"),
+    phone: z.number(),
+  },
+  profileImage: z.string(),
+  bannerImage: z.string(),
+});
+
+export const JobApplicationDataSchema = z.object({
+  answers: z.array(
+    z.string("Answer is required!").min(10, "Too short!").max(150, "Too long!"),
+  ),
+  resume: z
+    .instanceof(File)
+    .refine((file) => file.type === "application/pdf", {
+      message: "Only PDF files allowed",
+    })
+    .refine((file) => file.size <= MAX_PDF_SIZE, {
+      message: "File must be under 5MB",
+    }),
 });

@@ -2,6 +2,8 @@ import "./ProfileHeadForm.css";
 import { useForm } from "react-hook-form";
 import Button from "../Button.";
 import RHFInput from "../RHFInput";
+import { ProfileHeadDataSchema } from "../../../../common/src";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function ProfileHeadForm({
   profile,
@@ -13,6 +15,7 @@ export default function ProfileHeadForm({
     handleSubmit,
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(ProfileHeadDataSchema),
     defaultValues: profile,
   });
 
@@ -40,9 +43,6 @@ export default function ProfileHeadForm({
         placeholder="Enter your name"
         name="name"
         register={register}
-        rules={{
-          required: "Name cannot be empty",
-        }}
         errors={errors}
       />
       <br></br>
@@ -66,36 +66,27 @@ export default function ProfileHeadForm({
         name="headline"
         register={register}
       />
-      <br></br>
+
       <RHFInput
         type="text"
         placeholder="Enter your location"
         name="location"
         register={register}
-        rules={{
-          required: "Location can't be empty",
-          minLength: {
-            value: 5,
-            message: "Location should be at least 5 characters",
-          },
-        }}
         errors={errors}
       />
 
-      {errors.location && <p>{errors.location.message}</p>}
-      <br></br>
       <RHFInput
         placeholder="Enter your email"
         register={register}
         name="contactInfo[email]"
       />
-      <br></br>
+
       <RHFInput
         placeholder="Enter your phone"
         register={register}
         name="contactInfo[phone]"
       />
-      <br></br>
+
       <Button btnText="Save Changes" />
     </form>
   );

@@ -11,7 +11,6 @@ const profileSchema = new Schema({
     type: String,
     required: true,
   },
-
   profileImage: {
     filename: String,
     url: {
@@ -81,7 +80,6 @@ const profileSchema = new Schema({
       description: {
         type: String,
       },
-
       started: Date,
       ended: Date,
     },
