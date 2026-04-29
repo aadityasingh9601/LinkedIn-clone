@@ -7,6 +7,7 @@ import usePollStore from "../stores/Poll";
 import useUserStore from "../stores/User";
 import useAnalyticStore from "../stores/Analytic";
 import Xmark from "../icons/Xmark";
+import { toast } from "react-toastify";
 
 const Post = lazy(() => import("./Posts/Post"));
 const InfiniteScroll = lazy(() => import("react-infinite-scroll-component"));
@@ -65,7 +66,7 @@ export default function Homepage() {
         viewedPostIds.current.clear();
       }
     }, 2000),
-    [] //Add dependency, when this function should create again.
+    [], //Add dependency, when this function should create again.
   );
 
   //Intersection Observer part starts here.
@@ -152,7 +153,7 @@ export default function Homepage() {
             <Modal>
               <Xmark
                 onClick={() => {
-                  setPostFormModal(false), setshowSchPosts(false);
+                  (setPostFormModal(false), setshowSchPosts(false));
                 }}
               />
 

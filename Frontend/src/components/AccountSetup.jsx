@@ -1,7 +1,6 @@
 import "./AccountSetup.css";
 import Button from "./Button.";
 import { useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import RHFInput from "./RHFInput";
 import useUserStore from "../stores/User";
@@ -23,20 +22,6 @@ export default function AccountSetup() {
   };
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={5000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition:Bounce
-      />
-
       <div className="accountsetup">
         <p>Finish setting up your account</p>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>

@@ -28,9 +28,7 @@ export const PostDataSchema = z.object({
     .min(30, "Content must be atleast 30 characters long!")
     .max(1000, "Content limit reached!"),
   media: z.any(), //After fixing functionalities & stuff, come back & fix it's types too.
-  postType: z
-    .string("Post type is required!")
-    .enum(["Everyone", "Connections only"]),
+  postType: z.enum(["Everyone", "Connections only"]),
   date: z
     .string()
     .regex(

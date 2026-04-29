@@ -6,7 +6,7 @@
   "scripts": {
     "start-db": "docker compose -f docker-compose-dev.yml up -d",
     "stop-db": "docker compose -f docker-compose-dev.yml down",
-    "dev": "npm run start-db && node server.js"
+    "dev": "npm run start-db && node --watch server.js"
   },
   "keywords": [
     "\"Big",

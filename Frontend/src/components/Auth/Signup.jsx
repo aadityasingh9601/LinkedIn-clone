@@ -1,7 +1,6 @@
 import "./Signup.css";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import RHFInput from "../RHFInput";
 import LinkedInIcon from "../../icons/LinkedInIcon";
@@ -30,21 +29,7 @@ export default function Signup() {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={5000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition:Bounce
-      />
       <LinkedInIcon />
-
       <div className="signup">
         <p>Make the most out of your professional life</p>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>

@@ -1,5 +1,7 @@
 import Navbar from "./Navbar"; // Your navigation bar component
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import ChatUI from "./Messaging/ChatUI";
 import useChatStore from "../stores/Chat";
 import ChatList from "./Messaging/ChatList";

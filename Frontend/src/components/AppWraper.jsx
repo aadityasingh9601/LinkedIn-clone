@@ -1,13 +1,12 @@
 import { useLocation } from "react-router-dom";
 import { Suspense } from "react";
 import Layout from "./Layout";
+import AuthLayout from "./AuthLayout";
 
 const AppWrapper = ({ children, handleLogout, socket }) => {
   const location = useLocation();
-
   // List of routes to exclude from layout
   const noLayoutRoutes = ["/", "/login", "/signup", "/setup"];
-
   // Check if the current route is in the noLayoutRoutes list
   const useLayout = !noLayoutRoutes.includes(location.pathname);
 
@@ -31,7 +30,7 @@ const AppWrapper = ({ children, handleLogout, socket }) => {
         </h1>
       }
     >
-      <>{children}</>
+      <AuthLayout>{children}</AuthLayout>
     </Suspense>
   );
 };

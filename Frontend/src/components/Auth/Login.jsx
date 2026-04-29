@@ -1,9 +1,7 @@
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
 import useUserStore from "../../stores/User";
-import { useEffect } from "react";
 import RHFInput from "../RHFInput";
 import LinkedInIcon from "../../icons/LinkedInIcon";
 import Button from "../Button.";
@@ -28,19 +26,6 @@ export default function Login() {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={5000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition:Bounce
-      />
       <LinkedInIcon />
       <div className="login">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>

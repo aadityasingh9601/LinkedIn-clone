@@ -1,29 +1,12 @@
 import "./PreLogin.css";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import LinkedInIcon from "../../icons/LinkedInIcon";
-import { ToastContainer } from "react-toastify";
-import useUserStore from "../../stores/User";
 
 export default function PreLogin() {
   const navigate = useNavigate();
-  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
 
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition:Bounce
-      />
       <div className="prelogin">
         <LinkedInIcon
           styles={{
