@@ -1,49 +1,69 @@
 //Only store those functions in here that are used in multiple files throughout the codebase, store the state specific logic and actions in
 //their respective zustand stores only.
 import { toast } from "react-toastify";
-import axios from "axios";
-import useUserStore from "../stores/User";
-const { newAccessToken } = useUserStore.getState();
 import axiosInstance from "./api/axiosInstance";
 
-const BE = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
-
 const apiGet = async (endPoint, headers = {}) => {
-  const response = await axiosInstance.get(`${endPoint}`, {
-    ...headers,
-  });
-  return response;
+  try {
+    const response = await axiosInstance.get(`${endPoint}`, {
+      ...headers,
+    });
+    return response;
+  } catch (error) {
+    //console.log(error.response?.data.message);
+    return toast.error(
+      error.response?.data.message || error.message || "Something went wrong!",
+    );
+  }
 };
 
 const apiPost = async (endPoint, reqBody, reqHeaders) => {
-  //console.log(reqHeaders);
-  const response = await axiosInstance.post(`${endPoint}`, reqBody, {
-    headers: reqHeaders,
-  });
-
-  return response;
+  try {
+    const response = await axiosInstance.post(`${endPoint}`, reqBody, {
+      headers: reqHeaders,
+    });
+    return response;
+  } catch (error) {
+    //console.log(error.response.data.message);
+    return toast.error(
+      error.response?.data.message || error.message || "Something went wrong!",
+    );
+  }
 };
 
 const apiPatch = async (endPoint, reqBody, reqHeaders) => {
-  const response = await axiosInstance.patch(`${endPoint}`, reqBody, {
-    headers: reqHeaders,
-  });
-  return response;
+  try {
+    const response = await axiosInstance.patch(`${endPoint}`, reqBody, {
+      headers: reqHeaders,
+    });
+    return response;
+  } catch (error) {
+    //console.log(error.response.data.message);
+    return toast.error(
+      error.response?.data.message || error.message || "Something went wrong!",
+    );
+  }
 };
 
 const apiDelete = async (endPoint) => {
-  const response = await axiosInstance.delete(`${endPoint}`);
-  return response;
+  try {
+    const response = await axiosInstance.delete(`${endPoint}`);
+    return response;
+  } catch (error) {
+    //console.log(error.response.data.message);
+    return toast.error(
+      error.response?.data.message || error.message || "Something went wrong!",
+    );
+  }
 };
 
 const tryCatchWrapper = async (fn) => {
   try {
     return await fn();
-  } catch (err) {
-    //This logic is very shallow & error prone here, not at all applicable & scalable for all routes. Optimize this to use
-    //this one for all the routes effectively.
-    console.log(err);
-    return toast.error(err);
+  } catch (error) {
+    console.log(
+      error.response.data.message || error.message || "Something went wrong!",
+    );
   }
 };
 

@@ -110,7 +110,7 @@ app.all("*", (req, res) => {
 
 app.use((err, req, res, next) => {
   let { status = 400, message = "Something went wrong!!" } = err;
-  res.status(status).send(message);
+  res.status(status).json({ message: message });
   console.log(err);
   next(err);
 });

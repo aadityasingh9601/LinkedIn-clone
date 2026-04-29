@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import RHFInput from "./RHFInput";
 import useUserStore from "../stores/User";
+import { AccountSetupDataSchema } from "../../../common/src";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function AccountSetup() {
   const navigate = useNavigate();
@@ -13,7 +15,9 @@ export default function AccountSetup() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(AccountSetupDataSchema),
+  });
 
   const onSubmit = async (setupData) => {
     console.log(setupData);
@@ -32,7 +36,6 @@ export default function AccountSetup() {
             name="phone"
             register={register}
             errors={errors}
-            rules={{ required: "Phone is required" }}
           />
           <span>Enter your city</span>
           <br />
@@ -41,9 +44,6 @@ export default function AccountSetup() {
             register={register}
             name="city"
             errors={errors}
-            rules={{
-              required: "City is required",
-            }}
           />
           <span>Enter your country</span>
           <br />
@@ -51,13 +51,6 @@ export default function AccountSetup() {
             type="text"
             register={register}
             name="country"
-            rules={{
-              required: "Country is required",
-              minLength: {
-                value: 3,
-                message: "Country must be at least 3 characters",
-              },
-            }}
             errors={errors}
           />
           <br />

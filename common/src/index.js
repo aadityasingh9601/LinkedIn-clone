@@ -22,6 +22,18 @@ export const LoginDataSchema = z.object({
     .max(12, "Must be atmost 12 characters!"),
 });
 
+export const AccountSetupDataSchema = z.object({
+  phone: z
+    .number("Please enter a valid phone number! ")
+    .min(8, "Too short!")
+    .max(12, "Too long!"),
+  city: z.string("City is required!").min(3, "Too short!").max(15, "Too long!"),
+  country: z
+    .string("Country is required!")
+    .min(3, "Too short!")
+    .max(15, "Too long!"),
+});
+
 export const PostDataSchema = z.object({
   content: z
     .string()
@@ -140,7 +152,10 @@ export const ProfileHeadDataSchema = z.object({
     .max(20, "Too long!"),
   contactInfo: {
     email: z.email("Please enter a valid email!"),
-    phone: z.number(),
+    phone: z
+      .number("Please enter a valid phone number! ")
+      .min(8, "Too short!")
+      .max(12, "Too long!"),
   },
   profileImage: z.string(),
   bannerImage: z.string(),

@@ -34,11 +34,10 @@ const useUserStore = create((set, get) => ({
   signUp: async (signupData, navigate) => {
     tryCatchWrapper(async () => {
       const response = await apiPost(`/users/signup`, { signupData }, {});
+
       if (response.status === 201) {
         toast.success(response.data.message);
         navigate("/login");
-      } else if (response.status === 200) {
-        return toast.warn(response.data.message);
       }
     });
   },
@@ -57,8 +56,6 @@ const useUserStore = create((set, get) => ({
         });
         localStorage.setItem("currUserId", response.data.id);
         navigate("/setup");
-      } else {
-        return toast.warn(response.data.message);
       }
     });
   },

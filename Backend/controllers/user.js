@@ -1,13 +1,16 @@
 import dotenv from "dotenv";
 dotenv.config();
-
 import User from "../models/User.js";
 import Like from "../models/Like.js";
 import bcrypt from "bcrypt";
 import { generateAccessToken, generateRefreshToken } from "../utils/Token.js";
 import jwt from "jsonwebtoken";
 import Profile from "../models/Profile.js";
-import { SignupDataSchema, LoginDataSchema } from "../../common/src/index.js";
+import {
+  SignupDataSchema,
+  LoginDataSchema,
+  AccountSetupDataSchema,
+} from "../../common/src/index.js";
 
 const options = {
   httpOnly: true,
@@ -19,24 +22,21 @@ const checkAuthStatus = async (req, res) => {
   let accesstoken = req.cookies.accesstoken;
   let decoded = jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET);
   const user = await User.findOne({ _id: decoded.id });
-  res.status(200).send({ isSetupComplete: user.profile !== undefined });
+  res.status(200).json({ isSetupComplete: user.profile !== undefined });
 };
 
 const signup = async (req, res) => {
   const { signupData } = req.body;
-
   const result = SignupDataSchema.safeParse(signupData);
   if (!result.success) {
     return res.status(400).json({
       message: result.error.message,
     });
   }
-
   const existingUser = await User.findOne({ email: signupData.email });
   if (existingUser) {
-    return res.status(200).json({ message: "Email already exists!" });
+    return res.status(400).json({ message: "Email already exists!" });
   }
-
   try {
     const hashedPassword = (
       await bcrypt.hash(signupData.password, 16)
@@ -47,13 +47,11 @@ const signup = async (req, res) => {
       email: signupData.email,
       password: hashedPassword,
     });
-
     await newUser.save();
-
-    res.status(201).send({ message: "User registered successfully!" });
+    res.status(201).json({ message: "User registered successfully!" });
   } catch (err) {
     console.log(err);
-    res.status(500).send({ message: "Error creating user!" });
+    res.status(500).json({ message: "Error creating user!" });
   }
 };
 
@@ -69,26 +67,20 @@ const login = async (req, res) => {
   try {
     const user = await User.findOne({ email: loginData.email });
     if (!user) {
-      return res.status(404).send({ message: "User not found" });
+      return res.status(404).json({ message: "User not found!" });
     }
-
     const validPassword = await bcrypt.compare(
       loginData.password,
       user.password,
     );
     if (!validPassword) {
-      return res.status(401).send({ message: "Wrong password" });
+      return res.status(400).json({ message: "Incorrect password!" });
     }
-
-    //Generate token and send it to the client.
 
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
-
     user.refreshTokens.push(refreshToken);
-    //use this to generate further access token once it's expired.
     let id = user._id;
-
     await user.save();
 
     res
@@ -101,10 +93,10 @@ const login = async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
       })
       .status(200)
-      .send({ id, isSetupComplete: user.profile !== undefined });
+      .json({ id, isSetupComplete: user.profile !== undefined });
   } catch (err) {
     console.log(err);
-    res.status(500).send({ message: "Error logging in" });
+    res.status(500).json({ message: "Error logging in" });
   }
 };
 
@@ -113,25 +105,15 @@ const setupAccount = async (req, res) => {
   const { setupData } = req.body;
   const { phone, city, country } = setupData;
 
-  //Add proper validation here.
-  // const { error } = loginSchema.validate(req.body);
-  // if (error) {
-  //   console.log(error);
-  //   res.status(404).send({
-  //     error: error,
-  //   });
-  //   return;
-  // }
-
-  // if (!loginData.email || !loginData.password) {
-  //   return res
-  //     .status(400)
-  //     .send({ message: "Please provide both email and password" });
-  // }
+  const result = AccountSetupDataSchema.safeParse(setupData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
   const user = await User.findOne({ _id: userId });
-
   if (!user) {
-    return res.status(404).send({ message: "User not found" });
+    return res.status(404).json({ message: "User not found" });
   }
 
   const userProfile = new Profile({
@@ -145,10 +127,8 @@ const setupAccount = async (req, res) => {
   });
 
   await userProfile.save();
-
   user.profile = userProfile._id;
   await user.save();
-
   return res.status(200).json({
     message: "Account setup successful!",
   });
@@ -157,9 +137,8 @@ const setupAccount = async (req, res) => {
 const refreshAccessToken = async (req, res) => {
   const existingRefreshToken = req.cookies.refreshtoken;
   if (!existingRefreshToken) {
-    return res.status(401).send({ message: "No refresh token available." });
+    return res.status(401).json({ message: "No refresh token available." });
   }
-
   let decoded;
   try {
     decoded = jwt.verify(
@@ -167,26 +146,24 @@ const refreshAccessToken = async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET,
     );
   } catch (err) {
-    // Token expired or invalid — return 401 not 500
     return res
       .status(401)
-      .send({ message: "Refresh token expired or invalid." });
+      .json({ message: "Refresh token expired or invalid!" });
   }
 
   let user = await User.findById(decoded.id).select("-password");
   if (!user) {
-    return res.status(401).send({ message: "User not found." });
+    return res.status(404).json({ message: "User not found!" });
   }
 
   let userId = user._id;
-
   const valid = user.refreshTokens?.includes(existingRefreshToken);
   if (!valid) {
     return res
       .status(401)
-      .send({ message: "Refresh token is invalid or expired!" });
+      .json({ message: "Refresh token is invalid or expired!" });
   }
-  //Generate new access tokens.
+
   const newAccessToken = generateAccessToken(userId);
   const newRefreshToken = generateRefreshToken(userId);
   //Remove the old refresh token.
@@ -196,7 +173,6 @@ const refreshAccessToken = async (req, res) => {
   //Save the new refresh token.
   user.refreshTokens.push(newRefreshToken);
   await user.save();
-
   res
     .cookie("accesstoken", newAccessToken, {
       ...options,
@@ -207,7 +183,7 @@ const refreshAccessToken = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
     })
     .status(200)
-    .send({ userId });
+    .json({ userId });
 };
 
 const allLikedPosts = async (req, res) => {
@@ -215,7 +191,7 @@ const allLikedPosts = async (req, res) => {
   const likedPosts = allLikedPosts.map((p) => {
     return p.postId;
   });
-  res.status(200).send(likedPosts);
+  res.status(200).json(likedPosts);
 };
 
 const logout = async (req, res) => {
@@ -227,12 +203,11 @@ const logout = async (req, res) => {
     (token) => token !== oldRefreshToken,
   );
   await user.save();
-  //Delete the cookie from the client.
   res
     .clearCookie("refreshtoken", options)
     .clearCookie("accesstoken", options)
     .status(200)
-    .send("Logout successfully!");
+    .json({ message: "Logout successfully!" });
 };
 
 export default {
