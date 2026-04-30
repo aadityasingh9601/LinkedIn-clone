@@ -63,6 +63,7 @@ export default function Signup() {
           <div className="signupFormBtns">
             <Button
               type="submit"
+              disabled={isLoading}
               btnText={isLoading ? <Spinner /> : "SignUp"}
             />
             <Button

@@ -39,17 +39,19 @@ export const PostDataSchema = z.object({
     .string()
     .min(30, "Content must be atleast 30 characters long!")
     .max(1000, "Content limit reached!"),
-  media: z.any(), //After fixing functionalities & stuff, come back & fix it's types too.
+  media: z.any().optional(), //After fixing functionalities & stuff, come back & fix it's types too.
   postType: z.enum(["Everyone", "Connections only"]),
   date: z
     .string()
     .regex(
       /^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$/,
       "Date must be in DD-MM-YYYY format",
-    ),
+    )
+    .optional(),
   time: z
     .string()
-    .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH:MM 24hr format"),
+    .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH:MM 24hr format")
+    .optional(),
 });
 
 export const PollDataSchema = z.object({

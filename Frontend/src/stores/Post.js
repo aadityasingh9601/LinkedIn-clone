@@ -41,10 +41,9 @@ const usePostStore = create((set) => ({
   page: 1,
 
   createPost: async (postData, setIsLoading) => {
-    let post;
-    console.log(postData);
-    setIsLoading(true);
     tryCatchWrapper(async () => {
+      let post;
+      setIsLoading(true);
       const response = await apiPost(
         "/post",
         { postData },

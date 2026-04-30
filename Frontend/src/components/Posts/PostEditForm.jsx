@@ -9,11 +9,14 @@ import ClockR from "../../icons/ClockR";
 import RHFInput from "../RHFInput";
 import { PostDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import Spinner from "../../icons/spinners/Spinner";
 
 export default function PostEditForm({ post }) {
   const { date, time } = parseISODate(post?.scheduledTime);
   const schedule = usePostStore((state) => state.schedule);
   const setSchedule = usePostStore((state) => state.setSchedule);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -40,8 +43,7 @@ export default function PostEditForm({ post }) {
     }
 
     console.log(postData);
-
-    editPost(post._id, postData);
+    editPost(post._id, postData, setIsLoading);
   };
   return (
     <div className="posteditform">
@@ -82,21 +84,7 @@ export default function PostEditForm({ post }) {
             />
           </div>
         )}
-        <br />
-        <RHFInput
-          type="text"
-          style={{ width: "100%" }}
-          placeholder="Category"
-          name="category"
-          register={register}
-          rules={{
-            required: "Category is required",
-            type: "text",
-          }}
-          errors={errors}
-        />
-        <br />
-        <br />
+
         {/* Show only if post isn't published yet. */}
         {post.published === false && (
           <div style={{ display: "inline" }}>
@@ -113,7 +101,10 @@ export default function PostEditForm({ post }) {
             )}
           </div>
         )}
-        <Button btnText="Save Changes" />
+        <Button
+          disabled={isLoading}
+          btnText={isLoading ? <Spinner /> : "Save Changes"}
+        />
         {schedule && (
           <div
             style={{

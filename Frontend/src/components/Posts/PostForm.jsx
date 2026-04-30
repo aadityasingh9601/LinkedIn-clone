@@ -15,6 +15,7 @@ import Pollicon from "../../icons/PollIcon";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PostDataSchema } from "../../zodSchema";
 import Spinner from "../../icons/spinners/Spinner";
+import RHFselect from "../RHFselect";
 
 const PollForm = lazy(() => import("../Polls/PollForm"));
 const SchPostsUI = lazy(() => import("./SchPostsUI"));
@@ -40,7 +41,6 @@ export default function PostForm() {
 
   const userProfile = JSON.parse(localStorage.getItem("currUserProfile"));
 
-  const [postType, setpostType] = useState("Everyone");
   const [preview, setPreview] = useState("");
   // Watch for file changes
   const file = watch("media");
@@ -83,16 +83,13 @@ export default function PostForm() {
             </div>
             <div>{userProfile?.name}</div>
             <div>
-              <select
-                style={{ display: "inline" }}
-                value={postType}
-                onChange={(event) => {
-                  setpostType(event.target.value);
-                }}
-              >
-                <option>Everyone</option>
-                <option>Connections only</option>
-              </select>
+              <RHFselect
+                name="postType"
+                register={register}
+                styles={{ display: "inline" }}
+                options={["Everyone", "Connections only!"]}
+                errors={errors}
+              />
             </div>
           </div>
           <div className="form">
@@ -172,7 +169,11 @@ export default function PostForm() {
                     />
                   )}
 
-                  <Button btnText={isLoading ? <Spinner /> : "Post"} />
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    btnText={isLoading ? <Spinner /> : "Post"}
+                  />
                 </div>
 
                 {schedule && (
@@ -208,7 +209,7 @@ export default function PostForm() {
                     />
                     <Button
                       onClick={() => {
-                        (setshowSchPosts(true), console.log("clikced"));
+                        setshowSchPosts(true);
                       }}
                       btnText="View all scheduled posts"
                     />

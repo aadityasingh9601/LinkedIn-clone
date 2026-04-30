@@ -91,6 +91,7 @@ const createPost = async (req, res) => {
 };
 
 const allPosts = async (req, res) => {
+  console.log("Inside get all posts!");
   const { userId } = req.params;
   console.log(userId);
 

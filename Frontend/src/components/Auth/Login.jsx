@@ -54,6 +54,7 @@ export default function Login() {
           <div className="loginFormBtns">
             <Button
               type="submit"
+              disabled={isLoading}
               btnText={
                 <span style={{ width: "2.5rem" }}>
                   {isLoading ? <Spinner /> : "Login"}
