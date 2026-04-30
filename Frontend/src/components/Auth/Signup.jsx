@@ -7,12 +7,15 @@ import LinkedInIcon from "../../icons/LinkedInIcon";
 import useUserStore from "../../stores/User";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupDataSchema } from "../../zodSchema";
+import Spinner from "../../icons/spinners/Spinner";
+import { useState } from "react";
 //We don't use controlled components while using our react-hook-form library, else it compromises with the performance and other benefits
 //provided by the library.
 
 export default function Signup() {
   const navigate = useNavigate();
   const signUp = useUserStore((state) => state.signUp);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -22,8 +25,7 @@ export default function Signup() {
   });
 
   const onSubmit = async (signupData) => {
-    const res = await signUp(signupData, navigate);
-    console.log(res);
+    await signUp(signupData, navigate, setIsLoading);
   };
 
   return (
@@ -58,13 +60,18 @@ export default function Signup() {
           />
           <br />
 
-          <Button type="submit" btnText="SignUp" />
-          <Button
-            btnText="Existing account? Log in!"
-            onClick={() => {
-              navigate("/login");
-            }}
-          />
+          <div className="signupFormBtns">
+            <Button
+              type="submit"
+              btnText={isLoading ? <Spinner /> : "SignUp"}
+            />
+            <Button
+              btnText="Existing account? Log in!"
+              onClick={() => {
+                navigate("/login");
+              }}
+            />
+          </div>
         </form>
       </div>
     </>

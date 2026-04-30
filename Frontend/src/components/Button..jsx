@@ -1,8 +1,12 @@
 import "./Button.css";
 
-export default function Button({ btnText, onClick = () => {} }) {
+export default function Button({
+  type = "submit",
+  btnText,
+  onClick = () => {},
+}) {
   return (
-    <button className="btn1" onClick={onClick}>
+    <button className="btn" onClick={onClick} type={type}>
       {btnText}
     </button>
   );

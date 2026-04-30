@@ -14,6 +14,7 @@ import RHFInput from "../RHFInput";
 import Pollicon from "../../icons/PollIcon";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PostDataSchema } from "../../zodSchema";
+import Spinner from "../../icons/spinners/Spinner";
 
 const PollForm = lazy(() => import("../Polls/PollForm"));
 const SchPostsUI = lazy(() => import("./SchPostsUI"));
@@ -28,8 +29,8 @@ export default function PostForm() {
     setValue,
   } = useForm({ resolver: zodResolver(PostDataSchema) });
 
+  const [isLoading, setIsLoading] = useState(false);
   const createPost = usePostStore((state) => state.createPost);
-
   const poll = usePostStore((state) => state.poll);
   const setPoll = usePostStore((state) => state.setPoll);
   const schedule = usePostStore((state) => state.schedule);
@@ -59,7 +60,7 @@ export default function PostForm() {
       media: data.media[0],
     };
     console.log(postData);
-    createPost(postData);
+    createPost(postData, setIsLoading);
     reset();
   };
 
@@ -126,13 +127,7 @@ export default function PostForm() {
                   </div>
                 )}
               </div>
-              <RHFInput
-                type="text"
-                placeholder="Add some hashtags..."
-                name="category"
-                register={register}
-                errors={errors}
-              />
+
               <br />
 
               <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -177,7 +172,7 @@ export default function PostForm() {
                     />
                   )}
 
-                  <Button btnText="Post" />
+                  <Button btnText={isLoading ? <Spinner /> : "Post"} />
                 </div>
 
                 {schedule && (

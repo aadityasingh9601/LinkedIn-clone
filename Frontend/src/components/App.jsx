@@ -5,7 +5,6 @@ const Homepage = lazy(() => import("./Homepage"));
 import PrivateRoutes from "./PrivateRoutes";
 import AppWraper from "./AppWraper";
 const Profile = lazy(() => import("./Profile/Profile"));
-
 const Signup = lazy(() => import("./Auth/Signup"));
 const Login = lazy(() => import("./Auth/Login"));
 const AccountSetup = lazy(() => import("./AccountSetup"));
@@ -23,8 +22,8 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
@@ -38,19 +37,33 @@ import PublicRoutes from "./PublicRoutes";
 import { setNavigate } from "../utils/api/axiosInstance";
 
 const AppRoutes = () => {
-  const navigate = useNavigate();
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const currUserId = useUserStore((state) => state.currUserId);
   const isSetupComplete = useUserStore((state) => state.isSetupComplete);
   const checkAuthStatus = useUserStore((state) => state.checkAuthStatus);
+  const fetchNotifications = useNotificationStore(
+    (state) => state.fetchNotifications,
+  );
+  const navigate = useNavigate();
+  const location = useLocation();
+  const authRoutes = ["/", "/signup", "/login"];
+  const isAuthRoute = authRoutes.includes(location.pathname);
+
+  useEffect(() => {
+    {
+      !isAuthRoute && checkAuthStatus();
+    }
+  }, []);
+
+  useEffect(() => {
+    {
+      !isAuthRoute && fetchNotifications();
+    }
+  }, [currUserId]);
 
   useEffect(() => {
     setNavigate(navigate);
   }, [navigate]);
-
-  //checks auth status
-  useEffect(() => {
-    checkAuthStatus();
-  }, []);
 
   return (
     <Routes>
@@ -108,9 +121,7 @@ function App() {
   const removeMessage = useChatStore((state) => state.removeMessage);
   const updatePost = usePostStore((state) => state.updatePost);
   const notifications = useNotificationStore((state) => state.notifications);
-  const fetchNotifications = useNotificationStore(
-    (state) => state.fetchNotifications,
-  );
+
   const addNoti = useNotificationStore((state) => state.addNoti);
   const setNotiCount = useNotificationStore((state) => state.setNotiCount);
   const [socket, setSocket] = useState();
@@ -120,70 +131,61 @@ function App() {
 
   const currUserId = useUserStore((state) => state.currUserId);
 
-  useEffect(() => {
-    fetchNotifications();
-  }, [currUserId]);
+  //This contains socket logic, maybe separate it into custom hook too. Run only when !isAuthRoute.
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     const socketInstance = io(BACKEND_URL, {
+  //       query: {
+  //         userId: currUserId,
+  //       },
+  //     });
+  //     setSocket(socketInstance);
 
-  //This contains socket logic, maybe separate it into custom hook too.
-  useEffect(function sideEffect() {
-    if (isLoggedIn) {
-      const socketInstance = io(BACKEND_URL, {
-        query: {
-          userId: currUserId,
-        },
-      });
-      setSocket(socketInstance);
+  //     socketInstance.on("connReq", (noti) => {
+  //       addNoti(noti);
+  //       return toast(noti.message);
+  //     });
 
-      socketInstance.on("connReq", (noti) => {
-        addNoti(noti);
-        return toast(noti.message);
-      });
+  //     socketInstance.on("newMsg", (data) => {
+  //       console.log(data);
+  //       addMessage(data);
+  //       updateLastMsg(data);
+  //     });
 
-      socketInstance.on("newMsg", (data) => {
-        console.log(data);
-        addMessage(data);
-        updateLastMsg(data);
-      });
+  //     socketInstance.on("editMsg", (data) => {
+  //       console.log(data);
+  //       editMessage(data);
+  //     });
 
-      socketInstance.on("editMsg", (data) => {
-        console.log(data);
-        editMessage(data);
-      });
+  //     socketInstance.on("deleteMsg", (data) => {
+  //       console.log(data);
+  //       removeMessage(data);
+  //     });
 
-      socketInstance.on("deleteMsg", (data) => {
-        console.log(data);
-        removeMessage(data);
-      });
+  //     socketInstance.on("post_created", (data) => {
+  //       console.log(data);
+  //       updatePost(data);
+  //     });
 
-      socketInstance.on("post_created", (data) => {
-        console.log(data);
-        updatePost(data);
-      });
+  //     socketInstance.on("application-rejected", (data) => {
+  //       console.log(data);
+  //       addNoti(data);
+  //     });
 
-      socketInstance.on("application-rejected", (data) => {
-        console.log(data);
-        addNoti(data);
-      });
-
-      // Cleanup: Disconnect when the component unmounts
-      return () => {
-        //socket.removeAllListeners();
-        socketInstance.disconnect();
-
-        console.log("Socket disconnected");
-      };
-    }
-  }, []);
+  //     // Cleanup: Disconnect when the component unmounts
+  //     return () => {
+  //       //socket.removeAllListeners();
+  //       socketInstance.disconnect();
+  //       console.log("Socket disconnected");
+  //     };
+  //   }
+  // }, []);
 
   //To get all the notifications that are unread ,so that we can display the number on the bell icon.
   // useEffect(() => {
   //   let unreadOnes = notifications?.filter((noti) => noti.isRead === false);
   //   setNotiCount(unreadOnes.length);
   // }, [notifications]);
-
-  //As request comes to the website , we have to check first that if the user sending the request has a
-  //valid token cookie or not, if they have , then redirect them to the home page , but If they don't redirect
-  //them to the prelogin page, so they have to login first.
 
   return (
     <>

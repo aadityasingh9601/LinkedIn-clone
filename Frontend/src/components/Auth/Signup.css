@@ -21,3 +21,8 @@ input {
   height: 1.8rem;
   margin: 0 0 1rem 0;
 }
+
+.signupFormBtns {
+  display: flex;
+  align-items: center;
+}

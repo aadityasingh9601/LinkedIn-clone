@@ -31,10 +31,11 @@ const useUserStore = create((set, get) => ({
     });
   },
 
-  signUp: async (signupData, navigate) => {
+  signUp: async (signupData, navigate, setIsLoading) => {
     tryCatchWrapper(async () => {
+      setIsLoading(true);
       const response = await apiPost(`/users/signup`, { signupData }, {});
-
+      setIsLoading(false);
       if (response.status === 201) {
         toast.success(response.data.message);
         navigate("/login");
@@ -42,10 +43,11 @@ const useUserStore = create((set, get) => ({
     });
   },
 
-  login: async (loginData, navigate) => {
+  login: async (loginData, navigate, setIsLoading) => {
     tryCatchWrapper(async () => {
-      //console.log(loginData);
+      setIsLoading(true);
       const response = await apiPost(`/users/login`, { loginData }, {});
+      setIsLoading(false);
       console.log(response);
       if (response.status === 200) {
         toast.success("User logged in successfully!");
@@ -79,20 +81,14 @@ const useUserStore = create((set, get) => ({
   },
 
   logout: async (userId, navigate) => {
-    try {
+    tryCatchWrapper(async () => {
       const response = await apiDelete(`/users/logout/${userId}`);
-      //console.log(response);
       if (response.status === 200) {
         localStorage.removeItem("currUserId");
         set({ isLoggedIn: false });
         navigate("/login");
       }
-    } catch (err) {
-      console.log(err);
-      if (err.response.status === (401 || 403)) {
-        return toast.error(err.logout);
-      }
-    }
+    });
   },
 
   //But storing all ids of posts liked by the user will cause error, as we can store only a limited amount of

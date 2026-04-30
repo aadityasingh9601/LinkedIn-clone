@@ -40,18 +40,19 @@ const usePostStore = create((set) => ({
   //To detect our page turn or no. of times posts data have been fetched.
   page: 1,
 
-  createPost: async (postData) => {
+  createPost: async (postData, setIsLoading) => {
     let post;
     console.log(postData);
+    setIsLoading(true);
     tryCatchWrapper(async () => {
       const response = await apiPost(
         "/post",
         { postData },
         {
           "Content-Type": "multipart/form-data",
-        }
+        },
       );
-
+      setIsLoading(false);
       console.log(response);
       post = response.data;
       if (response.status === 201) {
@@ -120,7 +121,7 @@ const usePostStore = create((set) => ({
         { postData },
         {
           "Content-Type": "multipart/form-data",
-        }
+        },
       );
 
       console.log(response.data);
@@ -140,7 +141,7 @@ const usePostStore = create((set) => ({
                     url: updatedPost.media.url,
                   },
                 }
-              : post
+              : post,
           ),
         }));
 
@@ -158,7 +159,7 @@ const usePostStore = create((set) => ({
                   },
                   scheduledTime: updatedPost.scheduledTime,
                 }
-              : schPost
+              : schPost,
           ),
         }));
 
@@ -175,7 +176,7 @@ const usePostStore = create((set) => ({
         set((state) => ({
           posts: state.posts.filter((post) => post._id !== postId),
           scheduledPosts: state.scheduledPosts.filter(
-            (schPost) => schPost._id !== postId
+            (schPost) => schPost._id !== postId,
           ),
         }));
         return toast.success("Post deleted successfully!");

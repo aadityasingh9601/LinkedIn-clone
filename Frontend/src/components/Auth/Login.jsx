@@ -7,11 +7,14 @@ import LinkedInIcon from "../../icons/LinkedInIcon";
 import Button from "../Button.";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginDataSchema } from "../../zodSchema";
+import Spinner from "../../icons/spinners/Spinner";
+import { useState } from "react";
 
 export default function Login() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const login = useUserStore((state) => state.login);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -21,7 +24,7 @@ export default function Login() {
   });
 
   async function onSubmit(loginData) {
-    login(loginData, navigate);
+    login(loginData, navigate, setIsLoading);
   }
 
   return (
@@ -48,15 +51,22 @@ export default function Login() {
             errors={errors}
           />
           <br />
-          <button className="nav-btn" type="submit">
-            Login
-          </button>
-          <Button
-            btnText="No account? Signup!"
-            onClick={() => {
-              navigate("/signup");
-            }}
-          />
+          <div className="loginFormBtns">
+            <Button
+              type="submit"
+              btnText={
+                <span style={{ width: "2.5rem" }}>
+                  {isLoading ? <Spinner /> : "Login"}
+                </span>
+              }
+            />
+            <Button
+              btnText="No account? Signup!"
+              onClick={() => {
+                navigate("/signup");
+              }}
+            />
+          </div>
         </form>
       </div>
     </>

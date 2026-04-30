@@ -17,6 +17,11 @@
   background-color: white;
 }
 
+.loginFormBtns {
+  display: flex;
+  align-items: center;
+}
+
 input {
   width: 24rem;
   height: 1.8rem;
