@@ -1,5 +1,5 @@
 import Poll from "../models/Poll.js";
-import { PollDataSchema } from "../../common/src/index.js";
+import { PollDataSchema } from "../zodSchema/index.js";
 
 const createPoll = async (req, res) => {
   const { pollData } = req.body;

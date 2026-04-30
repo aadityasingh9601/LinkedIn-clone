@@ -6,7 +6,7 @@ import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
 import Xmark from "../../icons/Xmark";
 import RHFInput from "../RHFInput";
-import { JobDataSchema } from "../../../../common/src";
+import { JobDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function CreateJobForm({ job }) {

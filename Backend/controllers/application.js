@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import Job from "../models/Job.js";
 import Profile from "../models/Profile.js";
 import { io, userSocketMap } from "../server.js";
-import { JobApplicationDataSchema } from "../../common/src/index.js";
+import { JobApplicationDataSchema } from "../zodSchema/index.js";
 
 let bucket;
 (() => {
@@ -20,10 +20,18 @@ let bucket;
 const applyToJob = async (req, res) => {
   console.log("Inside applyToJob");
   const { jobId } = req.params;
-  const { data } = req.body;
+  const { jobApplicationData } = req.body;
+  const result = JobApplicationDataSchema.safeParse(jobApplicationData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
+
   const { filename, id } = req.file;
   const userId = req.user._id;
   const currUser = await Profile.findOne({ userId: userId });
+
   const job = await Job.findById(jobId).populate("applications");
   if (job.postedBy.toString() === userId.toString()) {
     return res.status(400).send("You can't apply to a job posted by you!");

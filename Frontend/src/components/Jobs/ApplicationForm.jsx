@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import RHFInput from "../RHFInput";
 import RHFtextarea from "../RHFtextarea";
-import { JobApplicationDataSchema } from "../../../../common/src";
+import { JobApplicationDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function ApplicationForm() {
@@ -20,7 +20,7 @@ export default function ApplicationForm() {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(JobApplicationFormSchema),
+    resolver: zodResolver(JobApplicationDataSchema),
   });
 
   const onSubmit = (data) => {

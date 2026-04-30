@@ -4,7 +4,7 @@ import Button from "../Button.";
 import RHFtextarea from "../RHFtextarea";
 import RHFInput from "../RHFInput";
 import useUserStore from "../../stores/User";
-import { ExperienceDataSchema } from "../../../../common/src";
+import { ExperienceDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function ExperienceForm({

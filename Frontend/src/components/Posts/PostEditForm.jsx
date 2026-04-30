@@ -7,7 +7,7 @@ import RHFtextarea from "../RHFtextarea";
 import ClockS from "../../icons/ClockS";
 import ClockR from "../../icons/ClockR";
 import RHFInput from "../RHFInput";
-import { PostDataSchema } from "../../../../common/src";
+import { PostDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function PostEditForm({ post }) {

@@ -4,7 +4,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useState } from "react";
 import usePollStore from "../../stores/Poll";
 import RHFtextarea from "../RHFtextarea";
-import { PollDataSchema } from "../../../../common/src";
+import { PollDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function PollForm() {

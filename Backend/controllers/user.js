@@ -10,7 +10,7 @@ import {
   SignupDataSchema,
   LoginDataSchema,
   AccountSetupDataSchema,
-} from "../../common/src/index.js";
+} from "../zodSchema/index.js";
 
 const options = {
   httpOnly: true,

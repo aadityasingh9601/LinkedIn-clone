@@ -6,7 +6,7 @@ import RHFInput from "../RHFInput";
 import LinkedInIcon from "../../icons/LinkedInIcon";
 import Button from "../Button.";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginDataSchema } from "../../../../common/src";
+import { LoginDataSchema } from "../../zodSchema";
 
 export default function Login() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);

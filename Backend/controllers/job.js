@@ -1,8 +1,6 @@
 import Job from "../models/Job.js";
-import User from "../models/User.js";
-import Application from "../models/Application.js";
 import Profile from "../models/Profile.js";
-import { JobDataSchema } from "../../common/src/index.js";
+import { JobDataSchema } from "../zodSchema/index.js";
 
 const createJob = async (req, res) => {
   const { jobData } = req.body;

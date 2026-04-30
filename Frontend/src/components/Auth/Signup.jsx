@@ -6,8 +6,7 @@ import RHFInput from "../RHFInput";
 import LinkedInIcon from "../../icons/LinkedInIcon";
 import useUserStore from "../../stores/User";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignupDataSchema } from "../../../../common/src";
-
+import { SignupDataSchema } from "../../zodSchema";
 //We don't use controlled components while using our react-hook-form library, else it compromises with the performance and other benefits
 //provided by the library.
 

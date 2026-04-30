@@ -13,7 +13,7 @@ import ImageIcon from "../../icons/ImageIcon";
 import RHFInput from "../RHFInput";
 import Pollicon from "../../icons/PollIcon";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PostDataSchema } from "../../../../common/src";
+import { PostDataSchema } from "../../zodSchema";
 
 const PollForm = lazy(() => import("../Polls/PollForm"));
 const SchPostsUI = lazy(() => import("./SchPostsUI"));

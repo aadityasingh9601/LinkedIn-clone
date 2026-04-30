@@ -2,7 +2,7 @@ import "./ProfileHeadForm.css";
 import { useForm } from "react-hook-form";
 import Button from "../Button.";
 import RHFInput from "../RHFInput";
-import { ProfileHeadDataSchema } from "../../../../common/src";
+import { ProfileHeadDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function ProfileHeadForm({

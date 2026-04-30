@@ -8,7 +8,7 @@ import {
   EducationDataSchema,
   ExperienceDataSchema,
   ProfileHeadDataSchema,
-} from "../../common/src/index.js";
+} from "../zodSchema/index.js";
 
 const getUserProfile = async (req, res) => {
   const { userId } = req.params;

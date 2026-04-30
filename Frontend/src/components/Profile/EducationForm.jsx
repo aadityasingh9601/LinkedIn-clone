@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import RHFtextarea from "../RHFtextarea";
 import RHFInput from "../RHFInput";
 import useUserStore from "../../stores/User";
-import { EducationDataSchema } from "../../../../common/src";
+import { EducationDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function EducationForm({

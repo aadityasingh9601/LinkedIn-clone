@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import RHFInput from "./RHFInput";
 import useUserStore from "../stores/User";
-import { AccountSetupDataSchema } from "../../../common/src";
+import { AccountSetupDataSchema } from "../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function AccountSetup() {

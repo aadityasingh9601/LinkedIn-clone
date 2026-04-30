@@ -3,7 +3,7 @@ import Connection from "../models/Connection.js";
 import { v2 as cloudinary } from "cloudinary";
 import { io, userSocketMap } from "../server.js";
 import cron from "node-cron";
-import { PostDataSchema } from "../../common/src/index.js";
+import { PostDataSchema } from "../zodSchema/index.js";
 
 function convertDateToCron(date) {
   const minutes = date.getMinutes();
