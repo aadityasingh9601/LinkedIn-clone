@@ -1,4 +1,4 @@
-import "./Button.css";
+import styles from "./Button.module.css";
 
 export default function Button({
   type = "submit",
@@ -7,7 +7,12 @@ export default function Button({
   disabled = false,
 }) {
   return (
-    <button className="btn" onClick={onClick} type={type} disabled={disabled}>
+    <button
+      className={`${styles.btn}`}
+      onClick={onClick}
+      type={type}
+      disabled={disabled}
+    >
       {btnText}
     </button>
   );

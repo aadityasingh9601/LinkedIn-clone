@@ -85,6 +85,12 @@ LinkedIn-clone/
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+## Disclaimer
+
+This is a personal portfolio project built for learning purposes only.
+Not affiliated with or endorsed by LinkedIn Corporation.
+All LinkedIn trademarks and logos belong to LinkedIn Corporation.
+
 ## License
 
 [ISC](LICENSE)

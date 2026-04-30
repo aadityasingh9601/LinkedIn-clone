@@ -1,4 +1,4 @@
-import "./Input.css";
+import styles from "./RHFInput.module.css";
 
 export default function RHFInput({
   id = {},
@@ -8,16 +8,14 @@ export default function RHFInput({
   type = "text",
   rules = {},
   errors = {},
-  styles = {},
 }) {
   return (
-    <div className="input">
+    <div className={`${styles.input}`}>
       <input
         id={id}
         type={type}
         {...register(name, { ...rules })}
         placeholder={placeholder}
-        style={{ ...styles }}
       />
       {errors[name] && <span>{errors[name].message}</span>}
     </div>
