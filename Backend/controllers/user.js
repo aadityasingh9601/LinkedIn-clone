@@ -14,8 +14,8 @@ import {
 
 const options = {
   httpOnly: true,
-  secure: true, // Required for production
-  sameSite: "strict", // CSRF attacks are possible but required for cross-origin
+  secure: true,
+  sameSite: "none",
 };
 
 const checkAuthStatus = async (req, res) => {
