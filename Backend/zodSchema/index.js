@@ -23,10 +23,10 @@ export const LoginDataSchema = z.object({
 });
 
 export const AccountSetupDataSchema = z.object({
-  phone: z
-    .number("Please enter a valid phone number! ")
-    .min(8, "Too short!")
-    .max(12, "Too long!"),
+  phone: z.coerce
+    .number("Please enter a valid phone number!")
+    .gte(10000000, "Too short!")
+    .lte(9999999999, "Too long!"),
   city: z.string("City is required!").min(3, "Too short!").max(15, "Too long!"),
   country: z
     .string("Country is required!")
@@ -154,10 +154,10 @@ export const ProfileHeadDataSchema = z.object({
     .max(20, "Too long!"),
   contactInfo: {
     email: z.email("Please enter a valid email!"),
-    phone: z
-      .number("Please enter a valid phone number! ")
-      .min(8, "Too short!")
-      .max(12, "Too long!"),
+    phone: z.coerce
+      .number("Please enter a valid phone number!")
+      .gte(10000000, "Too short!")
+      .lte(9999999999, "Too long!"),
   },
   profileImage: z.string(),
   bannerImage: z.string(),

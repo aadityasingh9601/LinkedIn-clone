@@ -1,4 +1,4 @@
-import "./Input.css";
+import styles from "./RHFInput.module.css";
 
 export default function Input({
   placeholder,
@@ -7,10 +7,9 @@ export default function Input({
   value,
   onChange,
   onClick = () => {},
-  styles = {},
 }) {
   return (
-    <div className="input">
+    <div className={`${styles.input}`}>
       <input
         id={id}
         type={type}

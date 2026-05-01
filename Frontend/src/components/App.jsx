@@ -26,11 +26,9 @@ import {
   useLocation,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
 import useUserStore from "../stores/User";
 import useChatStore from "../stores/Chat";
 import useNotificationStore from "../stores/Notification";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import usePostStore from "../stores/Post";
 import PublicRoutes from "./PublicRoutes";
@@ -46,13 +44,11 @@ const AppRoutes = () => {
   );
   const navigate = useNavigate();
   const location = useLocation();
-  const authRoutes = ["/", "/signup", "/login"];
+  const authRoutes = ["/", "/signup", "/login", "/setup"];
   const isAuthRoute = authRoutes.includes(location.pathname);
 
   useEffect(() => {
-    {
-      !isAuthRoute && checkAuthStatus();
-    }
+    checkAuthStatus();
   }, []);
 
   useEffect(() => {

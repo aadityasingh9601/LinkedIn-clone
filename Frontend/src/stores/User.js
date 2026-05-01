@@ -48,7 +48,6 @@ const useUserStore = create((set, get) => ({
       setIsLoading(true);
       const response = await apiPost(`/users/login`, { loginData }, {});
       setIsLoading(false);
-      console.log(response);
       if (response.status === 200) {
         toast.success("User logged in successfully!");
         set({
@@ -64,14 +63,12 @@ const useUserStore = create((set, get) => ({
 
   setupAccount: async (userId, setupData, navigate) => {
     tryCatchWrapper(async () => {
-      //console.log(userId);
-      //console.log(setupData);
       const response = await apiPost(
         `/users/setup/${userId}`,
         { setupData },
         {},
       );
-      //console.log(response);
+      console.log(response);
       if (response.request.status === 200) {
         toast.success("Account setup successful!");
         set({ isSetupComplete: true });
