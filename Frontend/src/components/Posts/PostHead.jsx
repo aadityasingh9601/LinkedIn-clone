@@ -1,6 +1,6 @@
 import "./PostHead.css";
 import TimePassed from "../TimePassed";
-import User from "../User";
+import UserInfo from "../UserInfo";
 import { useEffect, useState, lazy, Suspense } from "react";
 import useUserStore from "../../stores/User";
 import usePostStore from "../../stores/Post";
@@ -15,6 +15,7 @@ import Trash from "../../icons/Trash";
 import Modal from "../Modal";
 import Xmark from "../../icons/Xmark";
 import Button from "../Button.";
+import Options from "../Options";
 
 const PostEditForm = lazy(() => import("./PostEditForm"));
 
@@ -22,7 +23,7 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
   const [deleteModal, setdeleteModal] = useState(false);
   const [editModal, seteditModal] = useState(false);
   const [isFollowed, setIsFollowed] = useState(false);
-  const [toggle, setToggle] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
   const deletePost = usePostStore((state) => state.deletePost);
   const deleteComment = useCommentStore((state) => state.deleteComment);
   const deletePoll = usePollStore((state) => state.deletePoll);
@@ -31,13 +32,8 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
   const follow = useFollowStore((state) => state.follow);
   const unfollow = useFollowStore((state) => state.unfollow);
 
-  const profile =
-    type === "comment" ? data.author?.profile : data.createdBy?.profile;
-
-  const profileUserId =
-    type === "comment" ? data.author?._id : data.createdBy?._id;
-
-  console.log(profileUserId);
+  const profile = data.author?.profile;
+  const profileUserId = data.author?._id;
 
   const toggleEditModal = () => {
     seteditModal(!editModal);
@@ -69,7 +65,7 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
   }, [allFollowed]);
   return (
     <div className="postHead">
-      <User
+      <UserInfo
         url={profile?.profileImage?.url}
         userId={profileUserId}
         username={profile?.name}
@@ -101,11 +97,14 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
         ))}
 
       {currUserId === profileUserId && (
-        <button className="options" onClick={() => setToggle(!toggle)}>
+        <button
+          className="options"
+          onClick={() => setShowOptions(!showOptions)}
+        >
           <Ellipsis />
         </button>
       )}
-      {toggle ? (
+      {showOptions && (
         <div className="options-box">
           {(type === "post" || type == "comment") && (
             <button
@@ -114,7 +113,7 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
                   type === "comment"
                     ? setCommentEdit(true)
                     : seteditModal(true);
-                  setToggle(false);
+                  setShowOptions(false);
                 }
               }}
             >
@@ -125,14 +124,18 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
           <button
             onClick={() => {
               setdeleteModal(true);
-              setToggle(false);
+              setShowOptions(false);
             }}
           >
             <Trash />
             Delete
           </button>
         </div>
-      ) : null}
+      )}
+
+      {currUserId === profileUserId && (
+        <Options show={showOptions} setShow={setShowOptions} />
+      )}
 
       {editModal && (
         <Modal>
@@ -158,10 +161,10 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
               type === "post"
                 ? deletePost(data._id)
                 : type === "comment"
-                ? deleteComment(data.postId, data._id)
-                : type === "poll"
-                ? deletePoll(data._id)
-                : null
+                  ? deleteComment(data.postId, data._id)
+                  : type === "poll"
+                    ? deletePoll(data._id)
+                    : null
             }
           />
           <Button btnText="Cancel" onClick={() => setdeleteModal(false)} />

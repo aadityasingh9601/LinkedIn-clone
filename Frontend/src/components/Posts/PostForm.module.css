@@ -9,13 +9,13 @@
   height: fit-content;
 }
 
-.postform .header {
+.header {
   display: flex;
   align-items: center;
   width: 100%;
 }
 
-.postform .form {
+.form {
   width: 100%;
   padding: 0rem;
 }

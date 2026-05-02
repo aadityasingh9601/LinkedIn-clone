@@ -45,7 +45,7 @@ const createPost = async (req, res) => {
       url: url,
       filename: filename,
     },
-    createdBy: req.user._id,
+    author: req.user._id,
     scheduledTime: scheduledAt,
     postType: postData.postType,
     published: scheduledAt ? false : true,
@@ -64,7 +64,7 @@ const createPost = async (req, res) => {
       await newPost.save();
 
       let fullPost = await Post.findById(newPost._id).populate({
-        path: "createdBy",
+        path: "author",
         select: "profile",
         populate: {
           path: "profile",
@@ -79,7 +79,7 @@ const createPost = async (req, res) => {
   }
 
   let fullPost = await Post.findById(newPost._id).populate({
-    path: "createdBy",
+    path: "author",
     select: "profile",
     populate: {
       path: "profile",
@@ -102,7 +102,7 @@ const allPosts = async (req, res) => {
   const posts = await Post.find({ published: true, postType: "Everyone" })
     .sort({ createdAt: -1 })
     .populate({
-      path: "createdBy",
+      path: "author",
       select: "profile", // Include only the `profile` field in `createdBy`
       populate: {
         path: "profile", // Populate the `profile` field
@@ -134,7 +134,7 @@ const allScheduledPosts = async (req, res) => {
   })
     .sort({ createdAt: -1 })
     .populate({
-      path: "createdBy",
+      path: "author",
       select: "profile", // Include only the `profile` field in `createdBy`
       populate: {
         path: "profile", // Populate the `profile` field
@@ -184,7 +184,7 @@ const updatePost = async (req, res) => {
     scheduledTime: scheduledAt,
   });
   //Check if the user trying to update is the owner of the post.
-  if (req.user._id.toString() === post.createdBy.toString()) {
+  if (req.user._id.toString() === post.author.toString()) {
     // Update the image url only when some new image is available.
 
     if (typeof req.file !== "undefined") {
@@ -231,7 +231,7 @@ const deletePost = async (req, res) => {
   const post = await Post.findById(postId);
   //We have used findByIdAndDelete in order to trigger the mongoose middleware that will delete all the comments
   //associated with the post.
-  if (req.user._id.toString() === post.createdBy.toString()) {
+  if (req.user._id.toString() === post.author.toString()) {
     if (post.media.mediaType === "image") {
       await cloudinary.uploader
         .destroy(post.media.filename, { resource_type: "image" })

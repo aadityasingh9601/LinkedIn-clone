@@ -5,7 +5,7 @@ import MsgBox from "./MsgBox";
 import useChatStore from "../../stores/Chat";
 import Message from "./Message";
 import Xmark from "../../icons/Xmark";
-import User from "../User";
+import UserInfo from "../UserInfo";
 import { formatDate2 } from "../../utils/helper";
 
 export default function ChatUI({ socket }) {
@@ -39,7 +39,7 @@ export default function ChatUI({ socket }) {
   }, [currChatId]);
 
   const otherPerson = chatData?.participants?.find(
-    (participant) => participant._id !== currUserId
+    (participant) => participant._id !== currUserId,
   );
 
   function formatTime(time) {
@@ -78,7 +78,7 @@ export default function ChatUI({ socket }) {
           }}
         />
 
-        <User
+        <UserInfo
           userId={otherPerson?.profile.userId}
           username={otherPerson?.profile.name}
           url={otherPerson?.profile.profileImage?.url}

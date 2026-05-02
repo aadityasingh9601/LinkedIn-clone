@@ -21,7 +21,7 @@ const createPoll = async (req, res) => {
   const newPoll = new Poll({
     question: pollData.question,
     options: pollData.options,
-    createdBy: req.user._id,
+    author: req.user._id,
     expiresAt: expiryDate,
     voters: [],
   });
@@ -29,7 +29,7 @@ const createPoll = async (req, res) => {
   await newPoll.save();
 
   let fullPoll = await Poll.findById(newPoll._id).populate({
-    path: "createdBy",
+    path: "author",
     select: "profile",
     populate: {
       path: "profile",
@@ -50,7 +50,7 @@ const getAllPolls = async (req, res) => {
   const polls = await Poll.find()
     .sort({ createdAt: -1 })
     .populate({
-      path: "createdBy",
+      path: "author",
       select: "profile", // Include only the `profile` field in `createdBy`
       populate: {
         path: "profile", // Populate the `profile` field
@@ -137,7 +137,7 @@ const deletePoll = async (req, res) => {
   const { id } = req.params;
   // console.log(id);
   const poll = await Poll.findById(id);
-  if (req.user._id.toString() === poll.createdBy._id.toString()) {
+  if (req.user._id.toString() === poll.author._id.toString()) {
     await poll.deleteOne();
     return res.status(200).send("Poll deleted successfully!");
   }

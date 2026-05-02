@@ -1,10 +1,12 @@
-export default function Xmark({ styles = {}, onClick = () => {} }) {
+import styles from "../components/Modal.module.css";
+
+export default function Xmark({ customStyles = {}, onClick = () => {} }) {
   return (
-    <div style={{ display: "inline-block" }}>
+    <div className={styles.crossBox}>
       <i
-        class="fa-solid fa-xmark cross"
+        className={`fa-solid fa-xmark ${styles.cross}`}
         onClick={onClick}
-        style={{ position: "absolute", display: "inline-block", ...styles }}
+        style={{ ...customStyles }}
       ></i>
     </div>
   );

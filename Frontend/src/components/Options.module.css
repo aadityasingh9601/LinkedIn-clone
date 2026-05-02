@@ -1,0 +1,38 @@
+.optionBtn {
+  position: absolute;
+  right: 0rem;
+  top: 0rem;
+  background-color: white;
+  border: none;
+  font-size: 1.4rem;
+}
+
+.optionsBox {
+  position: absolute;
+  top: 2rem;
+  right: 0rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  background-color: antiquewhite;
+  border-radius: 0.6rem;
+  padding: 0.7rem;
+}
+
+.optionsBox button {
+  background-color: antiquewhite;
+  width: 6rem;
+  padding: 0.3rem;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+}
+
+.optionsBox button:hover {
+  background-color: white;
+}
+
+.optionsBox button i {
+  font-size: 1.3rem;
+}

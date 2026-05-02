@@ -1,6 +1,7 @@
 import "./CommentSection.css";
 import { lazy, Suspense } from "react";
 import useCommentStore from "../../stores/Comment";
+import { useEffect } from "react";
 
 const CommentBox = lazy(() => import("./CommentBox"));
 const Comment = lazy(() => import("./Comment"));

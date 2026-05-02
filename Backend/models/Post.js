@@ -4,7 +4,7 @@ import Like from "./Like.js";
 const { Schema } = mongoose;
 
 const postSchema = new Schema({
-  createdBy: {
+  author: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,

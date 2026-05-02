@@ -1,12 +1,12 @@
-import Avatar from "./Avatar";
-import "./User.css";
+import UserAvatar from "./UserAvatar";
+import styles from "./UserInfo.module.css";
 import { useNavigate } from "react-router-dom";
 
-export default function User({ url, userId, username, headline }) {
+export default function UserInfo({ url, userId, username, headline }) {
   const navigate = useNavigate();
   return (
-    <div className="user" key={userId}>
-      <Avatar url={url} />
+    <div className={styles.userInfo} key={userId}>
+      <UserAvatar url={url} />
       <div className="details">
         <span
           className="username"

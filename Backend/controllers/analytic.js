@@ -18,10 +18,7 @@ const logEvent = async (req, res) => {
       //Find the owner of each post.
       const post = await Post.findById(p);
 
-      //console.log(req.user._id);
-      //console.log(post.createdBy);
-
-      if (req.user._id.toString() === post.createdBy.toString()) {
+      if (req.user._id.toString() === post.author.toString()) {
         res.send("You can't log event for yourself!");
         return;
       }
@@ -29,7 +26,7 @@ const logEvent = async (req, res) => {
       //Store the data into analytics now.
 
       const analytic = new Analytic({
-        user: post.createdBy,
+        user: post.author,
         triggeredBy: req.user._id,
         eventType: "post_impression",
         metaData: {
@@ -141,8 +138,8 @@ const getAnalyticsData = async (req, res) => {
           signupDate.getUTCDate(),
           0,
           0,
-          0
-        )
+          0,
+        ),
       );
       //console.log("I am the start date" + startDate);
     } else {
@@ -151,8 +148,8 @@ const getAnalyticsData = async (req, res) => {
         Date.UTC(
           today.getUTCFullYear(),
           today.getUTCMonth(),
-          today.getUTCDate()
-        )
+          today.getUTCDate(),
+        ),
       );
       startDate.setUTCDate(startDate.getUTCDate() - (range - 1));
       // console.log("I am the start date" + startDate);

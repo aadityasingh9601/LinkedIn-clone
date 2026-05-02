@@ -1,13 +1,16 @@
 .modal {
   position: fixed;
   left: 50%;
-  top: 50%;
+  top: 40%;
+  overflow: auto;
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 1.3rem;
   z-index: 1000;
   width: fit-content;
+  max-width: 42rem;
   height: fit-content;
+  max-height: 35rem;
 }
 
 .overlay {
@@ -22,8 +25,12 @@
 
 .cross {
   position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
+  right: 0.8rem;
+  top: 0.8rem;
   font-size: 1.3rem;
   z-index: 100;
+}
+
+.crossBox {
+  display: inline-block;
 }

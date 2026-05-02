@@ -1,4 +1,4 @@
-import "./PostForm.css";
+import styles from "./PostForm.module.css";
 import usePostStore from "../../stores/Post";
 import Button from "../Button.";
 import { useForm } from "react-hook-form";
@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PostDataSchema } from "../../zodSchema";
 import Spinner from "../../icons/spinners/Spinner";
 import RHFselect from "../RHFselect";
+import UserInfo from "../UserInfo";
 
 const PollForm = lazy(() => import("../Polls/PollForm"));
 const SchPostsUI = lazy(() => import("./SchPostsUI"));
@@ -76,12 +77,14 @@ export default function PostForm() {
           <SchPostsUI />
         </Suspense>
       ) : (
-        <div className="postform">
-          <div className="header">
-            <div className="img">
-              <img src={userProfile?.profileImage?.url} />
-            </div>
-            <div>{userProfile?.name}</div>
+        <div className={styles.postform}>
+          <div className={styles.header}>
+            <UserInfo
+              userId={userProfile?.userId}
+              username={userProfile?.name}
+              url={userProfile?.profileImage?.url}
+              headline={userProfile.headline}
+            />
             <div>
               <RHFselect
                 name="postType"
@@ -92,7 +95,7 @@ export default function PostForm() {
               />
             </div>
           </div>
-          <div className="form">
+          <div className={styles.form}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="formBody">
                 <RHFtextarea
@@ -103,15 +106,8 @@ export default function PostForm() {
                 />
 
                 {file && (
-                  <div className="previewImg">
-                    <div
-                      style={{
-                        position: "absolute",
-                        right: "1rem",
-                        top: "0.3rem",
-                        fontSize: "1.25rem",
-                      }}
-                    >
+                  <div className={styles.previewImg}>
+                    <div>
                       <Xmark
                         style={{ zIndex: "10" }}
                         onClick={() => {

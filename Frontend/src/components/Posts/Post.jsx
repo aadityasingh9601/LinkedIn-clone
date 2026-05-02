@@ -7,7 +7,7 @@ const Button = lazy(() => import("../Button."));
 const PostEditForm = lazy(() => import("./PostEditForm"));
 const CommentSection = lazy(() => import("./CommentSection"));
 import useUserStore from "../../stores/User";
-import User from "../User";
+import UserInfo from "../UserInfo";
 import Xmark from "../../icons/Xmark";
 import ThumbsupR from "../../icons/ThumbsupR";
 import ThumbsupS from "../../icons/ThumbsupS";
@@ -15,11 +15,6 @@ import PaperPlane from "../../icons/PaperPlane";
 import CommentR from "../../icons/CommentR";
 import useCommentStore from "../../stores/Comment";
 import PostHead from "./PostHead";
-
-//The error was occuring because I was accessing props like this,"function Post(post) " and because of that
-//the whole props object was getting logged on the console and post.createdBy was printing undefined , while when
-//I accessed the props the correct way, i.e. written below, the post prop gets destructed from the complete props
-//object and everything started working properly again.
 
 export default function Post({ post, postRef }) {
   const currUserId = useUserStore((state) => state.currUserId);
@@ -136,7 +131,7 @@ export default function Post({ post, postRef }) {
           <div className="likeList">
             {likedUsers.map((like) => {
               return (
-                <User
+                <UserInfo
                   userId={like.user._id}
                   url={like.user.profileImage}
                   username={like.user.name}

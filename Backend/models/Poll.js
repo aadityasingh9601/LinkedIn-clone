@@ -39,7 +39,7 @@ const pollSchema = new Schema({
     required: true,
   },
 
-  createdBy: {
+  author: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },

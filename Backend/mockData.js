@@ -224,7 +224,7 @@ const postIds = [
 const posts = [
   {
     _id: postIds[0],
-    createdBy: userIds[0],
+    author: userIds[0],
     content: "Excited to join LinkedIn Clone!",
     media: {
       mediaType: "image",
@@ -240,7 +240,7 @@ const posts = [
   },
   {
     _id: postIds[1],
-    createdBy: userIds[1],
+    author: userIds[1],
     content: "React is awesome!",
     media: {},
     published: true,
@@ -252,7 +252,7 @@ const posts = [
   },
   {
     _id: postIds[2],
-    createdBy: userIds[2],
+    author: userIds[2],
     content: "Node.js tips and tricks.",
     media: {},
     published: true,
@@ -264,7 +264,7 @@ const posts = [
   },
   {
     _id: postIds[3],
-    createdBy: userIds[3],
+    author: userIds[3],
     content: "This is a demo post from the demo user.",
     media: {
       mediaType: "image",
@@ -443,7 +443,7 @@ const polls = [
       { user: userIds[1], optionId: createObjectId() },
     ],
     expiresAt: new Date(Date.now() + 86400000),
-    createdBy: userIds[0],
+    author: userIds[0],
     createdAt: new Date(),
   },
 ];

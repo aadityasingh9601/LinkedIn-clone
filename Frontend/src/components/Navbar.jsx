@@ -15,7 +15,7 @@ import UsersIcon from "../icons/UsersIcon";
 import JobIcon from "../icons/JobIcon";
 import MsgIcon from "../icons/MsgIcon";
 import NotiIcon from "../icons/NotiIcon";
-import User from "./User";
+import UserInfo from "./UserInfo";
 import Xmark from "../icons/Xmark";
 
 export default function Navbar({ showMessaging }) {
@@ -81,7 +81,7 @@ export default function Navbar({ showMessaging }) {
             styles={{ zIndex: "100" }}
           />
           {userProfiles.map((profile) => (
-            <User
+            <UserInfo
               url={profile.profileImage.url}
               userId={profile.userId}
               username={profile.name}
