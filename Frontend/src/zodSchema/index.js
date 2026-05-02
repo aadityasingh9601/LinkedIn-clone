@@ -22,18 +22,6 @@ export const LoginDataSchema = z.object({
     .max(12, "Must be atmost 12 characters!"),
 });
 
-export const AccountSetupDataSchema = z.object({
-  phone: z.coerce
-    .number("Please enter a valid phone number!")
-    .gte(10000000, "Too short!")
-    .lte(9999999999, "Too long!"),
-  city: z.string("City is required!").min(3, "Too short!").max(15, "Too long!"),
-  country: z
-    .string("Country is required!")
-    .min(3, "Too short!")
-    .max(15, "Too long!"),
-});
-
 export const PostDataSchema = z.object({
   content: z
     .string()

@@ -51,7 +51,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 
 async function main() {
   await mongoose.connect(
-    process.env.MONGO_URL || "mongodb://localhost:27017/LinkedIn",
+    process.env.MONGO_URL || "mongodb://localhost:27018/LinkedIn",
   );
 }
 

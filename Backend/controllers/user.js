@@ -6,11 +6,7 @@ import bcrypt from "bcrypt";
 import { generateAccessToken, generateRefreshToken } from "../utils/Token.js";
 import jwt from "jsonwebtoken";
 import Profile from "../models/Profile.js";
-import {
-  SignupDataSchema,
-  LoginDataSchema,
-  AccountSetupDataSchema,
-} from "../zodSchema/index.js";
+import { SignupDataSchema, LoginDataSchema } from "../zodSchema/index.js";
 
 const options = {
   httpOnly: true,
@@ -22,17 +18,19 @@ const checkAuthStatus = async (req, res) => {
   let accesstoken = req.cookies.accesstoken;
   let decoded = jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET);
   const user = await User.findOne({ _id: decoded.id });
-  res.status(200).json({ isSetupComplete: user.profile !== undefined });
+  res.status(200).json({ isLoggedIn: true, userId: user._id });
 };
 
 const signup = async (req, res) => {
   const { signupData } = req.body;
+  console.log(signupData);
   const result = SignupDataSchema.safeParse(signupData);
   if (!result.success) {
     return res.status(400).json({
       message: result.error.message,
     });
   }
+
   const existingUser = await User.findOne({ email: signupData.email });
   if (existingUser) {
     return res.status(400).json({ message: "Email already exists!" });
@@ -47,6 +45,17 @@ const signup = async (req, res) => {
       email: signupData.email,
       password: hashedPassword,
     });
+
+    const userProfile = new Profile({
+      name: newUser.name,
+      userId: newUser._id,
+      contactInfo: {
+        email: signupData.email,
+      },
+    });
+    newUser.profile = userProfile._id;
+
+    await userProfile.save();
     await newUser.save();
     res.status(201).json({ message: "User registered successfully!" });
   } catch (err) {
@@ -57,6 +66,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { loginData } = req.body;
+  console.log(loginData);
   const result = LoginDataSchema.safeParse(loginData);
   if (!result.success) {
     return res.status(400).json({
@@ -93,51 +103,17 @@ const login = async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
       })
       .status(200)
-      .json({ id, isSetupComplete: user.profile !== undefined });
+      .json({ id });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error logging in" });
   }
 };
 
-const setupAccount = async (req, res) => {
-  const { userId } = req.params;
-  const { setupData } = req.body;
-  const { phone, city, country } = setupData;
-
-  const result = AccountSetupDataSchema.safeParse(setupData);
-  if (!result.success) {
-    return res.status(400).json({
-      message: result.error.message,
-    });
-  }
-  const user = await User.findOne({ _id: userId });
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  const userProfile = new Profile({
-    userId: user._id,
-    name: user.name,
-    contactInfo: {
-      phone: phone,
-      email: user.email,
-    },
-    location: city + "," + country,
-  });
-
-  await userProfile.save();
-  user.profile = userProfile._id;
-  await user.save();
-  return res.status(200).json({
-    message: "Account setup successful!",
-  });
-};
-
 const refreshAccessToken = async (req, res) => {
   const existingRefreshToken = req.cookies.refreshtoken;
   if (!existingRefreshToken) {
-    return res.status(401).json({ message: "No refresh token available." });
+    return res.status(401).json({ message: "Your session timed out!" });
   }
   let decoded;
   try {
@@ -214,7 +190,6 @@ export default {
   checkAuthStatus,
   signup,
   login,
-  setupAccount,
   logout,
   allLikedPosts,
   refreshAccessToken,

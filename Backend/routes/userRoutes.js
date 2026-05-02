@@ -19,8 +19,6 @@ router.post("/signup", wrapAsync(userController.signup));
 
 router.post("/login", wrapAsync(userController.login));
 
-router.post("/setup/:userId", protect, wrapAsync(userController.setupAccount));
-
 router.delete("/logout/:userId", protect, wrapAsync(userController.logout));
 
 export default router;

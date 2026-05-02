@@ -62,7 +62,7 @@ const tryCatchWrapper = async (fn) => {
     return await fn();
   } catch (error) {
     console.log(
-      error.response.data.message || error.message || "Something went wrong!",
+      error.response?.data.message || error.message || "Something went wrong!",
     );
   }
 };

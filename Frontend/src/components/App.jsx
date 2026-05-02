@@ -7,7 +7,6 @@ import AppWraper from "./AppWraper";
 const Profile = lazy(() => import("./Profile/Profile"));
 const Signup = lazy(() => import("./Auth/Signup"));
 const Login = lazy(() => import("./Auth/Login"));
-const AccountSetup = lazy(() => import("./AccountSetup"));
 const PostForm = lazy(() => import("./Posts/PostForm"));
 const NotificationBox = lazy(() => import("./Notifications/NotificationBox"));
 import PreLogin from "./Auth/PreLogin";
@@ -37,14 +36,13 @@ import { setNavigate } from "../utils/api/axiosInstance";
 const AppRoutes = () => {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const currUserId = useUserStore((state) => state.currUserId);
-  const isSetupComplete = useUserStore((state) => state.isSetupComplete);
   const checkAuthStatus = useUserStore((state) => state.checkAuthStatus);
   const fetchNotifications = useNotificationStore(
     (state) => state.fetchNotifications,
   );
   const navigate = useNavigate();
   const location = useLocation();
-  const authRoutes = ["/", "/signup", "/login", "/setup"];
+  const authRoutes = ["/", "/signup", "/login"];
   const isAuthRoute = authRoutes.includes(location.pathname);
 
   useEffect(() => {
@@ -63,28 +61,13 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route
-        element={
-          <PublicRoutes
-            isLoggedIn={isLoggedIn}
-            isSetupComplete={isSetupComplete}
-          />
-        }
-      >
+      <Route element={<PublicRoutes isLoggedIn={isLoggedIn} />}>
         <Route path="/" element={<PreLogin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/setup" element={<AccountSetup />} />
       </Route>
 
-      <Route
-        element={
-          <PrivateRoutes
-            isLoggedIn={isLoggedIn}
-            isSetupComplete={isSetupComplete}
-          />
-        }
-      >
+      <Route element={<PrivateRoutes isLoggedIn={isLoggedIn} />}>
         <Route path="/home" element={<Homepage />} />
 
         <Route path="/profile/:id" element={<Profile />} />

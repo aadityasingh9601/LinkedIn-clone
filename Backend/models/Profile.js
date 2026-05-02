@@ -38,7 +38,6 @@ const profileSchema = new Schema({
   contactInfo: {
     phone: {
       type: Number,
-      required: true,
     },
     email: {
       type: String,
@@ -47,7 +46,6 @@ const profileSchema = new Schema({
   },
   location: {
     type: String,
-    required: true,
   },
   followerCount: {
     type: Number,

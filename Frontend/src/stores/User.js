@@ -13,20 +13,13 @@ const useUserStore = create((set, get) => ({
 
   currUserId: localStorage.getItem("currUserId"),
 
-  isSetupComplete: false,
-
   checkAuthStatus: async () => {
     tryCatchWrapper(async () => {
-      const response = await apiGet("/users/checkauthstatus", {
-        _skipInterceptor: true,
-      });
-      set({ isSetupComplete: response.data.isSetupComplete });
+      const response = await apiGet("/users/checkauthstatus");
 
       if (response.status === 200) {
-        set({ isLoggedIn: true });
-      }
-      if (response.status === 401) {
-        set({ isLoggedIn: false });
+        set({ isLoggedIn: true, currUserId: response.data.userId });
+        localStorage.setItem("currUserId", response.data.userId);
       }
     });
   },
@@ -53,25 +46,8 @@ const useUserStore = create((set, get) => ({
         set({
           isLoggedIn: true,
           currUserId: response.data.id,
-          isSetupComplete: response.data.isSetupComplete,
         });
         localStorage.setItem("currUserId", response.data.id);
-        navigate("/setup");
-      }
-    });
-  },
-
-  setupAccount: async (userId, setupData, navigate) => {
-    tryCatchWrapper(async () => {
-      const response = await apiPost(
-        `/users/setup/${userId}`,
-        { setupData },
-        {},
-      );
-      console.log(response);
-      if (response.request.status === 200) {
-        toast.success("Account setup successful!");
-        set({ isSetupComplete: true });
         navigate("/home");
       }
     });
