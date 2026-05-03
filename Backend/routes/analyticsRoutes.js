@@ -1,7 +1,7 @@
 import { Router } from "express";
 import analyticController from "../controllers/analytic.js";
 import wrapAsync from "../utils/wrapAsync.js";
-import protect from "../Middleware.js";
+import protect from "../utils/Middlewares/Middleware.js";
 
 const router = Router();
 

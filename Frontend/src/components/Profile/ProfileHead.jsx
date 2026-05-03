@@ -1,13 +1,13 @@
 import "./ProfileHead.css";
 import useUserStore from "../../stores/User";
-import Button from "../Button.";
-import PDF from "./Pdf";
+import Button from "../shared-components/Buttons/Button";
+import PDF from "../Profile/Pdf";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import useProfileStore from "../../stores/Profile";
-import Modal from "../Modal";
+import Modal from "../shared-components/Modal/Modal";
 import { lazy, Suspense } from "react";
-import Pen from "../../icons/Pen";
-import Xmark from "../../icons/Xmark";
+import Pen from "../shared-components/Icons/Pen";
+import Xmark from "../shared-components/Icons/Xmark";
 import useFollowStore from "../../stores/Follow";
 import useConnectionStore from "../../stores/Connection";
 import useChatStore from "../../stores/Chat";
@@ -76,7 +76,7 @@ export default function ProfileHead({ profile, styles, createProfile }) {
             <span>{profile?.contactInfo?.phone}</span>
           </div>
           <div className="socials">
-            <span>{profile?.followerCount} followers</span>  
+            <span>{profile?.followerCount} followers</span>
             <span>{profile?.connCount} connections</span>
           </div>
         </div>

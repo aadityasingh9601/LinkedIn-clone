@@ -1,7 +1,7 @@
 import { Router } from "express";
 import commentController from "../controllers/comment.js";
 import wrapAsync from "../utils/wrapAsync.js";
-import protect from "../Middleware.js";
+import protect from "../utils/Middlewares/Middleware.js";
 
 const router = Router({ mergeParams: true });
 

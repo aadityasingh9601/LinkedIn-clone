@@ -1,9 +1,8 @@
 import "./PostFormPreview.css";
 import usePostStore from "../../stores/Post";
-import ImageIcon from "../../icons/ImageIcon";
-import Pollicon from "../../icons/PollIcon";
-
-import ControlledInput from "../ControlledInput";
+import ImageIcon from "../shared-components/Icons/ImageIcon";
+import Pollicon from "../shared-components/Icons/PollIcon";
+import ControlledInput from "../shared-components/Inputs/ControlledInput";
 
 export default function PostFormPreview() {
   const postFormModal = usePostStore((state) => state.postFormModal);

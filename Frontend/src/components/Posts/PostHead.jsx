@@ -1,21 +1,21 @@
 import "./PostHead.css";
-import TimePassed from "../TimePassed";
-import UserInfo from "../UserInfo";
+import TimePassed from "../shared-components/Date_Time/TimePassed";
+import UserInfo from "../shared-components/User/UserInfo";
 import { useEffect, useState, lazy, Suspense } from "react";
 import useUserStore from "../../stores/User";
 import usePostStore from "../../stores/Post";
 import useCommentStore from "../../stores/Comment";
 import usePollStore from "../../stores/Poll";
-import Ellipsis from "../../icons/Ellipsis";
-import Plus from "../../icons/Plus";
-import Check from "../../icons/Check";
+import Ellipsis from "../shared-components/Icons/Ellipsis";
+import Plus from "../shared-components/Icons/Plus";
+import Check from "../shared-components/Icons/Check";
 import useFollowStore from "../../stores/Follow";
-import Pen from "../../icons/Pen";
-import Trash from "../../icons/Trash";
-import Modal from "../Modal";
-import Xmark from "../../icons/Xmark";
-import Button from "../Button.";
-import Options from "../Options";
+import Pen from "../shared-components/Icons/Pen";
+import Trash from "../shared-components/Icons/Trash";
+import Modal from "../shared-components/Modal/Modal";
+import Xmark from "../shared-components/Icons/Xmark";
+import Button from "../shared-components/Buttons/Button";
+import Options from "../shared-components/Options/Options";
 
 const PostEditForm = lazy(() => import("./PostEditForm"));
 
@@ -96,7 +96,8 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
           </button>
         ))}
 
-      {currUserId === profileUserId && (
+      {/* Fix this code later, to transfer it into Options.jsx componenent & use it here. */}
+      {/* {currUserId === profileUserId && (
         <button
           className="options"
           onClick={() => setShowOptions(!showOptions)}
@@ -131,7 +132,7 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
             Delete
           </button>
         </div>
-      )}
+      )} */}
 
       {currUserId === profileUserId && (
         <Options show={showOptions} setShow={setShowOptions} />

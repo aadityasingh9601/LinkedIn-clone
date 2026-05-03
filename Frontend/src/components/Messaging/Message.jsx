@@ -1,11 +1,11 @@
 import "./Message.css";
 import { useState } from "react";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import useChatStore from "../../stores/Chat";
-import ExternalLink from "../ExternalLink";
-import Ellipsis from "../../icons/Ellipsis";
-import Xmark from "../../icons/Xmark";
-import ControlledInput from "../ControlledInput";
+import ExternalLink from "../shared-components/Links/ExternalLink";
+import Ellipsis from "../shared-components/Icons/Ellipsis";
+import Xmark from "../shared-components/Icons/Xmark";
+import ControlledInput from "../shared-components/Inputs/ControlledInput";
 
 export default function Message({ msg, formatTime }) {
   const [msgOptions, setMsgOptions] = useState(false);

@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import useProfileStore from "../../stores/Profile";
-import Button from "../Button.";
-import RHFtextarea from "../RHFtextarea";
-import RHFInput from "../RHFInput";
+import Button from "../shared-components/Buttons/Button";
+import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
+import RHFInput from "../shared-components/Inputs/RHFInput";
 import useUserStore from "../../stores/User";
 import { ExperienceDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";

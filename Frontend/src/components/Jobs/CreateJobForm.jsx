@@ -1,11 +1,10 @@
 import "./CreateJobForm.css";
 import { useForm } from "react-hook-form";
 import useJobStore from "../../stores/Job";
-import { useEffect } from "react";
-import Button from "../Button.";
-import RHFtextarea from "../RHFtextarea";
-import Xmark from "../../icons/Xmark";
-import RHFInput from "../RHFInput";
+import Button from "../shared-components/Buttons/Button";
+import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
+import Xmark from "../shared-components/Icons/Xmark";
+import RHFInput from "../shared-components/Inputs/RHFInput";
 import { JobDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 

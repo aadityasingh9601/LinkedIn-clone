@@ -3,9 +3,9 @@ import "./ChatUI.css";
 import MsgBox from "./MsgBox";
 
 import useChatStore from "../../stores/Chat";
-import Message from "./Message";
-import Xmark from "../../icons/Xmark";
-import UserInfo from "../UserInfo";
+import Message from "../Messaging/Message";
+import Xmark from "../shared-components/Icons/Xmark";
+import UserInfo from "../shared-components/User/UserInfo";
 import { formatDate2 } from "../../utils/helper";
 
 export default function ChatUI({ socket }) {

@@ -2,9 +2,9 @@ import "./Job.css";
 import useUserStore from "../../stores/User";
 import useJobStore from "../../stores/Job";
 import { useState } from "react";
-import Button from "../Button.";
-import Ellipsis from "../../icons/Ellipsis";
-import Xmark from "../../icons/Xmark";
+import Button from "../shared-components/Buttons/Button";
+import Ellipsis from "../shared-components/Icons/Ellipsis";
+import Xmark from "../shared-components/Icons/Xmark";
 
 export default function Job({ job }) {
   //console.log(job);

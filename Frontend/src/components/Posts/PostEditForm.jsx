@@ -1,16 +1,16 @@
 import "./PostEditForm.css";
 import usePostStore from "../../stores/Post";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button.";
 import { useForm } from "react-hook-form";
 import { parseISODate } from "../../utils/helper";
 import RHFtextarea from "../RHFtextarea";
-import ClockS from "../../icons/ClockS";
-import ClockR from "../../icons/ClockR";
-import RHFInput from "../RHFInput";
+import ClockS from "../shared-components/Icons/ClockS";
+import ClockR from "../shared-components/Icons/ClockR";
+import RHFInput from "../shared-components/Inputs/RHFInput";
 import { PostDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import Spinner from "../../icons/spinners/Spinner";
+import Spinner from "../shared-components/Loaders/Spinner";
 
 export default function PostEditForm({ post }) {
   const { date, time } = parseISODate(post?.scheduledTime);

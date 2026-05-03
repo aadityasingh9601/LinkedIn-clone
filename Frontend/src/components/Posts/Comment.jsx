@@ -1,14 +1,15 @@
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import "./Comment.css";
 import { useState, useEffect, useCallback, lazy, Suspense } from "react";
-import Modal from "../Modal";
+import Modal from "../shared-components/Modal/Modal";
 import useUserStore from "../../stores/User";
-import Xmark from "../../icons/Xmark";
-import TimePassed from "../TimePassed";
+import Xmark from "../shared-components/Icons/Xmark";
+import TimePassed from "../shared-components/Date_Time/TimePassed";
 import useCommentStore from "../../stores/Comment";
-import PostHead from "./PostHead";
-
-const ControlledTextarea = lazy(() => import("../ControlledTextarea"));
+import PostHead from "../Posts/PostHead";
+const ControlledTextarea = lazy(
+  () => import("../shared-components/Textarea/ControlledTextarea"),
+);
 
 export default function Comment({ comment }) {
   const [toggle, setToggle] = useState(false);
@@ -52,7 +53,7 @@ export default function Comment({ comment }) {
                   comment.postId,
                   comment._id,
                   newComm,
-                  updateCommentEdit
+                  updateCommentEdit,
                 )
               }
             />

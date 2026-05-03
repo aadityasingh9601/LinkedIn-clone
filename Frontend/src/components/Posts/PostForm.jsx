@@ -1,23 +1,22 @@
 import styles from "./PostForm.module.css";
 import usePostStore from "../../stores/Post";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import { useForm } from "react-hook-form";
 import { useEffect, useState, lazy, Suspense } from "react";
-import RHFtextarea from "../RHFtextarea";
-import Xmark from "../../icons/Xmark";
-import SmileR from "../../icons/SmileR";
-import SmileS from "../../icons/SmileS";
-import ClockS from "../../icons/ClockS";
-import ClockR from "../../icons/ClockR";
-import ImageIcon from "../../icons/ImageIcon";
-import RHFInput from "../RHFInput";
-import Pollicon from "../../icons/PollIcon";
+import Xmark from "../shared-components/Icons/Xmark";
+import SmileR from "../shared-components/Icons/SmileR";
+import SmileS from "../shared-components/Icons/SmileS";
+import ClockS from "../shared-components/Icons/ClockS";
+import ClockR from "../shared-components/Icons/ClockR";
+import ImageIcon from "../shared-components/Icons/ImageIcon";
+import RHFInput from "../shared-components/Inputs/RHFInput";
+import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
+import Pollicon from "../shared-components/Icons/PollIcon";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PostDataSchema } from "../../zodSchema";
-import Spinner from "../../icons/spinners/Spinner";
-import RHFselect from "../RHFselect";
-import UserInfo from "../UserInfo";
-
+import Spinner from "../shared-components/Loaders/Spinner";
+import RHFselect from "../shared-components/Select/RHFselect";
+import UserInfo from "../shared-components/User/UserInfo";
 const PollForm = lazy(() => import("../Polls/PollForm"));
 const SchPostsUI = lazy(() => import("./SchPostsUI"));
 

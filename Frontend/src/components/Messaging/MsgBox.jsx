@@ -1,14 +1,14 @@
 import "./MsgBox.css";
 import useChatStore from "../../stores/Chat";
 import { useState } from "react";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import EmojiPicker from "emoji-picker-react";
-import Xmark from "../../icons/Xmark";
-import SmileS from "../../icons/SmileS";
-import SmileR from "../../icons/SmileR";
-import Paperclip from "../../icons/Paperclip";
-import ControlledTextarea from "../ControlledTextarea";
-import ControlledInput from "../ControlledInput";
+import Xmark from "../shared-components/Icons/Xmark";
+import SmileS from "../shared-components/Icons/SmileS";
+import SmileR from "../shared-components/Icons/SmileR";
+import Paperclip from "../shared-components/Icons/Paperclip";
+import ControlledTextarea from "../shared-components/Textarea/ControlledTextarea";
+import ControlledInput from "../shared-components/Inputs/ControlledInput";
 
 export default function MsgBox({ currChatId, socket }) {
   const sendMsg = useChatStore((state) => state.sendMsg);

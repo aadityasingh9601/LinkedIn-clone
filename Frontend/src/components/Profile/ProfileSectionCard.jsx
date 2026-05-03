@@ -1,8 +1,8 @@
 import "./ProfileSectionCard.css";
 import { useState } from "react";
 import { formatDate } from "../../utils/helper";
-import Pen from "../../icons/Pen";
-import Trash from "../../icons/Trash";
+import Pen from "../shared-components/Icons/Pen";
+import Trash from "../shared-components/Icons/Trash";
 
 export default function ProfileSectionCard({
   styles = {},
@@ -37,7 +37,7 @@ export default function ProfileSectionCard({
         sectionId: data._id,
         newData: newData,
       },
-      updateEditing
+      updateEditing,
     );
   };
 

@@ -1,9 +1,9 @@
 import "./Chat.css";
 import useChatStore from "../../stores/Chat";
 import { useState } from "react";
-import Button from "../Button.";
-import Ellipsis from "../../icons/Ellipsis";
-import Xmark from "../../icons/Xmark";
+import Button from "../shared-components/Buttons/Button";
+import Ellipsis from "../shared-components/Icons/Ellipsis";
+import Xmark from "../shared-components/Icons/Xmark";
 import { formatTime, formatDate2 } from "../../utils/helper";
 
 export default function Chat({ chat, otherPerson, socket }) {

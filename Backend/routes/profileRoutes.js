@@ -1,9 +1,9 @@
 import { Router } from "express";
 import profileController from "../controllers/profile.js";
 import wrapAsync from "../utils/wrapAsync.js";
-import protect from "../Middleware.js";
+import protect from "../utils/Middlewares/Middleware.js";
 import multer from "multer";
-import { storage } from "../cloudConfig.js";
+import { storage } from "../cloud/cloudConfig.js";
 const upload = multer({ storage: storage });
 
 const router = Router();
@@ -12,7 +12,7 @@ const router = Router();
 router.post(
   "/allUsers",
   protect,
-  wrapAsync(profileController.getAllUserProfiles)
+  wrapAsync(profileController.getAllUserProfiles),
 );
 
 router
@@ -23,7 +23,7 @@ router
       { name: "data[profileImage]" },
       { name: "data[bannerImage]" },
     ]),
-    wrapAsync(profileController.createProfile)
+    wrapAsync(profileController.createProfile),
   )
   .get(protect, wrapAsync(profileController.getUserProfile))
   .patch(protect, wrapAsync(profileController.updateProfile));
@@ -32,7 +32,7 @@ router
 router.get(
   "/allgroups",
   protect,
-  wrapAsync(profileController.getAllUserGroups)
+  wrapAsync(profileController.getAllUserGroups),
 );
 
 //Delete profile routes.

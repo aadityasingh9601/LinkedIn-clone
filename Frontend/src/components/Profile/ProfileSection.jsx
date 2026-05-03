@@ -1,13 +1,13 @@
 import "./ProfileSection.css";
 import { useState, useEffect, lazy, Suspense } from "react";
-import EducationCard from "./EducationCard";
-import ExpCard from "./ExpCard";
-import Plus from "../../icons/Plus";
-import Pen from "../../icons/Pen";
-import Trash from "../../icons/Trash";
-import ControlledTextarea from "../ControlledTextarea";
-import ControlledInput from "../ControlledInput";
-import Button from "../Button.";
+import EducationCard from "../Profile/EducationCard";
+import ExpCard from "../Profile/ExpCard";
+import Plus from "../shared-components/Icons/Plus";
+import Pen from "../shared-components/Icons/Pen";
+import Trash from "../shared-components/Icons/Trash";
+import ControlledTextarea from "../shared-components/Textarea/ControlledTextarea";
+import ControlledInput from "../shared-components/Inputs/ControlledInput";
+import Button from "../shared-components/Buttons/Button";
 import useUserStore from "../../stores/User";
 
 const EducationForm = lazy(() => import("./EducationForm"));
@@ -94,7 +94,7 @@ export default function ProfileSection({
               onClick={() => {
                 editProfile(
                   { section: "about", newData: newAbout },
-                  updateEditSection
+                  updateEditSection,
                 );
               }}
             />
@@ -114,30 +114,30 @@ export default function ProfileSection({
                 );
               })
             : title.toLowerCase() == "experience"
-            ? profile.experience?.map((experience) => {
-                return (
-                  <ExpCard
-                    key={experience._id}
-                    experience={experience}
-                    editProfile={editProfile}
-                    deleteProfile={deleteProfile}
-                    styles={styles}
-                  />
-                );
-              })
-            : title.toLowerCase() == "skills"
-            ? profile.skills?.map((skill, index) => (
-                <div key={index} className="skill">
-                  <div>{skill}</div>
-                  <div className="icon">
-                    <Trash
+              ? profile.experience?.map((experience) => {
+                  return (
+                    <ExpCard
+                      key={experience._id}
+                      experience={experience}
+                      editProfile={editProfile}
+                      deleteProfile={deleteProfile}
                       styles={styles}
-                      onClick={() => deleteProfile({ skill: skill })}
                     />
-                  </div>
-                </div>
-              ))
-            : !editSection && <span>{profile.about}</span>}
+                  );
+                })
+              : title.toLowerCase() == "skills"
+                ? profile.skills?.map((skill, index) => (
+                    <div key={index} className="skill">
+                      <div>{skill}</div>
+                      <div className="icon">
+                        <Trash
+                          styles={styles}
+                          onClick={() => deleteProfile({ skill: skill })}
+                        />
+                      </div>
+                    </div>
+                  ))
+                : !editSection && <span>{profile.about}</span>}
         </div>
       </div>
     </div>

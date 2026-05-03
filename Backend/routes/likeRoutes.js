@@ -1,7 +1,7 @@
 import { Router } from "express";
 import likeController from "../controllers/like.js";
 import wrapAsync from "../utils/wrapAsync.js";
-import protect from "../Middleware.js";
+import protect from "../utils/Middlewares/Middleware.js";
 
 const router = Router({ mergeParams: true });
 //Make sure to write mergeParams:true, else your parameters will not get sent to the controllers.

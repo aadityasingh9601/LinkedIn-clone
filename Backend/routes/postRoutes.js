@@ -1,9 +1,9 @@
 import { Router } from "express";
 import postController from "../controllers/post.js";
 import wrapAsync from "../utils/wrapAsync.js";
-import protect from "../Middleware.js";
+import protect from "../utils/Middlewares/Middleware.js";
 import multer from "multer";
-import { storage } from "../cloudConfig.js";
+import { storage } from "../cloud/cloudConfig.js";
 import post from "../controllers/post.js";
 const upload = multer({ storage: storage });
 
@@ -14,7 +14,7 @@ router.post(
   "/",
   protect,
   upload.single("postData[media]"),
-  wrapAsync(postController.createPost)
+  wrapAsync(postController.createPost),
 );
 
 //Get all posts route.
@@ -31,7 +31,7 @@ router
   .patch(
     protect,
     upload.single("postData[media]"),
-    wrapAsync(postController.updatePost)
+    wrapAsync(postController.updatePost),
   )
   .delete(protect, wrapAsync(postController.deletePost));
 

@@ -1,8 +1,8 @@
 import useProfileStore from "../../stores/Profile";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import { useForm } from "react-hook-form";
-import RHFtextarea from "../RHFtextarea";
-import RHFInput from "../RHFInput";
+import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
+import RHFInput from "../shared-components/Inputs/RHFInput";
 import useUserStore from "../../stores/User";
 import { EducationDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";

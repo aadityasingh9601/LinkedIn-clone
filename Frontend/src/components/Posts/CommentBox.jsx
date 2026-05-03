@@ -1,7 +1,7 @@
 import "./CommentBox.css";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import { useForm } from "react-hook-form";
-import RHFInput from "../RHFInput";
+import RHFInput from "../shared-components/Inputs/RHFInput";
 import useCommentStore from "../../stores/Comment";
 
 export default function CommentBox({ postId }) {

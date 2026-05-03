@@ -2,19 +2,19 @@ import "./Post.css";
 import { lazy } from "react";
 import { useState, useEffect, useRef } from "react";
 import usePostStore from "../../stores/Post";
-import Modal from "../Modal";
-const Button = lazy(() => import("../Button."));
+import Modal from "../shared-components/Modal/Modal";
+const Button = lazy(() => import("../shared-components/Buttons/Button"));
 const PostEditForm = lazy(() => import("./PostEditForm"));
 const CommentSection = lazy(() => import("./CommentSection"));
 import useUserStore from "../../stores/User";
-import UserInfo from "../UserInfo";
-import Xmark from "../../icons/Xmark";
-import ThumbsupR from "../../icons/ThumbsupR";
-import ThumbsupS from "../../icons/ThumbsupS";
-import PaperPlane from "../../icons/PaperPlane";
-import CommentR from "../../icons/CommentR";
+import UserInfo from "../shared-components/User/UserInfo";
+import Xmark from "../shared-components/Icons/Xmark";
+import ThumbsupR from "../shared-components/Icons/ThumbsupR";
+import ThumbsupS from "../shared-components/Icons/ThumbsupS";
+import PaperPlane from "../shared-components/Icons/PaperPlane";
+import CommentR from "../shared-components/Icons/CommentR";
 import useCommentStore from "../../stores/Comment";
-import PostHead from "./PostHead";
+import PostHead from "../Posts/PostHead";
 
 export default function Post({ post, postRef }) {
   const currUserId = useUserStore((state) => state.currUserId);

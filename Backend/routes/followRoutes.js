@@ -1,7 +1,7 @@
 import { Router } from "express";
 import followController from "../controllers/follow.js";
 import wrapAsync from "../utils/wrapAsync.js";
-import protect from "../Middleware.js";
+import protect from "../utils/Middlewares/Middleware.js";
 
 const router = Router({ mergeParams: true });
 
@@ -18,13 +18,13 @@ router
 router.delete(
   "/:followerId/remove",
   protect,
-  wrapAsync(followController.removeFollower)
+  wrapAsync(followController.removeFollower),
 );
 
 router.get(
   "/checkfollow/:userId",
   protect,
-  wrapAsync(followController.checkFollow)
+  wrapAsync(followController.checkFollow),
 );
 
 //We removed the :id part from both of the below routes because followers and following are private to the user

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import notiController from "../controllers/notification.js";
 import wrapAsync from "../utils/wrapAsync.js";
-import protect from "../Middleware.js";
+import protect from "../utils/Middlewares/Middleware.js";
 
 const router = Router();
 
@@ -14,6 +14,6 @@ router.delete("/:id", protect, wrapAsync(notiController.deleteNotifications));
 router.delete(
   "/group/:id",
   protect,
-  wrapAsync(notiController.deleteGroupNotifications)
+  wrapAsync(notiController.deleteGroupNotifications),
 );
 export default router;

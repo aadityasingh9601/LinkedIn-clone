@@ -5,7 +5,7 @@ import { Router } from "express";
 import jobController from "../controllers/job.js";
 import applicationController from "../controllers/application.js";
 import wrapAsync from "../utils/wrapAsync.js";
-import protect from "../Middleware.js";
+import protect from "../utils/Middlewares/Middleware.js";
 import multer from "multer";
 import { GridFsStorage } from "multer-gridfs-storage";
 

@@ -1,8 +1,8 @@
 import "./Notification.css";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import useNotificationStore from "../../stores/Notification";
-import TimePassed from "../TimePassed";
-import Xmark from "../../icons/Xmark";
+import TimePassed from "../shared-components/Date_Time/TimePassed";
+import Xmark from "../shared-components/Icons/Xmark";
 
 export default function Notification({ noti }) {
   const deleteNoti = useNotificationStore((state) => state.deleteNoti);

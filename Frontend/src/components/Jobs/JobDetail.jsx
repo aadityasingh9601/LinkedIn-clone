@@ -1,15 +1,14 @@
 import "./JobDetail.css";
 import useJobStore from "../../stores/Job";
 import useUserStore from "../../stores/User";
-import useProfileStore from "../../stores/Profile";
 
-import Button from "../Button.";
-import Dot from "../Dot";
+import Button from "../shared-components/Buttons/Button";
+import Dot from "../shared-components/Dot/Dot";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Check from "../../icons/Check";
-import TimePassed from "../TimePassed";
-import JobFitStats from "./JobFitStats";
+import Check from "../shared-components/Icons/Check";
+import TimePassed from "../shared-components/Date_Time/TimePassed";
+import JobFitStats from "../Jobs/JobFitStats";
 
 export default function JobDetail({ job }) {
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ export default function JobDetail({ job }) {
   const jobApplications = job?.applications;
   //console.log(jobApplications);
   const existingApplication = jobApplications?.find(
-    (a) => a?.applicant?.toString() === currUserId
+    (a) => a?.applicant?.toString() === currUserId,
   );
 
   useEffect(() => {
@@ -146,14 +145,14 @@ export default function JobDetail({ job }) {
             <Button
               btnText="Saved"
               onClick={() => {
-                saveJob(job._id), setSaved(false);
+                (saveJob(job._id), setSaved(false));
               }}
             />
           ) : (
             <Button
               btnText="Save"
               onClick={() => {
-                saveJob(job._id), setSaved(true);
+                (saveJob(job._id), setSaved(true));
               }}
             />
           )}
