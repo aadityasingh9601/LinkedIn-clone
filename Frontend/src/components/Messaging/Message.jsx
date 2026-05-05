@@ -6,12 +6,13 @@ import ExternalLink from "../shared-components/Links/ExternalLink";
 import Ellipsis from "../shared-components/Icons/Ellipsis";
 import Xmark from "../shared-components/Icons/Xmark";
 import ControlledInput from "../shared-components/Inputs/ControlledInput";
+import useUserStore from "../../stores/User";
 
 export default function Message({ msg, formatTime }) {
   const [msgOptions, setMsgOptions] = useState(false);
   const [newMsg, setnewMsg] = useState(msg?.content);
   const [editMsg, seteditMsg] = useState(false);
-  const currUserId = localStorage.getItem("currUserId");
+  const currUserId = useUserStore((state) => state.currUserId);
   const updateMsg = useChatStore((state) => state.updateMsg);
   const deleteMsg = useChatStore((state) => state.deleteMsg);
 

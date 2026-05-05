@@ -5,9 +5,10 @@ import Button from "../shared-components/Buttons/Button";
 import Ellipsis from "../shared-components/Icons/Ellipsis";
 import Xmark from "../shared-components/Icons/Xmark";
 import { formatTime, formatDate2 } from "../../utils/helper";
+import useUserStore from "../../stores/User";
 
 export default function Chat({ chat, otherPerson, socket }) {
-  const currUserId = localStorage.getItem("currUserId");
+  const currUserId = useUserStore((state) => state.currUserId);
 
   const setfullChat = useChatStore((state) => state.setfullChat);
 

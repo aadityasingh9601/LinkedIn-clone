@@ -34,7 +34,7 @@ const useJobStore = create(
         set({ editJob: value });
       },
 
-      currJobListingId: localStorage.getItem("currJobListingId"),
+      currJobListingId: localStorage.getItem("currJobListingId") || "",
 
       setcurrJobListingId: (value) => {
         localStorage.setItem("currJobListingId", value);
@@ -95,7 +95,7 @@ const useJobStore = create(
             { data },
             {
               "Content-Type": "multipart/form-data",
-            }
+            },
           );
           console.log(response);
           if (response.status === 200) {
@@ -140,7 +140,7 @@ const useJobStore = create(
           const response = await apiPost(
             `/jobs/${jobId}/markReviewed/${applicationId}`,
             {},
-            {}
+            {},
           );
           console.log(response);
         });
@@ -168,7 +168,7 @@ const useJobStore = create(
                   return {
                     ...job,
                     applicants: job.applications.filter(
-                      (a) => a.applicant !== currUserId
+                      (a) => a.applicant !== currUserId,
                     ),
                   };
                 }
@@ -200,14 +200,14 @@ const useJobStore = create(
         tryCatchWrapper(async () => {
           console.log(jobId, applicationId);
           const response = await apiDelete(
-            `/jobs/${jobId}/reject/${applicationId}`
+            `/jobs/${jobId}/reject/${applicationId}`,
           );
           console.log(response);
           if (response.status === 200) {
             //Delete the application data from local storage and also update the state variable also.
             set((state) => ({
               applicants: state.applicants.filter(
-                (a) => a._id !== applicationId
+                (a) => a._id !== applicationId,
               ),
             }));
 
@@ -223,8 +223,8 @@ const useJobStore = create(
         jobs: state.jobs,
         applicants: state.applicants,
       }),
-    }
-  )
+    },
+  ),
 );
 
 export default useJobStore;

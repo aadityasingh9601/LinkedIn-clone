@@ -7,10 +7,11 @@ import Message from "../Messaging/Message";
 import Xmark from "../shared-components/Icons/Xmark";
 import UserInfo from "../shared-components/User/UserInfo";
 import { formatDate2 } from "../../utils/helper";
+import useUserStore from "../../stores/User";
 
 export default function ChatUI({ socket }) {
   const currChatId = useChatStore((state) => state.currChatId);
-  const currUserId = localStorage.getItem("currUserId");
+  const currUserId = useUserStore((state) => state.currUserId);
 
   const fetchChatData = useChatStore((state) => state.fetchChatData);
 

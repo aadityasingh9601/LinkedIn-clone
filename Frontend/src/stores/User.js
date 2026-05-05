@@ -11,7 +11,7 @@ import {
 const useUserStore = create((set, get) => ({
   isLoggedIn: false,
 
-  currUserId: localStorage.getItem("currUserId"),
+  currUserId: localStorage.getItem("currUserId") || "",
 
   checkAuthStatus: async () => {
     tryCatchWrapper(async () => {

@@ -16,6 +16,8 @@ const currUserId = useUserStore.getState().currUserId;
 const useProfileStore = create((set, get) => ({
   profile: {},
 
+  currUserProfile: JSON.parse(localStorage.getItem("currUserProfile") || "[]"),
+
   userProfiles: [],
 
   editSkills: false,
@@ -47,6 +49,7 @@ const useProfileStore = create((set, get) => ({
       //We'll persist the data of the current user's profile to use that later.
       if (userId === currUserId) {
         localStorage.setItem("currUserProfile", JSON.stringify(response.data));
+        set({ currUserProfile: response.data });
       }
       set({ profile: response.data });
     });
@@ -83,7 +86,7 @@ const useProfileStore = create((set, get) => ({
         { data },
         {
           "Content-Type": "multipart/form-data",
-        }
+        },
       );
       console.log(response);
       if (response.status === 200) {
@@ -171,7 +174,7 @@ const useProfileStore = create((set, get) => ({
     tryCatchWrapper(async () => {
       let { skill, section, sectionId } = data;
       const response = await apiDelete(
-        `/profile/${currUserId}?skill=${skill}&section=${section}&sectionId=${sectionId}`
+        `/profile/${currUserId}?skill=${skill}&section=${section}&sectionId=${sectionId}`,
       );
       console.log(response);
       if (response.status === 200) {
@@ -189,7 +192,7 @@ const useProfileStore = create((set, get) => ({
             profile: {
               ...state.profile,
               education: state.profile.education.filter(
-                (e) => e._id !== sectionId
+                (e) => e._id !== sectionId,
               ),
             },
           }));
@@ -201,7 +204,7 @@ const useProfileStore = create((set, get) => ({
             profile: {
               ...state.profile,
               experience: state.profile.experience.filter(
-                (e) => e._id !== sectionId
+                (e) => e._id !== sectionId,
               ),
             },
           }));

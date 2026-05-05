@@ -15,7 +15,7 @@ const useChatStore = create((set, get) => ({
 
   fullChat: false,
 
-  currChatId: localStorage.getItem("currChatId"),
+  currChatId: localStorage.getItem("currChatId") || "",
 
   chats: [],
 
@@ -62,7 +62,7 @@ const useChatStore = create((set, get) => ({
     console.log(data);
     set((state) => ({
       chats: state.chats.map((chat) =>
-        chat._id === data.chatId ? { ...chat, lastMessage: data } : chat
+        chat._id === data.chatId ? { ...chat, lastMessage: data } : chat,
       ),
     }));
   },
@@ -71,7 +71,7 @@ const useChatStore = create((set, get) => ({
     console.log(data);
     set((state) => ({
       messages: state.messages.map((msg) =>
-        msg._id === data.msgId ? data.updatedMessage : msg
+        msg._id === data.msgId ? data.updatedMessage : msg,
       ),
     }));
   },
@@ -94,7 +94,7 @@ const useChatStore = create((set, get) => ({
         { data },
         {
           "Content-Type": "multipart/form-data",
-        }
+        },
       );
       //console.log(response);
     });
@@ -114,7 +114,7 @@ const useChatStore = create((set, get) => ({
       const response = await apiPatch(
         `/chat/message/${msgId}`,
         { newContent },
-        {}
+        {},
       );
       return toast.success("Msg updated succesfully!");
     });

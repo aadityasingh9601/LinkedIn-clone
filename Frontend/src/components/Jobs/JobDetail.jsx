@@ -14,7 +14,7 @@ export default function JobDetail({ job }) {
   const navigate = useNavigate();
   const currUserId = useUserStore((state) => state.currUserId);
   //Getting the currUser's profile data from the local storage.
-  const userProfile = JSON.parse(localStorage.getItem("currUserProfile"));
+  const userProfile = useUserStore((state) => state.currUserProfile);
 
   const [applied, setApplied] = useState(false);
   const [saved, setSaved] = useState(false);

@@ -17,6 +17,7 @@ import { PostDataSchema } from "../../zodSchema";
 import Spinner from "../shared-components/Loaders/Spinner";
 import RHFselect from "../shared-components/Select/RHFselect";
 import UserInfo from "../shared-components/User/UserInfo";
+import useUserStore from "../../stores/User";
 const PollForm = lazy(() => import("../Polls/PollForm"));
 const SchPostsUI = lazy(() => import("./SchPostsUI"));
 
@@ -38,8 +39,7 @@ export default function PostForm() {
   const setSchedule = usePostStore((state) => state.setSchedule);
   const showSchPosts = usePostStore((state) => state.showSchPosts);
   const setshowSchPosts = usePostStore((state) => state.setshowSchPosts);
-
-  const userProfile = JSON.parse(localStorage.getItem("currUserProfile"));
+  const currUserProfile = useUserStore((state) => state.currUserProfile);
 
   const [preview, setPreview] = useState("");
   // Watch for file changes
@@ -79,10 +79,10 @@ export default function PostForm() {
         <div className={styles.postform}>
           <div className={styles.header}>
             <UserInfo
-              userId={userProfile?.userId}
-              username={userProfile?.name}
-              url={userProfile?.profileImage?.url}
-              headline={userProfile.headline}
+              userId={currUserProfile?.userId}
+              username={currUserProfile?.name}
+              url={currUserProfile?.profileImage?.url}
+              headline={currUserProfile?.headline}
             />
             <div>
               <RHFselect
