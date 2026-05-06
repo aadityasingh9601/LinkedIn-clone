@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { toast } from "react-toastify";
+import { safeParseJSON } from "../utils/helper";
+
 import {
   tryCatchWrapper,
   apiDelete,
@@ -11,7 +13,7 @@ import {
 const useUserStore = create((set, get) => ({
   isLoggedIn: false,
 
-  currUserId: localStorage.getItem("currUserId") || "",
+  currUserId: safeParseJSON("currUserId", ""),
 
   checkAuthStatus: async () => {
     tryCatchWrapper(async () => {
@@ -37,7 +39,8 @@ const useUserStore = create((set, get) => ({
       }
     });
   },
-
+  //If cookies are not setting in the browser in other ways, try sending them normally in a res.send object rather than
+  //res.cookie & then use the cookie api on frontend to set them in the browser.
   login: async (loginData, navigate, setIsLoading) => {
     tryCatchWrapper(async () => {
       setIsLoading(true);
@@ -69,16 +72,11 @@ const useUserStore = create((set, get) => ({
   //But storing all ids of posts liked by the user will cause error, as we can store only a limited amount of
   //data in our localStorage, so we'll store only those ids that are liked by the user and are present in the
   //current feed.
-  allLikedPosts: new Set(
-    localStorage.getItem("allLikedPosts")
-      ? JSON.parse(localStorage.getItem("allLikedPosts"))
-      : [],
-  ),
+  allLikedPosts: new Set(safeParseJSON("allLikedPosts", [])),
 
   setAllLikedPosts: (action, postId) => {
-    const likedPostIds = localStorage.getItem("allLikedPosts")
-      ? JSON.parse(localStorage.getItem("allLikedPosts"))
-      : [];
+    const likedPostIds = safeParseJSON("allLikedPosts", []);
+
     const likedSet = new Set(likedPostIds); //Create set from the array.
 
     if (action === "add") {
@@ -88,7 +86,6 @@ const useUserStore = create((set, get) => ({
     if (action === "remove") {
       likedSet.delete(postId);
     }
-
     // Update localStorage,Set isn't a plain JS object so we havae to serialize it like this in an array.
     localStorage.setItem("allLikedPosts", JSON.stringify([...likedSet]));
 
@@ -107,16 +104,10 @@ const useUserStore = create((set, get) => ({
     });
   },
 
-  allFollowed: new Set(
-    localStorage.getItem("allFollowed")
-      ? JSON.parse(localStorage.getItem("allFollowed"))
-      : [],
-  ),
+  allFollowed: new Set(safeParseJSON("allFollowed", [])),
 
   setAllFollowed: (action, userId) => {
-    const followedUserIds = localStorage.getItem("allFollowed")
-      ? JSON.parse(localStorage.getItem("allFollowed"))
-      : [];
+    const followedUserIds = safeParseJSON("allFollowed", []);
 
     const followedSet = new Set(followedUserIds); //Create set from the array.
 
@@ -150,16 +141,10 @@ const useUserStore = create((set, get) => ({
     });
   },
 
-  allConnections: new Set(
-    localStorage.getItem("allConnections")
-      ? JSON.parse(localStorage.getItem("allConnections"))
-      : [],
-  ),
+  allConnections: new Set(safeParseJSON("allConnections", [])),
 
   setAllConnections: (action, userId1, userId2) => {
-    const connectionsUserIds = localStorage.getItem("allConnections")
-      ? JSON.parse(localStorage.getItem("allConnections"))
-      : [];
+    const connectionsUserIds = safeParseJSON("allConnections", []);
     const connectionsSet = new Set(connectionsUserIds); //Create set from the array.
     const key = [userId1, userId2].sort().join("-");
     //We'll create a single unique key so it'll be easier to identify and look up for.

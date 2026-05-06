@@ -134,7 +134,19 @@ const formatDate2 = (isoDate) => {
   return formattedDate;
 };
 
+const safeParseJSON = (key, fallback) => {
+  try {
+    const item = localStorage.getItem(key);
+    if (!item || item === "undefined" || item === "null") return fallback;
+    return JSON.parse(item);
+  } catch {
+    localStorage.removeItem(key); // clean corrupted value
+    return fallback;
+  }
+};
+
 export {
+  safeParseJSON,
   timeRep,
   formatDate,
   formatDate2,
