@@ -16,7 +16,9 @@ const currUserId = useUserStore.getState().currUserId;
 const useProfileStore = create((set, get) => ({
   profile: {},
 
-  currUserProfile: JSON.parse(localStorage.getItem("currUserProfile") || "[]"),
+  currUserProfile: localStorage.getItem("currUserProfile")
+    ? JSON.parse(localStorage.getItem("currUserProfile"))
+    : null,
 
   userProfiles: [],
 

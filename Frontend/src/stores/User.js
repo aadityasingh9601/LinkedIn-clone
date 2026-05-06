@@ -70,13 +70,15 @@ const useUserStore = create((set, get) => ({
   //data in our localStorage, so we'll store only those ids that are liked by the user and are present in the
   //current feed.
   allLikedPosts: new Set(
-    JSON.parse(localStorage.getItem("allLikedPosts") || "[]"),
+    localStorage.getItem("allLikedPosts")
+      ? JSON.parse(localStorage.getItem("allLikedPosts"))
+      : [],
   ),
 
   setAllLikedPosts: (action, postId) => {
-    const likedPostIds = JSON.parse(
-      localStorage.getItem("allLikedPosts") || "[]",
-    ); //returns an array.
+    const likedPostIds = localStorage.getItem("allLikedPosts")
+      ? JSON.parse(localStorage.getItem("allLikedPosts"))
+      : [];
     const likedSet = new Set(likedPostIds); //Create set from the array.
 
     if (action === "add") {
@@ -105,12 +107,17 @@ const useUserStore = create((set, get) => ({
     });
   },
 
-  allFollowed: new Set(JSON.parse(localStorage.getItem("allFollowed") || "[]")),
+  allFollowed: new Set(
+    localStorage.getItem("allFollowed")
+      ? JSON.parse(localStorage.getItem("allFollowed"))
+      : [],
+  ),
 
   setAllFollowed: (action, userId) => {
-    const followedUserIds = JSON.parse(
-      localStorage.getItem("allFollowed") || "[]",
-    ); //returns an array.
+    const followedUserIds = localStorage.getItem("allFollowed")
+      ? JSON.parse(localStorage.getItem("allFollowed"))
+      : [];
+
     const followedSet = new Set(followedUserIds); //Create set from the array.
 
     if (action === "follow") {
@@ -144,13 +151,15 @@ const useUserStore = create((set, get) => ({
   },
 
   allConnections: new Set(
-    JSON.parse(localStorage.getItem("allConnections") || "[]"),
+    localStorage.getItem("allConnections")
+      ? JSON.parse(localStorage.getItem("allConnections"))
+      : [],
   ),
 
   setAllConnections: (action, userId1, userId2) => {
-    const connectionsUserIds = JSON.parse(
-      localStorage.getItem("allConnections") || "[]",
-    ); //returns an array.
+    const connectionsUserIds = localStorage.getItem("allConnections")
+      ? JSON.parse(localStorage.getItem("allConnections"))
+      : [];
     const connectionsSet = new Set(connectionsUserIds); //Create set from the array.
     const key = [userId1, userId2].sort().join("-");
     //We'll create a single unique key so it'll be easier to identify and look up for.
