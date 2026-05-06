@@ -137,9 +137,6 @@ const useChatStore = create((set, get) => ({
         set({ fullChat: false });
         return toast.success("Chat deleted successfully!");
       }
-
-      if (response.status === 403)
-        return toast.warn("You can't delete this chat!");
     });
   },
 }));
