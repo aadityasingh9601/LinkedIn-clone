@@ -42,6 +42,11 @@ app.use(
   cors({
     origin: `${process.env.FRONTEND_URL}` || "http://localhost:5173", // React frontend URL
     methods: ["POST", "PATCH", "GET", "DELETE", "OPTIONS", "HEAD"],
+    allowedHeaders: [
+      "Access-Control-Allow-Origin",
+      "Content-Type",
+      "Authorization",
+    ],
     credentials: true, // Allow credentials (cookies) to be sent
   }),
 );

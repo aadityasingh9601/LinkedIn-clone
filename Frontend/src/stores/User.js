@@ -15,7 +15,9 @@ const useUserStore = create((set, get) => ({
 
   checkAuthStatus: async () => {
     tryCatchWrapper(async () => {
-      const response = await apiGet("/users/checkauthstatus");
+      const response = await apiGet("/users/checkauthstatus", {
+        _skipInterceptor: true,
+      });
 
       if (response.status === 200) {
         set({ isLoggedIn: true, currUserId: response.data.userId });
