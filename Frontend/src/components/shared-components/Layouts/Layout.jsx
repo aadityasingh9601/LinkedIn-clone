@@ -14,6 +14,8 @@ function Layout({ children, socket }) {
   const getAllChats = useChatStore((state) => state.getAllChats);
   const fullChat = useChatStore((state) => state.fullChat);
 
+  //There's no need to fetch it beforehand, we can just run this, whenever user opens the messaging tab, it'll make the app
+  //faster.
   useEffect(() => {
     getAllChats(currUserId);
   }, [currUserId]);

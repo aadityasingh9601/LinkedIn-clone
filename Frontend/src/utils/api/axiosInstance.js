@@ -7,17 +7,10 @@ export const setNavigate = (navigate) => {
 };
 
 const BE = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
-const FE = import.meta.env.VITE_FRONTEND_URL || "http://localhost:5173";
 
 const axiosInstance = axios.create({
   baseURL: BE,
   withCredentials: true,
-  crossDomain: true,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    "Access-Control-Allow-Origin": FE,
-  },
 });
 
 axiosInstance.interceptors.response.use(

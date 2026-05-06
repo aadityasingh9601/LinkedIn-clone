@@ -51,7 +51,7 @@ const getAllPolls = async (req, res) => {
     .sort({ createdAt: -1 })
     .populate({
       path: "author",
-      select: "profile", // Include only the `profile` field in `createdBy`
+      select: "profile", // Include only the `profile` field in `poll`
       populate: {
         path: "profile", // Populate the `profile` field
         select: "headline name profileImage", // Include only `headline` and `name` fields in the `profile`

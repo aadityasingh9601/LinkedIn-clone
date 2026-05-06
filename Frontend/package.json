@@ -1,7 +1,6 @@
 {
   "name": "frontend",
   "private": true,
-  "proxy": "https://linkedin-clone-hrm9.onrender.com",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

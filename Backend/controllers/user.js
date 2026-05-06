@@ -15,6 +15,7 @@ const options = {
 };
 
 const checkAuthStatus = async (req, res) => {
+  console.log("inside checkauthstatus on the backend");
   let accesstoken = req.cookies.accesstoken;
   let decoded = jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET);
   const user = await User.findOne({ _id: decoded.id });

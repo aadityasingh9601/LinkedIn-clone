@@ -20,10 +20,11 @@ const useUserStore = create((set, get) => ({
       const response = await apiGet("/users/checkauthstatus", {
         _skipInterceptor: true,
       });
+      console.log(response);
 
       if (response.status === 200) {
-        set({ isLoggedIn: true, currUserId: response.data.userId });
-        localStorage.setItem("currUserId", response.data.userId);
+        set({ isLoggedIn: true, currUserId: response?.data.userId });
+        localStorage.setItem("currUserId", response?.data.userId);
       }
     });
   },

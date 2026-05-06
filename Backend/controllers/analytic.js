@@ -18,7 +18,7 @@ const logEvent = async (req, res) => {
       //Find the owner of each post.
       const post = await Post.findById(p);
 
-      if (req.user._id.toString() === post.author.toString()) {
+      if (req.user._id.toString() === post?.author?.toString()) {
         res.send("You can't log event for yourself!");
         return;
       }

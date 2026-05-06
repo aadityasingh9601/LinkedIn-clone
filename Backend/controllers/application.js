@@ -106,7 +106,7 @@ const getAllApplications = async (req, res) => {
   console.log(jobId);
   const allApplications = await Application.find({ jobId: jobId }).populate({
     path: "applicant",
-    select: "profile", // Include only the `profile` field in `createdBy`
+    select: "profile", // Include only the `profile` field in `author`
     populate: {
       path: "profile", // Populate the `profile` field
       select: "headline name profileImage", // Include only `headline` and `name` fields in the `profile`

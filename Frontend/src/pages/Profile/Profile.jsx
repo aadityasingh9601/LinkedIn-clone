@@ -9,6 +9,8 @@ import useConnectionStore from "../../stores/Connection";
 import ProfileHead from "../../components/Profile/ProfileHead";
 import ProfileSection from "../../components/Profile/ProfileSection";
 
+//this component's size is very huge, make sure to break it down into chunks & also refactor this to separate logic, so that
+//it can beomce light & fast.
 export default function Profile() {
   const { id: currProfileId } = useParams();
   const navigate = useNavigate();
