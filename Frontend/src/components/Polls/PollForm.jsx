@@ -58,7 +58,7 @@ export default function PollForm() {
             errors={errors}
           />
 
-          {fields.map((field, index) => (
+          {fields?.map((field, index) => (
             <div key={field.id}>
               <span>
                 Option {index + 1}

@@ -41,7 +41,7 @@ export default function Network() {
                 : null}
         </h2>
       ) : (
-        network.map((n) => {
+        network?.map((n) => {
           const user =
             type === "followers"
               ? n.user

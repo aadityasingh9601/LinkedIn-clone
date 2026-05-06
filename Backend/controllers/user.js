@@ -164,7 +164,7 @@ const refreshAccessToken = async (req, res) => {
 
 const allLikedPosts = async (req, res) => {
   const allLikedPosts = await Like.find({ user: req.user._id });
-  const likedPosts = allLikedPosts.map((p) => {
+  const likedPosts = allLikedPosts?.map((p) => {
     return p.postId;
   });
   res.status(200).json(likedPosts);

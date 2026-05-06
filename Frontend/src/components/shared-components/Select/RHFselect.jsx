@@ -9,7 +9,7 @@ export default function RHFselect({
   return (
     <div className="select">
       <select style={styles} {...register(name, { ...rules })}>
-        {options.map((option, index) => {
+        {options?.map((option, index) => {
           return <option key={index}>{option}</option>;
         })}
       </select>

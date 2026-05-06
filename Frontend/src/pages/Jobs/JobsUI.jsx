@@ -67,7 +67,7 @@ export default function JobsUI() {
             <h2>Top jobs picks for you!</h2>
           </div>
           <div className="b">
-            {jobs.map((job) => {
+            {jobs?.map((job) => {
               return <Job job={job} />;
             })}
           </div>

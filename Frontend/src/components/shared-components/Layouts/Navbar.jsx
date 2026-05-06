@@ -80,7 +80,7 @@ export default function Navbar({ showMessaging }) {
             onClick={() => setSearchResult(false)}
             styles={{ zIndex: "100" }}
           />
-          {userProfiles.map((profile) => (
+          {userProfiles?.map((profile) => (
             <UserInfo
               url={profile.profileImage.url}
               userId={profile.userId}

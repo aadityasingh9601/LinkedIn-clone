@@ -25,7 +25,7 @@ export default function CommentSection({
         <CommentBox postId={postId} />
       </Suspense>
       <div className="comments">
-        {comments.map((comment) => {
+        {comments?.map((comment) => {
           return (
             <Suspense fallback={<div>Loading...</div>}>
               <Comment key={comment._id} comment={comment} />

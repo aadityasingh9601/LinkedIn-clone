@@ -6,7 +6,7 @@ export default function ChatList({ chats, socket }) {
   const currUserId = useUserStore((state) => state.currUserId);
   return (
     <div>
-      {chats.map((chat) => {
+      {chats?.map((chat) => {
         const otherPerson = chat?.participants?.find(
           (participant) => participant._id !== currUserId
         );

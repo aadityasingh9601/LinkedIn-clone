@@ -184,7 +184,7 @@ const getAnalyticsData = async (req, res) => {
       { $sort: { _id: 1 } }, // Sort by date
     ]);
 
-    const properData = data.map((e) => {
+    const properData = data?.map((e) => {
       return { date: e._id, count: e.count };
     });
     //console.log(data);
@@ -226,7 +226,7 @@ const getAnalyticsData = async (req, res) => {
     // console.log(fullRange);
 
     // Map the full range and merge with fetched data to have complete data for us to display.
-    const completeData = fullRange.map((date) => {
+    const completeData = fullRange?.map((date) => {
       const formatted = formatDate(date);
       const formatted2 = formatDate2(date);
       const dataForDay = properData.find((item) => item.date === formatted);

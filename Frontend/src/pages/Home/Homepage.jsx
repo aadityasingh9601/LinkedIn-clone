@@ -166,7 +166,7 @@ export default function Homepage() {
         )}
 
         <div className="polls">
-          {polls.map((poll) => {
+          {polls?.map((poll) => {
             return <Poll key={poll._id} poll={poll} />;
           })}
         </div>
@@ -179,7 +179,7 @@ export default function Homepage() {
           loader={<div className="loader">Loading...</div>}
         >
           <div className="posts">
-            {posts.map((post) => {
+            {posts?.map((post) => {
               return (
                 <Post
                   key={post._id}

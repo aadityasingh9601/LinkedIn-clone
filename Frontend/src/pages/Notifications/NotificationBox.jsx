@@ -16,7 +16,7 @@ export default function NotificationBox() {
   return (
     <div className="notificationBox">
       {notifications.length > 0 ? (
-        notifications.map((noti) => <Notification key={noti.id} noti={noti} />)
+        notifications?.map((noti) => <Notification key={noti.id} noti={noti} />)
       ) : (
         <h2>Oops! Looks like you don't have notifications yet!</h2>
       )}

@@ -129,7 +129,7 @@ export default function Post({ post, postRef }) {
         <Modal>
           <Xmark onClick={() => togglelikeModal(false)} />
           <div className="likeList">
-            {likedUsers.map((like) => {
+            {likedUsers?.map((like) => {
               return (
                 <UserInfo
                   userId={like.user._id}

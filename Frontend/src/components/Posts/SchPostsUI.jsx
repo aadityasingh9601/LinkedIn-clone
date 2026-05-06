@@ -31,7 +31,7 @@ export default function SchPostsUI() {
             You haven't scheduled any posts yet.
           </div>
         ) : (
-          scheduledPosts.map((schPost) => {
+          scheduledPosts?.map((schPost) => {
             return (
               <Suspense fallback={<div>Loading...</div>}>
                 <SchPost key={schPost._id} schPost={schPost} />
