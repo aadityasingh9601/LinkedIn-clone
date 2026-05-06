@@ -1,7 +1,7 @@
 import "./ProfileHeadForm.css";
 import { useForm } from "react-hook-form";
-import Button from "../Button.";
-import RHFInput from "../RHFInput";
+import Button from "../shared-components/Buttons/Button";
+import RHFInput from "../shared-components/Inputs/RHFInput";
 import { ProfileHeadDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 

@@ -1,11 +1,10 @@
 import "./ApplicationForm.css";
 import { useForm } from "react-hook-form";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import useJobStore from "../../stores/Job";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import RHFInput from "../RHFInput";
-import RHFtextarea from "../RHFtextarea";
+import { useParams, useNavigate } from "react-router-dom";
+import RHFInput from "../shared-components/Inputs/RHFInput";
+import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
 import { JobApplicationDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 

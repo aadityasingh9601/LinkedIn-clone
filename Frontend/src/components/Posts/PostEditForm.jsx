@@ -1,9 +1,9 @@
 import "./PostEditForm.css";
 import usePostStore from "../../stores/Post";
-import Button from "../shared-components/Buttons/Button.";
+import Button from "../shared-components/Buttons/Button";
 import { useForm } from "react-hook-form";
 import { parseISODate } from "../../utils/helper";
-import RHFtextarea from "../RHFtextarea";
+import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
 import ClockS from "../shared-components/Icons/ClockS";
 import ClockR from "../shared-components/Icons/ClockR";
 import RHFInput from "../shared-components/Inputs/RHFInput";

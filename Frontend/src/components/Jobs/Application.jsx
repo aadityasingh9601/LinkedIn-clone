@@ -1,5 +1,5 @@
 import "./Application.css";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import { useNavigate } from "react-router-dom";
 
 export default function Application({ application, jobId }) {

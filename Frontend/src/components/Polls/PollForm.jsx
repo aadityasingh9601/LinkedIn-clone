@@ -1,9 +1,9 @@
 import "./PollForm.css";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useState } from "react";
 import usePollStore from "../../stores/Poll";
-import RHFtextarea from "../RHFtextarea";
+import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
 import { PollDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 

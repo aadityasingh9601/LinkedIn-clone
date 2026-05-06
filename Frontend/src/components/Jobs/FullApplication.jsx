@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import useJobStore from "../../stores/Job";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Envelope from "../../icons/Envelope";
+import Envelope from "../shared-components/Icons/Envelope";
 
 export default function FullApplication() {
   const { id, appId } = useParams();

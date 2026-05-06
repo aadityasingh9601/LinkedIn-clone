@@ -1,10 +1,10 @@
 import { useState, lazy, Suspense } from "react";
 import "./SchPost.css";
-import Button from "../Button.";
+import Button from "../shared-components/Buttons/Button";
 import usePostStore from "../../stores/Post";
-import Modal from "../Modal";
-import Ellipsis from "../../icons/Ellipsis";
-import Xmark from "../../icons/Xmark";
+import Modal from "../shared-components/Modal/Modal";
+import Ellipsis from "../shared-components/Icons/Ellipsis";
+import Xmark from "../shared-components/Icons/Xmark";
 import { formatTime, formatDate2 } from "../../utils/helper";
 
 const PostEditForm = lazy(() => import("./PostEditForm"));
@@ -25,7 +25,7 @@ export default function SchPost({ schPost }) {
         }}
       >
         <div>{`${formatDate2(schPost?.scheduledTime)} at ${formatTime(
-          schPost?.scheduledTime
+          schPost?.scheduledTime,
         )}`}</div>
         <div>
           <Ellipsis

@@ -1,4 +1,4 @@
-import Button from "../Button.";
+import "../shared-components/Buttons/Button";
 import "./SchPostUI.css";
 import usePostStore from "../../stores/Post";
 import { useEffect, lazy, Suspense } from "react";

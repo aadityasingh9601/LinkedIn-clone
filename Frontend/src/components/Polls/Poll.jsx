@@ -3,8 +3,8 @@ import usePollStore from "../../stores/Poll";
 import PollOption from "./PollOption";
 import useUserStore from "../../stores/User";
 import { useEffect, useState } from "react";
-import TimePassed from "../TimePassed";
-import UserInfo from "../UserInfo";
+import TimePassed from "../shared-components/Date_Time/TimePassed";
+import UserInfo from "../shared-components/User/UserInfo";
 import PostHead from "../Posts/PostHead";
 
 export default function Poll({ poll }) {
