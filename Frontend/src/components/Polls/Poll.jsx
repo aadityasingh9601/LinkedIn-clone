@@ -1,4 +1,4 @@
-import "./Poll.css";
+import styles from "./Poll.module.css";
 import usePollStore from "../../stores/Poll";
 import PollOption from "./PollOption";
 import useUserStore from "../../stores/User";
@@ -29,12 +29,12 @@ export default function Poll({ poll }) {
     checkVoteStatus();
   }, []);
   return (
-    <div className="poll">
+    <div className={styles.poll}>
       <PostHead data={poll} type="poll" />
 
-      <div className="pollbody">
-        <div className="ques">{poll?.question}</div>
-        <div className="choices">
+      <div className={styles.pollbody}>
+        <div className={styles.ques}>{poll?.question}</div>
+        <div className={styles.choices}>
           {poll?.options?.map((pollOption) => {
             return (
               <PollOption
@@ -49,7 +49,7 @@ export default function Poll({ poll }) {
             );
           })}
         </div>
-        <div className="pollInfo">
+        <div className={styles.pollInfo}>
           {" "}
           {poll.voters.length} votes .
           <TimePassed
@@ -63,7 +63,7 @@ export default function Poll({ poll }) {
           />
           {voted && (
             <span
-              className="undo"
+              className={styles.undo}
               onClick={() => {
                 unVote(poll._id);
                 setVoted(false);

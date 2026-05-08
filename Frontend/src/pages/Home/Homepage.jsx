@@ -1,4 +1,4 @@
-import "./Homepage.css";
+import styles from "./Homepage.module.css";
 import { useEffect, useState, useCallback, useRef, lazy } from "react";
 import usePostStore from "../../stores/Post";
 import { debounce } from "lodash";
@@ -143,11 +143,11 @@ export default function Homepage() {
   }
 
   return (
-    <div className="homepage">
+    <div className={styles.homepage}>
       {/* <Button btnText="Join Group" onClick={handleJoin} />
         <Button btnText="Connect" onClick={sendReq} /> */}
       {/* <div className="sideTab">This is our sideTab.</div> */}
-      <div className="feed">
+      <div className={styles.feed}>
         <PostFormPreview />
         <hr></hr>
 

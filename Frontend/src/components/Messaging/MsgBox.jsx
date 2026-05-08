@@ -1,4 +1,4 @@
-import "./MsgBox.css";
+import styles from "./MsgBox.module.css";
 import useChatStore from "../../stores/Chat";
 import { useState } from "react";
 import Button from "../shared-components/Buttons/Button";
@@ -30,9 +30,9 @@ export default function MsgBox({ currChatId, socket }) {
   }
 
   return (
-    <div className="msgbox">
+    <div className={styles.msgbox}>
       {emojiPicker && (
-        <div className="emoji">
+        <div className={styles.emoji}>
           <EmojiPicker
             height={350}
             width={300}
@@ -65,9 +65,9 @@ export default function MsgBox({ currChatId, socket }) {
           }}
         />
       </div>
-      <div className="extras">
-        <div className="icons">
-          <div className="icon">
+      <div className={styles.extras}>
+        <div className={styles.icons}>
+          <div className={styles.icon}>
             {emojiPicker ? (
               <SmileS onClick={() => setemojiPicker(false)} />
             ) : (
@@ -75,7 +75,7 @@ export default function MsgBox({ currChatId, socket }) {
             )}
           </div>
 
-          <div className="icon">
+          <div className={styles.icon}>
             <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
               <Paperclip />
             </label>

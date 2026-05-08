@@ -1,4 +1,4 @@
-import "./CommentSection.css";
+import styles from "./CommentSection.module.css";
 import { lazy, Suspense } from "react";
 import useCommentStore from "../../stores/Comment";
 import { useEffect } from "react";
@@ -20,7 +20,7 @@ export default function CommentSection({
   }, [showComments]);
 
   return (
-    <div className="commSection">
+    <div className={styles.commSection}>
       <Suspense fallback={<div>Loading...</div>}>
         <CommentBox postId={postId} />
       </Suspense>

@@ -1,5 +1,5 @@
 import MyErrorBoundary from "../ErrorBoundary/MyErrorBoundary";
-import "./Textarea.css";
+import css from "./Textarea.module.css";
 
 export default function RHFtextarea({
   placeholder,
@@ -11,7 +11,7 @@ export default function RHFtextarea({
 }) {
   return (
     <MyErrorBoundary>
-      <div className="textarea">
+      <div className={css.textarea}>
         <textarea
           style={styles}
           {...register(name, rules)}

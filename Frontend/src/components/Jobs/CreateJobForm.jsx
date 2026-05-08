@@ -1,4 +1,4 @@
-import "./CreateJobForm.css";
+import styles from "./CreateJobForm.module.css";
 import { useForm } from "react-hook-form";
 import useJobStore from "../../stores/Job";
 import Button from "../shared-components/Buttons/Button";
@@ -61,14 +61,14 @@ export default function CreateJobForm({ job }) {
     setValue("jobMode", event.target.value); // Update the value in React Hook Form
   };
   return (
-    <div className="createjobform">
+    <div className={styles.createjobform}>
       <Xmark
         onClick={() => {
           job ? seteditJob(false) : setpostJob(false);
         }}
       />
 
-      <div className="h2">Create a job posting</div>
+      <div className={styles.h2}>Create a job posting</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RHFInput
           placeholder="Write job title"

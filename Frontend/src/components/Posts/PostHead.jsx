@@ -1,4 +1,4 @@
-import "./PostHead.css";
+import styles from "./PostHead.module.css";
 import TimePassed from "../shared-components/Date_Time/TimePassed";
 import UserInfo from "../shared-components/User/UserInfo";
 import { useEffect, useState, lazy, Suspense } from "react";
@@ -64,7 +64,7 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
     }
   }, [allFollowed]);
   return (
-    <div className="postHead">
+    <div className={styles.postHead}>
       <UserInfo
         url={profile?.profileImage?.url}
         userId={profileUserId}
@@ -80,7 +80,7 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
         currUserId !== profileUserId &&
         (isFollowed ? (
           <button
-            className="followedBtn"
+            className={styles.followedBtn}
             onClick={() => unsetFollower(profileUserId)}
           >
             Following
@@ -88,7 +88,7 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
           </button>
         ) : (
           <button
-            className="followBtn"
+            className={styles.followBtn}
             onClick={() => setFollower(profileUserId)}
           >
             <Plus />

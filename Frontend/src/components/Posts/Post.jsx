@@ -1,4 +1,4 @@
-import "./Post.css";
+import styles from "./Post.module.css";
 import { lazy } from "react";
 import { useState, useEffect, useRef } from "react";
 import usePostStore from "../../stores/Post";
@@ -74,11 +74,11 @@ export default function Post({ post, postRef }) {
   }, [likeModal]);
 
   return (
-    <div className="post" data-post-id={post?._id} ref={postRef}>
+    <div className={styles.post} data-post-id={post?._id} ref={postRef}>
       <PostHead data={post} type="post" />
-      <div className="body">
-        <div className="body-text">{post?.content}</div>
-        <div className="media">
+      <div className={styles.body}>
+        <div className={styles["body-text"]}>{post?.content}</div>
+        <div className={styles.media}>
           {post?.media?.mediaType === "image" ? (
             <img src={post?.media?.url} alt="" />
           ) : post?.media?.mediaType === "video" ? (
@@ -87,7 +87,7 @@ export default function Post({ post, postRef }) {
             </video>
           ) : null}
         </div>
-        <div className="postInfo">
+        <div className={styles.postInfo}>
           <div>
             <span onClick={() => togglelikeModal(true)}>{likeCount} likes</span>
             ,
@@ -97,7 +97,7 @@ export default function Post({ post, postRef }) {
           </div>
         </div>
       </div>
-      <div className="footer">
+      <div className={styles.footer}>
         <button>
           {isLiked ? (
             <ThumbsupS onClick={unsetLike} styles={{ color: "#0a66c2" }} />
@@ -128,7 +128,7 @@ export default function Post({ post, postRef }) {
       {likeModal && (
         <Modal>
           <Xmark onClick={() => togglelikeModal(false)} />
-          <div className="likeList">
+          <div className={styles.likeList}>
             {likedUsers?.map((like) => {
               return (
                 <UserInfo

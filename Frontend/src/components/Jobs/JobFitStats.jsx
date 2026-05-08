@@ -1,9 +1,9 @@
-import "./JobFitStats.css";
+import styles from "./JobFitStats.module.css";
 
 export default function JobFitStats({ jobFitStats, jobSkills }) {
   const matchedScore = jobFitStats?.matchedScore;
   return (
-    <div className="jobfitstats">
+    <div className={styles.jobfitstats}>
       <div
         style={{
           backgroundColor: "rgb(218, 235, 209)",
@@ -65,7 +65,7 @@ export default function JobFitStats({ jobFitStats, jobSkills }) {
           : "🌱 You currently lack many of the required skills - learning them can help a lot!"}
       </div>
 
-      <div className="note">
+      <div className={styles.note}>
         <span style={{ fontWeight: "bold" }}>ℹ️ Note:</span> This is just an
         automated estimate. Actual job success depends on various factors like
         experience, portfolio, and communication skills too.

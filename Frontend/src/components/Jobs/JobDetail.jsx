@@ -1,4 +1,4 @@
-import "./JobDetail.css";
+import styles from "./JobDetail.module.css";
 import useJobStore from "../../stores/Job";
 import useUserStore from "../../stores/User";
 
@@ -48,12 +48,12 @@ export default function JobDetail({ job }) {
   }, [job]);
 
   return (
-    <div className="jobDetail">
-      <div className="aa">
+    <div className={styles.jobDetail}>
+      <div className={styles.aa}>
         <img src={job?.companyLogo} />
         <span>{job?.company}</span>
       </div>
-      <div className="bb">
+      <div className={styles.bb}>
         <div
           style={{
             fontWeight: "500",
@@ -112,7 +112,7 @@ export default function JobDetail({ job }) {
           <JobFitStats jobFitStats={jobFitStats} jobSkills={job?.skills} />
         )}
 
-        <div className="job_btns">
+        <div className={styles.job_btns}>
           {currUserId !== job?.postedBy &&
             (applied ? (
               <Button
@@ -169,8 +169,8 @@ export default function JobDetail({ job }) {
         >
           About the job
         </div>
-        <div className="subsection">
-          <span className="subtitle">Skills required</span>
+          <div className={styles.subsection}>
+            <span className={styles.subtitle}>Skills required</span>
 
           <div>
             {" "}
@@ -180,13 +180,13 @@ export default function JobDetail({ job }) {
           </div>
         </div>
 
-        <div className="subsection">
-          <span className="subtitle">Company overview</span>
+        <div className={styles.subsection}>
+          <span className={styles.subtitle}>Company overview</span>
           <div> {job?.companydescription}</div>
         </div>
 
-        <div className="subsection">
-          <span className="subtitle">Required qualifications</span>
+        <div className={styles.subsection}>
+          <span className={styles.subtitle}>Required qualifications</span>
           <div>
             {job?.qualifications?.map((q) => {
               return <li>{q}</li>;
@@ -194,8 +194,8 @@ export default function JobDetail({ job }) {
           </div>
         </div>
 
-        <div className="subsection">
-          <span className="subtitle">Job overview</span>
+        <div className={styles.subsection}>
+          <span className={styles.subtitle}>Job overview</span>
           <div> {job?.jobdescription}</div>
         </div>
 

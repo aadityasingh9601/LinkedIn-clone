@@ -1,4 +1,4 @@
-import "./Chat.css";
+import styles from "./Chat.module.css";
 import useChatStore from "../../stores/Chat";
 import { useState } from "react";
 import Button from "../shared-components/Buttons/Button";
@@ -25,7 +25,7 @@ export default function Chat({ chat, otherPerson, socket }) {
   return (
     <>
       <div
-        className="chat"
+        className={styles.chat}
         onClick={() => {
           setfullChat(true, chat._id);
         }}
@@ -71,7 +71,7 @@ export default function Chat({ chat, otherPerson, socket }) {
         <Ellipsis onClick={() => setchatOptions(true)} />
 
         {chatOptions && (
-          <div className="chatOptions">
+          <div className={styles.chatOptions}>
             <Xmark
               onClick={() => setchatOptions(false)}
               styles={{ position: "absolute", top: "0.3rem", right: "0.3rem" }}

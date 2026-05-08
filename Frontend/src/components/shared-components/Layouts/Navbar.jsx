@@ -1,4 +1,4 @@
-import "./Navbar.css";
+import styles from "./Navbar.module.css";
 import Button from "../Buttons/Button";
 import { useNavigate } from "react-router-dom";
 import { useState, useCallback, useEffect, lazy } from "react";
@@ -55,10 +55,10 @@ export default function Navbar({ showMessaging }) {
   };
 
   return (
-    <div className="navbar">
+    <div className={styles.navbar}>
       <MainLogo />
       <input
-        className="searchBar"
+        className={styles.searchBar}
         value={username}
         onChange={(e) => {
           setUsername(e.target.value);
@@ -75,7 +75,7 @@ export default function Navbar({ showMessaging }) {
       />
 
       {searchResult && (
-        <div className="allUserProfiles">
+        <div className={styles.allUserProfiles}>
           <Xmark
             onClick={() => setSearchResult(false)}
             styles={{ zIndex: "100" }}
@@ -100,7 +100,7 @@ export default function Navbar({ showMessaging }) {
         <span onClick={toggle}>My Network</span>
       </Link>
       {showNetwork && (
-        <div className="myNetwork">
+        <div className={styles.myNetwork}>
           <div
             style={{
               fontSize: "1.2rem",

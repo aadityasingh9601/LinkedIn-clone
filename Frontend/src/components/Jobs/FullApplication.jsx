@@ -1,4 +1,4 @@
-import "./FullApplication.css";
+import styles from "./FullApplication.module.css";
 import { useParams } from "react-router-dom";
 import useJobStore from "../../stores/Job";
 import { useNavigate } from "react-router-dom";
@@ -41,14 +41,14 @@ export default function FullApplication() {
     );
   };
   return (
-    <div className="fullApplication">
-      <div className="fullapplication-container">
-        <div className="fullapplication-header">
+    <div className={styles.fullApplication}>
+      <div className={styles["fullapplication-container"]}>
+        <div className={styles["fullapplication-header"]}>
           <div style={{ fontSize: "1.4rem", fontWeight: "500" }}>
             {job?.title}
           </div>
           <div>
-            <p className="fullapplication-date">
+            <p className={styles["fullapplication-date"]}>
               Applied on {new Date(application?.appliedAt).toLocaleDateString()}
             </p>
           </div>
@@ -108,39 +108,39 @@ export default function FullApplication() {
                 gap: "1rem",
               }}
             >
-              <button className="btn-download" onClick={downloadResume}>
+              <button className={styles["btn-download"]} onClick={downloadResume}>
                 View Resume
               </button>
             </div>
           </div>
         </div>
 
-        <div className="application-answers">
-          <div className="answer">
-            <div className="ans-head">Why are you interested in this role?</div>
+        <div className={styles["application-answers"]}>
+          <div className={styles.answer}>
+            <div className={styles["ans-head"]}>Why are you interested in this role?</div>
             <div>{application?.answers[0]}</div>
           </div>
 
-          <div className="answer">
-            <div className="ans-head">
+          <div className={styles.answer}>
+            <div className={styles["ans-head"]}>
               Which skill of yours do you believe will have the most impact in
               this role?
             </div>
             <div>{application?.answers[1]}</div>
           </div>
 
-          <div className="answer">
-            <div className="ans-head">
+          <div className={styles.answer}>
+            <div className={styles["ans-head"]}>
               When would you be able to join if selected?
             </div>
             <div>{application?.answers[2]}</div>
           </div>
         </div>
 
-        <div className="fullapplication-actions">
+        <div className={styles["fullapplication-actions"]}>
           {reviewed ? (
             <button
-              className="btn-download-hover"
+              className={styles["btn-download-hover"]}
               onClick={() => {
                 markAsReviewed(id, appId);
                 setReviewed(false);
@@ -150,7 +150,7 @@ export default function FullApplication() {
             </button>
           ) : (
             <button
-              className="btn-download"
+              className={styles["btn-download"]}
               onClick={() => {
                 markAsReviewed(id, appId);
                 setReviewed(true);
@@ -161,7 +161,7 @@ export default function FullApplication() {
           )}
 
           <button
-            className="btn-download"
+            className={styles["btn-download"]}
             onClick={() => rejectUserApplication(id, appId, navigate)}
           >
             Reject

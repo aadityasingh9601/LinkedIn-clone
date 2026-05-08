@@ -1,4 +1,4 @@
-import "./NotificationBox.css";
+import styles from "./NotificationBox.module.css";
 import Notification from "../../components/Notifications/Notification";
 import { useEffect } from "react";
 import useNotificationStore from "../../stores/Notification";
@@ -14,7 +14,7 @@ export default function NotificationBox() {
   }, []);
 
   return (
-    <div className="notificationBox">
+    <div className={styles.notificationBox}>
       {notifications.length > 0 ? (
         notifications?.map((noti) => <Notification key={noti.id} noti={noti} />)
       ) : (

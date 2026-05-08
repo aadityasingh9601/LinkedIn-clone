@@ -1,4 +1,4 @@
-import "./ProfileHead.css";
+import moduleStyles from "./ProfileHead.module.css";
 import useUserStore from "../../stores/User";
 import Button from "../shared-components/Buttons/Button";
 import PDF from "../Profile/Pdf";
@@ -56,32 +56,32 @@ export default function ProfileHead({ profile, styles, createProfile }) {
     }
   }, [profile.userId, allFollowed, allConnections]);
   return (
-    <div className="profileHead">
-      <div className="banner">
+    <div className={moduleStyles.profileHead}>
+      <div className={moduleStyles.banner}>
         <img src={profile?.bannerImage?.url} alt="" />
       </div>
-      <div className="profilePic">
+      <div className={moduleStyles.profilePic}>
         <img src={profile?.profileImage?.url} alt="" />
       </div>
-      <div className="text">
+      <div className={moduleStyles.text}>
         {profile.userId === currUserId && (
           <Pen style={styles} onClick={() => setEditHead(true)} />
         )}
-        <div className="details">
-          <div className="name">{profile?.name}</div>
+        <div className={moduleStyles.details}>
+          <div className={moduleStyles.name}>{profile?.name}</div>
           <div>{profile?.headline}</div>
           <div>{profile?.location}</div>
-          <div className="contactInfo">
+          <div className={moduleStyles.contactInfo}>
             <span>{profile?.contactInfo?.email}</span>
             <span>{profile?.contactInfo?.phone}</span>
           </div>
-          <div className="socials">
+          <div className={moduleStyles.socials}>
             <span>{profile?.followerCount} followers</span>
             <span>{profile?.connCount} connections</span>
           </div>
         </div>
       </div>
-      <div className="allOptions">
+      <div className={moduleStyles.allOptions}>
         {currUserId !== profile?.userId && (
           <>
             {isFollowed ? (
@@ -116,7 +116,7 @@ export default function ProfileHead({ profile, styles, createProfile }) {
             )}
           </>
         )}
-        <button className="downloadPdf">
+        <button className={moduleStyles.downloadPdf}>
           <PDFDownloadLink
             document={<PDF user={profile} />}
             fileName="Profile.pdf"

@@ -1,4 +1,4 @@
-import "./Notification.css";
+import styles from "./Notification.module.css";
 import Button from "../shared-components/Buttons/Button";
 import useNotificationStore from "../../stores/Notification";
 import TimePassed from "../shared-components/Date_Time/TimePassed";
@@ -9,7 +9,7 @@ export default function Notification({ noti }) {
   const handleConnRes = useNotificationStore((state) => state.handleConnRes);
 
   return (
-    <div className="notification">
+    <div className={styles.notification}>
       <div>{noti.message}</div>
 
       {noti.notiType === "connection" || noti.notiType === "groupjoinreq" ? (

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import "./ChatUI.css";
+import styles from "./ChatUI.module.css";
 import MsgBox from "./MsgBox";
 
 import useChatStore from "../../stores/Chat";
@@ -68,8 +68,8 @@ export default function ChatUI({ socket }) {
   let lastDate = null;
 
   return (
-    <div className="chatui">
-      <div className="receiver">
+    <div className={styles.chatui}>
+      <div className={styles.receiver}>
         <Xmark
           onClick={() => setfullChat(false)}
           styles={{
@@ -87,14 +87,14 @@ export default function ChatUI({ socket }) {
         />
       </div>
 
-      <div className="allMsg" ref={chatContainerRef}>
+      <div className={styles.allMsg} ref={chatContainerRef}>
         {messages?.map((msg) => {
           const messageDate = formatDate2(msg?.Date);
           const isNewDay = lastDate !== messageDate;
           lastDate = messageDate;
           return (
             <>
-              {isNewDay && <div className="date-divider">{messageDate}</div>}
+              {isNewDay && <div className={styles["date-divider"]}>{messageDate}</div>}
               <Message msg={msg} formatTime={formatTime} />
             </>
           );

@@ -1,5 +1,5 @@
 import Button from "../shared-components/Buttons/Button";
-import "./Comment.css";
+import styles from "./Comment.module.css";
 import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import Modal from "../shared-components/Modal/Modal";
 import useUserStore from "../../stores/User";
@@ -29,13 +29,13 @@ export default function Comment({ comment }) {
   };
 
   return (
-    <div className="comment">
+    <div className={styles.comment}>
       <PostHead
         data={comment}
         type="comment"
         setCommentEdit={updateCommentEdit}
       />
-      <div className="txt">
+      <div className={styles.txt}>
         {commentEdit ? (
           <>
             <Suspense fallback={<div>Loading...</div>}>

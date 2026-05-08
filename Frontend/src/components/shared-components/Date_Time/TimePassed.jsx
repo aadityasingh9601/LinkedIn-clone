@@ -1,4 +1,4 @@
-import "./TimePassed.css";
+import css from "./TimePassed.module.css";
 import { timeRep } from "../../../utils/helper";
 
 export default function TimePassed({ timePassed, styles = {} }) {
@@ -18,7 +18,7 @@ export default function TimePassed({ timePassed, styles = {} }) {
             : `${seconds}s`;
 
   return (
-    <div className="timePassed" style={styles}>
+    <div className={css.timePassed} style={styles}>
       {isFuture ? `${timeStr} left` : `${timeStr}`}
     </div>
   );

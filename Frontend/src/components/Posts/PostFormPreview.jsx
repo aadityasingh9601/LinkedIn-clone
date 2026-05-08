@@ -1,4 +1,4 @@
-import "./PostFormPreview.css";
+import styles from "./PostFormPreview.module.css";
 import usePostStore from "../../stores/Post";
 import ImageIcon from "../shared-components/Icons/ImageIcon";
 import Pollicon from "../shared-components/Icons/PollIcon";
@@ -9,9 +9,9 @@ export default function PostFormPreview() {
   const setPostFormModal = usePostStore((state) => state.setPostFormModal);
 
   return (
-    <div className="postformpreview">
-      <div className="form">
-        <div className="img">
+    <div className={styles.postformpreview}>
+      <div className={styles.form}>
+        <div className={styles.img}>
           <img src="https://tse3.mm.bing.net/th?id=OIP.puMo9ITfruXP8iQx9cYcqwHaGJ&pid=Api&P=0&h=180" />
         </div>
         <div>
@@ -21,7 +21,7 @@ export default function PostFormPreview() {
           />
         </div>
       </div>
-      <div className="icons">
+      <div className={styles.icons}>
         <div>
           <ImageIcon styles={{ color: "#0a66c2" }} />
           <span style={{ margin: "0 0 0 0.4rem" }}>Media</span>

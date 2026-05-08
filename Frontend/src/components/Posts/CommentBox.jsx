@@ -1,4 +1,4 @@
-import "./CommentBox.css";
+import styles from "./CommentBox.module.css";
 import Button from "../shared-components/Buttons/Button";
 import { useForm } from "react-hook-form";
 import RHFInput from "../shared-components/Inputs/RHFInput";

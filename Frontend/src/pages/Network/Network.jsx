@@ -1,4 +1,4 @@
-import "./Network.css";
+import styles from "./Network.module.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Button from "../../components/shared-components/Buttons/Button";
@@ -19,7 +19,7 @@ export default function Network() {
   }, [type]);
 
   return (
-    <div className="networks">
+    <div className={styles.networks}>
       <h2>
         {type === "followers"
           ? "Your Followers"
@@ -56,7 +56,7 @@ export default function Network() {
           if (!user || !user.profile) return null; // Handle edge case
 
           return (
-            <div className="network" key={n._id}>
+            <div className={styles.network} key={n._id}>
               <UserInfo
                 url={user.profile.profileImage?.url}
                 headline={user.profile.headline}

@@ -1,4 +1,4 @@
-import "./Analytics.css";
+import styles from "./Analytics.module.css";
 import Chart from "../../components/shared-components/Charts/Chart";
 import { useState, useEffect } from "react";
 import useAnalyticStore from "../../stores/Analytic";
@@ -19,13 +19,13 @@ export default function Analytics() {
   };
 
   return (
-    <div className="analytics">
+    <div className={styles.analytics}>
       <div>
         <h2>{analyticsEvent}</h2>
         <select
           value={range}
           onChange={handleChange}
-          className="analyticDropdown"
+          className={styles.analyticDropdown}
         >
           <option value="all">All</option>
           <option value="7">Past 7 Days</option>

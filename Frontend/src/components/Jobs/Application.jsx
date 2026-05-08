@@ -1,4 +1,4 @@
-import "./Application.css";
+import styles from "./Application.module.css";
 import Button from "../shared-components/Buttons/Button";
 import { useNavigate } from "react-router-dom";
 
@@ -6,20 +6,20 @@ export default function Application({ application, jobId }) {
   const navigate = useNavigate();
   console.log(application);
   return (
-    <div className="application-container">
-      <div className="application-card">
-        <div className="application-left">
+    <div className={styles["application-container"]}>
+      <div className={styles["application-card"]}>
+        <div className={styles["application-left"]}>
           <img
             src={application?.applicant?.profile?.profileImage.url}
             alt="Profile"
-            className="application-avatar"
+            className={styles["application-avatar"]}
           />
-          <div className="application-info">
+          <div className={styles["application-info"]}>
             <h3>{application?.applicant?.profile.name}</h3>
             <p>{application?.applicant?.profile.headline}</p>
           </div>
         </div>
-        <div className="application-right">
+        <div className={styles["application-right"]}>
           {application?.status === "New" ? (
             <div
               style={{

@@ -1,5 +1,5 @@
 import "../shared-components/Buttons/Button";
-import "./SchPostUI.css";
+import styles from "./SchPostUI.module.css";
 import usePostStore from "../../stores/Post";
 import { useEffect, lazy, Suspense } from "react";
 import useUserStore from "../../stores/User";
@@ -17,9 +17,9 @@ export default function SchPostsUI() {
   }, []);
 
   return (
-    <div className="schPostUI">
-      <div className="head">Scheduled Posts</div>
-      <div className="main">
+    <div className={styles.schPostUI}>
+      <div className={styles.head}>Scheduled Posts</div>
+      <div className={styles.main}>
         {scheduledPosts.length === 0 ? (
           <div
             style={{

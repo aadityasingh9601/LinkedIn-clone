@@ -25,14 +25,13 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
 import useUserStore from "./stores/User";
-import useChatStore from "./stores/Chat";
 import useNotificationStore from "./stores/Notification";
 import "react-toastify/dist/ReactToastify.css";
-import usePostStore from "./stores/Post";
 import PublicRoutes from "./components/shared-components/Routes/PublicRoutes";
 import { setNavigate } from "./utils/api/axiosInstance";
+import useSocket from "./hooks/useSocket";
 
 const AppRoutes = () => {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -88,72 +87,11 @@ const AppRoutes = () => {
 
 function App() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-  const newAccessToken = useUserStore((state) => state.newAccessToken);
-  const addMessage = useChatStore((state) => state.addMessage);
-  const updateLastMsg = useChatStore((state) => state.updateLastMsg);
-  const editMessage = useChatStore((state) => state.editMessage);
-  const removeMessage = useChatStore((state) => state.removeMessage);
-  const updatePost = usePostStore((state) => state.updatePost);
-  const notifications = useNotificationStore((state) => state.notifications);
-
-  const addNoti = useNotificationStore((state) => state.addNoti);
-  const setNotiCount = useNotificationStore((state) => state.setNotiCount);
-  const [socket, setSocket] = useState();
-
   const BACKEND_URL =
     import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
 
   const currUserId = useUserStore((state) => state.currUserId);
-
-  //This contains socket logic, maybe separate it into custom hook too. Run only when !isAuthRoute.
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     const socketInstance = io(BACKEND_URL, {
-  //       query: {
-  //         userId: currUserId,
-  //       },
-  //     });
-  //     setSocket(socketInstance);
-
-  //     socketInstance.on("connReq", (noti) => {
-  //       addNoti(noti);
-  //       return toast(noti.message);
-  //     });
-
-  //     socketInstance.on("newMsg", (data) => {
-  //       console.log(data);
-  //       addMessage(data);
-  //       updateLastMsg(data);
-  //     });
-
-  //     socketInstance.on("editMsg", (data) => {
-  //       console.log(data);
-  //       editMessage(data);
-  //     });
-
-  //     socketInstance.on("deleteMsg", (data) => {
-  //       console.log(data);
-  //       removeMessage(data);
-  //     });
-
-  //     socketInstance.on("post_created", (data) => {
-  //       console.log(data);
-  //       updatePost(data);
-  //     });
-
-  //     socketInstance.on("application-rejected", (data) => {
-  //       console.log(data);
-  //       addNoti(data);
-  //     });
-
-  //     // Cleanup: Disconnect when the component unmounts
-  //     return () => {
-  //       //socket.removeAllListeners();
-  //       socketInstance.disconnect();
-  //       console.log("Socket disconnected");
-  //     };
-  //   }
-  // }, []);
+  const socket = useSocket(BACKEND_URL, isLoggedIn, currUserId, location);
 
   //To get all the notifications that are unread ,so that we can display the number on the bell icon.
   // useEffect(() => {

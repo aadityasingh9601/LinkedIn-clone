@@ -1,4 +1,4 @@
-import "./Signup.css";
+import styles from "./Signup.module.css";
 import Button from "../../components/shared-components/Buttons/Button";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -31,9 +31,9 @@ export default function Signup() {
   return (
     <>
       <LinkedInIcon />
-      <div className="signup">
+      <div className={styles.signup}>
         <p>Make the most out of your professional life</p>
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <span>Your name</span>
           <br />
           <RHFInput
@@ -60,7 +60,7 @@ export default function Signup() {
           />
           <br />
 
-          <div className="signupFormBtns">
+          <div className={styles.signupFormBtns}>
             <Button
               type="submit"
               disabled={isLoading}

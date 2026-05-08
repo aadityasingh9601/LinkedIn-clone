@@ -1,4 +1,4 @@
-import "./Login.css";
+import styles from "./Login.module.css";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useUserStore from "../../stores/User";
@@ -30,8 +30,8 @@ export default function Login() {
   return (
     <>
       <LinkedInIcon />
-      <div className="login">
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles.login}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <p>Login</p>
           <span>Your email</span>
           <br />
@@ -51,7 +51,7 @@ export default function Login() {
             errors={errors}
           />
           <br />
-          <div className="loginFormBtns">
+          <div className={styles.loginFormBtns}>
             <Button
               type="submit"
               disabled={isLoading}

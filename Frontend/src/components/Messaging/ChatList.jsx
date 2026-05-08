@@ -1,4 +1,4 @@
-import "./ChatList.css";
+import styles from "./ChatList.module.css";
 import Chat from "./Chat";
 import useUserStore from "../../stores/User";
 

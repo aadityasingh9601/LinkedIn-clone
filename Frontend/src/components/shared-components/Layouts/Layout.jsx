@@ -5,7 +5,7 @@ import useUserStore from "../../../stores/User";
 import ChatUI from "../../Messaging/ChatUI";
 import useChatStore from "../../../stores/Chat";
 import ChatList from "../../Messaging/ChatList";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import CaretUp from "../../shared-components/Icons/CaretUp";
 
 function Layout({ children, socket }) {
@@ -13,6 +13,8 @@ function Layout({ children, socket }) {
   const chats = useChatStore((state) => state.chats);
   const getAllChats = useChatStore((state) => state.getAllChats);
   const fullChat = useChatStore((state) => state.fullChat);
+  const messagingRef = useRef(null);
+  const upiconRef = useRef(null);
 
   //There's no need to fetch it beforehand, we can just run this, whenever user opens the messaging tab, it'll make the app
   //faster.
@@ -21,11 +23,8 @@ function Layout({ children, socket }) {
   }, [currUserId]);
 
   const showMessaging = () => {
-    let messaging = document.querySelector(".messaging");
-    messaging.classList.toggle("position");
-
-    let icon = document.querySelector(".upicon");
-    icon.classList.toggle("rotate");
+    messagingRef.current?.classList.toggle("position");
+    upiconRef.current?.classList.toggle("rotate");
   };
 
   return (
@@ -45,7 +44,7 @@ function Layout({ children, socket }) {
         transition:Bounce
       />
 
-      <div className="messaging position">
+      <div ref={messagingRef} className="messaging position">
         <div className="top">
           <div className="a">
             <div>
@@ -58,11 +57,13 @@ function Layout({ children, socket }) {
             <div>Messaging</div>
           </div>
           <div className="b">
-            <CaretUp onClick={() => showMessaging()} />
+            <span ref={upiconRef}>
+              <CaretUp onClick={() => showMessaging()} />
+            </span>
           </div>
         </div>
         <div className="chats remove">
-          <ChatList chats={chats} socket={socket} />
+            <ChatList chats={chats} socket={socket} />
         </div>
         {fullChat && <ChatUI socket={socket} />}
       </div>

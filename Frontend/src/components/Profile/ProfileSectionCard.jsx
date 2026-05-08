@@ -1,4 +1,4 @@
-import "./ProfileSectionCard.css";
+import moduleStyles from "./ProfileSectionCard.module.css";
 import { useState } from "react";
 import { formatDate } from "../../utils/helper";
 import Pen from "../shared-components/Icons/Pen";
@@ -42,7 +42,7 @@ export default function ProfileSectionCard({
   };
 
   return (
-    <div className={`profileSectionCard ${editing ? "editing" : ""}`}>
+    <div className={`${moduleStyles.profileSectionCard} ${editing ? moduleStyles.editing : ""}`}>
       {editing ? (
         <>
           <Trash
@@ -56,7 +56,7 @@ export default function ProfileSectionCard({
         </>
       ) : (
         <>
-          <div className="img">
+          <div className={moduleStyles.img}>
             <img src={imageUrl} alt="" />
           </div>
           <div>
@@ -65,7 +65,7 @@ export default function ProfileSectionCard({
             </p>
             <span>{data[fields.subtitleKey]}</span>
             <br />
-            <span className="date">
+            <span className={moduleStyles.date}>
               {startDate} - {endDate}
             </span>
             <br />

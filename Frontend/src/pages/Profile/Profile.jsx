@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./Profile.css";
+import pageStyles from "./Profile.module.css";
 
 import useProfileStore from "../../stores/Profile";
 import { useNavigate, useParams } from "react-router-dom";
@@ -44,7 +44,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="profile">
+    <div className={pageStyles.profile}>
       <ProfileHead
         profile={profile}
         styles={styles}
@@ -56,7 +56,7 @@ export default function Profile() {
           <div className="head">
             <span>Analytics</span>
           </div>
-          <div className="bodyyy">
+          <div className={pageStyles.bodyyy}>
             <div onClick={showAnalytics}>Followers</div>
             <div onClick={showAnalytics}>Post Impressions</div>
             <div onClick={showAnalytics}>Profile Views</div>

@@ -1,4 +1,4 @@
-import "./ProfileSection.css";
+import moduleStyles from "./ProfileSection.module.css";
 import { useState, useEffect, lazy, Suspense } from "react";
 import EducationCard from "../Profile/EducationCard";
 import ExpCard from "../Profile/ExpCard";
@@ -40,10 +40,10 @@ export default function ProfileSection({
     }
   }, [profile.about]);
   return (
-    <div className="profileSection">
-      <div className="head">
+    <div className={moduleStyles.profileSection}>
+      <div className={moduleStyles.head}>
         <span>{title}</span>
-        <div className="icons">
+        <div className={moduleStyles.icons}>
           {title.toLowerCase() == "about" ? (
             <Pen styles={styles} onClick={() => setEditSection(true)} />
           ) : (
@@ -127,7 +127,7 @@ export default function ProfileSection({
                 })
               : title.toLowerCase() == "skills"
                 ? profile.skills?.map((skill, index) => (
-                    <div key={index} className="skill">
+                    <div key={index} className={moduleStyles.skill}>
                       <div>{skill}</div>
                       <div className="icon">
                         <Trash

@@ -1,4 +1,4 @@
-import "./ProfileHeadForm.css";
+import styles from "./ProfileHeadForm.module.css";
 import { useForm } from "react-hook-form";
 import Button from "../shared-components/Buttons/Button";
 import RHFInput from "../shared-components/Inputs/RHFInput";
@@ -38,7 +38,7 @@ export default function ProfileHeadForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="profileHeadForm">
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.profileHeadForm}>
       <RHFInput
         placeholder="Enter your name"
         name="name"
@@ -47,14 +47,14 @@ export default function ProfileHeadForm({
       />
       <br></br>
 
-      <div className="headFormImages">
-        <div className="profileImg">
+      <div className={styles.headFormImages}>
+        <div className={styles.profileImg}>
           <span>Current Profile Image</span> <br></br>
           <img src={profile.profileImage?.url} alt="" />
           <RHFInput type="file" register={register} name="profileImage" />
         </div>
 
-        <div className="bannerImg">
+        <div className={styles.bannerImg}>
           <span>Current Banner Image</span> <br></br>
           <img src={profile.bannerImage?.url} alt="" />
           <RHFInput type="file" name="bannerImage" register={register} />

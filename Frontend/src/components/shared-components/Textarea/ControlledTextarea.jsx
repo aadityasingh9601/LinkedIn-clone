@@ -1,5 +1,5 @@
 import MyErrorBoundary from "../ErrorBoundary/MyErrorBoundary";
-import "./Textarea.css";
+import css from "./Textarea.module.css";
 
 export default function ControlledTextarea({
   placeholder,
@@ -9,7 +9,7 @@ export default function ControlledTextarea({
 }) {
   return (
     <MyErrorBoundary>
-      <div className="textarea">
+      <div className={css.textarea}>
         <textarea
           style={styles}
           placeholder={placeholder}

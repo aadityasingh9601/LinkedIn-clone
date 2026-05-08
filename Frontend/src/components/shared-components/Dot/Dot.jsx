@@ -1,8 +1,8 @@
-import "./Dot.css";
+import styles from "./Dot.module.css";
 
 export default function Dot() {
   return (
-    <div className="dot">
+    <div className={styles.dot}>
       <div>.</div>
     </div>
   );

@@ -1,4 +1,4 @@
-import "./PreLogin.css";
+import styles from "./PreLogin.module.css";
 import { useNavigate } from "react-router-dom";
 import LinkedInIcon from "../../components/shared-components/Icons/LinkedInIcon";
 
@@ -7,7 +7,7 @@ export default function PreLogin() {
 
   return (
     <>
-      <div className="prelogin">
+      <div className={styles.prelogin}>
         <LinkedInIcon
           styles={{
             position: "absolute",
@@ -15,8 +15,8 @@ export default function PreLogin() {
             left: "2rem",
           }}
         />
-        <div className="landingForm">
-          <span className="motto">Welcome to your professional community.</span>
+        <div className={styles.landingForm}>
+          <span className={styles.motto}>Welcome to your professional community.</span>
           <br /> <br />
           <button onClick={() => navigate("/login")}>
             Sign in with email
@@ -29,7 +29,7 @@ export default function PreLogin() {
             </a>
           </span>
         </div>
-        <div className="landingImg">
+        <div className={styles.landingImg}>
           <img
             src="https://static.licdn.com/aero-v1/sc/h/dxf91zhqd2z6b0bwg85ktm5s4"
             alt="img"

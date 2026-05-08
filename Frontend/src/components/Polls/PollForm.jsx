@@ -1,4 +1,4 @@
-import "./PollForm.css";
+import styles from "./PollForm.module.css";
 import Button from "../shared-components/Buttons/Button";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useState } from "react";
@@ -42,11 +42,11 @@ export default function PollForm() {
   };
 
   return (
-    <div className="pollform">
-      <div className="head">
+    <div className={styles.pollform}>
+      <div className={styles.head}>
         <span>Create a poll</span>
       </div>
-      <div className="mid">
+      <div className={styles.mid}>
         <form id="myForm" onSubmit={handleSubmit(onSubmit)}>
           <span>
             Your question<span style={{ color: "red" }}>*</span>
@@ -82,7 +82,7 @@ export default function PollForm() {
             onChange={(event) => {
               setpollDuration(event.target.value);
             }}
-            className="pollDropdown"
+            className={styles.pollDropdown}
           >
             <option value="1">1 day</option>
             <option value="3">3 days</option>
@@ -91,8 +91,8 @@ export default function PollForm() {
           <p>Fields marked * are required</p>
         </form>
       </div>
-      <div className="foot">
-        <div className="btns">
+      <div className={styles.foot}>
+        <div className={styles.btns}>
           <Button btnText="Back" onClick={() => setPoll(false)} />
           <button form="myForm" className="btn1">
             Done

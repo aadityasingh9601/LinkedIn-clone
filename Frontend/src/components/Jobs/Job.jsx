@@ -1,4 +1,4 @@
-import "./Job.css";
+import styles from "./Job.module.css";
 import useUserStore from "../../stores/User";
 import useJobStore from "../../stores/Job";
 import { useState } from "react";
@@ -15,13 +15,13 @@ export default function Job({ job }) {
   const [jobOptions, setjobOptions] = useState(false);
 
   return (
-    <div className="job" key={job._id}>
+    <div className={styles.job} key={job._id}>
       {job.postedBy === currUserId && (
         <Ellipsis onClick={() => setjobOptions(true)} />
       )}
 
       {jobOptions && (
-        <div className="options">
+        <div className={styles.options}>
           <Xmark
             onClick={() => setjobOptions(false)}
             styles={{ position: "absolute", top: "0rem", right: "0rem" }}
@@ -38,12 +38,12 @@ export default function Job({ job }) {
         </div>
       )}
 
-      <div className="img">
+      <div className={styles.img}>
         <img src={job?.companyLogo} />
       </div>
-      <div className="details">
+      <div className={styles.details}>
         <span
-          className="title"
+          className={styles.title}
           onClick={() => {
             setcurrJobListingId(job._id);
           }}

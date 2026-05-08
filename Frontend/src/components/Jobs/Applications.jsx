@@ -1,4 +1,4 @@
-import "./Applications.css";
+import styles from "./Applications.module.css";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import useJobStore from "../../stores/Job";
@@ -14,7 +14,7 @@ export default function Applications() {
   }, [id]);
   return (
     <>
-      <div className="applications">
+      <div className={styles.applications}>
         {applicants?.length == 0 ? (
           <div
             style={{

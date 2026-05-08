@@ -140,7 +140,7 @@ const safeParseJSON = (key, fallback) => {
     if (!item || item === "undefined" || item === "null") return fallback;
     return JSON.parse(item);
   } catch {
-    localStorage.removeItem(key); // clean corrupted value
+    localStorage.removeItem(key);
     return fallback;
   }
 };

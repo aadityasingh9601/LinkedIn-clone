@@ -1,5 +1,5 @@
 import { useState, lazy, Suspense } from "react";
-import "./SchPost.css";
+import styles from "./SchPost.module.css";
 import Button from "../shared-components/Buttons/Button";
 import usePostStore from "../../stores/Post";
 import Modal from "../shared-components/Modal/Modal";
@@ -14,7 +14,7 @@ export default function SchPost({ schPost }) {
   const deletePost = usePostStore((state) => state.deletePost);
   const [options, setOptions] = useState(false);
   return (
-    <div className="schPost">
+    <div className={styles.schPost}>
       <div
         style={{
           display: "flex",

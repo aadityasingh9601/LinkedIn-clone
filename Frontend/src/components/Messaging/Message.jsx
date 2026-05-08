@@ -1,4 +1,4 @@
-import "./Message.css";
+import styles from "./Message.module.css";
 import { useState } from "react";
 import Button from "../shared-components/Buttons/Button";
 import useChatStore from "../../stores/Chat";
@@ -19,8 +19,8 @@ export default function Message({ msg, formatTime }) {
   const timePassed = (new Date() - new Date(msg.Date)) / 60000;
 
   return (
-    <div key={msg?._id} className="msg">
-      <div className="sender">
+    <div key={msg?._id} className={styles.msg}>
+      <div className={styles.sender}>
         <div style={{ paddingRight: "2rem", display: "flex" }}>
           <div>
             <img src={msg?.sender.profile?.profileImage?.url} />
@@ -33,7 +33,7 @@ export default function Message({ msg, formatTime }) {
             </b>{" "}
           </div>
 
-          <div className="time">{formatTime(msg?.Date)}</div>
+          <div className={styles.time}>{formatTime(msg?.Date)}</div>
         </div>
         {currUserId === msg?.sender._id && (
           <Ellipsis
@@ -61,7 +61,7 @@ export default function Message({ msg, formatTime }) {
           />
         </>
       ) : (
-        <div className="msgText">{msg?.content}</div>
+        <div className={styles.msgText}>{msg?.content}</div>
       )}
 
       {msg?.media?.mediaType === "application" && (
@@ -96,7 +96,7 @@ export default function Message({ msg, formatTime }) {
       )}
 
       {msgOptions && (
-        <div className="msgOptions" onClick={() => setMsgOptions(false)}>
+        <div className={styles.msgOptions} onClick={() => setMsgOptions(false)}>
           <Xmark
             style={{ position: "absolute", top: "0.3rem", right: "0.3rem" }}
           />

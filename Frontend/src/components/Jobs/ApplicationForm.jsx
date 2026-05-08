@@ -1,4 +1,4 @@
-import "./ApplicationForm.css";
+import styles from "./ApplicationForm.module.css";
 import { useForm } from "react-hook-form";
 import Button from "../shared-components/Buttons/Button";
 import useJobStore from "../../stores/Job";
@@ -32,7 +32,7 @@ export default function ApplicationForm() {
   };
 
   return (
-    <div className="applicationForm">
+    <div className={styles.applicationForm}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div style={{ fontWeight: "500", fontSize: "1.8rem" }}>
           This is our application form.

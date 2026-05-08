@@ -1,4 +1,4 @@
-import "./PollOption.css";
+import styles from "./PollOption.module.css";
 
 export default function PollOption({
   pollOption,
@@ -11,14 +11,14 @@ export default function PollOption({
   const progress = Math.floor((pollOption?.votes * 100) / totalVotes);
   return (
     <div
-      className={voted ? "pollOption2" : "pollOption"}
+      className={voted ? styles.pollOption2 : styles.pollOption}
       style={voted ? { "--progress-width": `${progress}%` } : {}}
       onClick={() => {
         voteInPoll(pollId, pollOption._id);
         setVoteState(true);
       }}
     >
-      <span style={{ zIndex: "10" }} className="poll-text">
+      <span style={{ zIndex: "10" }} className={styles["poll-text"]}>
         {pollOption?.value.toUpperCase()}
       </span>
 

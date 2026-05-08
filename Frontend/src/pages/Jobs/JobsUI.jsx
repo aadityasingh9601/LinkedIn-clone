@@ -1,4 +1,4 @@
-import "./JobsUI.css";
+import styles from "./JobsUI.module.css";
 import { useEffect, useState } from "react";
 import Button from "../../components/shared-components/Buttons/Button";
 import Job from "../../components/Jobs/Job";
@@ -28,7 +28,7 @@ export default function JobsUI() {
 
   return (
     <>
-      <div className="jobOptions">
+      <div className={styles.jobOptions}>
         <Button
           btnText="All jobs"
           onClick={() => {
@@ -42,7 +42,7 @@ export default function JobsUI() {
           }}
         />
         {myJobs && (
-          <div className="myjobsoptions">
+          <div className={styles.myjobsoptions}>
             <Button btnText="Saved" onClick={() => fetchMyJobs("saved")} />
             <Button btnText="Applied" onClick={() => fetchMyJobs("applied")} />
           </div>
@@ -61,9 +61,9 @@ export default function JobsUI() {
           }}
         />
       </div>
-      <div className="jobs">
-        <div className="jobList">
-          <div className="a">
+      <div className={styles.jobs}>
+        <div className={styles.jobList}>
+          <div className={styles.a}>
             <h2>Top jobs picks for you!</h2>
           </div>
           <div className="b">

@@ -1,4 +1,4 @@
-import "./PostEditForm.css";
+import styles from "./PostEditForm.module.css";
 import usePostStore from "../../stores/Post";
 import Button from "../shared-components/Buttons/Button";
 import { useForm } from "react-hook-form";
@@ -46,7 +46,7 @@ export default function PostEditForm({ post }) {
     editPost(post._id, postData, setIsLoading);
   };
   return (
-    <div className="posteditform">
+    <div className={styles.posteditform}>
       <h3>Edit your post.</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RHFtextarea
