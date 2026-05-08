@@ -1,0 +1,102 @@
+.profileHead {
+  position: relative;
+  height: 27.3rem;
+  width: 50rem;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.profileHead .text i {
+  position: absolute;
+  right: 1.5rem;
+  font-size: 1.35rem;
+}
+
+.banner {
+  width: 100%;
+  height: 12.5rem;
+  border-bottom: 1px solid black;
+}
+
+.banner img {
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+.profilePic {
+  position: absolute;
+  top: 4.4rem;
+  left: 2rem;
+  height: 170px;
+  width: 170px;
+  border-radius: 50%;
+  border: 1px solid black;
+  z-index: 5;
+}
+
+.profilePic img {
+  height: 10.65rem;
+  width: 10.65rem;
+  border-radius: 50%;
+}
+
+.text {
+  background-color: white;
+  padding: 1rem;
+  height: 12.7rem;
+  border-radius: 0.5rem;
+}
+
+.profileHead .details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 1rem 0 0 0;
+}
+
+.profileHead .details .name {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.allOptions {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 2rem;
+}
+
+.downloadPdf {
+  position: absolute;
+  left: 38rem;
+  bottom: 0rem;
+  padding: 0.4rem 0.4rem;
+  width: 7rem;
+  border: none;
+  background-color: white;
+  border: 1px solid #0a66c2;
+  border-radius: 1.5rem;
+  margin-left: 1rem;
+  font-size: 0.9rem;
+}
+
+.contactInfo {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.contactInfo span {
+  color: #0a66c2;
+  text-decoration: underline;
+}
+
+.socials {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.socials span {
+  color: rgba(135, 130, 130);
+  font-size: 0.9rem;
+}

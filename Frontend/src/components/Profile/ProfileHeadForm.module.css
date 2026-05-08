@@ -1,0 +1,17 @@
+.profileHeadForm {
+  padding: 1rem;
+}
+
+.headFormImages {
+  display: flex;
+}
+
+.headFormImages img {
+  width: 12rem;
+  height: 12rem;
+}
+
+.headFormImages div input {
+  width: 12rem !important;
+  margin: 0 0 1rem 0;
+}

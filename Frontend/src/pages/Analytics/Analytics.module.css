@@ -1,0 +1,14 @@
+.analytics {
+  top: 7rem;
+  left: 13rem;
+  height: 25rem;
+  width: 55rem;
+  background-color: white;
+  position: absolute;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+}
+
+.analyticDropdown {
+  background: yellowgreen;
+}
