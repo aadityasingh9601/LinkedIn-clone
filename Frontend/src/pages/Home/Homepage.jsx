@@ -23,10 +23,10 @@ export default function Homepage() {
   const logEvent = useAnalyticStore((state) => state.logEvent);
   const currUserId = useUserStore((state) => state.currUserId);
   const posts = usePostStore((state) => state.posts);
-  const fetchPosts = usePostStore((state) => state.fetchPosts);
+  const getPosts = usePostStore((state) => state.getPosts);
   const hasMore = usePostStore((state) => state.hasMore);
   const page = usePostStore((state) => state.page);
-  const fetchAllPolls = usePollStore((state) => state.fetchAllPolls);
+  const getAllPolls = usePollStore((state) => state.getAllPolls);
   const polls = usePollStore((state) => state.polls);
 
   const postFormModal = usePostStore((state) => state.postFormModal);
@@ -39,8 +39,8 @@ export default function Homepage() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      fetchAllPolls();
-      fetchPosts(currUserId, page);
+      getAllPolls();
+      getPosts(currUserId, page);
     }
   }, [currUserId]);
 
@@ -52,8 +52,8 @@ export default function Homepage() {
     }
   }, [currUserId]);
 
-  const fetchMoreData = () => {
-    fetchPosts(currUserId, page);
+  const getMoreData = () => {
+    getPosts(currUserId, page);
   };
 
   //Function to send logEvent requests to the backend.
@@ -173,7 +173,7 @@ export default function Homepage() {
 
         <InfiniteScroll
           dataLength={posts.length}
-          next={fetchMoreData}
+          next={getMoreData}
           hasMore={hasMore}
           //You can create your own good looking custom loader here also.
           loader={<div className="loader">Loading...</div>}

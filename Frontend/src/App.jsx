@@ -37,8 +37,8 @@ const AppRoutes = () => {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const currUserId = useUserStore((state) => state.currUserId);
   const checkAuthStatus = useUserStore((state) => state.checkAuthStatus);
-  const fetchNotifications = useNotificationStore(
-    (state) => state.fetchNotifications,
+  const getNotifications = useNotificationStore(
+    (state) => state.getNotifications,
   );
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,7 +51,7 @@ const AppRoutes = () => {
 
   useEffect(() => {
     {
-      !isAuthRoute && fetchNotifications();
+      !isAuthRoute && getNotifications();
     }
   }, [currUserId]);
 

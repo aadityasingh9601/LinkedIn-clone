@@ -12,18 +12,18 @@ export default function JobsUI() {
   // console.log(jobs);
   const postJob = useJobStore((state) => state.postJob);
   const setpostJob = useJobStore((state) => state.setpostJob);
-  const fetchAllJobs = useJobStore((state) => state.fetchAllJobs);
-  const fetchMyJobs = useJobStore((state) => state.fetchMyJobs);
+  const getAllJobs = useJobStore((state) => state.getAllJobs);
+  const getMyJobs = useJobStore((state) => state.getMyJobs);
   const currJobListingId = useJobStore((state) => state.currJobListingId);
   //console.log(currJobListingId);
   const setcurrJobListingId = useJobStore((state) => state.setcurrJobListingId);
   const currJobDetails = jobs.find((job) => job._id === currJobListingId);
   const editJob = useJobStore((state) => state.editJob);
-  const fetchMyJobPostings = useJobStore((state) => state.fetchMyJobPostings);
+
   const [myJobs, setmyJobs] = useState(false);
 
   useEffect(() => {
-    fetchAllJobs();
+    getAllJobs();
   }, []);
 
   return (
@@ -32,7 +32,7 @@ export default function JobsUI() {
         <Button
           btnText="All jobs"
           onClick={() => {
-            fetchAllJobs();
+            getAllJobs();
           }}
         />
         <Button
@@ -43,8 +43,8 @@ export default function JobsUI() {
         />
         {myJobs && (
           <div className={styles.myjobsoptions}>
-            <Button btnText="Saved" onClick={() => fetchMyJobs("saved")} />
-            <Button btnText="Applied" onClick={() => fetchMyJobs("applied")} />
+            <Button btnText="Saved" onClick={() => getMyJobs("saved")} />
+            <Button btnText="Applied" onClick={() => getMyJobs("applied")} />
           </div>
         )}
         <Button
@@ -57,7 +57,7 @@ export default function JobsUI() {
         <Button
           btnText="Manage job posts"
           onClick={() => {
-            fetchMyJobs("myjobpostings");
+            getMyJobs("myjobpostings");
           }}
         />
       </div>

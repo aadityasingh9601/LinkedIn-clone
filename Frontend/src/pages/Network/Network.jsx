@@ -11,11 +11,11 @@ export default function Network() {
   console.log(type);
   const network = useNetworkStore((state) => state.network);
   const currUserId = useUserStore((state) => state.currUserId);
-  const fetchNetwork = useNetworkStore((state) => state.fetchNetwork);
+  const getNetwork = useNetworkStore((state) => state.getNetwork);
   const handleRemove = useNetworkStore((state) => state.handleRemove);
 
   useEffect(() => {
-    fetchNetwork(type, currUserId);
+    getNetwork(type, currUserId);
   }, [type]);
 
   return (

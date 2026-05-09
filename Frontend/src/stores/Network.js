@@ -11,7 +11,7 @@ import {
 const useNetworkStore = create((set) => ({
   network: [],
 
-  fetchNetwork: async (type, currUserId) => {
+  getNetwork: async (type, currUserId) => {
     tryCatchWrapper(async () => {
       const endpoint =
         type === "followers"

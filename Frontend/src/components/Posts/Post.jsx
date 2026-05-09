@@ -17,6 +17,7 @@ import useCommentStore from "../../stores/Comment";
 import PostHead from "../Posts/PostHead";
 
 export default function Post({ post, postRef }) {
+  console.log(post);
   const currUserId = useUserStore((state) => state.currUserId);
   const [showComments, setshowComments] = useState(false);
 

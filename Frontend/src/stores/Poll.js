@@ -37,7 +37,7 @@ const usePollStore = create((set) => ({
     });
   },
 
-  fetchAllPolls: async () => {
+  getAllPolls: async () => {
     tryCatchWrapper(async () => {
       const response = await apiGet("/poll/all");
       if (response.status === 200) {

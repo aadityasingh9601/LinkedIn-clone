@@ -96,7 +96,7 @@ const usePostStore = create((set) => ({
     });
   },
 
-  fetchPosts: async (userId, page) => {
+  getPosts: async (userId, page) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/post/${userId}?page=${page}`);
 

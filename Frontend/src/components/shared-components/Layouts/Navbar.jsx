@@ -21,7 +21,7 @@ import Xmark from "../Icons/Xmark";
 export default function Navbar({ showMessaging }) {
   const navigate = useNavigate();
   const userProfiles = useProfileStore((state) => state.userProfiles);
-  const fetchProfiles = useProfileStore((state) => state.fetchProfiles);
+  const getProfiles = useProfileStore((state) => state.getProfiles);
   const logout = useUserStore((state) => state.logout);
 
   const [showNetwork, setShowNetworks] = useState(false);
@@ -41,7 +41,7 @@ export default function Navbar({ showMessaging }) {
   //go the backend.
   const handleSearch = useCallback(
     debounce((searchValue) => {
-      fetchProfiles(searchValue);
+      getProfiles(searchValue);
     }, 1000),
     [], //Add dependency, when this function should create again.
   );

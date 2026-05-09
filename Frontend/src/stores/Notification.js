@@ -49,7 +49,7 @@ const useNotificationStore = create((set) => ({
     });
   },
 
-  fetchNotifications: async function () {
+  getNotifications: async function () {
     tryCatchWrapper(async () => {
       const response = await apiGet("/notification");
       set({ notifications: response.data });

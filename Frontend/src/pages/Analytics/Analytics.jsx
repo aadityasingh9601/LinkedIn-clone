@@ -6,11 +6,11 @@ import useAnalyticStore from "../../stores/Analytic";
 export default function Analytics() {
   const analyticsEvent = useAnalyticStore((state) => state.analyticsEvent);
   const analyticsData = useAnalyticStore((state) => state.analyticsData);
-  const fetchData = useAnalyticStore((state) => state.fetchData);
+  const getData = useAnalyticStore((state) => state.getData);
   const [range, setRange] = useState("all");
 
   useEffect(() => {
-    fetchData(range);
+    getData(range);
   }, [analyticsEvent, range]);
 
   const handleChange = (event) => {

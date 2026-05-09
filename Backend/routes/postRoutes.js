@@ -18,7 +18,7 @@ router.post(
 );
 
 //Get all posts route.
-router.get("/:userId", wrapAsync(postController.allPosts));
+router.get("/:userId", wrapAsync(postController.getPosts));
 
 router.get("/scheduled/:userId", wrapAsync(postController.allScheduledPosts));
 

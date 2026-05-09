@@ -72,7 +72,7 @@ const useJobStore = create(
         });
       },
 
-      fetchAllJobs: async () => {
+      getAllJobs: async () => {
         tryCatchWrapper(async () => {
           const response = await apiGet("/jobs/alljobs");
           console.log(response);
@@ -81,7 +81,7 @@ const useJobStore = create(
         });
       },
 
-      fetchMyJobs: async (type) => {
+      getMyJobs: async (type) => {
         tryCatchWrapper(async () => {
           const response = await apiGet(`/jobs/myjobs?q=${type}`);
           set({ jobs: response.data });
@@ -146,7 +146,7 @@ const useJobStore = create(
         });
       },
 
-      fetchJobFitStats: async (jobId) => {
+      getJobFitStats: async (jobId) => {
         tryCatchWrapper(async () => {
           const response = await apiGet(`/jobs/${jobId}/jobfitstats`);
           console.log(response);

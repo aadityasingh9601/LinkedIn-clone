@@ -31,13 +31,13 @@ const useChatStore = create((set, get) => ({
       console.log(response);
       get().setfullChat(true, response.data.chatId);
 
-      fetchAllMsg(response.data.chatId);
+      getAllMsg(response.data.chatId);
       //Emit socket event to join the user in the currChatId room.
       socket.emit("join-room", response.data.chatId);
     });
   },
 
-  fetchChatData: async (chatId) => {
+  getChatData: async (chatId) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/chat/getchat/${chatId}`);
       set({ chatData: response.data });
@@ -100,7 +100,7 @@ const useChatStore = create((set, get) => ({
     });
   },
 
-  fetchAllMsg: async (chatId) => {
+  getAllMsg: async (chatId) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/chat/${chatId}`);
       set({ messages: response.data });

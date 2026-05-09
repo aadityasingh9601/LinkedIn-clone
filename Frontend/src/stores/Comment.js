@@ -17,7 +17,7 @@ const useCommentStore = create((set) => ({
     }));
   },
 
-  fetchComments: async (postId) => {
+  getComments: async (postId) => {
     tryCatchWrapper(async () => {
       console.log(postId);
       const response = await apiGet(`/post/${postId}/comment`);

@@ -34,7 +34,7 @@ const useProfileStore = create((set, get) => ({
     set({ editHead: value });
   },
 
-  fetchProfileData: async (userId) => {
+  getProfileData: async (userId) => {
     tryCatchWrapper(async () => {
       //LOGIC TO ENSURE THAT WHENEVER A USER VISITS SOME OTHER USER'S PROFILE, A EVENT GETS LOGGED IN THE
       //DATABASE, THAT CAN BE USED LATER TO SHOW ANALYTICS DATA.
@@ -57,7 +57,7 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  fetchProfiles: async (username) => {
+  getProfiles: async (username) => {
     tryCatchWrapper(async () => {
       const response = await apiPost(`/profile/allUsers`, { username }, {});
       console.log(response);

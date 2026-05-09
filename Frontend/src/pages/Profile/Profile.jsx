@@ -16,7 +16,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const profile = useProfileStore((state) => state.profile);
   // console.log(profile);
-  const fetchProfileData = useProfileStore((state) => state.fetchProfileData);
+  const getProfileData = useProfileStore((state) => state.getProfileData);
   const createProfile = useProfileStore((state) => state.createProfile);
   const editProfile = useProfileStore((state) => state.editProfile);
   const deleteProfile = useProfileStore((state) => state.deleteProfile);
@@ -24,7 +24,7 @@ export default function Profile() {
   const currUserId = useUserStore((state) => state.currUserId);
 
   useEffect(() => {
-    fetchProfileData(currProfileId);
+    getProfileData(currProfileId);
   }, [currProfileId]);
 
   let styles = {

@@ -6,7 +6,7 @@ const useAnalyticStore = create((set, get) => ({
 
   analyticsData: [],
 
-  fetchData: async (range) => {
+  getData: async (range) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(
         `/analytics?q1=${get().analyticsEvent}&q2=${range}`,

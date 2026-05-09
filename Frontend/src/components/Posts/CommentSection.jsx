@@ -12,10 +12,10 @@ export default function CommentSection({
   showComments,
   setshowComments,
 }) {
-  const fetchComments = useCommentStore((state) => state.fetchComments);
+  const getComments = useCommentStore((state) => state.getComments);
   useEffect(() => {
     if (showComments) {
-      fetchComments(postId);
+      getComments(postId);
     }
   }, [showComments]);
 

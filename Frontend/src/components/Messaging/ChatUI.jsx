@@ -13,11 +13,11 @@ export default function ChatUI({ socket }) {
   const currChatId = useChatStore((state) => state.currChatId);
   const currUserId = useUserStore((state) => state.currUserId);
 
-  const fetchChatData = useChatStore((state) => state.fetchChatData);
+  const getChatData = useChatStore((state) => state.getChatData);
 
   const messages = useChatStore((state) => state.messages);
 
-  const fetchAllMsg = useChatStore((state) => state.fetchAllMsg);
+  const getAllMsg = useChatStore((state) => state.getAllMsg);
 
   const chatData = useChatStore((state) => state.chatData);
 
@@ -35,8 +35,8 @@ export default function ChatUI({ socket }) {
 
   useEffect(() => {
     socket.emit("join-room", currChatId);
-    fetchChatData(currChatId);
-    fetchAllMsg(currChatId);
+    getChatData(currChatId);
+    getAllMsg(currChatId);
   }, [currChatId]);
 
   const otherPerson = chatData?.participants?.find(

@@ -24,7 +24,7 @@ export default function JobDetail({ job }) {
 
   const jobFitStats = useJobStore((state) => state.jobFitStats);
 
-  const fetchJobFitStats = useJobStore((state) => state.fetchJobFitStats);
+  const getJobFitStats = useJobStore((state) => state.getJobFitStats);
 
   const jobApplications = job?.applications;
   //console.log(jobApplications);
@@ -44,7 +44,7 @@ export default function JobDetail({ job }) {
   }, [job, userProfile, currUserId]);
 
   useEffect(() => {
-    fetchJobFitStats(job?._id);
+    getJobFitStats(job?._id);
   }, [job]);
 
   return (
