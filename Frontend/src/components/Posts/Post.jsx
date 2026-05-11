@@ -98,18 +98,20 @@ export default function Post({ post, postRef }) {
         </div>
       </div>
       <div className={styles.footer}>
-        <button>
+        <button onClick={isLiked ? unsetLike : setLike}>
           {isLiked ? (
-            <ThumbsupS onClick={unsetLike} styles={{ color: "#0a66c2" }} />
+            <ThumbsupS styles={{ color: "#0a66c2" }} />
           ) : (
-            <ThumbsupR onClick={setLike} />
+            <ThumbsupR />
           )}
           Like
         </button>
-        <button>
-          <CommentR onClick={() => setshowComments(!showComments)} />
+        <button onClick={() => setshowComments(!showComments)}>
+          <CommentR />
           Comment
         </button>
+        {/* Add functionality to this button so that on clicking send URL of the post is copied, so that can be sent to anyone
+        and they can access the post */}
         <button>
           <PaperPlane />
           Send

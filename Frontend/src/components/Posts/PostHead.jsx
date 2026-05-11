@@ -134,9 +134,9 @@ export default function PostHead({ data, type, setCommentEdit = () => {} }) {
         </div>
       )} */}
 
-      {currUserId === profileUserId && (
+      <div className={styles.ellipsis}>{currUserId === profileUserId && (
         <Options show={showOptions} setShow={setShowOptions} />
-      )}
+      )}</div>
 
       {editModal && (
         <Modal>

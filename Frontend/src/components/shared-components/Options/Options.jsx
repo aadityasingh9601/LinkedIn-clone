@@ -1,5 +1,7 @@
 import styles from "./Options.module.css";
 import Ellipsis from "../Icons/Ellipsis";
+import Pen from "../Icons/Pen";
+import Trash from "../Icons/Trash";
 
 export default function Options({ show, setShow }) {
   return (
@@ -9,22 +11,15 @@ export default function Options({ show, setShow }) {
       </div>
 
       {show && (
-        <div className={styles.optionBox}>
-          {(type === "post" || type == "comment") && (
-            <button
-              onClick={() => {
-                {
-                  type === "comment"
-                    ? setCommentEdit(true)
-                    : seteditModal(true);
-                  setToggle(false);
-                }
-              }}
-            >
-              <Pen />
-              Edit
-            </button>
-          )}
+        <div className={styles.optionsBox}>
+          <button
+            onClick={() => {
+              setShow(false);
+            }}
+          >
+            <Pen />
+            Edit
+          </button>
           <button
             onClick={() => {
               setdeleteModal(true);

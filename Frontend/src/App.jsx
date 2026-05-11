@@ -3,10 +3,9 @@ import { lazy, Suspense } from "react";
 const Homepage = lazy(() => import("./pages/Home/Homepage"));
 import PrivateRoutes from "./components/shared-components/Routes/PrivateRoutes";
 import AppWraper from "./components/shared-components/Wrappers/AppWraper";
-
 const Profile = lazy(() => import("./pages/Profile/Profile"));
-const Signup = lazy(() => import("./pages/Signup/Signup"));
-const Login = lazy(() => import("./pages/Login/Login"));
+const Signup = lazy(() => import("./pages/Auth/Signup"));
+const Login = lazy(() => import("./pages/Auth/Login"));
 const NotificationBox = lazy(
   () => import("./pages/Notifications/NotificationBox"),
 );

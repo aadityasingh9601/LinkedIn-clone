@@ -1,4 +1,5 @@
-import Navbar from "./Navbar"; // Your navigation bar component
+import Navbar from "./Navbar";
+import styles from "./Layout.module.css"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useUserStore from "../../../stores/User";
@@ -44,9 +45,9 @@ function Layout({ children, socket }) {
         transition:Bounce
       />
 
-      <div ref={messagingRef} className="messaging position">
-        <div className="top">
-          <div className="a">
+      <div ref={messagingRef} className={`${styles.messaging} ${styles.position}`}>
+        <div className={styles.top}>
+          <div className={styles.a}>
             <div>
               <img
                 src="https://tse3.mm.bing.net/th?id=OIP.puMo9ITfruXP8iQx9cYcqwHaGJ&pid=Api&P=0&h=180"
@@ -56,13 +57,13 @@ function Layout({ children, socket }) {
 
             <div>Messaging</div>
           </div>
-          <div className="b">
+          <div className={styles.b}>
             <span ref={upiconRef}>
               <CaretUp onClick={() => showMessaging()} />
             </span>
           </div>
         </div>
-        <div className="chats remove">
+        <div className={`${styles.chats} ${styles.remove}`}>
             <ChatList chats={chats} socket={socket} />
         </div>
         {fullChat && <ChatUI socket={socket} />}

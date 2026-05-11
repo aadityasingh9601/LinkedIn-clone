@@ -54,13 +54,14 @@
 
 .footer button {
   background-color: white;
-  padding: 0.3rem;
+  padding: 0.5rem;
   border: none;
   font-size: 0.9rem;
 }
 
 .footer button:hover {
-  background-color: rgba(209, 204, 204);
+  background-color: rgb(209, 204, 204);
+  border-radius: 0.3rem;
 }
 
 .footer button i {

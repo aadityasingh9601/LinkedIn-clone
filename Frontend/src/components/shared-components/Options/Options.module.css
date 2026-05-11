@@ -1,36 +1,41 @@
 .optionBtn {
   position: absolute;
   right: 0rem;
-  top: 0rem;
+  top: 5rem;
   background-color: white;
   border: none;
   font-size: 1.4rem;
 }
 
 .optionsBox {
-  position: absolute;
-  top: 2rem;
-  right: 0rem;
-  z-index: 50;
+  background-color: white;
   display: flex;
   flex-direction: column;
-  align-items: start;
-  background-color: antiquewhite;
-  border-radius: 0.6rem;
-  padding: 0.7rem;
+  border:0.1px solid black;
+  width: 10rem;
+  position: absolute;
+  top: 0rem;
+  right: 2rem;
+  z-index: 50;
+  border-radius: 0.2rem;
+  padding: 0.7rem 0;
 }
 
 .optionsBox button {
-  background-color: antiquewhite;
-  width: 6rem;
-  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap:0.4rem;
+  width: 100%;;
+  background-color: transparent;
+  text-align: start;
+  padding: 0.6rem 0 0.6rem 0.5rem;
   border: none;
-  border-radius: 0.3rem;
   font-size: 1rem;
 }
 
 .optionsBox button:hover {
-  background-color: white;
+  background-color: rgb(209, 204, 204);
+  cursor:  pointer;
 }
 
 .optionsBox button i {
