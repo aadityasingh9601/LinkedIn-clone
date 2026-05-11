@@ -11,6 +11,7 @@ import { PostDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import Spinner from "../shared-components/Loaders/Spinner";
+import FormWrapper from "../shared-components/Forms/FormWrapper";
 
 export default function PostEditForm({ post }) {
   const { date, time } = parseISODate(post?.scheduledTime);
@@ -48,7 +49,7 @@ export default function PostEditForm({ post }) {
   return (
     <div className={styles.posteditform}>
       <h3>Edit your post.</h3>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
         <RHFtextarea
           placeholder="Write your post here..."
           register={register}
@@ -162,7 +163,7 @@ export default function PostEditForm({ post }) {
             />
           </div>
         )}
-      </form>
+      </FormWrapper>
     </div>
   );
 }

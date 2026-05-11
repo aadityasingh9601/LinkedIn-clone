@@ -8,17 +8,18 @@ import {
   apiPost,
   apiPatch,
   apiDelete,
+  safeParseJSON,
 } from "../utils/helper";
 
+
+const setCurrUserProfile = useUserStore.getState().setCurrUserProfile;
 const logEvent = useAnalyticStore.getState().logEvent;
 const currUserId = useUserStore.getState().currUserId;
 
 const useProfileStore = create((set, get) => ({
   profile: {},
 
-  currUserProfile: localStorage.getItem("currUserProfile")
-    ? JSON.parse(localStorage.getItem("currUserProfile"))
-    : null,
+
 
   userProfiles: [],
 
@@ -51,7 +52,7 @@ const useProfileStore = create((set, get) => ({
       //We'll persist the data of the current user's profile to use that later.
       if (userId === currUserId) {
         localStorage.setItem("currUserProfile", JSON.stringify(response.data));
-        set({ currUserProfile: response.data });
+        setCurrUserProfile(response.data);
       }
       set({ profile: response.data });
     });

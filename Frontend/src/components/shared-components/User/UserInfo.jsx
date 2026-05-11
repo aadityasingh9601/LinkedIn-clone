@@ -9,13 +9,13 @@ export default function UserInfo({ url, userId, username, headline }) {
       <UserAvatar url={url} />
       <div className="details">
         <span
-          className="username"
+          className={styles.username}
           onClick={() => navigate(`/profile/${userId}`)}
         >
           <b>{username}</b>
         </span>
         <br />
-        <span className="headline">{headline}</span>
+        <span className={styles.headline}>{headline}</span>
         <br />
       </div>
     </div>

@@ -78,7 +78,6 @@ export default function Homepage() {
   const observer = useRef(null); //Create your observer for posts.
 
   const postRefs = useRef({});
-  console.log(postRefs);
 
   const IOCallback = (entries) => {
     entries.forEach((entry) => {
@@ -144,9 +143,6 @@ export default function Homepage() {
 
   return (
     <div className={styles.homepage}>
-      {/* <Button btnText="Join Group" onClick={handleJoin} />
-        <Button btnText="Connect" onClick={sendReq} /> */}
-      {/* <div className="sideTab">This is our sideTab.</div> */}
       <div className={styles.feed}>
         <PostFormPreview />
         <hr></hr>

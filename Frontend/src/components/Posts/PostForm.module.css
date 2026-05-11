@@ -23,8 +23,6 @@
 .postform .form form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 0.85rem;
 }
 
 .postform .form .formBody {

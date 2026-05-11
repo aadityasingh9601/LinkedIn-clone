@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import pageStyles from "./Profile.module.css";
+import styles from "./Profile.module.css";
 
 import useProfileStore from "../../stores/Profile";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,19 +15,21 @@ export default function Profile() {
   const { id: currProfileId } = useParams();
   const navigate = useNavigate();
   const profile = useProfileStore((state) => state.profile);
-  // console.log(profile);
   const getProfileData = useProfileStore((state) => state.getProfileData);
   const createProfile = useProfileStore((state) => state.createProfile);
   const editProfile = useProfileStore((state) => state.editProfile);
   const deleteProfile = useProfileStore((state) => state.deleteProfile);
-
   const currUserId = useUserStore((state) => state.currUserId);
+  const currUserProfile = useUserStore((state) => state.currUserProfile);
+  const userProfile = currUserProfile?.userId !== currUserId ? profile : currUserProfile;
 
   useEffect(() => {
-    getProfileData(currProfileId);
+    if (currUserProfile?.userId !== currUserId) {
+      getProfileData(currProfileId);
+    }
   }, [currProfileId]);
 
-  let styles = {
+  let customStyles = {
     display: currUserId !== currProfileId ? "none" : "inline",
   };
 
@@ -44,10 +46,10 @@ export default function Profile() {
   };
 
   return (
-    <div className={pageStyles.profile}>
+    <div className={styles.profile}>
       <ProfileHead
-        profile={profile}
-        styles={styles}
+        profile={userProfile}
+        styles={customStyles}
         createProfile={createProfile}
       />
 
@@ -56,43 +58,51 @@ export default function Profile() {
           <div className="head">
             <span>Analytics</span>
           </div>
-          <div className={pageStyles.bodyyy}>
-            <div onClick={showAnalytics}>Followers</div>
-            <div onClick={showAnalytics}>Post Impressions</div>
-            <div onClick={showAnalytics}>Profile Views</div>
-            <div onClick={showAnalytics}>Search Appearances</div>
+          <div className={styles.analyticsSection}>
+            <div className={styles.analyticBox} onClick={showAnalytics}>
+              Followers
+            </div>
+            <div className={styles.analyticBox} onClick={showAnalytics}>
+              Post Impressions
+            </div>
+            <div className={styles.analyticBox} onClick={showAnalytics}>
+              Profile Views
+            </div>
+            <div className={styles.analyticBox} onClick={showAnalytics}>
+              Search Appearances
+            </div>
           </div>
         </div>
       )}
 
       <ProfileSection
         title="About"
-        profile={profile}
-        styles={styles}
+        profile={userProfile}
+        styles={customStyles}
         editProfile={editProfile}
         deleteProfile={deleteProfile}
       />
 
       <ProfileSection
         title="Education"
-        profile={profile}
-        styles={styles}
+        profile={userProfile}
+        styles={customStyles}
         editProfile={editProfile}
         deleteProfile={deleteProfile}
       />
 
       <ProfileSection
         title="Skills"
-        profile={profile}
-        styles={styles}
+        profile={userProfile}
+        styles={customStyles}
         editProfile={createProfile}
         deleteProfile={deleteProfile}
       />
 
       <ProfileSection
         title="Experience"
-        profile={profile}
-        styles={styles}
+        profile={userProfile}
+        styles={customStyles}
         editProfile={editProfile}
         deleteProfile={deleteProfile}
       />

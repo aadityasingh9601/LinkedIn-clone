@@ -15,13 +15,15 @@ const useUserStore = create((set, get) => ({
 
   currUserId: safeParseJSON("currUserId", ""),
 
+  currUserProfile: safeParseJSON("currUserProfile", {}),
+
+  setCurrUserProfile: (value) => {
+    set({ currUserProfile: value });
+  },
+
   checkAuthStatus: async () => {
     tryCatchWrapper(async () => {
-      const response = await apiGet("/users/checkauthstatus", {
-        _skipInterceptor: true,
-      });
-      console.log(response);
-
+      const response = await apiGet("/users/checkauthstatus");
       if (response.status === 200) {
         set({ isLoggedIn: true, currUserId: response?.data.userId });
         localStorage.setItem("currUserId", response?.data.userId);
@@ -46,14 +48,17 @@ const useUserStore = create((set, get) => ({
     tryCatchWrapper(async () => {
       setIsLoading(true);
       const response = await apiPost(`/users/login`, { loginData }, {});
+      console.log(response);
       setIsLoading(false);
       if (response.status === 200) {
         toast.success("User logged in successfully!");
         set({
           isLoggedIn: true,
-          currUserId: response.data.id,
+          currUserId: response.data.userId,
         });
-        localStorage.setItem("currUserId", response.data.id);
+        get().setCurrUserProfile(response.data.currUserProfile);
+        localStorage.setItem("currUserId", response.data.userId);
+        localStorage.setItem("currUserProfile", response.data.currUserProfile);
         navigate("/home");
       }
     });

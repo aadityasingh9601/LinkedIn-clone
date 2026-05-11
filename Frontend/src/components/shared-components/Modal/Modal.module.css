@@ -2,7 +2,7 @@
   position: fixed;
   left: 50%;
   top: 40%;
-  overflow: auto;
+  overflow:scroll;
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 1.3rem;

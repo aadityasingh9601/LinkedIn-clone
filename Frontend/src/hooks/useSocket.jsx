@@ -16,6 +16,7 @@ const useSocket = (BACKEND_URL, isLoggedIn, currUserId,location) => {
   const addNoti = useNotificationStore((s) => s.addNoti);
   const notifications = useNotificationStore((s) => s.notifications);
   const setNotiCount = useNotificationStore((s) => s.setNotiCount);
+
   useEffect(() => {
     if (!isLoggedIn || isAuthRoute) return;
     const socketInstance = io(BACKEND_URL, { query: { userId: currUserId } });
@@ -44,11 +45,13 @@ const useSocket = (BACKEND_URL, isLoggedIn, currUserId,location) => {
       socketInstance.disconnect();
     };
   }, [isLoggedIn, isAuthRoute, currUserId, BACKEND_URL]);
+  
   useEffect(() => {
     if (!isAuthRoute) {
       setNotiCount(notifications?.filter((n) => !n.isRead).length);
     }
   }, [notifications, isAuthRoute]);
+  
   return socketRef.current;
 };
 export default useSocket;

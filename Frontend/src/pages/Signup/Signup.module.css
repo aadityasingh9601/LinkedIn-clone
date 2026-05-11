@@ -1,28 +1,31 @@
 .signup {
   position: absolute;
   left: 33rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .signup p {
   font-size: 2.2rem;
+  margin: 0;
   text-align: center;
-  color: black;
 }
 
 .form {
   padding: 1.5rem;
-  height: fit-content;
   width: 25rem;
-  background-color: white;
+  box-sizing: border-box;
 }
 
-input {
-  width: 24rem;
-  height: 1.8rem;
-  margin: 0 0 1rem 0;
+.customInput {
+  width: 100%;
+  margin: 0 0 0.5rem 0;
 }
 
 .signupFormBtns {
   display: flex;
   align-items: center;
+  gap:0.5rem;
+  margin-top: 1.5rem;
 }

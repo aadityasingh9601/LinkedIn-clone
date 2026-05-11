@@ -6,6 +6,7 @@ import RHFInput from "../shared-components/Inputs/RHFInput";
 import useUserStore from "../../stores/User";
 import { EducationDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormWrapper from "../shared-components/Forms/FormWrapper";
 
 export default function EducationForm({
   education = {},
@@ -35,8 +36,7 @@ export default function EducationForm({
     reset();
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmitProp || onSubmit)}>
+    <FormWrapper onSubmit={handleSubmit(onSubmitProp || onSubmit)}>
         <RHFInput
           placeholder="Enter institution"
           register={register}
@@ -74,7 +74,6 @@ export default function EducationForm({
 
         <Button btnText="Cancel" onClick={() => updateVisState(false)} />
         <Button btnText="Save" />
-      </form>
-    </div>
+      </FormWrapper>
   );
 }

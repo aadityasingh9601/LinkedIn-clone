@@ -99,12 +99,6 @@ const usePostStore = create((set) => ({
   getPosts: async (userId, page) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/post/${userId}?page=${page}`);
-
-      console.log(response.data.length);
-      // console.log(response.data);
-      //the map & forEach functions are used when updating the state or showing them somewhere, or making some
-      //change to them, they are not needed to just normally set state.
-
       set((state) => ({
         posts: [...state.posts, ...response.data],
       }));

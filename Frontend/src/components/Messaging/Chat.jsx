@@ -42,7 +42,7 @@ export default function Chat({ chat, otherPerson, socket }) {
                 display: "inline-block",
               }}
             >
-              <b>{otherPerson.profile.name}</b>
+              <b>{otherPerson?.profile.name}</b>
             </span>
             <span
               style={{

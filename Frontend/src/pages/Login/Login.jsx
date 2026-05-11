@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginDataSchema } from "../../zodSchema";
 import Spinner from "../../components/shared-components/Loaders/Spinner";
 import { useState } from "react";
+import FormWrapper from "../../components/shared-components/Forms/FormWrapper";
 
 export default function Login() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -31,27 +32,27 @@ export default function Login() {
     <>
       <LinkedInIcon />
       <div className={styles.login}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <FormWrapper onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <p>Login</p>
-          <span>Your email</span>
-          <br />
           <RHFInput
+            label="Your email"
             type="email"
             name="email"
+            customClass={styles.customInput}
             errors={errors}
             register={register}
           />
 
-          <span>Your password</span>
-          <br />
           <RHFInput
+            label="Your password"
             type="password"
             register={register}
+            customClass={styles.customInput}
             name="password"
             errors={errors}
           />
-          <br />
-          <div className={styles.loginFormBtns}>
+
+          <div className={`${styles.loginFormBtns}`}>
             <Button
               type="submit"
               disabled={isLoading}
@@ -64,7 +65,7 @@ export default function Login() {
               }}
             />
           </div>
-        </form>
+        </FormWrapper>
       </div>
     </>
   );

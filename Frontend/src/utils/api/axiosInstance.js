@@ -22,7 +22,6 @@ axiosInstance.interceptors.response.use(
     if (originalRequest._skipInterceptor) {
       return Promise.reject(error);
     }
-    console.log(originalRequest);
     //Skip the interceptor for the refresh route, else it'll create a endless loop.
     if (
       error.response?.status === 401 &&

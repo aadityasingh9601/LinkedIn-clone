@@ -1,8 +1,8 @@
-import styles from "./CommentBox.module.css";
 import Button from "../shared-components/Buttons/Button";
 import { useForm } from "react-hook-form";
 import RHFInput from "../shared-components/Inputs/RHFInput";
 import useCommentStore from "../../stores/Comment";
+import FormWrapper from "../shared-components/Forms/FormWrapper";
 
 export default function CommentBox({ postId }) {
   const addComment = useCommentStore((state) => state.addComment);
@@ -20,7 +20,7 @@ export default function CommentBox({ postId }) {
   };
   return (
     <div className="commBox">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
         <RHFInput
           placeholder="Add a comment..."
           name="comment"
@@ -35,7 +35,7 @@ export default function CommentBox({ postId }) {
           errors={errors}
         />
         <Button type="submit" btnText="Comment" />
-      </form>
+      </FormWrapper>
       <hr />
     </div>
   );

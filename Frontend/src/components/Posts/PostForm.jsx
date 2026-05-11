@@ -18,6 +18,7 @@ import Spinner from "../shared-components/Loaders/Spinner";
 import RHFselect from "../shared-components/Select/RHFselect";
 import UserInfo from "../shared-components/User/UserInfo";
 import useUserStore from "../../stores/User";
+import FormWrapper from "../shared-components/Forms/FormWrapper";
 const PollForm = lazy(() => import("../Polls/PollForm"));
 const SchPostsUI = lazy(() => import("./SchPostsUI"));
 
@@ -95,7 +96,7 @@ export default function PostForm() {
             </div>
           </div>
           <div className={styles.form}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <FormWrapper onSubmit={handleSubmit(onSubmit)}>
               <div className="formBody">
                 <RHFtextarea
                   placeholder="Write your post here"
@@ -211,7 +212,7 @@ export default function PostForm() {
                   </div>
                 )}
               </div>
-            </form>
+            </FormWrapper>
           </div>
         </div>
       )}

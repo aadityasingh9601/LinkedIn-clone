@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import axios from "axios";
 import { toast } from "react-toastify";
 import useUserStore from "./User";
 import { persist } from "zustand/middleware";
@@ -9,6 +8,7 @@ import {
   apiGet,
   apiPost,
   apiPatch,
+  safeParseJSON,
 } from "../utils/helper";
 
 const currUserId = useUserStore.getState().currUserId;
@@ -34,7 +34,7 @@ const useJobStore = create(
         set({ editJob: value });
       },
 
-      currJobListingId: localStorage.getItem("currJobListingId") || "",
+      currJobListingId: safeParseJSON("currJobListingId"),
 
       setcurrJobListingId: (value) => {
         localStorage.setItem("currJobListingId", value);

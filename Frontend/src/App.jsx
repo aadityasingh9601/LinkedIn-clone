@@ -25,7 +25,7 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import useUserStore from "./stores/User";
 import useNotificationStore from "./stores/Notification";
 import "react-toastify/dist/ReactToastify.css";

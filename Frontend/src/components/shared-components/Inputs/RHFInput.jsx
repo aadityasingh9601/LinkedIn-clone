@@ -5,19 +5,24 @@ export default function RHFInput({
   placeholder = "",
   register,
   name,
+  label = "",
+  customClass = "",
   type = "text",
   rules = {},
   errors = {},
 }) {
   return (
-    <div className={`${styles.input}`}>
+    <div className={`${styles.input} ${customClass}`}>
+      {label && <div className={`${styles.label}`}>{label}</div>}
       <input
         id={id}
         type={type}
         {...register(name, { ...rules })}
         placeholder={placeholder}
       />
-      {errors[name] && <span>{errors[name].message}</span>}
+      {errors[name] && (
+        <div className={`${styles.errorMsg}`}>{errors[name].message}</div>
+      )}
     </div>
   );
 }

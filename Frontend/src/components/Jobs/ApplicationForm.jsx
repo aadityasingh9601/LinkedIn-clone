@@ -7,6 +7,7 @@ import RHFInput from "../shared-components/Inputs/RHFInput";
 import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
 import { JobApplicationDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormWrapper from "../shared-components/Forms/FormWrapper";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -32,8 +33,7 @@ export default function ApplicationForm() {
   };
 
   return (
-    <div className={styles.applicationForm}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <FormWrapper onSubmit={handleSubmit(onSubmit)} className={styles.applicationForm}>
         <div style={{ fontWeight: "500", fontSize: "1.8rem" }}>
           This is our application form.
         </div>
@@ -74,7 +74,6 @@ export default function ApplicationForm() {
           errors={errors}
         />
         <Button btnText="Submit" />
-      </form>
-    </div>
+      </FormWrapper>
   );
 }

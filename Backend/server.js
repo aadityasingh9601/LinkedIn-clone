@@ -75,12 +75,9 @@ const userSocketMap = {};
 io.on("connection", (socket) => {
   console.log(`Socket connected with id${socket.id}`);
   const userId = socket.handshake.query.userId; // Get userId from query or auth token
-  //const userId = req.user._id;
-  // console.log(userId);
-
   userSocketMap[userId] = socket.id;
   console.log(userSocketMap);
-
+  
   socket.on("join-room", (roomId) => {
     //console.log( roomId);
     socket.join(roomId);

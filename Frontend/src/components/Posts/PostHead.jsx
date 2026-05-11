@@ -20,7 +20,6 @@ import Options from "../shared-components/Options/Options";
 const PostEditForm = lazy(() => import("./PostEditForm"));
 
 export default function PostHead({ data, type, setCommentEdit = () => {} }) {
-  console.log(data);
   const [deleteModal, setdeleteModal] = useState(false);
   const [editModal, seteditModal] = useState(false);
   const [isFollowed, setIsFollowed] = useState(false);

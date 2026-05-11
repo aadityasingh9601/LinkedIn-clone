@@ -4,6 +4,7 @@ import Button from "../shared-components/Buttons/Button";
 import RHFInput from "../shared-components/Inputs/RHFInput";
 import { ProfileHeadDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormWrapper from "../shared-components/Forms/FormWrapper";
 
 export default function ProfileHeadForm({
   profile,
@@ -38,7 +39,7 @@ export default function ProfileHeadForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.profileHeadForm}>
+    <FormWrapper onSubmit={handleSubmit(onSubmit)} className={styles.profileHeadForm}>
       <RHFInput
         placeholder="Enter your name"
         name="name"
@@ -88,6 +89,6 @@ export default function ProfileHeadForm({
       />
 
       <Button btnText="Save Changes" />
-    </form>
+    </FormWrapper>
   );
 }

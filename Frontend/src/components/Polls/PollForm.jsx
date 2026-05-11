@@ -6,6 +6,7 @@ import usePollStore from "../../stores/Poll";
 import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
 import { PollDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormWrapper from "../shared-components/Forms/FormWrapper";
 
 export default function PollForm() {
   const setPoll = usePollStore((state) => state.setPoll);
@@ -47,7 +48,7 @@ export default function PollForm() {
         <span>Create a poll</span>
       </div>
       <div className={styles.mid}>
-        <form id="myForm" onSubmit={handleSubmit(onSubmit)}>
+        <FormWrapper onSubmit={handleSubmit(onSubmit)} id="myForm">
           <span>
             Your question<span style={{ color: "red" }}>*</span>
           </span>
@@ -89,7 +90,7 @@ export default function PollForm() {
             <option value="7">7 days</option>
           </select>
           <p>Fields marked * are required</p>
-        </form>
+        </FormWrapper>
       </div>
       <div className={styles.foot}>
         <div className={styles.btns}>

@@ -11,7 +11,7 @@ export default function Spinner() {
       visible={true}
       ariaLabel="oval-loading"
       secondaryColor="white"
-      strokeWidth={4}
+      strokeWidth={5}
       strokeWidthSecondary={2}
     />
   );

@@ -94,6 +94,8 @@ const login = async (req, res) => {
     let id = user._id;
     await user.save();
 
+    const userProfile = await Profile.findOne({ userId: id });
+
     res
       .cookie("accesstoken", accessToken, {
         ...options,
@@ -104,7 +106,7 @@ const login = async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
       })
       .status(200)
-      .json({ id });
+      .json({ userId: id, currUserProfile:userProfile });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error logging in" });

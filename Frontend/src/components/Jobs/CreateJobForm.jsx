@@ -7,6 +7,7 @@ import Xmark from "../shared-components/Icons/Xmark";
 import RHFInput from "../shared-components/Inputs/RHFInput";
 import { JobDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormWrapper from "../shared-components/Forms/FormWrapper";
 
 export default function CreateJobForm({ job }) {
   const setpostJob = useJobStore((state) => state.setpostJob);
@@ -69,7 +70,7 @@ export default function CreateJobForm({ job }) {
       />
 
       <div className={styles.h2}>Create a job posting</div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
         <RHFInput
           placeholder="Write job title"
           register={register}
@@ -158,7 +159,7 @@ export default function CreateJobForm({ job }) {
         <br />
 
         <Button btnText="Submit" />
-      </form>
+      </FormWrapper>
     </div>
   );
 }

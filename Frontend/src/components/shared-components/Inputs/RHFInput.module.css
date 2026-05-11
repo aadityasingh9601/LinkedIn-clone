@@ -1,5 +1,18 @@
+.input {
+  width: 100%;
+}
+
 .input input {
-  padding: 0.3rem 0.5rem;
-  width: 90%;
-  margin: 0.3rem 0 0.3rem 0;
+  padding: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.label{
+  margin-bottom: 0.1rem;
+}
+
+.errorMsg {
+  color: red;
+  margin-bottom: 0.3rem;
 }
