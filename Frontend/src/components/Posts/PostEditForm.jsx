@@ -17,6 +17,7 @@ export default function PostEditForm({ post }) {
   const { date, time } = parseISODate(post?.scheduledTime);
   const schedule = usePostStore((state) => state.schedule);
   const setSchedule = usePostStore((state) => state.setSchedule);
+  const setShowScheduledPosts = usePostStore((state)=> state.setShowScheduledPosts)
   const [isLoading, setIsLoading] = useState(false);
   const {
     register,
@@ -42,8 +43,6 @@ export default function PostEditForm({ post }) {
     if (data.media && data.media.length > 0) {
       postData.media = data.media[0];
     }
-
-    console.log(postData);
     editPost(post._id, postData, setIsLoading);
   };
   return (
@@ -108,15 +107,7 @@ export default function PostEditForm({ post }) {
         />
         {schedule && (
           <div
-            style={{
-              position: "absolute",
-              right: "-20rem",
-              bottom: "5rem",
-              backgroundColor: "lightblue",
-              padding: "1rem",
-              width: "14rem",
-              textAlign: "start",
-            }}
+            className={styles.postScheduler}
           >
             <div>Date</div>
             <RHFInput
@@ -157,7 +148,7 @@ export default function PostEditForm({ post }) {
             />
             <Button
               onClick={() => {
-                (setshowSchPosts(true), console.log("clikced"));
+                (setShowScheduledPosts(true));
               }}
               btnText="View all scheduled posts"
             />

@@ -5,7 +5,7 @@
   justify-content: center;
   flex-direction: column;
   background-color: white;
-  width: 38rem;
+  width: 42rem;
   height: fit-content;
 }
 
@@ -16,19 +16,16 @@
 }
 
 .form {
-  width: 100%;
-  padding: 0rem;
-}
-
-.postform .form form {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .formBody {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y:auto;
   margin: 0 0 2rem 0;
-  max-height: 28rem;
+  max-height: 20rem;
 }
 
 .formBody::-webkit-scrollbar {
@@ -41,21 +38,59 @@
 }
 
 .previewImg img {
-  height: 20rem;
+  height: 25rem;
   width: 99%;
   border-radius: 0.6rem;
 }
 
-.postform .form .optionss {
+.postOptions {
   display: flex;
+  gap:1rem;
+  margin: 1rem 0 0 0;
 }
 
-.postform .form .optionss i {
-  color: #666666;
-  margin: 0 1rem 0 0;
+.postform i{
   font-size: 1.2rem;
+   color: #666666;
 }
 
-.postform .form .optionss i:hover {
+.postform i:hover{
   color: #444;
+}
+
+.xmark{
+  margin:0 0 0.5rem 0;
+}
+
+.xmark i{
+  margin-right: 0.2rem;
+  font-size: 1.3rem;
+}
+
+.footer {
+  width: 100%;
+  border-top: 0.5px solid #444;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 0;
+}
+
+.footerOptions{
+  margin: 0 1rem 0 0rem;
+  display: flex;
+  align-items: center;
+  gap:0.5rem;
+}
+
+.postScheduler{
+  position: absolute;
+  right: -20rem;
+  bottom: 5rem;
+  background-color: lightblue;
+  padding: 1rem;
+  width: 14rem;
+}
+
+.hidden{
+  display: none;
 }

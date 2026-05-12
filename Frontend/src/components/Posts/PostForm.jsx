@@ -38,11 +38,10 @@ export default function PostForm() {
   const setPoll = usePostStore((state) => state.setPoll);
   const schedule = usePostStore((state) => state.schedule);
   const setSchedule = usePostStore((state) => state.setSchedule);
-  const showSchPosts = usePostStore((state) => state.showSchPosts);
-  const setshowSchPosts = usePostStore((state) => state.setshowSchPosts);
+  const showScheduledPosts = usePostStore((state)=> state.showScheduledPosts)
   const currUserProfile = useUserStore((state) => state.currUserProfile);
 
-  const [preview, setPreview] = useState("");
+  const [preview, setPreview] = useState(null);
   // Watch for file changes
   const file = watch("media");
 
@@ -65,14 +64,13 @@ export default function PostForm() {
     reset();
   };
 
-  //The error was occuri6ng 5because reset was removing the file before it gets submitted.
   return (
     <div>
       {poll ? (
         <Suspense fallback={<div>Loading...</div>}>
           <PollForm />
         </Suspense>
-      ) : showSchPosts ? (
+      ) : showScheduledPosts ? (
         <Suspense fallback={<div>Loading...</div>}>
           <SchPostsUI />
         </Suspense>
@@ -96,20 +94,20 @@ export default function PostForm() {
             </div>
           </div>
           <div className={styles.form}>
-            <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-              <div className="formBody">
+            <FormWrapper onSubmit={handleSubmit(onSubmit)} id="postform">
+              <div className={styles.formBody}>
                 <RHFtextarea
                   placeholder="Write your post here"
                   register={register}
                   name="content"
+                  customStyles={{ height: "15rem" }}
                   errors={errors}
                 />
 
-                {file && (
+                {preview && (
                   <div className={styles.previewImg}>
-                    <div>
+                    <div className={styles.xmark}>
                       <Xmark
-                        style={{ zIndex: "10" }}
                         onClick={() => {
                           setValue("media", "");
                         }}
@@ -121,98 +119,71 @@ export default function PostForm() {
                 )}
               </div>
 
-              <br />
-
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div className="optionss">
-                  <div>
-                    <SmileR />
-                  </div>
-                  <div>
-                    <label htmlFor="mediaInput">
-                      <ImageIcon />
-                    </label>
-                    <RHFInput
-                      id="mediaInput"
-                      type="file"
-                      style={{ display: "none" }}
-                      placeholder="Enter your post image url here"
-                      name="media"
-                      register={register}
-                    />
-                  </div>
-                  <div>
-                    <Pollicon onClick={() => setPoll(true)} />
-                  </div>
+              <div className={styles.postOptions}>
+                <div>
+                  <SmileR />
                 </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    position: "relative",
-                  }}
-                >
-                  {schedule ? (
-                    <ClockS
-                      onClick={() => setSchedule(false)}
-                      style={{ fontSize: "1.2rem" }}
-                    />
-                  ) : (
-                    <ClockR
-                      onClick={() => setSchedule(true)}
-                      style={{ fontSize: "1.2rem" }}
-                    />
-                  )}
-
-                  <Button
-                    type="submit"
-                    disabled={isLoading}
-                    btnText={isLoading ? <Spinner /> : "Post"}
+                <div>
+                  <label htmlFor="mediaInput">
+                    <ImageIcon />
+                  </label>
+                  <RHFInput
+                    id="mediaInput"
+                    type="file"
+                    customClass={styles.hidden}
+                    placeholder="Enter your post image url here"
+                    name="media"
+                    register={register}
                   />
                 </div>
-
-                {schedule && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      right: "-20rem",
-                      bottom: "5rem",
-                      backgroundColor: "lightblue",
-                      padding: "1rem",
-                      width: "14rem",
-                    }}
-                  >
-                    <span>Date</span>
-                    <RHFInput
-                      placeholder="dd-mm-yyyy"
-                      style={{
-                        margin: "0 0 1rem 0",
-                      }}
-                      name="date"
-                      register={register}
-                      errors={errors}
-                    />
-                    <span>Time</span>
-                    <RHFInput
-                      placeholder="17:30"
-                      style={{
-                        margin: "0 0 1rem 0",
-                      }}
-                      register={register}
-                      name="time"
-                      errors={errors}
-                    />
-                    <Button
-                      onClick={() => {
-                        setshowSchPosts(true);
-                      }}
-                      btnText="View all scheduled posts"
-                    />
-                  </div>
-                )}
+                <div>
+                  <Pollicon onClick={() => setPoll(true)} />
+                </div>
               </div>
             </FormWrapper>
+            <div className={styles.footer}>
+              <div className={styles.footerOptions}>
+                {schedule ? (
+                  <ClockS onClick={() => setSchedule(false)} />
+                ) : (
+                  <ClockR onClick={() => setSchedule(true)} />
+                )}
+
+                <Button
+                  type="submit"
+                  form="postform"
+                  variant="sm"
+                  disabled={isLoading}
+                  btnText={isLoading ? <Spinner height={17} width={17}/> : "Post"}
+                />
+              </div>
+            </div>
+
+            {/* Post Scheduler component */}
+            {schedule && (
+              <div className={styles.postScheduler}>
+                <span>Date</span>
+                <RHFInput
+                  placeholder="dd-mm-yyyy"
+                  name="date"
+                  register={register}
+                  errors={errors}
+                />
+                <span>Time</span>
+                <RHFInput
+                  placeholder="17:30"
+                  register={register}
+                  name="time"
+                  errors={errors}
+                />
+                <Button
+                  onClick={() => {
+                    showScheduledPosts(true);
+                  }}
+                  btnText="View all scheduled posts"
+                />
+              </div>
+            )}
           </div>
         </div>
       )}

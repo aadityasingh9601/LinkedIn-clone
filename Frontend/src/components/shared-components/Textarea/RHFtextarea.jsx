@@ -13,7 +13,7 @@ export default function RHFtextarea({
     <MyErrorBoundary>
       <div className={styles.textarea}>
         <textarea
-          style={styles}
+          style={customStyles}
           {...register(name, rules)}
           placeholder={placeholder}
         ></textarea>

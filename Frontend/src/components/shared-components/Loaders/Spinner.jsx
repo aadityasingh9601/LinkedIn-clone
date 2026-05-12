@@ -1,10 +1,10 @@
 import { Oval } from "react-loader-spinner";
 
-export default function Spinner() {
+export default function Spinner({height=23,width=23}) {
   return (
     <Oval
-      height={23}
-      width={23}
+      height={height}
+      width={width}
       color="white"
       wrapperStyle={{}}
       wrapperClass=""

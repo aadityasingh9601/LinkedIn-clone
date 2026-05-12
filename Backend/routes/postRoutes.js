@@ -22,10 +22,8 @@ router.get("/:userId", wrapAsync(postController.getPosts));
 
 router.get("/scheduled/:userId", wrapAsync(postController.allScheduledPosts));
 
-//Get a single post route.
 router.get("/:postId", protect, wrapAsync(postController.singlePost));
 
-//Update post route.
 router
   .route("/:postId")
   .patch(

@@ -9,7 +9,7 @@ const SchPost = lazy(() => import("./SchPost"));
 export default function SchPostsUI() {
   const currUserId = useUserStore((state) => state.currUserId);
   const scheduledPosts = usePostStore((state) => state.scheduledPosts);
-  const setshowSchPosts = usePostStore((state) => state.setshowSchPosts);
+  const setShowScheduledPosts = usePostStore((state)=>state.setShowScheduledPosts)
   const getScheduledPosts = usePostStore((state) => state.getScheduledPosts);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function SchPostsUI() {
         )}
       </div>
 
-      <Button btnText="Back" onClick={() => setshowSchPosts(false)} />
+      <Button btnText="Back" onClick={() =>  setShowScheduledPosts(false)} />
     </div>
   );
 }

@@ -2,14 +2,9 @@
   position: fixed;
   left: 50%;
   top: 40%;
-  overflow-x:hidden;
   transform: translate(-50%, -50%);
   background-color: white;
-  padding: 0.5rem;
   z-index: 1000;
-  width: fit-content;
-  max-width: 38rem;
-  height: fit-content;
   max-height: 35rem;
   border-radius: 0.35rem;
 }

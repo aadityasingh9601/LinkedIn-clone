@@ -226,12 +226,13 @@ const updatePost = async (req, res) => {
 };
 
 const deletePost = async (req, res) => {
-  console.log("inside delete post");
+  console.log("inside deletePost on backend")
   const { postId } = req.params;
+  console.log(postId);
   const post = await Post.findById(postId);
   //We have used findByIdAndDelete in order to trigger the mongoose middleware that will delete all the comments
   //associated with the post.
-  if (req.user._id.toString() === post.author.toString()) {
+  if (req.user._id.toString() === post?.author.toString()) {
     if (post.media.mediaType === "image") {
       await cloudinary.uploader
         .destroy(post.media.filename, { resource_type: "image" })
@@ -245,7 +246,6 @@ const deletePost = async (req, res) => {
     }
 
     await Post.findByIdAndDelete(postId);
-
     res.status(200).send({ message: "Post deleted successfully" });
   } else {
     res.status(401).send({ message: "You are not the owner of the post." });

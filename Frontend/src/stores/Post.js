@@ -29,10 +29,10 @@ const usePostStore = create((set) => ({
     set({ schedule: value });
   },
 
-  showSchPosts: false,
+  showScheduledPosts: false,
 
-  setshowSchPosts: (value) => {
-    set({ showSchPosts: value });
+  setShowScheduledPosts: (value) =>{
+    set({showScheduledPosts:value})
   },
 
   hasMore: true,

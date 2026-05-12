@@ -5,15 +5,19 @@ export default function Button({
   type = "submit",
   btnText,
   onClick = () => {},
+  form,
   variant = "md",
   disabled = false,
   customStyles = {},
 }) {
+    const buttonRef = useRef(null);
   const [buttonWidth, setButtonWidth] = useState();
-  const buttonRef = useRef(null);
+const [buttonHeight, setButtonHeight] = useState();
   const buttonWidthStyle =
     disabled && buttonWidth ? { minWidth: buttonWidth } : undefined;
-  const conditionalStyle = disabled ? { padding: "0.48rem 1.5rem" } : undefined;
+    const buttonHeightStyle =
+    disabled && buttonHeight ? { minHeight: buttonHeight } : undefined;
+  //const conditionalStyle = disabled ? { padding: "0.48rem 1.5rem" } : undefined;
 
   const variantStyles = {
     sm: { padding: "0.4rem 1rem", fontSize: "0.8rem" },
@@ -27,6 +31,7 @@ export default function Button({
   }, []);
   return (
     <button
+      form={form}
       ref={buttonRef}
       className={styles.btn}
       onClick={onClick}
@@ -36,7 +41,8 @@ export default function Button({
         ...customStyles,
         ...variantStyles[variant],
         ...buttonWidthStyle,
-        ...conditionalStyle,
+        ...buttonHeightStyle,
+        
       }}
     >
       {btnText}

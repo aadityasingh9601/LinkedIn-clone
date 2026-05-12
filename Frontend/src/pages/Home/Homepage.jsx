@@ -34,8 +34,7 @@ export default function Homepage() {
   const getAllLikedPosts = useUserStore((state) => state.getAllLikedPosts);
   const getAllFollowed = useUserStore((state) => state.getAllFollowed);
   const getAllConnections = useUserStore((state) => state.getAllConnections);
-  const setshowSchPosts = usePostStore((state) => state.setshowSchPosts);
-  //console.log(allLikedPosts);
+  const setShowScheduledPosts = usePostStore((state)=> state.setShowScheduledPosts)
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -152,7 +151,7 @@ export default function Homepage() {
             <Modal>
               <Xmark
                 onClick={() => {
-                  (setPostFormModal(false), setshowSchPosts(false));
+                  (setPostFormModal(false), setShowScheduledPosts(false));
                 }}
               />
 
