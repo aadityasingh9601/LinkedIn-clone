@@ -2,15 +2,16 @@
   position: fixed;
   left: 50%;
   top: 40%;
-  overflow:scroll;
+  overflow-x:hidden;
   transform: translate(-50%, -50%);
   background-color: white;
-  padding: 1.3rem;
+  padding: 0.5rem;
   z-index: 1000;
   width: fit-content;
-  max-width: 42rem;
+  max-width: 38rem;
   height: fit-content;
   max-height: 35rem;
+  border-radius: 0.35rem;
 }
 
 .overlay {
@@ -25,12 +26,28 @@
 
 .cross {
   position: absolute;
-  right: 0.8rem;
-  top: 0.8rem;
+  right: 0.5rem;
+  top: 0.5rem;
   font-size: 1.3rem;
   z-index: 100;
 }
 
 .crossBox {
   display: inline-block;
+}
+
+.deleteModal{
+  padding: 0 0.5rem 0.5rem 0.5rem;
+}
+
+.deleteModalText{
+  color:red;
+  font-weight: 500;
+}
+
+.btns{
+  display: flex;
+  gap:0.5rem;
+  justify-content: flex-end;
+  margin:0.5rem 0 0 0 ;
 }

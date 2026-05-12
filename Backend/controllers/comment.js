@@ -1,17 +1,17 @@
 import Comment from "../models/Comment.js";
 import Post from "../models/Post.js";
+import mongoose from "mongoose";
 
-const createComment = async (req, res) => {
-  const { id } = req.params;
+const addComment = async (req, res) => {
+  const { postId } = req.params;
   const { comment } = req.body;
-  //console.log(comment.comment);
   const newComment = new Comment({
-    postId: id,
+    postId: postId,
     author: req.user._id,
     text: comment.comment,
   });
   await newComment.save();
-  const post = await Post.findById(id);
+  const post = await Post.findById(postId);
   post.comments.push(newComment);
   await post.save();
 
@@ -29,9 +29,9 @@ const createComment = async (req, res) => {
 
 const getComments = async (req, res) => {
   console.log("inside get comments");
-  const { id } = req.params;
-  console.log(id);
-  const comments = await Comment.find({ postId: id }).populate({
+  const { postId } = req.params;
+  console.log(postId);
+  const comments = await Comment.find({ postId: postId }).populate({
     path: "author",
     select: "profile",
     populate: { path: "profile", select: "headline name profileImage" },
@@ -59,25 +59,25 @@ const updateComment = async (req, res) => {
 };
 
 const deleteComment = async (req, res) => {
-  const { id, commentId } = req.params;
-  console.log(commentId);
-
+  const {commentId } = req.params;
   const comment = await Comment.findById(commentId);
   //const post = await Post.findById(comment.postId);
   if (comment.author.toString() === req.user._id.toString()) {
     await comment.deleteOne();
-    await Post.findByIdAndUpdate(id, {
-      $pull: { comments: commentId },
+    await Post.findByIdAndUpdate(comment.postId, {
+      $pull: {
+        comments: commentId,
+      },
     });
 
-    res.status(200).send({ message: "Comment deleted successfully" });
+    res.status(200).send({ message: "Comment deleted successfully!" });
   } else {
-    res.status(500).send({ message: "You are not the author of this comment" });
+    res.status(403).send({ message: "You are not the author of this comment" });
   }
 };
 
 export default {
-  createComment,
+  addComment,
   getComments,
   updateComment,
   deleteComment,

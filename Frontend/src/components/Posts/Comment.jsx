@@ -7,12 +7,13 @@ import Xmark from "../shared-components/Icons/Xmark";
 import TimePassed from "../shared-components/Date_Time/TimePassed";
 import useCommentStore from "../../stores/Comment";
 import PostHead from "../Posts/PostHead";
+import DeleteModal from "../shared-components/Modal/DeleteModal";
 const ControlledTextarea = lazy(
   () => import("../shared-components/Textarea/ControlledTextarea"),
 );
 
 export default function Comment({ comment }) {
-  console.log(comment)
+  console.log(comment?.author._id, comment?._id);
   const [toggle, setToggle] = useState(false);
   const [newComm, setnewComm] = useState(comment.text);
   const [commentEdit, setCommentEdit] = useState(false);
@@ -20,6 +21,9 @@ export default function Comment({ comment }) {
   const currUserId = useUserStore((state) => state.currUserId);
   const editComment = useCommentStore((state) => state.editComment);
   const deleteComment = useCommentStore((state) => state.deleteComment);
+  const handleDelete = () =>{
+    deleteComment(comment?.author._id, comment?._id)
+  }
 
   const handleChange = (e) => {
     setnewComm(e.target.value);
@@ -57,7 +61,7 @@ export default function Comment({ comment }) {
                         comment.postId,
                         comment._id,
                         newComm,
-                        updateCommentEdit,
+                        setCommentEdit,
                       )
                     }
                   />
@@ -72,20 +76,10 @@ export default function Comment({ comment }) {
 
       {deleteModal && (
         <Modal>
-          <Xmark onClick={() => setdeleteModal(false)} />
-
-          <p style={{ margin: "1rem 0 1rem 0 " }}>
-            <b>Are you sure you want to delete this?</b>
-            <br></br>
-            This action isn't reversible!
-          </p>
-          <Button
-            btnText="Delete"
-            onClick={() => {
-              deleteComment(comment?.author._id,comment?._id);
-            }}
+          <DeleteModal
+            handleCancel={setdeleteModal}
+            handleDelete={handleDelete}
           />
-          <Button btnText="Cancel" onClick={() => setdeleteModal(false)} />
         </Modal>
       )}
     </>

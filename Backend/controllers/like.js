@@ -2,13 +2,13 @@ import Post from "../models/Post.js";
 import Like from "../models/Like.js";
 
 const likePost = async (req, res) => {
-  const { id } = req.params;
-  console.log(id);
+  const { postId } = req.params;
+  console.log(postId);
   //Checking if the user has already liked the post or not, if liked we have to stop them from liking again.
   //const like = await Like.findOne({ postId: id } && { userId: req.user._id });
   //Writing this way was incorrect, this was causing the problem, why? See in your notes or chatGPt.
 
-  const like = await Like.findOne({ postId: id, user: req.user._id });
+  const like = await Like.findOne({ postId: postId, user: req.user._id });
 
   if (like) {
     res.status(400).send({ message: "You have already liked this post." });
@@ -16,13 +16,13 @@ const likePost = async (req, res) => {
     return;
   } else {
     const newLike = new Like({
-      postId: id,
+      postId: postId,
       user: req.user._id,
     });
 
     await newLike.save();
     console.log(newLike);
-    const post = await Post.findById(id);
+    const post = await Post.findById(postId);
     post.likeCount += 1;
     await post.save();
     console.log(post.likeCount);
@@ -31,13 +31,13 @@ const likePost = async (req, res) => {
 };
 
 const unlikePost = async (req, res) => {
-  const { id } = req.params;
+  const { postId } = req.params;
   const like = await Like.findOneAndDelete(
-    { postId: id },
+    { postId: postId },
     { user: req.user._id }
   );
   console.log(like);
-  const post = await Post.findById(id);
+  const post = await Post.findById(postId);
   post.likeCount -= 1;
   await post.save();
   console.log(post.likeCount);
@@ -45,8 +45,8 @@ const unlikePost = async (req, res) => {
 };
 
 const getAllLikes = async (req, res) => {
-  const { id } = req.params;
-  const likes = await Like.find({ postId: id }, { user: 1 }).populate(
+  const { postId } = req.params;
+  const likes = await Like.find({ postId: postId }, { user: 1 }).populate(
     "user",
     "name profileImage headline"
   );
@@ -55,8 +55,8 @@ const getAllLikes = async (req, res) => {
 };
 
 const checkLike = async (req, res) => {
-  const { id } = req.params;
-  const like = await Like.findOne({ postId: id, user: req.user._id });
+  const { postId } = req.params;
+  const like = await Like.findOne({ postId: postId, user: req.user._id });
   if (like) {
     res.send("yes");
   } else {

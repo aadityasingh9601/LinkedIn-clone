@@ -16,11 +16,12 @@ import PaperPlane from "../shared-components/Icons/PaperPlane";
 import CommentR from "../shared-components/Icons/CommentR";
 import useCommentStore from "../../stores/Comment";
 import PostHead from "../Posts/PostHead";
+import DeleteModal from "../shared-components/Modal/DeleteModal";
 
 export default function Post({ post, postRef }) {
   const currUserId = useUserStore((state) => state.currUserId);
   const [showComments, setshowComments] = useState(false);
-  const [deleteModal, setdeleteModal] = useState(false)
+  const [deleteModal, setdeleteModal] = useState(false);
   const [likeModal, setlikeModal] = useState(false);
   const [isLiked, setisLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likeCount);
@@ -83,7 +84,12 @@ export default function Post({ post, postRef }) {
   return (
     <>
       <div className={styles.post} data-post-id={post?._id} ref={postRef}>
-        <PostHead data={post} type="post" setEdit={seteditModal} setDelete={setdeleteModal}/>
+        <PostHead
+          data={post}
+          type="post"
+          setEdit={seteditModal}
+          setDelete={setdeleteModal}
+        />
         <div className={styles.body}>
           <div className={styles["body-text"]}>{post?.content}</div>
           <div className={styles.media}>
@@ -100,7 +106,7 @@ export default function Post({ post, postRef }) {
               <span onClick={() => togglelikeModal(true)}>
                 {likeCount} likes
               </span>
-              ,
+              {", "}
               <span onClick={() => setshowComments(!showComments)}>
                 {commentCount} comments
               </span>
@@ -166,26 +172,12 @@ export default function Post({ post, postRef }) {
 
       {deleteModal && (
         <Modal>
-          <Xmark onClick={() => setdeleteModal(false)} />
-
-          <p style={{ margin: "1rem 0 1rem 0 " }}>
-            <b>Are you sure you want to delete this?</b>
-            <br></br>
-            This action isn't reversible!
-          </p>
-          <Button
-            btnText="Delete"
-            onClick={() =>
-              type === "post"
-                ? deletePost(data._id)
-                : type === "comment"
-                  ? deleteComment(data.postId, data._id)
-                  : type === "poll"
-                    ? deletePoll(data._id)
-                    : null
-            }
+          <DeleteModal
+            handleCancel={setdeleteModal}
+            handleDelete={() => {
+              deletePost(post._id);
+            }}
           />
-          <Button btnText="Cancel" onClick={() => setdeleteModal(false)} />
         </Modal>
       )}
     </>

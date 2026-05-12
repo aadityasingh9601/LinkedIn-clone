@@ -7,7 +7,7 @@ const router = Router({ mergeParams: true });
 
 router
   .route("/")
-  .post(protect, wrapAsync(commentController.createComment))
+  .post(protect, wrapAsync(commentController.addComment))
   .get(protect, wrapAsync(commentController.getComments));
 
 router
