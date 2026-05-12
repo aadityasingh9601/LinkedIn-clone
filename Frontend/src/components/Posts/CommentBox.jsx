@@ -1,8 +1,10 @@
+import styles from "./Comment.module.css";
 import Button from "../shared-components/Buttons/Button";
 import { useForm } from "react-hook-form";
 import RHFInput from "../shared-components/Inputs/RHFInput";
 import useCommentStore from "../../stores/Comment";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
+import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
 
 export default function CommentBox({ postId }) {
   const addComment = useCommentStore((state) => state.addComment);
@@ -19,14 +21,14 @@ export default function CommentBox({ postId }) {
     addComment(postId, comment);
   };
   return (
-    <div className="commBox">
+    <div className={styles.commentBox}>
       <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-        <RHFInput
+        <RHFtextarea
           placeholder="Add a comment..."
           name="comment"
           register={register}
           rules={{
-            required: "Comment is required",
+            required: "Comment is required!",
             maxLength: {
               value: 500,
               message: "Comment should not exceed 500 characters",
@@ -34,7 +36,9 @@ export default function CommentBox({ postId }) {
           }}
           errors={errors}
         />
-        <Button type="submit" btnText="Comment" />
+        <div className={styles.btns}>
+          <Button type="submit" btnText="Comment" variant="sm" />
+        </div>
       </FormWrapper>
       <hr />
     </div>

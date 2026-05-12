@@ -1,5 +1,4 @@
 .btn {
-  padding: 0.6rem 1.5rem;
   align-items: center;
   justify-items: center;
   width: fit-content;
@@ -7,7 +6,6 @@
   background-color: #0a66c2;
   color: white;
   border-radius: 1.5rem;
-  font-size: 1rem;
 }
 
 .btnText {

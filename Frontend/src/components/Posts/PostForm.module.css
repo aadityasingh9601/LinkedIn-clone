@@ -25,11 +25,14 @@
   flex-direction: column;
 }
 
-.postform .form .formBody {
+.formBody {
   overflow: auto;
-
   margin: 0 0 2rem 0;
   max-height: 28rem;
+}
+
+.formBody::-webkit-scrollbar {
+  display: none;
 }
 
 .previewImg {

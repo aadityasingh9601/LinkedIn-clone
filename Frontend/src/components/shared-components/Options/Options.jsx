@@ -3,7 +3,7 @@ import Ellipsis from "../Icons/Ellipsis";
 import Pen from "../Icons/Pen";
 import Trash from "../Icons/Trash";
 
-export default function Options({ show, setShow }) {
+export default function Options({ show, setShow, setEdit, setDelete }) {
   return (
     <div className={styles.options}>
       <div className={styles.optionsBtn} onClick={() => setShow(!show)}>
@@ -15,6 +15,7 @@ export default function Options({ show, setShow }) {
           <button
             onClick={() => {
               setShow(false);
+              setEdit(true);
             }}
           >
             <Pen />
@@ -22,8 +23,8 @@ export default function Options({ show, setShow }) {
           </button>
           <button
             onClick={() => {
-              setdeleteModal(true);
-              setToggle(false);
+              setDelete(true);
+              // setToggle(false);
             }}
           >
             <Trash />

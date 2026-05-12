@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import usePostStore from "../../stores/Post";
 import Modal from "../shared-components/Modal/Modal";
 const Button = lazy(() => import("../shared-components/Buttons/Button"));
+import { Suspense } from "react";
 const PostEditForm = lazy(() => import("./PostEditForm"));
 const CommentSection = lazy(() => import("./CommentSection"));
 import useUserStore from "../../stores/User";
@@ -19,11 +20,11 @@ import PostHead from "../Posts/PostHead";
 export default function Post({ post, postRef }) {
   const currUserId = useUserStore((state) => state.currUserId);
   const [showComments, setshowComments] = useState(false);
-
+  const [deleteModal, setdeleteModal] = useState(false)
   const [likeModal, setlikeModal] = useState(false);
   const [isLiked, setisLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likeCount);
-
+  const deletePost = usePostStore((state) => state.deletePost);
   const [commentCount, setCommentCount] = useState(post.comments.length);
 
   const likePost = usePostStore((state) => state.likePost);
@@ -34,6 +35,12 @@ export default function Post({ post, postRef }) {
 
   const allLikedPosts = useUserStore((state) => state.allLikedPosts);
   const allFollowed = useUserStore((state) => state.allFollowed);
+
+  const [editModal, seteditModal] = useState(false);
+
+  const toggleEditModal = (value) => {
+    seteditModal(value);
+  };
 
   //To ensure that we can't scroll the page while the modal is open.
   if (likeModal) {
@@ -74,76 +81,113 @@ export default function Post({ post, postRef }) {
   }, [likeModal]);
 
   return (
-    <div className={styles.post} data-post-id={post?._id} ref={postRef}>
-      <PostHead data={post} type="post" />
-      <div className={styles.body}>
-        <div className={styles["body-text"]}>{post?.content}</div>
-        <div className={styles.media}>
-          {post?.media?.mediaType === "image" ? (
-            <img src={post?.media?.url} alt="" />
-          ) : post?.media?.mediaType === "video" ? (
-            <video controls>
-              <source src={post?.media?.url} type="video/mp4" />
-            </video>
-          ) : null}
-        </div>
-        <div className={styles.postInfo}>
-          <div>
-            <span onClick={() => togglelikeModal(true)}>{likeCount} likes</span>
-            ,
-            <span onClick={() => setshowComments(!showComments)}>
-              {commentCount} comments
-            </span>
+    <>
+      <div className={styles.post} data-post-id={post?._id} ref={postRef}>
+        <PostHead data={post} type="post" setEdit={seteditModal} setDelete={setdeleteModal}/>
+        <div className={styles.body}>
+          <div className={styles["body-text"]}>{post?.content}</div>
+          <div className={styles.media}>
+            {post?.media?.mediaType === "image" ? (
+              <img src={post?.media?.url} alt="" />
+            ) : post?.media?.mediaType === "video" ? (
+              <video controls>
+                <source src={post?.media?.url} type="video/mp4" />
+              </video>
+            ) : null}
+          </div>
+          <div className={styles.postInfo}>
+            <div>
+              <span onClick={() => togglelikeModal(true)}>
+                {likeCount} likes
+              </span>
+              ,
+              <span onClick={() => setshowComments(!showComments)}>
+                {commentCount} comments
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-      <div className={styles.footer}>
-        <button onClick={isLiked ? unsetLike : setLike}>
-          {isLiked ? (
-            <ThumbsupS styles={{ color: "#0a66c2" }} />
-          ) : (
-            <ThumbsupR />
-          )}
-          Like
-        </button>
-        <button onClick={() => setshowComments(!showComments)}>
-          <CommentR />
-          Comment
-        </button>
-        {/* Add functionality to this button so that on clicking send URL of the post is copied, so that can be sent to anyone
+        <div className={styles.footer}>
+          <button onClick={isLiked ? unsetLike : setLike}>
+            {isLiked ? (
+              <ThumbsupS styles={{ color: "#0a66c2" }} />
+            ) : (
+              <ThumbsupR />
+            )}
+            Like
+          </button>
+          <button onClick={() => setshowComments(!showComments)}>
+            <CommentR />
+            Comment
+          </button>
+          {/* Add functionality to this button so that on clicking send URL of the post is copied, so that can be sent to anyone
         and they can access the post */}
-        <button>
-          <PaperPlane />
-          Send
-        </button>
+          <button>
+            <PaperPlane />
+            Send
+          </button>
+        </div>
+
+        {showComments && (
+          <CommentSection
+            postId={post._id}
+            comments={comments}
+            showComments={showComments}
+            setshowComments={setshowComments}
+          />
+        )}
+
+        {likeModal && (
+          <Modal>
+            <Xmark onClick={() => togglelikeModal(false)} />
+            <div className={styles.likeList}>
+              {likedUsers?.map((like) => {
+                return (
+                  <UserInfo
+                    userId={like.user._id}
+                    url={like.user.profileImage}
+                    username={like.user.name}
+                    headline={like.user.headline}
+                  />
+                );
+              })}
+            </div>
+          </Modal>
+        )}
       </div>
-
-      {showComments && (
-        <CommentSection
-          postId={post._id}
-          comments={comments}
-          showComments={showComments}
-          setshowComments={setshowComments}
-        />
-      )}
-
-      {likeModal && (
+      {editModal && (
         <Modal>
-          <Xmark onClick={() => togglelikeModal(false)} />
-          <div className={styles.likeList}>
-            {likedUsers?.map((like) => {
-              return (
-                <UserInfo
-                  userId={like.user._id}
-                  url={like.user.profileImage}
-                  username={like.user.name}
-                  headline={like.user.headline}
-                />
-              );
-            })}
-          </div>
+          <Xmark onClick={() => toggleEditModal(false)} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <PostEditForm post={post} toggleEditModal={toggleEditModal} />
+          </Suspense>
         </Modal>
       )}
-    </div>
+
+      {deleteModal && (
+        <Modal>
+          <Xmark onClick={() => setdeleteModal(false)} />
+
+          <p style={{ margin: "1rem 0 1rem 0 " }}>
+            <b>Are you sure you want to delete this?</b>
+            <br></br>
+            This action isn't reversible!
+          </p>
+          <Button
+            btnText="Delete"
+            onClick={() =>
+              type === "post"
+                ? deletePost(data._id)
+                : type === "comment"
+                  ? deleteComment(data.postId, data._id)
+                  : type === "poll"
+                    ? deletePoll(data._id)
+                    : null
+            }
+          />
+          <Button btnText="Cancel" onClick={() => setdeleteModal(false)} />
+        </Modal>
+      )}
+    </>
   );
 }

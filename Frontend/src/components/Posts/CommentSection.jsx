@@ -20,11 +20,11 @@ export default function CommentSection({
   }, [showComments]);
 
   return (
-    <div className={styles.commSection}>
+    <div className={styles.commentSection}>
       <Suspense fallback={<div>Loading...</div>}>
         <CommentBox postId={postId} />
       </Suspense>
-      <div className="comments">
+      <div className={styles.comments}>
         {comments?.map((comment) => {
           return (
             <Suspense fallback={<div>Loading...</div>}>

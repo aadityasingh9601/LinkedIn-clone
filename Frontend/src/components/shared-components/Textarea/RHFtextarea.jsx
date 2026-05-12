@@ -1,24 +1,24 @@
 import MyErrorBoundary from "../ErrorBoundary/MyErrorBoundary";
-import css from "./Textarea.module.css";
+import styles from "./Textarea.module.css";
 
 export default function RHFtextarea({
   placeholder,
   register,
   name,
-  styles = {},
+  customStyles = {},
   rules = {},
   errors = {},
 }) {
   return (
     <MyErrorBoundary>
-      <div className={css.textarea}>
+      <div className={styles.textarea}>
         <textarea
           style={styles}
           {...register(name, rules)}
           placeholder={placeholder}
         ></textarea>
 
-        {errors[name] && <p>{errors[name].message}</p>}
+        {errors[name] && <div className={styles.errorMsg}>{errors[name].message}</div>}
       </div>
     </MyErrorBoundary>
   );

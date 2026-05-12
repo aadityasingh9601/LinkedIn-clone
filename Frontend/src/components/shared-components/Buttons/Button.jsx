@@ -5,6 +5,7 @@ export default function Button({
   type = "submit",
   btnText,
   onClick = () => {},
+  variant = "md",
   disabled = false,
   customStyles = {},
 }) {
@@ -13,6 +14,11 @@ export default function Button({
   const buttonWidthStyle =
     disabled && buttonWidth ? { minWidth: buttonWidth } : undefined;
   const conditionalStyle = disabled ? { padding: "0.48rem 1.5rem" } : undefined;
+
+  const variantStyles = {
+    sm: { padding: "0.4rem 1rem", fontSize: "0.8rem" },
+    md: { padding: "0.6rem 1.5rem", fontSize: "1rem" },
+  };
 
   useLayoutEffect(() => {
     if (buttonRef.current) {
@@ -28,6 +34,7 @@ export default function Button({
       disabled={disabled}
       style={{
         ...customStyles,
+        ...variantStyles[variant],
         ...buttonWidthStyle,
         ...conditionalStyle,
       }}

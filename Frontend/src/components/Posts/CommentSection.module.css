@@ -1,5 +1,14 @@
-.commSection {
+.commentSection {
   margin: 0.5rem 0 0 0;
   width: 100%;
   height: fit-content;
+}
+
+.comments{
+  max-height: 20rem;
+  overflow-x: hidden;
+}
+
+.comments::-webkit-scrollbar {
+  display: none;
 }
