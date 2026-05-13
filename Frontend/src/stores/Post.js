@@ -31,8 +31,8 @@ const usePostStore = create((set) => ({
 
   showScheduledPosts: false,
 
-  setShowScheduledPosts: (value) =>{
-    set({showScheduledPosts:value})
+  setShowScheduledPosts: (value) => {
+    set({ showScheduledPosts: value });
   },
 
   hasMore: true,
@@ -52,22 +52,15 @@ const usePostStore = create((set) => ({
         },
       );
       setIsLoading(false);
-      console.log(response);
       post = response.data;
       if (response.status === 201) {
         set({ postFormModal: false });
-        console.log(post);
-
+        set({ schedule: false });
         //Updating the state variable according to the data received.
-        if (post.published === true && post.postType === "Everyone") {
+        if (post.published === true) {
           set((state) => ({
             posts: [post, ...state.posts],
-            //Generally we write like posts:[...state.posts,post] it means spread first then add post too
-            //but I have reversed the order here, that means post will get added first , that means the newest post
-            //will come on top.
           }));
-          return toast.success("Post created successfully!");
-        } else if (post.postType === "Connections only") {
           return toast.success("Post created successfully!");
         } else {
           return toast.success("Post scheduled!");
@@ -76,10 +69,11 @@ const usePostStore = create((set) => ({
     });
   },
 
-  updatePost: (data) => {
+  updatePost: (newPost) => {
     set((state) => ({
-      posts: [data, ...state.posts],
+      posts: [newPost, ...state.posts],
     }));
+    toast.success("Your post is live!");
   },
 
   getScheduledPosts: async (userId) => {

@@ -3,13 +3,12 @@ dotenv.config();
 
 import express from "express";
 import mongoose from "mongoose";
-import { createServer, request } from "node:http";
+import { createServer } from "node:http";
 import { Server } from "socket.io";
 
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import Notification from "./models/Notification.js";
 import userRouter from "./routes/userRoutes.js";
 import chatRouter from "./routes/chatRoutes.js";
 import postRouter from "./routes/postRoutes.js";
@@ -22,6 +21,7 @@ import notiRouter from "./routes/notiRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
 import analyticRouter from "./routes/analyticsRoutes.js";
 import pollRouter from "./routes/pollRoutes.js";
+import { startPostPublishScheduler } from "./schedulers/publishScheduledPosts.js";
 
 const app = express();
 const server = createServer(app);
@@ -54,14 +54,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
-async function main() {
+async function connectToDb() {
   await mongoose.connect(
     process.env.MONGO_URL || "mongodb://localhost:27018/LinkedIn",
   );
 }
 
-main()
-  .then((client) => {
+connectToDb()
+  .then(() => {
     console.log("Connected to MongoDB");
   })
   .catch((err) => console.log(err));
@@ -69,6 +69,8 @@ main()
 server.listen(8000, () => {
   console.log("Listening on 8000");
 });
+
+startPostPublishScheduler();
 
 const userSocketMap = {};
 
@@ -109,7 +111,6 @@ app.all("*", (req, res) => {
 });
 
 //Error handling middleware.
-
 app.use((err, req, res, next) => {
   let { status = 400, message = "Something went wrong!!" } = err;
   res.status(status).json({ message: message });

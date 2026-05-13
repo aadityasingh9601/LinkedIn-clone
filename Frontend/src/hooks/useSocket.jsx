@@ -36,6 +36,7 @@ const useSocket = (BACKEND_URL, isLoggedIn, currUserId,location) => {
       removeMessage(data);
     });
     socketInstance.on("post_created", (data) => {
+      console.log(data);
       updatePost(data);
     });
     socketInstance.on("application-rejected", (data) => {

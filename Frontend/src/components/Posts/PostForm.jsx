@@ -41,6 +41,9 @@ export default function PostForm() {
   const schedule = usePostStore((state) => state.schedule);
   const setSchedule = usePostStore((state) => state.setSchedule);
   const showScheduledPosts = usePostStore((state) => state.showScheduledPosts);
+  const setShowScheduledPosts = usePostStore(
+    (state) => state.setShowScheduledPosts,
+  );
   const currUserProfile = useUserStore((state) => state.currUserProfile);
 
   const [preview, setPreview] = useState(null);
@@ -203,7 +206,7 @@ export default function PostForm() {
                   <Button
                     variant="sm"
                     onClick={() => {
-                      showScheduledPosts(true);
+                      setShowScheduledPosts(true);
                     }}
                     btnText="View all scheduled posts"
                   />
