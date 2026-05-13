@@ -1,4 +1,4 @@
-export default function PaperPlane(styles = {}, onClick = () => {}) {
+export default function PaperPlane({styles = {}, onClick = () => {}}) {
   return (
     <div style={{ display: "inline-block" }}>
       <i

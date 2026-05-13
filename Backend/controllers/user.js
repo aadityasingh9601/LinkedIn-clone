@@ -19,7 +19,13 @@ const checkAuthStatus = async (req, res) => {
   let accesstoken = req.cookies.accesstoken;
   let decoded = jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET);
   const user = await User.findOne({ _id: decoded.id });
-  res.status(200).json({ isLoggedIn: true, userId: user._id });
+  const userProfile = await Profile.findOne({ userId: decoded.id }).select(
+    "name headline profileImage",
+  );
+
+  res
+    .status(200)
+    .json({ isLoggedIn: true, userId: user._id, currUserProfile: userProfile });
 };
 
 const signup = async (req, res) => {
@@ -94,7 +100,9 @@ const login = async (req, res) => {
     let id = user._id;
     await user.save();
 
-    const userProfile = await Profile.findOne({ userId: id });
+    const userProfile = await Profile.findOne({ userId: id }).select(
+      "name headline profileImage",
+    );
 
     res
       .cookie("accesstoken", accessToken, {
@@ -106,7 +114,7 @@ const login = async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
       })
       .status(200)
-      .json({ userId: id, currUserProfile:userProfile });
+      .json({ userId: id, currUserProfile: userProfile });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error logging in" });

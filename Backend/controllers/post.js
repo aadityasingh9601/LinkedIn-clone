@@ -1,39 +1,29 @@
 import Post from "../models/Post.js";
-import Connection from "../models/Connection.js";
 import { v2 as cloudinary } from "cloudinary";
 import { io, userSocketMap } from "../server.js";
 import cron from "node-cron";
 import { PostDataSchema } from "../zodSchema/index.js";
+import { convertDateToCron } from "../utils/helper.js";
 
-function convertDateToCron(date) {
-  const minutes = date.getMinutes();
-  const hours = date.getHours();
-  const day = date.getDate();
-  const month = date.getMonth() + 1; // JS months are 0-based
-
-  return `${minutes} ${hours} ${day} ${month} *`; // ignore day-of-week
-}
 
 const createPost = async (req, res) => {
   console.log("inside createPost");
   const { postData } = req.body;
+  console.log(postData)
   const result = PostDataSchema.safeParse(postData);
   if (!result.success) {
     return res.status(400).json({
       message: result.error.message,
     });
   }
-  //console.log(req.headers);
   const { date, time } = postData;
-  //console.log(date, time);
-  //Converting date and time into proper format.
+
   let scheduledAt = "";
   if (date && time) {
     const [day, month, year] = date.split("-");
     scheduledAt = new Date(`${year}-${month}-${day}T${time}:00`);
   }
 
-  console.log(req.file);
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
   let filename = req.file ? req.file.filename : "";
@@ -71,11 +61,12 @@ const createPost = async (req, res) => {
           select: "name profileImage headline",
         },
       });
-
       //As post gets created, emit a socket event to update the state on the frontend.
       const socketId = userSocketMap[req.user._id.toString()];
       io.to(socketId).emit("post_created", fullPost);
     });
+
+    console.log(task);
   }
 
   let fullPost = await Post.findById(newPost._id).populate({

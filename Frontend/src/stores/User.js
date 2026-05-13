@@ -25,8 +25,14 @@ const useUserStore = create((set, get) => ({
     tryCatchWrapper(async () => {
       const response = await apiGet("/users/checkauthstatus");
       if (response.status === 200) {
-        set({ isLoggedIn: true, currUserId: response?.data.userId });
-        localStorage.setItem("currUserId", response?.data.userId);
+        set({
+          isLoggedIn: true,
+          currUserId: response?.data.userId,
+          currUserProfile: response?.data.currUserProfile,
+        });
+        localStorage.setItem("currUserId", response.data.userId);
+        localStorage.setItem("currUserProfile", response.data.currUserProfile);
+        navigate("/home");
       }
     });
   },

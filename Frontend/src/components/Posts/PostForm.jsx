@@ -19,6 +19,7 @@ import RHFselect from "../shared-components/Select/RHFselect";
 import UserInfo from "../shared-components/User/UserInfo";
 import useUserStore from "../../stores/User";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
+import EmojiPicker from "emoji-picker-react";
 const PollForm = lazy(() => import("../Polls/PollForm"));
 const SchPostsUI = lazy(() => import("./SchPostsUI"));
 
@@ -33,17 +34,19 @@ export default function PostForm() {
   } = useForm({ resolver: zodResolver(PostDataSchema) });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const createPost = usePostStore((state) => state.createPost);
   const poll = usePostStore((state) => state.poll);
   const setPoll = usePostStore((state) => state.setPoll);
   const schedule = usePostStore((state) => state.schedule);
   const setSchedule = usePostStore((state) => state.setSchedule);
-  const showScheduledPosts = usePostStore((state)=> state.showScheduledPosts)
+  const showScheduledPosts = usePostStore((state) => state.showScheduledPosts);
   const currUserProfile = useUserStore((state) => state.currUserProfile);
 
   const [preview, setPreview] = useState(null);
   // Watch for file changes
   const file = watch("media");
+  const existingContent = watch("content");
 
   if (file && file.length > 0) {
     const reader = new FileReader();
@@ -52,6 +55,11 @@ export default function PostForm() {
     };
     reader.readAsDataURL(file[0]); // Convert first file to Base64
   }
+
+  const handleEmojiClick = (emojiObject) => {
+    console.log(emojiObject);
+    setValue("content", existingContent + emojiObject.emoji);
+  };
 
   const onSubmit = (data) => {
     console.log(data);
@@ -83,12 +91,11 @@ export default function PostForm() {
               url={currUserProfile?.profileImage?.url}
               headline={currUserProfile?.headline}
             />
-            <div>
+            <div className={styles.postType}>
               <RHFselect
                 name="postType"
                 register={register}
-                styles={{ display: "inline" }}
-                options={["Everyone", "Connections only!"]}
+                options={["Everyone", "Connections only"]}
                 errors={errors}
               />
             </div>
@@ -120,9 +127,21 @@ export default function PostForm() {
               </div>
 
               <div className={styles.postOptions}>
-                <div>
-                  <SmileR />
+                <div className={styles.emojiWrapper}>
+                  <div onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+                    {showEmojiPicker ? <SmileS /> : <SmileR />}
+                  </div>
+                  <div className={styles.emojiPicker}>
+                    {showEmojiPicker && (
+                      <EmojiPicker
+                        height={350}
+                        width={300}
+                        onEmojiClick={handleEmojiClick}
+                      />
+                    )}
+                  </div>
                 </div>
+
                 <div>
                   <label htmlFor="mediaInput">
                     <ImageIcon />
@@ -154,36 +173,43 @@ export default function PostForm() {
                   form="postform"
                   variant="sm"
                   disabled={isLoading}
-                  btnText={isLoading ? <Spinner height={17} width={17}/> : "Post"}
+                  btnText={
+                    isLoading ? <Spinner height={17} width={17} /> : "Post"
+                  }
                 />
               </div>
             </div>
 
-            {/* Post Scheduler component */}
-            {schedule && (
-              <div className={styles.postScheduler}>
-                <span>Date</span>
-                <RHFInput
-                  placeholder="dd-mm-yyyy"
-                  name="date"
-                  register={register}
-                  errors={errors}
-                />
-                <span>Time</span>
-                <RHFInput
-                  placeholder="17:30"
-                  register={register}
-                  name="time"
-                  errors={errors}
-                />
-                <Button
-                  onClick={() => {
-                    showScheduledPosts(true);
-                  }}
-                  btnText="View all scheduled posts"
-                />
-              </div>
-            )}
+            <div className={styles.postSchedulerWrapper}>
+              {/* Post Scheduler component */}
+              {schedule && (
+                <div className={styles.postScheduler}>
+                  <RHFInput
+                    customClass={styles.schedulerInput}
+                    label="Date"
+                    placeholder="dd-mm-yyyy"
+                    name="date"
+                    register={register}
+                    errors={errors}
+                  />
+                  <RHFInput
+                    label="Time"
+                    customClass={styles.schedulerInput}
+                    placeholder="17:30"
+                    register={register}
+                    name="time"
+                    errors={errors}
+                  />
+                  <Button
+                    variant="sm"
+                    onClick={() => {
+                      showScheduledPosts(true);
+                    }}
+                    btnText="View all scheduled posts"
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

@@ -56,7 +56,7 @@ const AppRoutes = () => {
 
   useEffect(() => {
     setNavigate(navigate);
-  }, [navigate]);
+  }, []);
 
   return (
     <Routes>
@@ -87,7 +87,8 @@ const AppRoutes = () => {
 function App() {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const BACKEND_URL =
-    import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+  console.log(BACKEND_URL);
 
   const currUserId = useUserStore((state) => state.currUserId);
   const socket = useSocket(BACKEND_URL, isLoggedIn, currUserId, location);
