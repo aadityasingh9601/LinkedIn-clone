@@ -1,13 +1,38 @@
-.headFormImages {
+.profileHeadForm {
+  width: 42rem;
+  max-height: 35rem;
+}
+
+.profileHeadForm form {
   display: flex;
+  overflow-y:auto;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.headFormImages img {
-  width: 12rem;
-  height: 12rem;
+.imagesWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.headFormImages div input {
-  width: 12rem !important;
-  margin: 0 0 1rem 0;
+.previewImage{
+  display: flex;
+  flex-direction: column;
+  gap:0.5rem;
+  align-items: center;
+}
+
+.previewImage img{
+  height: 18rem;
+  width: 18rem;
+}
+
+.hidden{
+  display: none;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
 }

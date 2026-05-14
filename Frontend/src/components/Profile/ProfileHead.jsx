@@ -12,8 +12,7 @@ import useFollowStore from "../../stores/Follow";
 import useConnectionStore from "../../stores/Connection";
 import useChatStore from "../../stores/Chat";
 import { useState, useEffect } from "react";
-
-const ProfileHeadForm = lazy(() => import("./ProfileHeadForm"));
+import ProfileHeadForm from "./ProfileHeadForm";
 
 export default function ProfileHead({ profile, styles, createProfile }) {
   const [isFollowed, setisFollowed] = useState(false);

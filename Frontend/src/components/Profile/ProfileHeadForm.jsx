@@ -5,6 +5,7 @@ import RHFInput from "../shared-components/Inputs/RHFInput";
 import { ProfileHeadDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
+import Pen from "../shared-components/Icons/Pen";
 
 export default function ProfileHeadForm({
   profile,
@@ -24,71 +25,86 @@ export default function ProfileHeadForm({
     console.log(profileData);
     //We should extract and select only the fields we want for the current form to edit,not all of the complete
     //profile object directly as it can cause issues, and some unwanted fields will get overriden too.
-    const data = {
-      name: profileData.name,
-      headline: profileData.headline,
-      location: profileData.location,
-      contactInfo: {
-        email: profileData.contactInfo?.email,
-        phone: profileData.contactInfo?.phone,
-      },
-      profileImage: profileData.profileImage?.[0], // optional chaining just in case
-      bannerImage: profileData.bannerImage?.[0],
-    };
-    createProfile(data);
+    // const data = {
+    //   name: profileData.name,
+    //   headline: profileData.headline,
+    //   location: profileData.location,
+    //   contactInfo: {
+    //     email: profileData.contactInfo?.email,
+    //     phone: profileData.contactInfo?.phone,
+    //   },
+    //   profileImage: profileData.profileImage?.[0],
+    //   bannerImage: profileData.bannerImage?.[0],
+    // };
+    //createProfile(data);
   };
 
   return (
-    <FormWrapper onSubmit={handleSubmit(onSubmit)} className={styles.profileHeadForm}>
-      <RHFInput
-        placeholder="Enter your name"
-        name="name"
-        register={register}
-        errors={errors}
-      />
-      <br></br>
+    <div className={styles.profileHeadForm}>
+      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+        <RHFInput
+          label="Name"
+          placeholder="Enter your name"
+          name="name"
+          register={register}
+          errors={errors}
+        />
 
-      <div className={styles.headFormImages}>
-        <div className={styles.profileImg}>
-          <span>Current Profile Image</span> <br></br>
-          <img src={profile.profileImage?.url} alt="" />
-          <RHFInput type="file" register={register} name="profileImage" />
+        <div className={styles.imagesWrapper}>
+          <div className={styles.previewImage}>
+            <img src={profile.profileImage?.url} alt="" />
+            <label htmlFor="profileImage">
+              <Button variant="sm" btnText={<div><Pen/> Edit</div>} />
+            </label>
+            <RHFInput id="profileImage" customClass={styles.hidden} type="file" register={register} name="profileImage" />
+          </div>
+
+          <div className={styles.previewImage}>
+            <img src={profile.bannerImage?.url} alt="" />
+            <label htmlFor="bannerImage">
+              <Button variant="sm" btnText={<div><Pen/> Edit</div>} />
+            </label>
+            <RHFInput id="bannerImage" type="file" customClass={styles.hidden} name="bannerImage" register={register} />
+          </div>
         </div>
+        <RHFInput
+          label="Headline"
+          type="text"
+          placeholder="Enter your headline"
+          name="headline"
+          register={register}
+        />
 
-        <div className={styles.bannerImg}>
-          <span>Current Banner Image</span> <br></br>
-          <img src={profile.bannerImage?.url} alt="" />
-          <RHFInput type="file" name="bannerImage" register={register} />
+        <RHFInput
+          label="Location"
+          type="text"
+          placeholder="Enter your location"
+          name="location"
+          register={register}
+          errors={errors}
+        />
+
+        <RHFInput
+          placeholder="Enter your email"
+          type="email"
+          register={register}
+          name="contactInfo[email]"
+          label="Email"
+          errors={errors}
+        />
+
+        <RHFInput
+          label="Phone number"
+          placeholder="Enter your phone"
+          register={register}
+          name="contactInfo[phone]"
+          errors={errors}
+        />
+
+        <div className={styles.buttonWrapper}>
+          <Button variant="sm" btnText="Save Changes" />
         </div>
-      </div>
-      <RHFInput
-        type="text"
-        placeholder="Enter your headline"
-        name="headline"
-        register={register}
-      />
-
-      <RHFInput
-        type="text"
-        placeholder="Enter your location"
-        name="location"
-        register={register}
-        errors={errors}
-      />
-
-      <RHFInput
-        placeholder="Enter your email"
-        register={register}
-        name="contactInfo[email]"
-      />
-
-      <RHFInput
-        placeholder="Enter your phone"
-        register={register}
-        name="contactInfo[phone]"
-      />
-
-      <Button btnText="Save Changes" />
-    </FormWrapper>
+      </FormWrapper>
+    </div>
   );
 }

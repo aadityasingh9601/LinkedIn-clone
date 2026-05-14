@@ -137,16 +137,15 @@ export const ProfileHeadDataSchema = z.object({
     .max(15, "Too long!"),
   headline: z.string(),
   location: z
-    .string("Location is required!")
-    .min(5, "Too short!")
-    .max(20, "Too long!"),
-  contactInfo: {
+    .string(),
+  contactInfo: z.object({
     email: z.email("Please enter a valid email!"),
     phone: z.coerce
       .number("Please enter a valid phone number!")
       .gte(10000000, "Too short!")
-      .lte(9999999999, "Too long!"),
-  },
+      .lte(9999999999, "Too long!")
+      .optional(),
+  }),
   profileImage: z.string(),
   bannerImage: z.string(),
 });
