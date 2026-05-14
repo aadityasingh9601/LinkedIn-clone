@@ -1,0 +1,67 @@
+.scheduledPostsUI {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 25rem;
+  max-height: 30rem;
+  height: fit-content;
+  width: 30rem;
+}
+
+.header {
+  width: 100%;
+  font-weight: 500;
+  border-bottom: 1px solid gray;
+}
+
+.header div{
+  margin: 0 0 0.3rem 1rem;
+  font-size: 1.5rem;
+}
+
+.body {
+  overflow-y: auto;
+  height: 15rem;
+  width: 100%;
+  border: none;
+  font-size: 0.85rem;
+}
+
+.fallbackUI{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f2ee;
+  height: 100%;
+  width: 100%;
+  font-size: 1.2rem;
+}
+
+.footer{
+  z-index: 100;
+  background-color: white;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 0.5px solid gray;
+  padding: 0.5rem 0;
+}
+
+.footer button{
+  margin: 0 1rem 0 0 ;
+}
+
+.scheduledPost {
+  display: flex;
+  padding: 0.5rem 0.5rem;
+  flex-direction: column;
+  border-bottom: 1px solid black;
+}
+
+.scheduledPostHead{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  color: #555;
+  margin: 0 0 0.7rem 0;
+}

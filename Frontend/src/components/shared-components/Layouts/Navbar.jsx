@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useCallback, useEffect, lazy } from "react";
 import { Link } from "react-router-dom";
 import { debounce } from "lodash";
-
 import useProfileStore from "../../../stores/Profile";
 import useUserStore from "../../../stores/User";
 import useNotificationStore from "../../../stores/Notification";
@@ -17,6 +16,8 @@ import MsgIcon from "../Icons/MsgIcon";
 import NotiIcon from "../Icons/NotiIcon";
 import UserInfo from "../User/UserInfo";
 import Xmark from "../Icons/Xmark";
+import ControlledInput from "../Inputs/ControlledInput";
+import UserAvatar from "../User/UserAvatar";
 
 export default function Navbar({ showMessaging }) {
   const navigate = useNavigate();
@@ -56,24 +57,22 @@ export default function Navbar({ showMessaging }) {
 
   return (
     <div className={styles.navbar}>
-      <MainLogo />
-      <input
-        className={styles.searchBar}
-        value={username}
-        onChange={(e) => {
-          setUsername(e.target.value);
-          // handleSearch.cancel(), Cancels any pending call before scheduling a new one.This ensures only the latest search term
-          // triggers an API call after the delay.
-          handleSearch.cancel();
-          //To ensure no call goes to backend if the value is "".
-          if (e.target.value !== "") {
-            handleSearch(e.target.value);
-          }
-        }}
-        onClick={handleClick}
-        placeholder="Search "
-      />
-
+      <div className={styles.searchBarWithIcon}>
+        <MainLogo />
+        <ControlledInput
+          customClass={styles.searchBar}
+          value={username}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            handleSearch.cancel();
+            if (e.target.value !== "") {
+              handleSearch(e.target.value);
+            }
+          }}
+          onClick={handleClick}
+          placeholder="Search"
+        />
+      </div>
       {searchResult && (
         <div className={styles.allUserProfiles}>
           <Xmark
@@ -91,72 +90,59 @@ export default function Navbar({ showMessaging }) {
         </div>
       )}
 
-      <Link to={"/home"}>
-        <HomeIcon />
-        <span>Home</span>
-      </Link>
-      <Link>
-        <UsersIcon />
-        <span onClick={toggle}>My Network</span>
-      </Link>
-      {showNetwork && (
-        <div className={styles.myNetwork}>
-          <div
-            style={{
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-              marginBottom: "0.5rem",
-            }}
-          >
-            Manage your network
-          </div>
-          <div onClick={() => navigate("/network/connections")}>
-            <i class="fa-solid fa-users"></i>Connections
-          </div>
-          <div onClick={() => navigate("/network/followers")}>
-            <i class="fa-solid fa-user"></i>Followers
-          </div>
-          <div onClick={() => navigate("/network/following")}>
-            <i class="fa-solid fa-user"></i>Following
-          </div>
-        </div>
-      )}
-      <Link to={"/jobs"}>
-        <JobIcon />
-        <span>Jobs</span>
-      </Link>
-      <Link onClick={() => showMessaging()}>
-        <MsgIcon />
-        <span>Messaging</span>
-      </Link>
-      <Link to={"/notifications"}>
-        <NotiIcon />
-
-        <span style={{ position: "relative" }}>
-          Notifications
-          {notiCount > 0 ? (
-            <div id="bellIcon-badge">
-              <div>{notiCount}</div>
+      <div className={styles.navLinks}>
+        <Link to={"/home"}>
+          <HomeIcon />
+          <span>Home</span>
+        </Link>
+        <Link>
+          <UsersIcon />
+          <span onClick={toggle}>My Network</span>
+        </Link>
+        {showNetwork && (
+          <div className={styles.myNetwork}>
+            <div>Manage your network</div>
+            <div onClick={() => navigate("/network/connections")}>
+              <i class="fa-solid fa-users"></i>Connections
             </div>
-          ) : null}
-        </span>
-      </Link>
-      <button
-        style={{ backgroundColor: "transparent", border: "none" }}
-        onClick={() => {
-          navigate(`/profile/${currUserId}`);
-        }}
-      >
-        <img
-          src="src/assets/img1.jpg"
-          style={{ height: "24px", width: "24px", borderRadius: "50%" }}
-        />
-        <br></br>
-        <span>Me</span>
-      </button>
-      {/* //This wasn't working initially because passing onClick like this means
-      that you are passsing it as a prop //and if u have passed a prop , then
-      you also have to receive it in the button component. */}
+            <div onClick={() => navigate("/network/followers")}>
+              <i class="fa-solid fa-user"></i>Followers
+            </div>
+            <div onClick={() => navigate("/network/following")}>
+              <i class="fa-solid fa-user"></i>Following
+            </div>
+          </div>
+        )}
+        <Link to={"/jobs"}>
+          <JobIcon />
+          <span>Jobs</span>
+        </Link>
+        <Link onClick={() => showMessaging()}>
+          <MsgIcon />
+          <span>Messaging</span>
+        </Link>
+        <Link to={"/notifications"}>
+          <NotiIcon />
+
+          <span style={{ position: "relative" }}>
+            Notifications
+            {notiCount > 0 ? (
+              <div className={styles.bellIconBadge}>
+                <div>{notiCount}</div>
+              </div>
+            ) : null}
+          </span>
+        </Link>
+        <Link to={`/profile/${currUserId}`}>
+          <div className={styles.profileLink}>
+            <UserAvatar
+              customStyles={{height:"1.6rem",width:"1.6rem"}}
+              url="src/assets/img1.jpg"
+            />
+            <div>Me</div>
+          </div>
+        </Link>
+      </div>
 
       <Button
         btnText="Logout"

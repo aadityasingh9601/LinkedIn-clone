@@ -6,31 +6,49 @@
   background-color: white;
   height: 3.25rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   width: 100%;
 }
 
-.searchBar {
+.searchBarWithIcon{
+  display: flex;
+}
+
+.searchBar{
+  width: 20rem !important;
+}
+
+.searchBar input{
   padding:0 0.5rem 0 1rem;
   background-color: #edf3f8;
-  height: 34px;
-  width: 280px;
+  height: 2.5rem;
+  width: 10rem;
   border: none;
   margin: 0 8rem 0 0.7rem;
 }
 
-.navbar a {
+.navLinks{
+  display: flex;
+  gap:1.5rem;
+}
+
+.navLinks a {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: fit-content;
-  padding: 0 0.9rem;
   text-decoration: none;
 }
 
 .navbar a:hover {
   color: #191919;
+}
+
+.profileLink{
+  font-size: 0.8rem;
+  text-align: center;
+  color: #666666;
 }
 
 .navbar a span {
@@ -43,18 +61,7 @@
   color: #191919;
 }
 
-.nav-btn {
-  padding: 0.5rem 0.8rem;
-  width: fit-content;
-  border: none;
-  background-color: #0a66c2 !important;
-  color: white;
-  border-radius: 1.5rem;
-  margin-left: 1rem;
-  font-size: 1rem;
-}
-
-#bellIcon-badge {
+.bellIconBadge {
   position: absolute;
   right: 1.1rem;
   bottom: 2rem;
@@ -109,6 +116,12 @@
   width: fit-content;
   position: fixed;
   top: 3.3rem;
+}
+
+.myNetwork div{
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .myNetwork div:hover {

@@ -6,11 +6,11 @@ export default function Input({
   id = {},
   value,
   onChange,
-  customStyles = {},
+  customClass = "",
   onClick = () => {},
 }) {
   return (
-    <div className={`${styles.input}`}>
+    <div className={`${styles.input} ${customClass}`}>
       <input
         id={id}
         type={type}
@@ -18,7 +18,6 @@ export default function Input({
         value={value}
         onChange={onChange}
         onClick={onClick}
-        style={customStyles}
       />
     </div>
   );
