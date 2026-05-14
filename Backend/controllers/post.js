@@ -15,13 +15,15 @@ const createPost = async (req, res) => {
   let scheduledTime = "";
   if (date && time) {
     const [day, month, year] = date.split("-");
-    scheduledTime = new Date(
+    const [hours, minutes] = time.split(":");
+    const utcTimestamp = Date.UTC(
       Number(year),
       Number(month) - 1,
       Number(day),
-      Number(time.split(":")[0]),
-      Number(time.split(":")[1]),
+      Number(hours),
+      Number(minutes),
     );
+    scheduledTime = new Date(utcTimestamp - 5.5 * 60 * 60 * 1000); //convert to IST
   }
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
@@ -37,7 +39,7 @@ const createPost = async (req, res) => {
     author: req.user._id,
     scheduledTime: scheduledTime,
     postType: postData.postType,
-    published: scheduledTime ? false : true,
+    published: scheduledTime instanceof Date ? false : true,
   });
 
   await newPost.save();
@@ -62,16 +64,16 @@ const getPosts = async (req, res) => {
     .sort({ createdAt: -1 })
     .populate({
       path: "author",
-      select: "profile", 
+      select: "profile",
       populate: {
         path: "profile",
-        select: "headline name profileImage", 
+        select: "headline name profileImage",
       },
     })
     .skip(skip) //It'll skip the first "skip" no. of posts and send from the further data.
     .limit(10); //Limits to only 10 posts at a time.
 
-    res.status(200).send(posts);
+  res.status(200).send(posts);
 };
 
 const allScheduledPosts = async (req, res) => {
@@ -85,8 +87,8 @@ const allScheduledPosts = async (req, res) => {
       path: "author",
       select: "profile",
       populate: {
-        path: "profile", 
-        select: "headline name profileImage", 
+        path: "profile",
+        select: "headline name profileImage",
       },
     });
   res.status(200).send(schPosts);
@@ -111,7 +113,15 @@ const updatePost = async (req, res) => {
   let scheduledAt = "";
   if (date && time) {
     const [day, month, year] = date.split("-");
-    scheduledAt = new Date(`${year}-${month}-${day}T${time}:00`);
+    const [hours, minutes] = time.split(":");
+    const utcTimestamp = Date.UTC(
+      Number(year),
+      Number(month) - 1,
+      Number(day),
+      Number(hours),
+      Number(minutes),
+    );
+    scheduledAt = new Date(utcTimestamp - 5.5 * 60 * 60 * 1000);
   }
 
   const { error } = postSchema.validate(req.body);
@@ -177,8 +187,8 @@ const deletePost = async (req, res) => {
         .destroy(post.media.filename, { resource_type: "video" })
         .then((result) => console.log(result));
     }
-      //We have used findByIdAndDelete in order to trigger the mongoose middleware that will delete all the comments
-  //associated with the post.
+    //We have used findByIdAndDelete in order to trigger the mongoose middleware that will delete all the comments
+    //associated with the post.
     await Post.findByIdAndDelete(postId);
     res.status(200).send({ message: "Post deleted successfully" });
   } else {

@@ -210,13 +210,10 @@ const getAnalyticsData = async (req, res) => {
     const formatDate = (date) => date.toISOString().split("T")[0];
 
     const formatDate2 = (date) => {
-      return new Date(date).toLocaleDateString("en-GB", {
+      return new Date(date).toLocaleDateString("en-IN", {
         day: "numeric",
         month: "short",
-        timeZone: "UTC", // Ensures no timezone shift
-        //Because initially u haven't wrote this, date shifts were occuring for the "All" range & 365 days
-        //range it was showing 12 Oct on frontend but 11Oct on backend, because of which the count for mar 1
-        //was showing 0.
+        timeZone: "Asia/Kolkata",
       });
     };
 

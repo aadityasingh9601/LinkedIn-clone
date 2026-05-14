@@ -49,7 +49,7 @@ export default function FullApplication() {
           </div>
           <div>
             <p className={styles["fullapplication-date"]}>
-              Applied on {new Date(application?.appliedAt).toLocaleDateString()}
+              Applied on {new Date(application?.appliedAt).toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })}
             </p>
           </div>
         </div>

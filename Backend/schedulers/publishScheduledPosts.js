@@ -5,10 +5,9 @@ import Post from "../models/Post.js";
 export const startPostPublishScheduler = () => {
   cron.schedule("* * * * *", async () => {
     console.log("Checking scheduled posts...");
-
     const posts = await Post.find({
       published: false,
-      scheduledTime: { $gte: new Date() },
+      scheduledTime: { $lte: new Date() },
     });
     console.log(posts);
     for (const post of posts) {

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./ChatUI.module.css";
 import MsgBox from "./MsgBox";
+import { formatTime } from "../../utils/helper";
 
 import useChatStore from "../../stores/Chat";
 import Message from "../Messaging/Message";
@@ -43,28 +44,6 @@ export default function ChatUI({ socket }) {
     (participant) => participant._id !== currUserId,
   );
 
-  function formatTime(time) {
-    // Convert the string into a Date object
-    const date = new Date(time);
-
-    // Extract hours and minutes
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-
-    // Convert hours to 12-hour format
-    hours = hours % 12;
-    hours = hours ? hours : 12; // If hours is 0, set it to 12
-
-    // Format the minutes with leading zero if needed
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-    // Combine the results
-    const formattedTime = `${hours}:${formattedMinutes} ${ampm}`;
-
-    return formattedTime;
-  }
-
   let lastDate = null;
 
   return (
@@ -94,7 +73,9 @@ export default function ChatUI({ socket }) {
           lastDate = messageDate;
           return (
             <>
-              {isNewDay && <div className={styles["date-divider"]}>{messageDate}</div>}
+              {isNewDay && (
+                <div className={styles["date-divider"]}>{messageDate}</div>
+              )}
               <Message msg={msg} formatTime={formatTime} />
             </>
           );

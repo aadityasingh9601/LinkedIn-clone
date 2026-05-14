@@ -14,7 +14,7 @@ export default function Chat({ chat, otherPerson, socket }) {
 
   const deleteChat = useChatStore((state) => state.deleteChat);
 
-  let Time = formatTime(chat?.lastMessage?.Date);
+  let Time = formatTime(chat?.lastMessage?.Date );
   let chatDate = formatDate2(chat?.lastMessage?.Date);
   let currDate = formatDate2(new Date());
 

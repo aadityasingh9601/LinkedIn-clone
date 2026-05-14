@@ -21,7 +21,7 @@ import useUserStore from "../../stores/User";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
 import EmojiPicker from "emoji-picker-react";
 const PollForm = lazy(() => import("../Polls/PollForm"));
-const SchPostsUI = lazy(() => import("./SchPostsUI"));
+const ScheduledPostsUI = lazy(() => import("./ScheduledPostsUI"));
 
 export default function PostForm() {
   const {
@@ -83,7 +83,7 @@ export default function PostForm() {
         </Suspense>
       ) : showScheduledPosts ? (
         <Suspense fallback={<div>Loading...</div>}>
-          <SchPostsUI />
+          <ScheduledPostsUI/>
         </Suspense>
       ) : (
         <div className={styles.postform}>
@@ -177,7 +177,7 @@ export default function PostForm() {
                   variant="sm"
                   disabled={isLoading}
                   btnText={
-                    isLoading ? <Spinner height={17} width={17} /> : "Post"
+                    isLoading ? <Spinner height={17} width={17} /> : schedule ? "Schedule" : "Post"
                   }
                 />
               </div>

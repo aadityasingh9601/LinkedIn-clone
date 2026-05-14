@@ -1,9 +1,10 @@
 function convertDateToCron(date) {
-  const minutes = date.getMinutes();
-  const hours = date.getHours();
-  const day = date.getDate();
-  const month = date.getMonth() + 1; // JS months are 0-based
-  return `${minutes} ${hours} ${day} ${month} *`; // ignore day-of-week
+  const ist = new Date(date.getTime() + 5.5 * 60 * 60 * 1000);
+  const minutes = ist.getUTCMinutes();
+  const hours = ist.getUTCHours();
+  const day = ist.getUTCDate();
+  const month = ist.getUTCMonth() + 1;
+  return `${minutes} ${hours} ${day} ${month} *`;
 }
 
 export {convertDateToCron}

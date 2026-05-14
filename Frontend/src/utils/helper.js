@@ -77,61 +77,58 @@ const timeRep = (time) => {
 };
 
 const formatTime = (time) => {
-  // Convert the string into a Date object
   const date = new Date(time);
 
-  // Extract hours and minutes
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-
-  // Convert hours to 12-hour format
-  hours = hours % 12;
-  hours = hours ? hours : 12; // If hours is 0, set it to 12
-
-  // Format the minutes with leading zero if needed
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-  // Combine the results
-  const formattedTime = `${hours}:${formattedMinutes} ${ampm}`;
-  //console.log(formattedTime);
-  return formattedTime;
+  return new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }).format(date);
 };
 
 function parseISODate(isoDate) {
   const date = new Date(isoDate);
+  const parts = new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(date);
 
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear();
-
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const get = (type) => parts.find((p) => p.type === type).value;
 
   return {
-    date: `${day}-${month}-${year}`,
-    time: `${hours}:${minutes}`,
+    date: `${get("day")}-${get("month")}-${get("year")}`,
+    time: `${get("hour")}:${get("minute")}`,
   };
 }
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = date.toLocaleString("en-US", { month: "short" });
-  const year = date.getFullYear();
+  const parts = new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).formatToParts(date);
+  const day = parts.find((p) => p.type === "day").value;
+  const month = parts.find((p) => p.type === "month").value;
+  const year = parts.find((p) => p.type === "year").value;
   return `${day} ${month} ${year}`;
 };
 
 const formatDate2 = (isoDate) => {
   const date = new Date(isoDate);
-  const options = {
+  return date.toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
     day: "numeric",
-  };
-  const formattedDate = date.toLocaleDateString("en-US", options);
-
-  return formattedDate;
+    timeZone: "Asia/Kolkata",
+  });
 };
 
 const safeParseJSON = (key, fallback) => {

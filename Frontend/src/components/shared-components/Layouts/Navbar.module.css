@@ -12,7 +12,7 @@
 }
 
 .searchBar {
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  padding:0 0.5rem 0 1rem;
   background-color: #edf3f8;
   height: 34px;
   width: 280px;
