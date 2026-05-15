@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z, coerce, e164 } from "zod";
 
 const MAX_PDF_SIZE = 5 * 1024 * 1024;
 
@@ -136,18 +136,20 @@ export const ProfileHeadDataSchema = z.object({
     .min(1, "Too short!")
     .max(15, "Too long!"),
   headline: z.string(),
-  location: z
-    .string(),
+  location: z.string(),
   contactInfo: z.object({
     email: z.email("Please enter a valid email!"),
-    phone: z.coerce
-      .number("Please enter a valid phone number!")
-      .gte(10000000, "Too short!")
-      .lte(9999999999, "Too long!")
-      .optional(),
+    phone: z.preprocess(
+      (value) => (value === "" ? undefined : value),
+      z.coerce
+        .number("Please enter a valid phone number!")
+        .gte(10000000, "Too short!")
+        .lte(9999999999, "Too long!")
+        .optional(),
+    ),
   }),
-  profileImage: z.string(),
-  bannerImage: z.string(),
+  profileImage: z.any().optional(), //After fixing functionalities & stuff, come back & fix it's types too.
+  bannerImage: z.any().optional(),
 });
 
 export const JobApplicationDataSchema = z.object({

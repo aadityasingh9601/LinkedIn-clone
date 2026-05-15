@@ -28,8 +28,8 @@ export default function ProfileHead({ profile, styles, createProfile }) {
   const sendConnReq = useConnectionStore((state) => state.sendConnReq);
   const removeConn = useConnectionStore((state) => state.removeConn);
 
-  console.log(allFollowed);
-  console.log(allConnections);
+  //console.log(allFollowed);
+  //console.log(allConnections);
 
   const updateIsFollowed = (value) => {
     setisFollowed(value);

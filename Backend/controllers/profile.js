@@ -48,7 +48,9 @@ const getAllUserGroups = async (req, res) => {
 //of usage. Maybe break it into smaller manageable functions. Create it separate or write functionality such that it's
 //clean, readable, fast & follows correct standards.
 
-//Once done with the above work, make sure to add the validate the data using "ProfileHeadDataSchema" too.
+//These 2 functions below, createProfile & updateProfile are too big, they cover too much responsibility, search properly on internet
+//how to optimize these 2, break them down or better, because this way the logic is fragile & confusing, on both backend and
+//frontend.
 const createProfile = async (req, res) => {
   console.log("inside createProfile on backend");
   const { userId } = req.params;
@@ -160,7 +162,7 @@ const createProfile = async (req, res) => {
     //res.status(200).send({ message: "Profile updated successfully" });
     res.status(200).send(profile);
   } else {
-    res.status(401).send({ message: "You are not the user of this account!" });
+    res.status(403).send({ message: "You are not the user of this account!" });
   }
 };
 
@@ -172,9 +174,6 @@ const updateProfile = async (req, res) => {
   const profile = await Profile.findOne({ userId: userId });
   if (req.user._id.toString() === profile.userId.toString()) {
     const { section, sectionId, newData } = data;
-    //console.log(section);
-    // console.log(sectionId);
-    //console.log(newData);
 
     if (section === "about") {
       profile.about = newData;

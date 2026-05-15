@@ -139,14 +139,17 @@ export const ProfileHeadDataSchema = z.object({
   location: z.string(),
   contactInfo: z.object({
     email: z.email("Please enter a valid email!"),
-    phone: z.coerce
-      .number("Please enter a valid phone number!")
-      .gte(10000000, "Too short!")
-      .lte(9999999999, "Too long!")
-      .optional(),
+    phone: z.preprocess(
+      (value) => (value === "" ? undefined : value),
+      z.coerce
+        .number("Please enter a valid phone number!")
+        .gte(10000000, "Too short!")
+        .lte(9999999999, "Too long!")
+        .optional(),
+    ),
   }),
-  profileImage: z.string(),
-  bannerImage: z.string(),
+  profileImage: z.any().optional(), //After fixing functionalities & stuff, come back & fix it's types too.
+  bannerImage: z.any().optional(),
 });
 
 export const JobApplicationDataSchema = z.object({

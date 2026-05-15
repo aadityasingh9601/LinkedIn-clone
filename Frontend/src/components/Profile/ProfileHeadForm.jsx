@@ -5,7 +5,6 @@ import RHFInput from "../shared-components/Inputs/RHFInput";
 import { ProfileHeadDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
-import Pen from "../shared-components/Icons/Pen";
 
 export default function ProfileHeadForm({
   profile,
@@ -21,27 +20,23 @@ export default function ProfileHeadForm({
     defaultValues: profile,
   });
 
-  const onSubmit = (profileData) => {
-    console.log(profileData);
-    //We should extract and select only the fields we want for the current form to edit,not all of the complete
-    //profile object directly as it can cause issues, and some unwanted fields will get overriden too.
-    // const data = {
-    //   name: profileData.name,
-    //   headline: profileData.headline,
-    //   location: profileData.location,
-    //   contactInfo: {
-    //     email: profileData.contactInfo?.email,
-    //     phone: profileData.contactInfo?.phone,
-    //   },
-    //   profileImage: profileData.profileImage?.[0],
-    //   bannerImage: profileData.bannerImage?.[0],
-    // };
-    //createProfile(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    const profileData = {
+      ...data,
+      profileImage:data.profileImage?.url,
+      bannerImage: data.bannerImage?.url
+    }
+    //createProfile(profileData);
   };
 
   return (
     <div className={styles.profileHeadForm}>
-      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles.header}>
+        <div>Edit intro</div>
+      </div>
+     <div className={styles.body}>
+       <FormWrapper onSubmit={handleSubmit(onSubmit)} id="form">
         <RHFInput
           label="Name"
           placeholder="Enter your name"
@@ -53,18 +48,12 @@ export default function ProfileHeadForm({
         <div className={styles.imagesWrapper}>
           <div className={styles.previewImage}>
             <img src={profile.profileImage?.url} alt="" />
-            <label htmlFor="profileImage">
-              <Button variant="sm" btnText={<div><Pen/> Edit</div>} />
-            </label>
-            <RHFInput id="profileImage" customClass={styles.hidden} type="file" register={register} name="profileImage" />
+            <RHFInput  type="file" register={register} name="profileImage" />
           </div>
 
           <div className={styles.previewImage}>
             <img src={profile.bannerImage?.url} alt="" />
-            <label htmlFor="bannerImage">
-              <Button variant="sm" btnText={<div><Pen/> Edit</div>} />
-            </label>
-            <RHFInput id="bannerImage" type="file" customClass={styles.hidden} name="bannerImage" register={register} />
+            <RHFInput  type="file"  name="bannerImage" register={register} />
           </div>
         </div>
         <RHFInput
@@ -101,10 +90,12 @@ export default function ProfileHeadForm({
           errors={errors}
         />
 
-        <div className={styles.buttonWrapper}>
-          <Button variant="sm" btnText="Save Changes" />
-        </div>
+        
       </FormWrapper>
+     </div>
+      <div className={styles.footer} >
+          <Button form="form" type="submit" variant="sm" btnText="Save Changes" />
+        </div>
     </div>
   );
 }
