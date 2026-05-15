@@ -60,7 +60,7 @@ const useProfileStore = create((set, get) => ({
 
   getProfiles: async (username) => {
     tryCatchWrapper(async () => {
-      const response = await apiPost(`/profile/allUsers`, { username }, {});
+      const response = await apiGet(`/profile/allUsers?username=${username}`);
       console.log(response);
       if (response.status === 200) {
         set({ userProfiles: response.data });

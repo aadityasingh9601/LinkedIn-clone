@@ -130,7 +130,7 @@ export const ExperienceDataSchema = z.object({
     ),
 });
 
-export const ProfileHeadDataSchema = z.object({
+export const ProfileHeaderDataSchema = z.object({
   name: z
     .string("Name can't be empty!")
     .min(1, "Too short!")

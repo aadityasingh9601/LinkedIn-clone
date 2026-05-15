@@ -1,4 +1,4 @@
-.profileHead {
+.profileHeader {
   position: relative;
   height: 27.3rem;
   width: 50rem;
@@ -7,7 +7,7 @@
   margin-bottom: 1rem;
 }
 
-.profileHead .text i {
+.profileHeader .text i {
   position: absolute;
   right: 1.5rem;
   font-size: 1.35rem;
@@ -49,14 +49,14 @@
   border-radius: 0.5rem;
 }
 
-.profileHead .details {
+.profileHeader .details {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
   margin: 1rem 0 0 0;
 }
 
-.profileHead .details .name {
+.profileHeader .details .name {
   font-size: 2rem;
   font-weight: bold;
 }

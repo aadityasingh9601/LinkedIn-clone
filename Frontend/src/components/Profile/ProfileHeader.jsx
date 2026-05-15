@@ -1,7 +1,7 @@
-import moduleStyles from "./ProfileHead.module.css";
+import moduleStyles from "./ProfileHeader.module.css";
 import useUserStore from "../../stores/User";
 import Button from "../shared-components/Buttons/Button";
-import PDF from "../Profile/Pdf";
+import PDF from "./Pdf";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import useProfileStore from "../../stores/Profile";
 import Modal from "../shared-components/Modal/Modal";
@@ -12,9 +12,9 @@ import useFollowStore from "../../stores/Follow";
 import useConnectionStore from "../../stores/Connection";
 import useChatStore from "../../stores/Chat";
 import { useState, useEffect } from "react";
-import ProfileHeadForm from "./ProfileHeadForm";
+import ProfileHeaderForm from "./ProfileHeaderForm";
 
-export default function ProfileHead({ profile, styles, createProfile }) {
+export default function ProfileHeader({ profile, styles, createProfile }) {
   const [isFollowed, setisFollowed] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const currUserId = useUserStore((state) => state.currUserId);
@@ -55,7 +55,7 @@ export default function ProfileHead({ profile, styles, createProfile }) {
     }
   }, [profile.userId, allFollowed, allConnections]);
   return (
-    <div className={moduleStyles.profileHead}>
+    <div className={moduleStyles.profileHeader}>
       <div className={moduleStyles.banner}>
         <img src={profile?.bannerImage?.url} alt="" />
       </div>
@@ -130,7 +130,7 @@ export default function ProfileHead({ profile, styles, createProfile }) {
         <Modal>
           <Xmark style={styles} onClick={() => setEditHead(false)} />
           <Suspense fallback={<div>Loading...</div>}>
-            <ProfileHeadForm
+            <ProfileHeaderForm
               profile={profile}
               createProfile={createProfile}
               currUserId={currUserId}

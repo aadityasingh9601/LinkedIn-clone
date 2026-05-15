@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../../stores/User";
 import useAnalyticStore from "../../stores/Analytic";
 import useConnectionStore from "../../stores/Connection";
-import ProfileHead from "../../components/Profile/ProfileHead";
+import ProfileHeader from "../../components/Profile/ProfileHeader";
 import ProfileSection from "../../components/Profile/ProfileSection";
 
 //this component's size is very huge, make sure to break it down into chunks & also refactor this to separate logic, so that
@@ -47,7 +47,7 @@ export default function Profile() {
 
   return (
     <div className={styles.profile}>
-      <ProfileHead
+      <ProfileHeader
         profile={userProfile}
         styles={customStyles}
         createProfile={createProfile}

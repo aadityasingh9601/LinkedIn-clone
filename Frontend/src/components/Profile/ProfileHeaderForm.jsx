@@ -1,12 +1,12 @@
-import styles from "./ProfileHeadForm.module.css";
+import styles from "./ProfileHeaderForm.module.css";
 import { useForm } from "react-hook-form";
 import Button from "../shared-components/Buttons/Button";
 import RHFInput from "../shared-components/Inputs/RHFInput";
-import { ProfileHeadDataSchema } from "../../zodSchema";
+import { ProfileHeaderDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
 
-export default function ProfileHeadForm({
+export default function ProfileHeaderForm({
   profile,
   createProfile,
   currUserId,
@@ -16,7 +16,7 @@ export default function ProfileHeadForm({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(ProfileHeadDataSchema),
+    resolver: zodResolver(ProfileHeaderDataSchema),
     defaultValues: profile,
   });
 
@@ -31,7 +31,7 @@ export default function ProfileHeadForm({
   };
 
   return (
-    <div className={styles.profileHeadForm}>
+    <div className={styles.profileHeaderForm}>
       <div className={styles.header}>
         <div>Edit intro</div>
       </div>
