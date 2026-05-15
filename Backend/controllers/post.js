@@ -11,6 +11,8 @@ const createPost = async (req, res) => {
     });
   }
 
+  console.log(req.file);
+
   const { date, time } = postData;
   let scheduledTime = "";
   if (date && time) {

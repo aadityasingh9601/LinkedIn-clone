@@ -8,12 +8,34 @@ const upload = multer({ storage: storage });
 
 const router = Router();
 
-//We r not using GET requuest here because GET request doesn't support a request body.
-router.post(
+router.get(
   "/allUsers",
   protect,
   wrapAsync(profileController.getAllUserProfiles),
 );
+
+//Profileheader routes.
+router.patch("/:id/header",protect, upload.fields([
+      { name: "profileHeaderData[profileImage]" },
+      { name: "profileHeaderData[bannerImage]" },
+    ]), wrapAsync(profileController.updateProfileHeader))
+
+//Skills routes.
+router.post("/skills",protect,wrapAsync(profileController.addSkill))
+router.delete("/skills/:skillId",protect,wrapAsync(profileController.deleteSkill))
+
+//About routes.
+router.put("/about",protect,wrapAsync(profileController.updateAboutSection))
+
+//Education routes.
+router.post("/education",protect,wrapAsync(profileController.addEducation))
+router.patch("/education/:id",protect,wrapAsync(profileController.updateEducation))
+router.delete("/education/:id",protect,wrapAsync(profileController.deleteEducation))
+
+//Experience routes.
+router.post("/experience",protect,wrapAsync(profileController.addExperience))
+router.patch("/experience/:id",protect,wrapAsync(profileController.updateExperience))
+router.delete("/experience/:id",protect,wrapAsync(profileController.deleteExperience))
 
 router
   .route("/:userId")

@@ -3,7 +3,7 @@ import ProfileSectionCard from "./ProfileSectionCard";
 
 export default function ExpCard({
   experience,
-  editProfile,
+  updateProfile,
   deleteProfile,
   styles = {},
 }) {
@@ -12,7 +12,7 @@ export default function ExpCard({
       styles={styles}
       data={experience}
       section="experience"
-      editProfile={editProfile}
+      updateProfile={updateProfile}
       deleteProfile={deleteProfile}
       imageUrl="https://tse1.mm.bing.net/th?id=OIP.8stsJDHh7WoOTlUsaX-ObwHaHa&pid=Api&P=0&h=180"
       FormComponent={ExperienceForm}

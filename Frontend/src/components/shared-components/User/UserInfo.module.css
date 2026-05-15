@@ -1,6 +1,5 @@
 .userInfo {
   display: flex;
-  align-items: center;
   gap: 0.8rem;
   z-index: 100;
 }

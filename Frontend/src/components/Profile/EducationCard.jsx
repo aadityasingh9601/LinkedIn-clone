@@ -3,7 +3,7 @@ import ProfileSectionCard from "./ProfileSectionCard";
 
 export default function EducationCard({
   education,
-  editProfile,
+  updateProfile,
   deleteProfile,
   styles = {},
 }) {
@@ -12,7 +12,7 @@ export default function EducationCard({
       styles={styles}
       data={education}
       section="education"
-      editProfile={editProfile}
+      updateProfile={updateProfile}
       deleteProfile={deleteProfile}
       imageUrl="https://tse4.mm.bing.net/th?id=OIP.YzgkSxKcApsL8s0r-6cnkwHaHa&pid=Api&P=0&h=180"
       FormComponent={EducationForm}

@@ -7,16 +7,14 @@ export default function UserInfo({ url, userId, username, headline }) {
   return (
     <div className={styles.userInfo} key={userId}>
       <UserAvatar url={url} />
-      <div className="details">
-        <span
+      <div className={styles.details}>
+        <div
           className={styles.username}
           onClick={() => navigate(`/profile/${userId}`)}
         >
           <b>{username}</b>
-        </span>
-        <br />
-        <span className={styles.headline}>{headline}</span>
-        <br />
+        </div>
+        <div className={styles.headline}>{headline}</div>
       </div>
     </div>
   );

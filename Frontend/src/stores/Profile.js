@@ -11,15 +11,12 @@ import {
   safeParseJSON,
 } from "../utils/helper";
 
-
 const setCurrUserProfile = useUserStore.getState().setCurrUserProfile;
 const logEvent = useAnalyticStore.getState().logEvent;
 const currUserId = useUserStore.getState().currUserId;
 
 const useProfileStore = create((set, get) => ({
   profile: {},
-
-
 
   userProfiles: [],
 
@@ -34,6 +31,8 @@ const useProfileStore = create((set, get) => ({
   setEditHead: (value) => {
     set({ editHead: value });
   },
+
+  //Create separate methods here for updating profilehead, skills, about, experience etc sections.
 
   getProfileData: async (userId) => {
     tryCatchWrapper(async () => {
@@ -143,7 +142,7 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  editProfile: async (data, updateVisState) => {
+  updateProfile: async (data, updateVisState) => {
     tryCatchWrapper(async () => {
       const { section, sectionId } = data;
       const response = await apiPatch(`/profile/${currUserId}`, { data }, {});
@@ -168,6 +167,24 @@ const useProfileStore = create((set, get) => ({
           updateVisState(false);
         }
         return toast.success("Updated successfully");
+      }
+    });
+  },
+
+  updateProfileHeader: async (profileId, profileHeaderData,setIsLoading) => {
+    setIsLoading(true);
+    tryCatchWrapper(async () => {
+      const response = await apiPatch(
+        `/profile/${profileId}/header`,
+        { profileHeaderData },
+        {
+          "Content-Type": "multipart/form-data",
+        },
+      );
+      console.log(response);
+      if(response.status === 200){
+        setIsLoading(false);
+        //Update the state here too.
       }
     });
   },

@@ -17,7 +17,7 @@ export default function ProfileSection({
   title,
   profile,
   styles,
-  editProfile,
+  updateProfile,
   deleteProfile,
 }) {
   const currUserId = useUserStore((state) => state.currUserId);
@@ -75,7 +75,7 @@ export default function ProfileSection({
                 btnText="Add"
                 onClick={() => {
                   setNewSkill("");
-                  editProfile({ skill: newSkill });
+                  updateProfile({ skill: newSkill });
                 }}
               />
             </>
@@ -92,7 +92,7 @@ export default function ProfileSection({
             <Button
               btnText="Save Changes"
               onClick={() => {
-                editProfile(
+                updateProfile(
                   { section: "about", newData: newAbout },
                   updateEditSection,
                 );
@@ -107,7 +107,7 @@ export default function ProfileSection({
                   <EducationCard
                     key={education._id}
                     education={education}
-                    editProfile={editProfile}
+                    updateProfile={updateProfile}
                     styles={styles}
                     deleteProfile={deleteProfile}
                   />
@@ -119,7 +119,7 @@ export default function ProfileSection({
                     <ExpCard
                       key={experience._id}
                       experience={experience}
-                      editProfile={editProfile}
+                      updateProfile={updateProfile}
                       deleteProfile={deleteProfile}
                       styles={styles}
                     />

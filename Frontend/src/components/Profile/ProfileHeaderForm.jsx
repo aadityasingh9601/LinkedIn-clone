@@ -5,6 +5,9 @@ import RHFInput from "../shared-components/Inputs/RHFInput";
 import { ProfileHeaderDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
+import useProfileStore from "../../stores/Profile";
+import { useState } from "react";
+import Spinner from "../shared-components/Loaders/Spinner";
 
 export default function ProfileHeaderForm({
   profile,
@@ -19,6 +22,8 @@ export default function ProfileHeaderForm({
     resolver: zodResolver(ProfileHeaderDataSchema),
     defaultValues: profile,
   });
+  const [isLoading,setIsLoading] = useState(false);
+  const updateProfileHeader = useProfileStore((s)=>s.updateProfileHeader);
 
   const onSubmit = (data) => {
     console.log(data);
@@ -27,7 +32,7 @@ export default function ProfileHeaderForm({
       profileImage:data.profileImage?.url,
       bannerImage: data.bannerImage?.url
     }
-    //createProfile(profileData);
+    updateProfileHeader(profile._id,profileData, setIsLoading);
   };
 
   return (
@@ -94,7 +99,7 @@ export default function ProfileHeaderForm({
       </FormWrapper>
      </div>
       <div className={styles.footer} >
-          <Button form="form" type="submit" variant="sm" btnText="Save Changes" />
+          <Button form="form" type="submit" variant="sm" btnText={isLoading ? <Spinner height={17} width={17}/> : "Save Changes"} disabled={isLoading}/>
         </div>
     </div>
   );

@@ -9,7 +9,7 @@ export default function ProfileSectionCard({
   data,
   section,
   FormComponent,
-  editProfile,
+  updateProfile,
   deleteProfile,
   imageUrl,
   fields = {
@@ -31,7 +31,7 @@ export default function ProfileSectionCard({
   const endDate = formatDate(data[fields.endKey]);
 
   const onSubmit = (newData) => {
-    editProfile(
+    updateProfile(
       {
         section,
         sectionId: data._id,

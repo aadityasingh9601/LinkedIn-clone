@@ -17,7 +17,7 @@ export default function Profile() {
   const profile = useProfileStore((state) => state.profile);
   const getProfileData = useProfileStore((state) => state.getProfileData);
   const createProfile = useProfileStore((state) => state.createProfile);
-  const editProfile = useProfileStore((state) => state.editProfile);
+  const updateProfile = useProfileStore((state) => state.updateProfile);
   const deleteProfile = useProfileStore((state) => state.deleteProfile);
   const currUserId = useUserStore((state) => state.currUserId);
   const currUserProfile = useUserStore((state) => state.currUserProfile);
@@ -79,7 +79,7 @@ export default function Profile() {
         title="About"
         profile={userProfile}
         styles={customStyles}
-        editProfile={editProfile}
+        updateProfile={updateProfile}
         deleteProfile={deleteProfile}
       />
 
@@ -87,7 +87,7 @@ export default function Profile() {
         title="Education"
         profile={userProfile}
         styles={customStyles}
-        editProfile={editProfile}
+        updateProfile={updateProfile}
         deleteProfile={deleteProfile}
       />
 
@@ -95,7 +95,7 @@ export default function Profile() {
         title="Skills"
         profile={userProfile}
         styles={customStyles}
-        editProfile={createProfile}
+        updateProfile={updateProfile}
         deleteProfile={deleteProfile}
       />
 
@@ -103,7 +103,7 @@ export default function Profile() {
         title="Experience"
         profile={userProfile}
         styles={customStyles}
-        editProfile={editProfile}
+        updateProfile={updateProfile}
         deleteProfile={deleteProfile}
       />
     </div>

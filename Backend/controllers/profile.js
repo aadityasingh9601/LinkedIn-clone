@@ -7,7 +7,8 @@ import { v2 as cloudinary } from "cloudinary";
 import {
   EducationDataSchema,
   ExperienceDataSchema,
-  ProfileHeadDataSchema,
+  PostDataSchema,
+  ProfileHeaderDataSchema,
 } from "../zodSchema/index.js";
 
 const getUserProfile = async (req, res) => {
@@ -19,7 +20,7 @@ const getUserProfile = async (req, res) => {
 };
 
 const getAllUserProfiles = async (req, res) => {
-  const { username } = req.body;
+  const { username } = req.query;
   const users = await Profile.find({
     name: { $regex: username, $options: "i" }, // Case-insensitive search
   })
@@ -170,7 +171,7 @@ const updateProfile = async (req, res) => {
   console.log("inside update profile on backend");
   const { userId } = req.params;
   // console.log(req.params);
-  const { data } = req.body;
+  const { profileHeaderData } = req.body;
   const profile = await Profile.findOne({ userId: userId });
   if (req.user._id.toString() === profile.userId.toString()) {
     const { section, sectionId, newData } = data;
@@ -214,6 +215,90 @@ const updateProfile = async (req, res) => {
   }
 };
 
+//Profile header section.
+const updateProfileHeader = async (req, res) => {
+  console.log("inside updateprofileheader.");
+  const { id } = req.params;
+  const { profileHeaderData } = req.body;
+  console.log(profileHeaderData)
+  const { name, headline, contactInfo, location } = profileHeaderData;
+  console.log(req.file);
+  const result = ProfileHeaderDataSchema.safeParse(profileHeaderData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
+
+  const profile = await Profile.findById(id);
+  if (req.user._id.toString() !== profile.userId.toString()) {
+    return res.status(403).json({ message: "Forbidden!" });
+  }
+
+  profile.name = name;
+  profile.headline = headline;
+  profile.contactInfo = contactInfo;
+  profile.location = location;
+
+  if (typeof req.files !== "undefined") {
+    console.log(req.files);
+    let newProfileImage = req.files["data[profileImage]"]
+      ? req.files["data[profileImage]"][0]
+      : null;
+
+    let newBannerImage = req.files["data[bannerImage]"]
+      ? req.files["data[bannerImage]"][0]
+      : null;
+
+    if (newProfileImage) {
+      //Delete the old profile image first.
+      if (profile.profileImage.filename) {
+        await cloudinary.uploader
+          .destroy(profile.profileImage.filename, { resource_type: "image" })
+          .then((result) => console.log(result));
+      }
+      console.log(newProfileImage)
+      profile.profileImage.filename = newProfileImage.filename;
+      profile.profileImage.url = newProfileImage.path;
+    }
+
+    if (newBannerImage) {
+      //Delete the old banner image first.
+      if (profile.bannerImage.filename) {
+        await cloudinary.uploader
+          .destroy(profile.bannerImage.filename, { resource_type: "image" })
+          .then((result) => console.log(result));
+      }
+      console.log(newBannerImage)
+      profile.bannerImage.filename = newBannerImage.filename;
+      profile.bannerImage.url = newBannerImage.path;
+    }
+  }
+
+  await profile.save();
+
+  res.status(200).json({
+    message: "Profile updated successfully!",
+  });
+};
+
+//Skills section.
+const addSkill = async (req, res) => {};
+const deleteSkill = async (req, res) => {};
+
+//About section.
+const updateAboutSection = async (req, res) => {};
+
+//Education section.
+const addEducation = async (req, res) => {};
+const updateEducation = async (req, res) => {};
+const deleteEducation = async (req, res) => {};
+
+//Experience section.
+const addExperience = async (req, res) => {};
+const updateExperience = async (req, res) => {};
+const deleteExperience = async (req, res) => {};
+
 const deleteProfile = async (req, res) => {
   const { userId } = req.params;
   const { skill, section, sectionId } = req.query;
@@ -251,5 +336,15 @@ export default {
   getAllUserGroups,
   createProfile,
   updateProfile,
+  updateProfileHeader,
+  addSkill,
+  deleteSkill,
+  updateAboutSection,
+  addEducation,
+  updateEducation,
+  deleteEducation,
+  addExperience,
+  updateExperience,
+  deleteExperience,
   deleteProfile,
 };
