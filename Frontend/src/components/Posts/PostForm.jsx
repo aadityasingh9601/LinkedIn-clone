@@ -60,7 +60,7 @@ export default function PostForm() {
   }
 
   const handleEmojiClick = (emojiObject) => {
-    console.log(emojiObject);
+    //console.log(emojiObject);
     setValue("content", existingContent + emojiObject.emoji);
   };
 

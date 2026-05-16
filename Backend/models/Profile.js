@@ -51,11 +51,10 @@ const profileSchema = new Schema({
     type: Number,
     default: 0,
   },
-  connCount: {
+  connectionCount: {
     type: Number,
     default: 0,
   },
-
   skills: [
     {
       type: String,
@@ -107,7 +106,6 @@ const profileSchema = new Schema({
       },
     },
   ],
-
   chatList: [
     {
       type: Schema.Types.ObjectId,

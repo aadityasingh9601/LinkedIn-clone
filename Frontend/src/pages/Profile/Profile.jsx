@@ -22,6 +22,7 @@ export default function Profile() {
   const currUserId = useUserStore((state) => state.currUserId);
   const currUserProfile = useUserStore((state) => state.currUserProfile);
   const userProfile = currUserProfile?.userId !== currUserId ? profile : currUserProfile;
+  const updateAboutSection = useProfileStore((s)=>s.updateAboutSection);
 
   useEffect(() => {
     if (currUserProfile?.userId !== currUserId) {
@@ -39,8 +40,6 @@ export default function Profile() {
 
   const showAnalytics = (e) => {
     let value = e.target.innerText;
-
-    // console.log(value);
     setAnalyticsEvent(value);
     navigate("/analytics");
   };
@@ -54,7 +53,7 @@ export default function Profile() {
       />
 
       {currUserId === currProfileId && (
-        <div className="profileSection">
+        <div className={styles.profileSection}>
           <div className="head">
             <span>Analytics</span>
           </div>
@@ -79,7 +78,7 @@ export default function Profile() {
         title="About"
         profile={userProfile}
         styles={customStyles}
-        updateProfile={updateProfile}
+        updateProfile={updateAboutSection}
         deleteProfile={deleteProfile}
       />
 

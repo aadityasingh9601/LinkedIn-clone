@@ -211,7 +211,7 @@ const updateProfile = async (req, res) => {
     const updatedProfile = await Profile.findOne({ userId: userId });
     res.status(200).send(updatedProfile);
   } else {
-    res.status(401).send({ message: "You are not the user of this account" });
+    res.status(403).send({ message: "Forbidden!" });
   }
 };
 
@@ -220,9 +220,12 @@ const updateProfileHeader = async (req, res) => {
   console.log("inside updateprofileheader.");
   const { id } = req.params;
   const { profileHeaderData } = req.body;
-  console.log(profileHeaderData)
+  //console.log(profileHeaderData)
   const { name, headline, contactInfo, location } = profileHeaderData;
-  console.log(req.file);
+
+  for (let key in req.files) {
+    console.log(key);
+  }
   const result = ProfileHeaderDataSchema.safeParse(profileHeaderData);
   if (!result.success) {
     return res.status(400).json({
@@ -241,14 +244,8 @@ const updateProfileHeader = async (req, res) => {
   profile.location = location;
 
   if (typeof req.files !== "undefined") {
-    console.log(req.files);
-    let newProfileImage = req.files["data[profileImage]"]
-      ? req.files["data[profileImage]"][0]
-      : null;
-
-    let newBannerImage = req.files["data[bannerImage]"]
-      ? req.files["data[bannerImage]"][0]
-      : null;
+    let newProfileImage = req.files?.["profileHeaderData[profileImage]"]?.[0];
+    let newBannerImage = req.files?.["profileHeaderData[bannerImage]"]?.[0];
 
     if (newProfileImage) {
       //Delete the old profile image first.
@@ -257,7 +254,7 @@ const updateProfileHeader = async (req, res) => {
           .destroy(profile.profileImage.filename, { resource_type: "image" })
           .then((result) => console.log(result));
       }
-      console.log(newProfileImage)
+
       profile.profileImage.filename = newProfileImage.filename;
       profile.profileImage.url = newProfileImage.path;
     }
@@ -269,16 +266,22 @@ const updateProfileHeader = async (req, res) => {
           .destroy(profile.bannerImage.filename, { resource_type: "image" })
           .then((result) => console.log(result));
       }
-      console.log(newBannerImage)
       profile.bannerImage.filename = newBannerImage.filename;
       profile.bannerImage.url = newBannerImage.path;
     }
   }
 
   await profile.save();
-
   res.status(200).json({
     message: "Profile updated successfully!",
+    updatedData: {
+      name: profile.name,
+      headline: profile.headline,
+      location: profile.location,
+      contactInfo: profile.contactInfo,
+      profileImage: profile.profileImage,
+      bannerImage: profile.bannerImage,
+    },
   });
 };
 
@@ -287,7 +290,14 @@ const addSkill = async (req, res) => {};
 const deleteSkill = async (req, res) => {};
 
 //About section.
-const updateAboutSection = async (req, res) => {};
+const updateAboutSection = async (req, res) => {
+  console.log(req.body);
+  console.log(req.params);
+
+  res.status(200).json({
+    message:"Profile updated successfully!"
+  })
+};
 
 //Education section.
 const addEducation = async (req, res) => {};

@@ -1,4 +1,4 @@
-import moduleStyles from "./ProfileHeader.module.css";
+import styles from "./ProfileHeader.module.css";
 import useUserStore from "../../stores/User";
 import Button from "../shared-components/Buttons/Button";
 import PDF from "./Pdf";
@@ -14,7 +14,8 @@ import useChatStore from "../../stores/Chat";
 import { useState, useEffect } from "react";
 import ProfileHeaderForm from "./ProfileHeaderForm";
 
-export default function ProfileHeader({ profile, styles, createProfile }) {
+export default function ProfileHeader({ profile }) {
+  console.log(profile)
   const [isFollowed, setisFollowed] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const currUserId = useUserStore((state) => state.currUserId);
@@ -55,32 +56,32 @@ export default function ProfileHeader({ profile, styles, createProfile }) {
     }
   }, [profile.userId, allFollowed, allConnections]);
   return (
-    <div className={moduleStyles.profileHeader}>
-      <div className={moduleStyles.banner}>
+    <div className={styles.profileHeader}>
+      <div className={styles.banner}>
         <img src={profile?.bannerImage?.url} alt="" />
       </div>
-      <div className={moduleStyles.profilePic}>
+      <div className={styles.profilePic}>
         <img src={profile?.profileImage?.url} alt="" />
       </div>
-      <div className={moduleStyles.text}>
+      <div className={styles.text}>
         {profile.userId === currUserId && (
-          <Pen style={styles} onClick={() => setEditHead(true)} />
+          <Pen onClick={() => setEditHead(true)} />
         )}
-        <div className={moduleStyles.details}>
-          <div className={moduleStyles.name}>{profile?.name}</div>
+        <div className={styles.details}>
+          <div className={styles.name}>{profile?.name}</div>
           <div>{profile?.headline}</div>
           <div>{profile?.location}</div>
-          <div className={moduleStyles.contactInfo}>
+          <div className={styles.contactInfo}>
             <span>{profile?.contactInfo?.email}</span>
             <span>{profile?.contactInfo?.phone}</span>
           </div>
-          <div className={moduleStyles.socials}>
+          <div className={styles.socials}>
             <span>{profile?.followerCount} followers</span>
             <span>{profile?.connCount} connections</span>
           </div>
         </div>
       </div>
-      <div className={moduleStyles.allOptions}>
+      <div className={styles.allOptions}>
         {currUserId !== profile?.userId && (
           <>
             {isFollowed ? (
@@ -115,7 +116,7 @@ export default function ProfileHeader({ profile, styles, createProfile }) {
             )}
           </>
         )}
-        <button className={moduleStyles.downloadPdf}>
+        <button className={styles.downloadPdf}>
           <PDFDownloadLink
             document={<PDF user={profile} />}
             fileName="Profile.pdf"
@@ -128,12 +129,10 @@ export default function ProfileHeader({ profile, styles, createProfile }) {
       </div>
       {editHead && (
         <Modal>
-          <Xmark style={styles} onClick={() => setEditHead(false)} />
+          <Xmark onClick={() => setEditHead(false)} />
           <Suspense fallback={<div>Loading...</div>}>
             <ProfileHeaderForm
               profile={profile}
-              createProfile={createProfile}
-              currUserId={currUserId}
             />
           </Suspense>
         </Modal>

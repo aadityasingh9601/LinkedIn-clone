@@ -171,7 +171,7 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  updateProfileHeader: async (profileId, profileHeaderData,setIsLoading) => {
+  updateProfileHeader: async (profileId, profileHeaderData, setIsLoading) => {
     setIsLoading(true);
     tryCatchWrapper(async () => {
       const response = await apiPatch(
@@ -181,10 +181,38 @@ const useProfileStore = create((set, get) => ({
           "Content-Type": "multipart/form-data",
         },
       );
-      console.log(response);
-      if(response.status === 200){
+      console.log(response.data.updatedData);
+
+      if (response.status === 200) {
+        set((state) => ({
+          profile: { ...state.profile, ...response?.data?.updatedData },
+        }));
         setIsLoading(false);
-        //Update the state here too.
+        set({ editHead: false });
+        return toast.success(response?.data?.message);
+      }
+    });
+  },
+
+  updateAboutSection: async (profileId, profileHeaderData, setIsLoading) => {
+    setIsLoading(true);
+    tryCatchWrapper(async () => {
+      const response = await apiPut(
+        `/profile/${profileId}/about`,
+        { profileHeaderData },
+        {
+          
+        },
+      );
+      console.log(response);
+
+      if (response.status === 200) {
+        set((state) => ({
+          profile: { ...state.profile, about: response?.data?.updatedData },
+        }));
+        setIsLoading(false);
+        set({ editHead: false });
+        return toast.success(response?.data?.message);
       }
     });
   },

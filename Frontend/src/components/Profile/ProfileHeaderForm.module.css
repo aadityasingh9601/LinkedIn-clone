@@ -2,15 +2,6 @@
   width: 42rem;
 }
 
-
-.profileHeadForm form {
-  display: flex;
-  overflow-y:auto;
-  flex-direction: column;
-  gap: 0.5rem;
-  max-height: 35rem ;
-}
-
 .header {
   width: 100%;
   font-weight: 500;
@@ -20,6 +11,14 @@
 .header div{
   margin: 0 0 0.3rem 1rem;
   font-size: 1.5rem;
+}
+
+.body form{
+  display: flex;
+  overflow-y:auto;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 35rem;
 }
 
 .body form::-webkit-scrollbar {

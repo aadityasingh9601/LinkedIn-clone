@@ -59,6 +59,7 @@ export default function PostHead({ data, type, setEdit, setDelete }) {
         userId={profileUserId}
         username={profile?.name}
         headline={profile?.headline}
+        avatarStyles={{height:"3.3rem",width:"3.3rem"}}
       />
       <TimePassed
         timePassed={data?.createdAt}
