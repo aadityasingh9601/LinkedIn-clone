@@ -38,6 +38,12 @@ const useProfileStore = create((set, get) => ({
     set({ editAbout: value });
   },
 
+  addInSection: false,
+
+  setAddInSection: (value) => {
+    set({ addInSection: value });
+  },
+
   //Create separate methods here for updating profilehead, skills, about, experience etc sections.
 
   getProfileData: async (userId) => {
@@ -177,11 +183,11 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  updateProfileHeader: async (profileId, profileHeaderData, setIsLoading) => {
+  updateProfileHeader: async (profileHeaderData, setIsLoading) => {
     setIsLoading(true);
     tryCatchWrapper(async () => {
       const response = await apiPatch(
-        `/profile/${profileId}/header`,
+        `/profile/header`,
         { profileHeaderData },
         {
           "Content-Type": "multipart/form-data",
@@ -200,11 +206,11 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  updateProfileAbout: async (profileId, data, setIsLoading) => {
+  updateProfileAbout: async (data, setIsLoading) => {
     setIsLoading(true);
     tryCatchWrapper(async () => {
       const response = await apiPatch(
-        `/profile/${profileId}/about`,
+        `/profile/about`,
         { data },
         {},
       );
@@ -216,6 +222,42 @@ const useProfileStore = create((set, get) => ({
         }));
         setIsLoading(false);
         set({ editAbout: false });
+        return toast.success(response?.data?.message);
+      }
+    });
+  },
+
+  addNewSkill: async (newSkill, setIsLoading) => {
+    setIsLoading(true);
+    tryCatchWrapper(async () => {
+      const response = await apiPost(`/profile/skills`, { newSkill }, {});
+      console.log(response);
+
+      if (response.status === 200) {
+        set((state) => ({
+          profile: {
+            ...state.profile,
+            skills: [...state.profile.skills, newSkill],
+          },
+        }));
+        setIsLoading(false);
+        return toast.success(response?.data?.message);
+      }
+    });
+  },
+
+  deleteSkill: async (skill) => {
+    tryCatchWrapper(async () => {
+      const response = await apiDelete(`/profile/skills`, { skill }, {});
+      console.log(response);
+
+      if (response.status === 200) {
+        set((state) => ({
+          profile: {
+            ...state.profile,
+            skills: state.profile.skills?.filter((s) => s !== skill),
+          },
+        }));
         return toast.success(response?.data?.message);
       }
     });

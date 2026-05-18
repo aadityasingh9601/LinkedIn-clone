@@ -217,15 +217,9 @@ const updateProfile = async (req, res) => {
 
 //Profile header section.
 const updateProfileHeader = async (req, res) => {
-  console.log("inside updateprofileheader.");
-  const { id } = req.params;
   const { profileHeaderData } = req.body;
-  //console.log(profileHeaderData)
   const { name, headline, contactInfo, location } = profileHeaderData;
 
-  for (let key in req.files) {
-    console.log(key);
-  }
   const result = ProfileHeaderDataSchema.safeParse(profileHeaderData);
   if (!result.success) {
     return res.status(400).json({
@@ -233,7 +227,7 @@ const updateProfileHeader = async (req, res) => {
     });
   }
 
-  const profile = await Profile.findById(id);
+  const profile = await Profile.findOne({ userId: req.user._id });
   if (req.user._id.toString() !== profile.userId.toString()) {
     return res.status(403).json({ message: "Forbidden!" });
   }
@@ -254,7 +248,6 @@ const updateProfileHeader = async (req, res) => {
           .destroy(profile.profileImage.filename, { resource_type: "image" })
           .then((result) => console.log(result));
       }
-
       profile.profileImage.filename = newProfileImage.filename;
       profile.profileImage.url = newProfileImage.path;
     }
@@ -286,16 +279,30 @@ const updateProfileHeader = async (req, res) => {
 };
 
 //Skills section.
-const addSkill = async (req, res) => {};
-const deleteSkill = async (req, res) => {};
+const addNewSkill = async (req, res) => {
+  const { newSkill } = req.body;
+  const profile = await Profile.findOne({ userId: req.user._id });
+  console.log(profile.skills);
+  profile.skills.push(newSkill);
+  await profile.save();
+
+  res.status(200).json({
+    message: "Skill added successfully!",
+  });
+};
+
+const deleteSkill = async (req, res) => {
+  console.log(req.query);
+
+  res.status(200).json({
+    message: "Deleted successfully!",
+  });
+};
 
 //About section.
 const updateAboutSection = async (req, res) => {
-  const { id } = req.params;
   const { data } = req.body;
-  console.log(id, data);
-  const profile = await Profile.findById(id);
-  console.log(profile.about);
+  const profile = await Profile.findOne({ userId: req.user._id });
   profile.about = data;
   await profile.save();
 
@@ -353,7 +360,7 @@ export default {
   createProfile,
   updateProfile,
   updateProfileHeader,
-  addSkill,
+  addNewSkill,
   deleteSkill,
   updateAboutSection,
   addEducation,

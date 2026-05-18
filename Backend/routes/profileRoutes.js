@@ -15,17 +15,17 @@ router.get(
 );
 
 //Profileheader routes.
-router.patch("/:id/header",protect, upload.fields([
+router.patch("/header",protect, upload.fields([
       { name: "profileHeaderData[profileImage]" },
       { name: "profileHeaderData[bannerImage]" },
     ]), wrapAsync(profileController.updateProfileHeader))
 
 //Skills routes.
-router.post("/skills",protect,wrapAsync(profileController.addSkill))
-router.delete("/skills/:skillId",protect,wrapAsync(profileController.deleteSkill))
+router.post("/skills",protect,wrapAsync(profileController.addNewSkill))
+router.delete("/skills",protect,wrapAsync(profileController.deleteSkill))
 
 //About routes.
-router.patch("/:id/about",protect,wrapAsync(profileController.updateAboutSection))
+router.patch("/about",protect,wrapAsync(profileController.updateAboutSection))
 
 //Education routes.
 router.post("/education",protect,wrapAsync(profileController.addEducation))
