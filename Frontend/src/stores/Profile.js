@@ -32,6 +32,12 @@ const useProfileStore = create((set, get) => ({
     set({ editHead: value });
   },
 
+  editAbout: false,
+
+  setEditAbout: (value) => {
+    set({ editAbout: value });
+  },
+
   //Create separate methods here for updating profilehead, skills, about, experience etc sections.
 
   getProfileData: async (userId) => {
@@ -194,15 +200,13 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  updateAboutSection: async (profileId, profileHeaderData, setIsLoading) => {
+  updateProfileAbout: async (profileId, data, setIsLoading) => {
     setIsLoading(true);
     tryCatchWrapper(async () => {
-      const response = await apiPut(
+      const response = await apiPatch(
         `/profile/${profileId}/about`,
-        { profileHeaderData },
-        {
-          
-        },
+        { data },
+        {},
       );
       console.log(response);
 
@@ -211,7 +215,7 @@ const useProfileStore = create((set, get) => ({
           profile: { ...state.profile, about: response?.data?.updatedData },
         }));
         setIsLoading(false);
-        set({ editHead: false });
+        set({ editAbout: false });
         return toast.success(response?.data?.message);
       }
     });

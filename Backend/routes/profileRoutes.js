@@ -25,7 +25,7 @@ router.post("/skills",protect,wrapAsync(profileController.addSkill))
 router.delete("/skills/:skillId",protect,wrapAsync(profileController.deleteSkill))
 
 //About routes.
-router.put("/about",protect,wrapAsync(profileController.updateAboutSection))
+router.patch("/:id/about",protect,wrapAsync(profileController.updateAboutSection))
 
 //Education routes.
 router.post("/education",protect,wrapAsync(profileController.addEducation))

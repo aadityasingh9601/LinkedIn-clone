@@ -8,6 +8,11 @@ import useAnalyticStore from "../../stores/Analytic";
 import useConnectionStore from "../../stores/Connection";
 import ProfileHeader from "../../components/Profile/ProfileHeader";
 import ProfileSection from "../../components/Profile/ProfileSection";
+import ProfileAbout from "../../components/Profile/ProfileAbout";
+import EducationSection from "../../components/Profile/EducationSection";
+import SkillsSection from "../../components/Profile/SkillsSection";
+import ExperienceCard from "../../components/Profile/ExperienceCard";
+import ExperienceSection from "../../components/Profile/ExperienceSection";
 
 //this component's size is very huge, make sure to break it down into chunks & also refactor this to separate logic, so that
 //it can beomce light & fast.
@@ -21,8 +26,9 @@ export default function Profile() {
   const deleteProfile = useProfileStore((state) => state.deleteProfile);
   const currUserId = useUserStore((state) => state.currUserId);
   const currUserProfile = useUserStore((state) => state.currUserProfile);
-  const userProfile = currUserProfile?.userId !== currUserId ? profile : currUserProfile;
-  const updateAboutSection = useProfileStore((s)=>s.updateAboutSection);
+  const userProfile =
+    currUserProfile?.userId !== currUserId ? profile : currUserProfile;
+  const updateAboutSection = useProfileStore((s) => s.updateAboutSection);
 
   useEffect(() => {
     if (currUserProfile?.userId !== currUserId) {
@@ -74,37 +80,21 @@ export default function Profile() {
         </div>
       )}
 
-      <ProfileSection
-        title="About"
-        profile={userProfile}
-        styles={customStyles}
-        updateProfile={updateAboutSection}
-        deleteProfile={deleteProfile}
-      />
+      <ProfileSection title="About" styles={customStyles}>
+        <ProfileAbout profileId={profile._id} profileAbout={profile?.about} />
+      </ProfileSection>
 
-      <ProfileSection
-        title="Education"
-        profile={userProfile}
-        styles={customStyles}
-        updateProfile={updateProfile}
-        deleteProfile={deleteProfile}
-      />
+      <ProfileSection title="Skills" styles={customStyles}>
+        <SkillsSection profileSkills={profile?.skills} />
+      </ProfileSection>
 
-      <ProfileSection
-        title="Skills"
-        profile={userProfile}
-        styles={customStyles}
-        updateProfile={updateProfile}
-        deleteProfile={deleteProfile}
-      />
+      <ProfileSection title="Education" styles={customStyles}>
+        <EducationSection profileEducation={profile?.education} />
+      </ProfileSection>
 
-      <ProfileSection
-        title="Experience"
-        profile={userProfile}
-        styles={customStyles}
-        updateProfile={updateProfile}
-        deleteProfile={deleteProfile}
-      />
+      <ProfileSection title="Experience" styles={customStyles}>
+        <ExperienceSection profileExperience={profile?.experience} />
+      </ProfileSection>
     </div>
   );
 }

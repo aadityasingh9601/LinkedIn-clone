@@ -291,12 +291,18 @@ const deleteSkill = async (req, res) => {};
 
 //About section.
 const updateAboutSection = async (req, res) => {
-  console.log(req.body);
-  console.log(req.params);
+  const { id } = req.params;
+  const { data } = req.body;
+  console.log(id, data);
+  const profile = await Profile.findById(id);
+  console.log(profile.about);
+  profile.about = data;
+  await profile.save();
 
   res.status(200).json({
-    message:"Profile updated successfully!"
-  })
+    message: "Profile updated successfully!",
+    updatedData: profile.about,
+  });
 };
 
 //Education section.

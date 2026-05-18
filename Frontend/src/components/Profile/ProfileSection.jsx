@@ -1,145 +1,23 @@
 import moduleStyles from "./ProfileSection.module.css";
-import { useState, useEffect, lazy, Suspense } from "react";
-import EducationCard from "../Profile/EducationCard";
-import ExpCard from "../Profile/ExpCard";
 import Plus from "../shared-components/Icons/Plus";
 import Pen from "../shared-components/Icons/Pen";
-import Trash from "../shared-components/Icons/Trash";
-import ControlledTextarea from "../shared-components/Textarea/ControlledTextarea";
-import ControlledInput from "../shared-components/Inputs/ControlledInput";
-import Button from "../shared-components/Buttons/Button";
-import useUserStore from "../../stores/User";
+import useProfileStore from "../../stores/Profile";
 
-const EducationForm = lazy(() => import("./EducationForm"));
-const ExperienceForm = lazy(() => import("./ExperienceForm"));
-
-export default function ProfileSection({
-  title,
-  profile,
-  styles,
-  updateProfile,
-  deleteProfile,
-}) {
-  const currUserId = useUserStore((state) => state.currUserId);
-  const [addSection, setAddSection] = useState(false);
-  const [editSection, setEditSection] = useState(false);
-  const [newAbout, setnewAbout] = useState("");
-  const [newSkill, setNewSkill] = useState("");
-
-  const updateVisState = (value) => {
-    setAddSection(value);
-  };
-
-  const updateEditSection = (value) => {
-    setEditSection(value);
-  };
-
-  useEffect(() => {
-    if (profile.about) {
-      setnewAbout(profile.about);
-    }
-  }, [profile.about]);
+export default function ProfileSection({ title,styles,children }) {
+  const setEditAbout = useProfileStore((s)=>s.setEditAbout);
   return (
     <div className={moduleStyles.profileSection}>
       <div className={moduleStyles.head}>
         <span>{title}</span>
         <div className={moduleStyles.icons}>
           {title.toLowerCase() == "about" ? (
-            <Pen styles={styles} onClick={() => setEditSection(true)} />
+            <Pen styles={styles} onClick={() => setEditAbout(true)} />
           ) : (
             <Plus styles={styles} onClick={() => setAddSection(true)} />
           )}
         </div>
       </div>
-      <div>
-        {addSection &&
-          (title.toLowerCase() == "education" ? (
-            <Suspense fallback={<div>Loading...</div>}>
-              <EducationForm updateVisState={updateVisState} />
-            </Suspense>
-          ) : title.toLowerCase() == "experience" ? (
-            <Suspense fallback={<div>Loading...</div>}>
-              <ExperienceForm updateVisState={updateVisState} />
-            </Suspense>
-          ) : title.toLowerCase() == "skills" ? (
-            <>
-              <ControlledInput
-                value={newSkill}
-                placeholder="Skill"
-                onChange={(e) => {
-                  setNewSkill(e.target.value);
-                }}
-              />
-              <Button btnText="Cancel" onClick={() => setAddSection(false)} />
-              <Button
-                btnText="Add"
-                onClick={() => {
-                  setNewSkill("");
-                  updateProfile({ skill: newSkill });
-                }}
-              />
-            </>
-          ) : null)}
-        {editSection && (
-          <>
-            <ControlledTextarea
-              name="about"
-              value={newAbout}
-              onChange={(e) => setnewAbout(e.target.value)}
-            />
-
-            <Button btnText="Cancel" onClick={() => setEditSection(false)} />
-            <Button
-              btnText="Save Changes"
-              onClick={() => {
-                updateProfile(
-                  { section: "about", newData: newAbout },
-                  updateEditSection,
-                );
-              }}
-            />
-          </>
-        )}
-        <div>
-          {title.toLowerCase() == "education"
-            ? profile.education?.map((education) => {
-                return (
-                  <EducationCard
-                    key={education._id}
-                    education={education}
-                    updateProfile={updateProfile}
-                    styles={styles}
-                    deleteProfile={deleteProfile}
-                  />
-                );
-              })
-            : title.toLowerCase() == "experience"
-              ? profile.experience?.map((experience) => {
-                  return (
-                    <ExpCard
-                      key={experience._id}
-                      experience={experience}
-                      updateProfile={updateProfile}
-                      deleteProfile={deleteProfile}
-                      styles={styles}
-                    />
-                  );
-                })
-              : title.toLowerCase() == "skills"
-                ? profile.skills?.map((skill, index) => (
-                    <div key={index} className={moduleStyles.skill}>
-                      <div>{skill}</div>
-                      <div className="icon">
-                        <Trash
-                          styles={styles}
-                          onClick={() => deleteProfile({ skill: skill })}
-                        />
-                      </div>
-                    </div>
-                  ))
-                : !editSection && <span>{profile.about}</span>}
-        </div>
-      </div>
+      <div>{children}</div>
     </div>
   );
 }
