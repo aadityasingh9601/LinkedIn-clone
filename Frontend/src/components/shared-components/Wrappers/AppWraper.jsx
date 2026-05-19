@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import Layout from "../Layouts/Layout";
 import AuthLayout from "../Layouts/AuthLayout";
 
-const AppWrapper = ({ children, handleLogout, socket }) => {
+const AppWrapper = ({ children, socket }) => {
   const location = useLocation();
   // List of routes to exclude from layout
   const noLayoutRoutes = ["/", "/login", "/signup"];
@@ -18,7 +18,7 @@ const AppWrapper = ({ children, handleLogout, socket }) => {
         </h1>
       }
     >
-      <Layout handleLogout={handleLogout} socket={socket}>
+      <Layout socket={socket}>
         {children}
       </Layout>
     </Suspense>

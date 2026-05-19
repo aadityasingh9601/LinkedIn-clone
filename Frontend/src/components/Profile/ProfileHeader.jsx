@@ -14,8 +14,7 @@ import useChatStore from "../../stores/Chat";
 import { useState, useEffect } from "react";
 import ProfileHeaderForm from "./ProfileHeaderForm";
 
-export default function ProfileHeader({ profile }) {
-  console.log(profile)
+export default function ProfileHeader({customStyles, profile }) {
   const [isFollowed, setisFollowed] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const currUserId = useUserStore((state) => state.currUserId);
@@ -29,8 +28,8 @@ export default function ProfileHeader({ profile }) {
   const sendConnReq = useConnectionStore((state) => state.sendConnReq);
   const removeConn = useConnectionStore((state) => state.removeConn);
 
-  //console.log(allFollowed);
-  //console.log(allConnections);
+  console.log(allFollowed);
+  console.log(allConnections);
 
   const updateIsFollowed = (value) => {
     setisFollowed(value);
@@ -72,8 +71,10 @@ export default function ProfileHeader({ profile }) {
           <div>{profile?.headline}</div>
           <div>{profile?.location}</div>
           <div className={styles.contactInfo}>
-            <span>{profile?.contactInfo?.email}</span>
-            <span>{profile?.contactInfo?.phone}</span>
+            <div>{profile?.contactInfo?.email}</div>
+            {profile?.contactInfo?.phone && (
+              <div>{profile?.contactInfo?.phone}</div>
+            )}
           </div>
           <div className={styles.socials}>
             <span>{profile?.followerCount} followers</span>
@@ -86,6 +87,7 @@ export default function ProfileHeader({ profile }) {
           <>
             {isFollowed ? (
               <Button
+                variant="sm"
                 btnText="Following"
                 onClick={() => {
                   unfollow(profile.userId, updateIsFollowed);
@@ -93,6 +95,7 @@ export default function ProfileHeader({ profile }) {
               />
             ) : (
               <Button
+                variant="sm"
                 btnText="Follow"
                 onClick={() => {
                   follow(profile.userId, updateIsFollowed);
@@ -100,16 +103,19 @@ export default function ProfileHeader({ profile }) {
               />
             )}
             <Button
+              variant="sm"
               btnText="Message"
               onClick={() => handleMessage(profile.userId)}
             />
             {isConnected ? (
               <Button
+                variant="sm"
                 btnText="Remove Connection"
                 onClick={() => removeConn(profile.userId)}
               />
             ) : (
               <Button
+                variant="sm"
                 btnText="Connect"
                 onClick={() => sendConnReq(profile.userId)}
               />
@@ -131,9 +137,7 @@ export default function ProfileHeader({ profile }) {
         <Modal>
           <Xmark onClick={() => setEditHead(false)} />
           <Suspense fallback={<div>Loading...</div>}>
-            <ProfileHeaderForm
-              profile={profile}
-            />
+            <ProfileHeaderForm profile={profile} />
           </Suspense>
         </Modal>
       )}

@@ -39,16 +39,7 @@ router.delete("/experience/:id",protect,wrapAsync(profileController.deleteExperi
 
 router
   .route("/:userId")
-  .post(
-    protect,
-    upload.fields([
-      { name: "data[profileImage]" },
-      { name: "data[bannerImage]" },
-    ]),
-    wrapAsync(profileController.createProfile),
-  )
   .get(protect, wrapAsync(profileController.getUserProfile))
-  .patch(protect, wrapAsync(profileController.updateProfile));
 
 //Get all groups a user has joined route.
 router.get(
@@ -56,8 +47,5 @@ router.get(
   protect,
   wrapAsync(profileController.getAllUserGroups),
 );
-
-//Delete profile routes.
-router.delete("/:userId", protect, wrapAsync(profileController.deleteProfile));
 
 export default router;

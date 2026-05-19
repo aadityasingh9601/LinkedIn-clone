@@ -13,17 +13,11 @@ import useUserStore from "../../stores/User";
 export default function ChatUI({ socket }) {
   const currChatId = useChatStore((state) => state.currChatId);
   const currUserId = useUserStore((state) => state.currUserId);
-
   const getChatData = useChatStore((state) => state.getChatData);
-
   const messages = useChatStore((state) => state.messages);
-
   const getAllMsg = useChatStore((state) => state.getAllMsg);
-
   const chatData = useChatStore((state) => state.chatData);
-
   const setfullChat = useChatStore((state) => state.setfullChat);
-
   const chatContainerRef = useRef(null);
 
   // Scroll to the bottom whenever messages change
@@ -35,7 +29,7 @@ export default function ChatUI({ socket }) {
   }, [messages]);
 
   useEffect(() => {
-    socket.emit("join-room", currChatId);
+    socket?.emit("join-room", currChatId);
     getChatData(currChatId);
     getAllMsg(currChatId);
   }, [currChatId]);

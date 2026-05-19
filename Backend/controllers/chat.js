@@ -66,15 +66,10 @@ const getSingleChat = async (req, res) => {
 };
 
 const getAllChats = async (req, res) => {
-  // console.log("inside getAllChats");
   const { userId } = req.params;
+  console.log(req.params);
   const profile = await Profile.findOne({ userId: userId });
-  // console.log(profile.chatList);
 
-  //when you query { participants: "userId" }, MongoDB scans the skills field (which is an array)
-  // in each document to see if "MongoDB" is one of the values in that array.It's mongodb's default query behavior.
-
-  //Here we are sending the chats, whose ids are present in the chatList of the user.
   const chats = await Chat.find({ _id: { $in: profile?.chatList } })
     .populate({
       path: "participants",
@@ -88,8 +83,11 @@ const getAllChats = async (req, res) => {
       path: "lastMessage",
       select: "sender content Date",
     });
-  //console.log(chats);
-  res.status(200).send(chats);
+
+  console.log(chats);
+  res.status(200).json({
+    chats: chats,
+  });
 };
 
 const createMsg = async (req, res) => {
@@ -156,30 +154,31 @@ const createMsg = async (req, res) => {
 };
 
 const getAllMsg = async (req, res) => {
-  // console.log("inside getAllMsg");
   const { chatId } = req.params;
-  // console.log(chatId);
+  console.log(chatId);
   const currUserId = req.user._id;
 
   const chat = await Chat.findById(chatId);
 
   if (chat) {
-    if (chat.participants.includes(currUserId)) {
-      const messages = await Message.find({ chatId: chatId }).populate({
-        path: "sender",
-        select: "profile",
-        populate: {
-          path: "profile",
-          select: "name profileImage",
-        },
-      });
-
-      res.status(200).send(messages);
-    } else {
-      res.status(401).send({
-        message: "You are unauthorized to view messages in this group.",
+    if (!chat.participants.includes(currUserId)) {
+      res.status(403).json({
+        message: "Forbidden!",
       });
     }
+
+    const messages = await Message.find({ chatId: chatId }).populate({
+      path: "sender",
+      select: "profile",
+      populate: {
+        path: "profile",
+        select: "name profileImage",
+      },
+    });
+
+    res.status(200).json({
+      messages,
+    });
   } else {
     res.status(404).send({ message: "Chat group not found" });
   }

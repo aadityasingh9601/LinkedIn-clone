@@ -31,7 +31,7 @@ const useChatStore = create((set, get) => ({
       console.log(response);
       get().setfullChat(true, response.data.chatId);
 
-      getAllMsg(response.data.chatId);
+      get().getAllMsg(response.data.chatId);
       //Emit socket event to join the user in the currChatId room.
       socket.emit("join-room", response.data.chatId);
     });
@@ -47,7 +47,7 @@ const useChatStore = create((set, get) => ({
   getAllChats: async (userId) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/chat/getallchats/${userId}`);
-      set({ chats: response.data });
+      set({ chats: response?.data?.chats });
     });
   },
 
@@ -103,7 +103,7 @@ const useChatStore = create((set, get) => ({
   getAllMsg: async (chatId) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/chat/${chatId}`);
-      set({ messages: response.data });
+      set({ messages: response.data.messages });
     });
   },
 

@@ -143,8 +143,6 @@ const useUserStore = create((set, get) => ({
   getAllFollowed: async () => {
     tryCatchWrapper(async () => {
       const response = await apiGet("/follow/following");
-      //console.log(response);
-      //Save to local storage to persist state and to identify the users followed by the user.
       let allFollowed = response?.data?.map((f) => {
         return f.userFollowed._id;
       });

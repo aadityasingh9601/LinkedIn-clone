@@ -45,176 +45,6 @@ const getAllUserGroups = async (req, res) => {
   }
 };
 
-//This function is too scattered & unfocused, trim it down, make it focused, add better functionality & coverage & ease
-//of usage. Maybe break it into smaller manageable functions. Create it separate or write functionality such that it's
-//clean, readable, fast & follows correct standards.
-
-//These 2 functions below, createProfile & updateProfile are too big, they cover too much responsibility, search properly on internet
-//how to optimize these 2, break them down or better, because this way the logic is fragile & confusing, on both backend and
-//frontend.
-const createProfile = async (req, res) => {
-  console.log("inside createProfile on backend");
-  const { userId } = req.params;
-  console.log("This is params", req.params);
-  console.log("This is body", req.body);
-  //console.log(req.files);
-  //console.log(req.files["data[profileImage]"]);
-
-  const profile = await Profile.findOne({ userId: userId });
-  if (req.user._id.toString() === profile.userId.toString()) {
-    const { data } = req.body;
-    const {
-      name,
-      headline,
-      about,
-      skill,
-      education,
-      experience,
-      contactInfo,
-      location,
-    } = data;
-
-    if (name) {
-      profile.name = name;
-    }
-    if (headline) {
-      profile.headline = headline;
-    }
-    if (about) {
-      profile.about = about;
-    }
-    if (skill) {
-      profile.skills.push(skill);
-    }
-    if (education) {
-      const result = EducationDataSchema.safeParse(education);
-      if (!result.success) {
-        return res.status(400).json({
-          message: result.error.message,
-        });
-      }
-      profile.education.push(education);
-    }
-    if (experience) {
-      const result = ExperienceDataSchema.safeParse(experience);
-      if (!result.success) {
-        return res.status(400).json({
-          message: result.error.message,
-        });
-      }
-      profile.experience.push(experience);
-    }
-    if (location) {
-      profile.location = location;
-    }
-    if (contactInfo) {
-      profile.contactInfo.email = contactInfo.email;
-      profile.contactInfo.phone = contactInfo.phone;
-    }
-
-    if (typeof req.files !== "undefined") {
-      //We're using ternary operators here, to ensure that error doesn't occur while user only tries to change
-      //any one of the image, because if user tries to change only one of the images then the other will throw
-      //error because the req.files object won't have any key for the other image, so error will be thrown.That's
-      //why we are using ternary operators to check first for the key , if it exists or not,only then select.
-
-      let newProfileImage = req.files["data[profileImage]"]
-        ? req.files["data[profileImage]"][0]
-        : null;
-
-      let newBannerImage = req.files["data[bannerImage]"]
-        ? req.files["data[bannerImage]"][0]
-        : null;
-      //console.log(newProfileImage);
-      //console.log(newBannerImage);
-
-      //Make sure to first delete the old profile or banner image from the cloud, else, it will just keep taking up
-      //our cloud storage space.
-
-      if (newProfileImage) {
-        //Delete the old profile image first.
-        //run this only when the user already has a profile image.
-        if (profile.profileImage.filename) {
-          await cloudinary.uploader
-            .destroy(profile.profileImage.filename, { resource_type: "image" })
-            .then((result) => console.log(result));
-        }
-
-        profile.profileImage.filename = newProfileImage.filename;
-        profile.profileImage.url = newProfileImage.path;
-      }
-
-      if (newBannerImage) {
-        //Delete the old banner image first.
-        //run this only when the user already has a banner image.
-        if (profile.bannerImage.filename) {
-          await cloudinary.uploader
-            .destroy(profile.bannerImage.filename, { resource_type: "image" })
-            .then((result) => console.log(result));
-        }
-
-        profile.bannerImage.filename = newBannerImage.filename;
-        profile.bannerImage.url = newBannerImage.path;
-      }
-    }
-
-    await profile.save();
-    //console.log(profile);
-    //res.status(200).send({ message: "Profile updated successfully" });
-    res.status(200).send(profile);
-  } else {
-    res.status(403).send({ message: "Forbidden!" });
-  }
-};
-
-const updateProfile = async (req, res) => {
-  console.log("inside update profile on backend");
-  const { userId } = req.params;
-  // console.log(req.params);
-  const { profileHeaderData } = req.body;
-  const profile = await Profile.findOne({ userId: userId });
-  if (req.user._id.toString() === profile.userId.toString()) {
-    const { section, sectionId, newData } = data;
-
-    if (section === "about") {
-      profile.about = newData;
-      await profile.save();
-    }
-
-    if (section === "experience") {
-      const updateFields = {};
-
-      for (const key in newData) {
-        updateFields[`experience.$.${key}`] = newData[key]; // Dynamically add fields to update
-      }
-      await Profile.updateOne(
-        { userId: userId, "experience._id": sectionId },
-        { $set: updateFields },
-      );
-    }
-
-    if (section === "education") {
-      const updateFields = {};
-
-      for (const key in newData) {
-        updateFields[`education.$.${key}`] = newData[key]; // Dynamically add fields to update
-      }
-      await Profile.updateOne(
-        { userId: userId, "education._id": sectionId },
-        { $set: updateFields }, // Only update the specified fields
-      );
-    }
-
-    //Re-fetch the profile to send the updated profile data to the frontend,if you send the profile that was
-    //fetched earlier then it wouldn't be updated.That's why, refetching is necessary here.
-
-    const updatedProfile = await Profile.findOne({ userId: userId });
-    res.status(200).send(updatedProfile);
-  } else {
-    res.status(403).send({ message: "Forbidden!" });
-  }
-};
-
 //Profile header section.
 const updateProfileHeader = async (req, res) => {
   const { profileHeaderData } = req.body;
@@ -464,43 +294,10 @@ const deleteExperience = async (req, res) => {
   });
 };
 
-const deleteProfile = async (req, res) => {
-  const { userId } = req.params;
-  const { skill, section, sectionId } = req.query;
-  console.log(req.query);
-
-  const profile = await Profile.findOne({ userId: userId });
-
-  if (req.user._id.toString() === profile.userId.toString()) {
-    if (skill) {
-      let idx = profile.skills.indexOf(skill);
-      profile.skills.splice(idx, 1);
-    }
-    if (section === "experience") {
-      await Profile.updateOne(
-        { userId: userId },
-        { $pull: { experience: { _id: sectionId } } },
-      );
-    }
-    if (section === "education") {
-      await Profile.updateOne(
-        { userId: userId },
-        { $pull: { education: { _id: sectionId } } },
-      );
-    }
-    await profile.save();
-    res.status(200).send({ message: "Deletion successful!" });
-  } else {
-    res.status(401).send({ message: "You are not the user of this account." });
-  }
-};
-
 export default {
   getUserProfile,
   getAllUserProfiles,
   getAllUserGroups,
-  createProfile,
-  updateProfile,
   updateProfileHeader,
   addNewSkill,
   deleteSkill,
@@ -511,5 +308,4 @@ export default {
   addExperience,
   updateExperience,
   deleteExperience,
-  deleteProfile,
 };

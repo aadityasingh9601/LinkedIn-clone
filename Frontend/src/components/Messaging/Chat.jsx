@@ -7,15 +7,18 @@ import Xmark from "../shared-components/Icons/Xmark";
 import { formatTime, formatDate2 } from "../../utils/helper";
 import useUserStore from "../../stores/User";
 
-export default function Chat({ chat, otherPerson, socket }) {
+export default function Chat({ chat, otherPerson }) {
+  console.log(chat);
   const currUserId = useUserStore((state) => state.currUserId);
-
   const setfullChat = useChatStore((state) => state.setfullChat);
-
   const deleteChat = useChatStore((state) => state.deleteChat);
 
-  let Time = formatTime(chat?.lastMessage?.Date );
-  let chatDate = formatDate2(chat?.lastMessage?.Date);
+  let Time = formatTime(
+    chat?.lastMessage ? chat?.lastMessage?.createdAt : new Date(),
+  );
+  let chatDate = formatDate2(
+    chat?.lastMessage ? chat?.lastMessage?.createdAt : new Date(),
+  );
   let currDate = formatDate2(new Date());
 
   const isNewDay = currDate !== chatDate;
