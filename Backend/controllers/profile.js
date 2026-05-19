@@ -379,6 +379,7 @@ const updateEducation = async (req, res) => {
     updatedEducation: updatedEducation,
   });
 };
+
 const deleteEducation = async (req, res) => {
   const { id } = req.params;
   await Profile.updateOne(
@@ -392,9 +393,76 @@ const deleteEducation = async (req, res) => {
 };
 
 //Experience section.
-const addExperience = async (req, res) => {};
-const updateExperience = async (req, res) => {};
-const deleteExperience = async (req, res) => {};
+const addExperience = async (req, res) => {
+  const { experienceData } = req.body;
+  const result = ExperienceDataSchema.safeParse(experienceData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
+
+  const profile = await Profile.findOne({ userId: req.user._id });
+  profile.experience.push({
+    ...experienceData,
+    started: convertDateToUTC(experienceData.started),
+    ended: convertDateToUTC(experienceData.ended),
+  });
+  await profile.save();
+
+  const newExperienceData = profile.experience.find(
+    (e) => e.degree === experienceData.degree,
+  );
+  res.status(200).json({
+    message: "Experience added successfully!",
+    newExperience: newExperienceData,
+  });
+};
+
+const updateExperience = async (req, res) => {
+  const { id } = req.params;
+  const { experienceData } = req.body;
+  const result = ExperienceDataSchema.safeParse(experienceData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
+
+  const updateFields = {};
+  for (const key in experienceData) {
+    updateFields[`experience.$.${key}`] = experienceData[key]; // Dynamically add fields to update
+  }
+  const updatedProfile = await Profile.findOneAndUpdate(
+    { userId: req.user._id, "experience._id": id },
+    {
+      $set: {
+        ...updateFields,
+        "experience.$.started": convertDateToUTC(experienceData.started),
+        "experience.$.ended": convertDateToUTC(experienceData.ended),
+      },
+    },
+  );
+  const updatedExperience = updatedProfile.experience.find(
+    (e) => e._id.toString() === id,
+  );
+  res.status(200).json({
+    message: "Updated successfully!",
+    updatedExperience: updatedExperience,
+  });
+};
+
+const deleteExperience = async (req, res) => {
+  const { id } = req.params;
+  await Profile.updateOne(
+    { userId: req.user._id },
+    { $pull: { experience: { _id: id } } },
+  );
+
+  res.status(200).json({
+    message: "Deleted successfully!",
+  });
+};
 
 const deleteProfile = async (req, res) => {
   const { userId } = req.params;

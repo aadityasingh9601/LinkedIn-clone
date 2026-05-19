@@ -251,7 +251,7 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  addEducation: async (educationId = {}, educationData, setIsLoading) => {
+  addEducation: async (educationData, setIsLoading) => {
     setIsLoading(true);
     tryCatchWrapper(async () => {
       const response = await apiPost(
@@ -276,7 +276,6 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  //update education.
   updateEducation: async (
     educationId,
     educationData,
@@ -307,23 +306,95 @@ const useProfileStore = create((set, get) => ({
     });
   },
 
-  //delete education.
   deleteEducation: async (educationId) => {
     tryCatchWrapper(async () => {
-      const response = await apiDelete(
-        `/profile/education/${educationId}`,
+      const response = await apiDelete(`/profile/education/${educationId}`, {});
+      console.log(response);
+      if (response.status === 200) {
+        set((state) => ({
+          profile: {
+            ...state.profile,
+            education: state.profile.education.filter(
+              (e) => e._id !== educationId,
+            ),
+          },
+        }));
+        return toast.success(response?.data?.message);
+      }
+    });
+  },
+
+  addExperience: async (experienceData, setIsLoading) => {
+    setIsLoading(true);
+    tryCatchWrapper(async () => {
+      const response = await apiPost(
+        `/profile/experience`,
+        { experienceData },
         {},
       );
       console.log(response);
       if (response.status === 200) {
         set((state) => ({
-            profile: {
-              ...state.profile,
-              education: state.profile.education.filter(
-                (e) => e._id !== educationId,
-              ),
-            },
-          }));
+          profile: {
+            ...state.profile,
+            experience: [
+              ...state.profile.experience,
+              response?.data?.newExperience,
+            ],
+          },
+        }));
+        setIsLoading(false);
+        return toast.success(response?.data?.message);
+      }
+    });
+  },
+
+  updateExperience: async (
+    experienceId,
+    experienceData,
+    setIsLoading,
+    setEdit,
+  ) => {
+    setIsLoading(true);
+    tryCatchWrapper(async () => {
+      const response = await apiPatch(
+        `/profile/experience/${experienceId}`,
+        { experienceData },
+        {},
+      );
+      console.log(response);
+      if (response.status === 200) {
+        set((state) => ({
+          profile: {
+            ...state.profile,
+            experience: state.profile.experience.map((edu) =>
+              edu._id === experienceId ? response.data.updatedExperience : edu,
+            ),
+          },
+        }));
+        setIsLoading(false);
+        setEdit(false);
+        return toast.success(response?.data?.message);
+      }
+    });
+  },
+
+  deleteExperience: async (experienceId) => {
+    tryCatchWrapper(async () => {
+      const response = await apiDelete(
+        `/profile/experience/${experienceId}`,
+        {},
+      );
+      console.log(response);
+      if (response.status === 200) {
+        set((state) => ({
+          profile: {
+            ...state.profile,
+            experience: state.profile.experience.filter(
+              (e) => e._id !== experienceId,
+            ),
+          },
+        }));
         return toast.success(response?.data?.message);
       }
     });

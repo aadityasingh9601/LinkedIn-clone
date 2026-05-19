@@ -20,6 +20,9 @@ export default function Profile() {
   const { id: currProfileId } = useParams();
   const navigate = useNavigate();
   const profile = useProfileStore((state) => state.profile);
+  const [addInSection, setAddInSection] = useState(false);
+  const [editSection, setEditSection] = useState(false);
+
   const getProfileData = useProfileStore((state) => state.getProfileData);
   const createProfile = useProfileStore((state) => state.createProfile);
   const updateProfile = useProfileStore((state) => state.updateProfile);
@@ -80,21 +83,23 @@ export default function Profile() {
         </div>
       )}
 
-      <ProfileSection title="About" styles={customStyles}>
-        <ProfileAbout profileId={profile._id} profileAbout={profile?.about} />
-      </ProfileSection>
+      <ProfileAbout
+        styles={customStyles}
+        profileId={profile._id}
+        profileAbout={profile?.about}
+      />
 
-      <ProfileSection title="Skills" styles={customStyles}>
-        <SkillsSection profileSkills={profile?.skills} />
-      </ProfileSection>
+      <SkillsSection styles={customStyles} profileSkills={profile?.skills} />
 
-      <ProfileSection title="Education" styles={customStyles}>
-        <EducationSection profileEducation={profile?.education} />
-      </ProfileSection>
+      <EducationSection
+        customStyles={customStyles}
+        profileEducation={profile?.education}
+      />
 
-      <ProfileSection title="Experience" styles={customStyles}>
-        <ExperienceSection profileExperience={profile?.experience} />
-      </ProfileSection>
+      <ExperienceSection
+        customStyles={customStyles}
+        profileExperience={profile?.experience}
+      />
     </div>
   );
 }
