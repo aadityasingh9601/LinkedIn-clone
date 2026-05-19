@@ -38,12 +38,6 @@ const useProfileStore = create((set, get) => ({
     set({ editAbout: value });
   },
 
-  addInSection: false,
-
-  setAddInSection: (value) => {
-    set({ addInSection: value });
-  },
-
   //Create separate methods here for updating profilehead, skills, about, experience etc sections.
 
   getProfileData: async (userId) => {
@@ -65,7 +59,7 @@ const useProfileStore = create((set, get) => ({
         localStorage.setItem("currUserProfile", JSON.stringify(response.data));
         setCurrUserProfile(response.data);
       }
-      set({ profile: response.data });
+      set({ profile: response.data.userProfile });
     });
   },
 
@@ -209,11 +203,7 @@ const useProfileStore = create((set, get) => ({
   updateProfileAbout: async (data, setIsLoading) => {
     setIsLoading(true);
     tryCatchWrapper(async () => {
-      const response = await apiPatch(
-        `/profile/about`,
-        { data },
-        {},
-      );
+      const response = await apiPatch(`/profile/about`, { data }, {});
       console.log(response);
 
       if (response.status === 200) {
@@ -231,8 +221,6 @@ const useProfileStore = create((set, get) => ({
     setIsLoading(true);
     tryCatchWrapper(async () => {
       const response = await apiPost(`/profile/skills`, { newSkill }, {});
-      console.log(response);
-
       if (response.status === 200) {
         set((state) => ({
           profile: {
@@ -248,7 +236,7 @@ const useProfileStore = create((set, get) => ({
 
   deleteSkill: async (skill) => {
     tryCatchWrapper(async () => {
-      const response = await apiDelete(`/profile/skills`, { skill }, {});
+      const response = await apiDelete(`/profile/skills?skill=${skill}`, {});
       console.log(response);
 
       if (response.status === 200) {
@@ -258,6 +246,84 @@ const useProfileStore = create((set, get) => ({
             skills: state.profile.skills?.filter((s) => s !== skill),
           },
         }));
+        return toast.success(response?.data?.message);
+      }
+    });
+  },
+
+  addEducation: async (educationId = {}, educationData, setIsLoading) => {
+    setIsLoading(true);
+    tryCatchWrapper(async () => {
+      const response = await apiPost(
+        `/profile/education`,
+        { educationData },
+        {},
+      );
+      console.log(response);
+      if (response.status === 200) {
+        set((state) => ({
+          profile: {
+            ...state.profile,
+            education: [
+              ...state.profile.education,
+              response?.data?.newEducation,
+            ],
+          },
+        }));
+        setIsLoading(false);
+        return toast.success(response?.data?.message);
+      }
+    });
+  },
+
+  //update education.
+  updateEducation: async (
+    educationId,
+    educationData,
+    setIsLoading,
+    setEdit,
+  ) => {
+    setIsLoading(true);
+    tryCatchWrapper(async () => {
+      const response = await apiPatch(
+        `/profile/education/${educationId}`,
+        { educationData },
+        {},
+      );
+      console.log(response);
+      if (response.status === 200) {
+        set((state) => ({
+          profile: {
+            ...state.profile,
+            education: state.profile.education.map((edu) =>
+              edu._id === educationId ? response.data.updatedEducation : edu,
+            ),
+          },
+        }));
+        setIsLoading(false);
+        setEdit(false);
+        return toast.success(response?.data?.message);
+      }
+    });
+  },
+
+  //delete education.
+  deleteEducation: async (educationId) => {
+    tryCatchWrapper(async () => {
+      const response = await apiDelete(
+        `/profile/education/${educationId}`,
+        {},
+      );
+      console.log(response);
+      if (response.status === 200) {
+        set((state) => ({
+            profile: {
+              ...state.profile,
+              education: state.profile.education.filter(
+                (e) => e._id !== educationId,
+              ),
+            },
+          }));
         return toast.success(response?.data?.message);
       }
     });

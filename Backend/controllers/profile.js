@@ -7,16 +7,16 @@ import { v2 as cloudinary } from "cloudinary";
 import {
   EducationDataSchema,
   ExperienceDataSchema,
-  PostDataSchema,
   ProfileHeaderDataSchema,
 } from "../zodSchema/index.js";
+import { convertDateToUTC } from "../utils/helper.js";
 
 const getUserProfile = async (req, res) => {
   const { userId } = req.params;
-
   const userProfile = await Profile.findOne({ userId: userId });
-  //console.log(userProfile);
-  res.status(200).send(userProfile);
+  res.status(200).json({
+    userProfile,
+  });
 };
 
 const getAllUserProfiles = async (req, res) => {
@@ -163,7 +163,7 @@ const createProfile = async (req, res) => {
     //res.status(200).send({ message: "Profile updated successfully" });
     res.status(200).send(profile);
   } else {
-    res.status(403).send({ message: "You are not the user of this account!" });
+    res.status(403).send({ message: "Forbidden!" });
   }
 };
 
@@ -282,7 +282,11 @@ const updateProfileHeader = async (req, res) => {
 const addNewSkill = async (req, res) => {
   const { newSkill } = req.body;
   const profile = await Profile.findOne({ userId: req.user._id });
-  console.log(profile.skills);
+  if (profile.skills.indexOf(newSkill.toLowerCase()) != -1) {
+    return res.status(400).json({
+      message: "Skill already exists!",
+    });
+  }
   profile.skills.push(newSkill);
   await profile.save();
 
@@ -292,7 +296,11 @@ const addNewSkill = async (req, res) => {
 };
 
 const deleteSkill = async (req, res) => {
-  console.log(req.query);
+  const { skill } = req.query;
+  console.log(skill);
+  const profile = await Profile.findOne({ userId: req.user._id });
+  profile.skills.splice(profile.skills.indexOf(skill), 1);
+  await profile.save();
 
   res.status(200).json({
     message: "Deleted successfully!",
@@ -313,9 +321,75 @@ const updateAboutSection = async (req, res) => {
 };
 
 //Education section.
-const addEducation = async (req, res) => {};
-const updateEducation = async (req, res) => {};
-const deleteEducation = async (req, res) => {};
+const addEducation = async (req, res) => {
+  const { educationData } = req.body;
+  const result = EducationDataSchema.safeParse(educationData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
+
+  const profile = await Profile.findOne({ userId: req.user._id });
+  profile.education.push({
+    ...educationData,
+    started: convertDateToUTC(educationData.started),
+    ended: convertDateToUTC(educationData.ended),
+  });
+  await profile.save();
+
+  const newEducationData = profile.education.find(
+    (e) => e.degree === educationData.degree,
+  );
+  res.status(200).json({
+    message: "Education added successfully!",
+    newEducation: newEducationData,
+  });
+};
+
+const updateEducation = async (req, res) => {
+  const { id } = req.params;
+  const { educationData } = req.body;
+  const result = EducationDataSchema.safeParse(educationData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
+  }
+
+  const updateFields = {};
+  for (const key in educationData) {
+    updateFields[`education.$.${key}`] = educationData[key]; // Dynamically add fields to update
+  }
+  const updatedProfile = await Profile.findOneAndUpdate(
+    { userId: req.user._id, "education._id": id },
+    {
+      $set: {
+        ...updateFields,
+        "education.$.started": convertDateToUTC(educationData.started),
+        "education.$.ended": convertDateToUTC(educationData.ended),
+      },
+    },
+  );
+  const updatedEducation = updatedProfile.education.find(
+    (e) => e._id.toString() === id,
+  );
+  res.status(200).json({
+    message: "Updated successfully!",
+    updatedEducation: updatedEducation,
+  });
+};
+const deleteEducation = async (req, res) => {
+  const { id } = req.params;
+  await Profile.updateOne(
+    { userId: req.user._id },
+    { $pull: { education: { _id: id } } },
+  );
+
+  res.status(200).json({
+    message: "Deleted successfully!",
+  });
+};
 
 //Experience section.
 const addExperience = async (req, res) => {};
