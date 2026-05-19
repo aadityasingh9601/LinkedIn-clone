@@ -3,7 +3,7 @@ import Plus from "../shared-components/Icons/Plus";
 import Pen from "../shared-components/Icons/Pen";
 import useProfileStore from "../../stores/Profile";
 
-export default function ProfileSection({ title,styles,children }) {
+export default function ProfileSection({ title,styles,children, setAddInSection }) {
   const setEditAbout = useProfileStore((s)=>s.setEditAbout);
   return (
     <div className={moduleStyles.profileSection}>
@@ -13,7 +13,7 @@ export default function ProfileSection({ title,styles,children }) {
           {title.toLowerCase() == "about" ? (
             <Pen styles={styles} onClick={() => setEditAbout(true)} />
           ) : (
-            <Plus styles={styles} onClick={() => setAddSection(true)} />
+            <Plus styles={styles} onClick={() => setAddInSection(true)} />
           )}
         </div>
       </div>

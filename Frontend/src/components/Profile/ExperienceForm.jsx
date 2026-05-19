@@ -1,21 +1,20 @@
-import { useForm } from "react-hook-form";
 import useProfileStore from "../../stores/Profile";
 import Button from "../shared-components/Buttons/Button";
+import indexStyles from "./index.module.css";
+import { useForm } from "react-hook-form";
 import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
 import RHFInput from "../shared-components/Inputs/RHFInput";
 import useUserStore from "../../stores/User";
 import { ExperienceDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
+import { useState } from "react";
+import Spinner from "../shared-components/Loaders/Spinner";
 
-export default function ExperienceForm({
-  experience = {},
-  updateVisState,
-  onSubmitProp,
-}) {
-  const createProfile = useProfileStore((state) => state.createProfile);
-  const currUserId = useUserStore((state) => state.currUserId);
-
+export default function ExperienceForm({ experience = {}, setShow, mode }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const addExperience = useProfileStore((s) => s.addExperience);
+  const updateExperience = useProfileStore((s) => s.updateExperience);
   const {
     register,
     handleSubmit,
@@ -25,70 +24,69 @@ export default function ExperienceForm({
     resolver: zodResolver(ExperienceDataSchema),
     defaultValues: {
       ...experience,
-      started: experience?.started?.split("T")[0],
-      ended: experience?.ended?.split("T")[0],
+      started: experience?.started?.split("T")[0].split("-").reverse().join("-"),
+      ended: experience?.ended?.split("T")[0].split("-").reverse().join("-"),
     },
   });
 
-  const onSubmit = (experience) => {
-    console.log(experience);
-    createProfile({ experience }, updateVisState);
+  const onSubmit = (experienceData) => {
+    console.log(experienceData);
+    mode === "add"
+      ? addExperience(experienceData, setIsLoading)
+      : updateExperience(experience?._id, experienceData, setIsLoading, setShow);
     reset();
   };
   return (
-    <FormWrapper onSubmit={handleSubmit(onSubmitProp || onSubmit)}>
-        <RHFInput
-          placeholder="Enter company name"
-          name="companyName"
-          register={register}
-          errors={errors}
-        />
+    <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+      <RHFInput
+        placeholder="Enter company"
+        register={register}
+        name="companyName"
+        errors={errors}
+      />
 
-        <RHFInput
-          placeholder="Enter job title"
-          name="jobTitle"
-          register={register}
-          errors={errors}
-        />
+      <RHFInput
+        name="jobTitle"
+        placeholder="Enter job title"
+        register={register}
+        errors={errors}
+      />
 
-        <RHFInput
-          placeholder="Enter start date (DD-MM-YYYY) "
-          register={register}
-          name="started"
-          rules={{
-            required: "Date is required",
-            pattern: {
-              value: /^\d{4}-\d{2}-\d{2}$/,
-              message: "Date must be in yyyy-mm-dd format",
-            },
+      <RHFInput
+        placeholder="Enter start date (DD-MM-YYYY)"
+        register={register}
+        name="started"
+        errors={errors}
+      />
+
+      <RHFInput
+        placeholder="Enter end date (DD-MM-YYYY)"
+        name="ended"
+        register={register}
+        errors={errors}
+      />
+
+      <RHFtextarea
+        register={register}
+        errors={errors}
+        name="description"
+        placeholder="Add some more details..."
+      />
+
+      <div className={indexStyles.buttonWrapper}>
+        <Button
+          variant="sm"
+          btnText="Cancel"
+          onClick={() => {
+            setShow(false);
           }}
-          errors={errors}
         />
-
-        <RHFInput
-          register={register}
-          name="ended"
-          rules={{
-            required: "Date is required",
-            pattern: {
-              value: /^\d{4}-\d{2}-\d{2}$/,
-              message: "Date must be in yyyy-mm-dd format",
-            },
-          }}
-          placeholder="Enter end date (DD-MM-YYYY)"
-          errors={errors}
+        <Button
+          variant="sm"
+          type="submit"
+          btnText={isLoading ? <Spinner height={17} width={17} /> : "Save"}
         />
-
-        <RHFtextarea
-          register={register}
-          errors={errors}
-          name="description"
-          placeholder="Write your job description here..."
-          rules={{}}
-        />
-
-        <Button btnText="Cancel" onClick={() => updateVisState(false)} />
-        <Button btnText="Save" />
-      </FormWrapper>
+      </div>
+    </FormWrapper>
   );
 }

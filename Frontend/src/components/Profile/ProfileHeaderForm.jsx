@@ -58,7 +58,7 @@ export default function ProfileHeaderForm({ profile }) {
       profileImage: data.profileImage[0],
       bannerImage: data.bannerImage[0],
     };
-    updateProfileHeader(profile._id, profileData, setIsLoading);
+    updateProfileHeader(profileData, setIsLoading);
   };
 
   return (

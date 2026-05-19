@@ -13,7 +13,7 @@ export default function ProfileSectionCard({
   deleteProfile,
   imageUrl,
   fields = {
-      titleKey: "title",
+    titleKey: "title",
     subtitleKey: "subtitle",
     startKey: "started",
     endKey: "ended",

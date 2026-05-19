@@ -7,4 +7,10 @@ function convertDateToCron(date) {
   return `${minutes} ${hours} ${day} ${month} *`;
 }
 
-export {convertDateToCron}
+function convertDateToUTC(date) {
+  const [day, month, year] = date.split("-");
+  const utcTimestamp = Date.UTC(Number(year), Number(month) - 1, Number(day));
+  return utcTimestamp;
+}
+
+export { convertDateToCron, convertDateToUTC };

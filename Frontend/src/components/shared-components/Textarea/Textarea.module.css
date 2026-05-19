@@ -1,5 +1,5 @@
-.textarea textarea{
-   width: 100%;
+.textarea textarea {
+  width: 100%;
   height: 4.25rem;
   padding: 0.5rem 0.85rem;
   border-radius: 0.3rem;
@@ -9,6 +9,6 @@
   box-sizing: border-box;
 }
 
-.errorMsg{
-  color:red;
+.errorMsg {
+  color: red;
 }

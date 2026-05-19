@@ -17,10 +17,10 @@ const apiGet = async (endPoint, headers = {}) => {
   }
 };
 
-const apiPost = async (endPoint, reqBody, reqHeaders) => {
+const apiPost = async (endPoint, reqBody, headers = {}) => {
   try {
     const response = await axiosInstance.post(`${endPoint}`, reqBody, {
-      headers: reqHeaders,
+      ...headers,
     });
     return response;
   } catch (error) {
@@ -31,10 +31,10 @@ const apiPost = async (endPoint, reqBody, reqHeaders) => {
   }
 };
 
-const apiPatch = async (endPoint, reqBody, reqHeaders) => {
+const apiPatch = async (endPoint, reqBody, headers = {}) => {
   try {
     const response = await axiosInstance.patch(`${endPoint}`, reqBody, {
-      headers: reqHeaders,
+      ...headers,
     });
     return response;
   } catch (error) {
@@ -50,7 +50,6 @@ const apiDelete = async (endPoint) => {
     const response = await axiosInstance.delete(`${endPoint}`);
     return response;
   } catch (error) {
-    //console.log(error.response.data.message);
     return toast.error(
       error.response?.data.message || error.message || "Something went wrong!",
     );
@@ -123,7 +122,7 @@ const formatDate = (dateString) => {
 
 const formatDate2 = (isoDate) => {
   const date = new Date(isoDate);
-  return date.toLocaleDateString("en-US", {
+  return date.toLocaleDateString("en-IN", {
     weekday: "short",
     month: "short",
     day: "numeric",
