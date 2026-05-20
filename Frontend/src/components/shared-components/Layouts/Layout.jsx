@@ -6,26 +6,15 @@ import useUserStore from "../../../stores/User";
 import ChatUI from "../../Messaging/ChatUI";
 import useChatStore from "../../../stores/Chat";
 import ChatList from "../../Messaging/ChatList";
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import CaretUp from "../../shared-components/Icons/CaretUp";
 
 function Layout({ children, socket }) {
-  const currUserId = useUserStore((state) => state.currUserId);
-  const chats = useChatStore((state) => state.chats);
-  const getAllChats = useChatStore((state) => state.getAllChats);
   const fullChat = useChatStore((state) => state.fullChat);
-  const messagingRef = useRef(null);
-  const upiconRef = useRef(null);
-
-  //There's no need to fetch it beforehand, we can just run this, whenever user opens the messaging tab, it'll make the app
-  //faster.
-  useEffect(() => {
-    getAllChats(currUserId);
-  }, [currUserId]);
+  const [isMessagingOpen, setIsMessagingOpen] = useState(false);
 
   const showMessaging = () => {
-    messagingRef.current?.classList.toggle("position");
-    upiconRef.current?.classList.toggle("rotate");
+    setIsMessagingOpen((prev) => !prev);
   };
 
   return (
@@ -45,7 +34,7 @@ function Layout({ children, socket }) {
         transition:Bounce
       />
 
-      <div ref={messagingRef} className={`${styles.messaging} ${styles.position}`}>
+      <div className={`${styles.messaging} ${isMessagingOpen ? styles.expanded : styles.collapsed}`}>
         <div className={styles.top}>
           <div className={styles.a}>
             <div>
@@ -54,18 +43,19 @@ function Layout({ children, socket }) {
                 alt=""
               />
             </div>
-
             <div>Messaging</div>
           </div>
           <div className={styles.b}>
-            <span ref={upiconRef}>
-              <CaretUp onClick={() => showMessaging()} />
+            <span className={isMessagingOpen ? styles.rotated : ""}>
+              <CaretUp onClick={showMessaging} />
             </span>
           </div>
         </div>
-        <div className={`${styles.chats} ${styles.remove}`}>
-            <ChatList chats={chats} socket={socket} />
-        </div>
+        {isMessagingOpen && (
+          <div className={styles.chats}>
+            <ChatList />
+          </div>
+        )}
         {fullChat && <ChatUI socket={socket} />}
       </div>
 

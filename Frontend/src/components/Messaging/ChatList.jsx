@@ -1,22 +1,26 @@
 import styles from "./ChatList.module.css";
 import Chat from "./Chat";
 import useUserStore from "../../stores/User";
+import useChatStore from "../../stores/Chat";
 
-export default function ChatList({ chats, socket }) {
+export default function ChatList() {
   const currUserId = useUserStore((state) => state.currUserId);
+  const chats = useChatStore((state) => state.chats);
+  const currUserProfile = useUserStore((s) => s.currUserProfile);
+  console.log(currUserProfile);
+  const getAllChats = useChatStore((state) => state.getAllChats);
+
+  // useEffect(() => { 
+  //   getAllChats(currUserId);
+  // }, [currUserId]);
   return (
     <div>
-      {chats?.map((chat) => {
-        const otherPerson = chat?.participants?.find(
-          (participant) => participant._id !== currUserId
-        );
-
+      {currUserProfile?.chatList.map((chat) => {
         return (
           <Chat
             chat={chat}
             key={chat._id}
-            otherPerson={otherPerson}
-            socket={socket}
+            otherPerson={chat?.lastMessage?.sender}
           />
         );
       })}

@@ -7,7 +7,6 @@ import { useState } from "react";
 import { formatDate } from "../../utils/helper";
 
 export default function EducationCard({ education, customStyles = {} }) {
-  console.log(education);
   const [editEducation, setEditEducation] = useState(false);
   const deleteEducation = useProfileStore((state) => state.deleteEducation);
   return (
