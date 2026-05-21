@@ -4,13 +4,12 @@ const { Schema } = mongoose;
 
 const messageSchema = new Schema({
   chatId: {
-    //The chat group of which this message belongs to.
     type: Schema.Types.ObjectId,
     ref: "Chat",
   },
   sender: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: "Profile",
   },
   media: {
     mediaType: String,
@@ -19,7 +18,6 @@ const messageSchema = new Schema({
   },
   content: {
     type: String,
-
     default: "",
   },
   createdAt: {

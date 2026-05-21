@@ -19,9 +19,20 @@ const checkAuthStatus = async (req, res) => {
   let accesstoken = req.cookies.accesstoken;
   let decoded = jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET);
   const user = await User.findOne({ _id: decoded.id });
-  const userProfile = await Profile.findOne({ userId: decoded.id }).select(
-    "name headline profileImage",
-  );
+  const userProfile = await Profile.findOne({ userId: decoded.id })
+    .select("name headline profileImage chatList")
+    .populate({
+      path: "chatList",
+      select: "participants lastMessage",
+      populate: {
+        path: "lastMessage",
+        select: "sender content createdAt",
+        populate:{
+          path:"sender",
+          select:"name profileImage"
+        }
+      },
+    });
 
   res
     .status(200)

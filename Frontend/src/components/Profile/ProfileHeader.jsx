@@ -14,7 +14,7 @@ import useChatStore from "../../stores/Chat";
 import { useState, useEffect } from "react";
 import ProfileHeaderForm from "./ProfileHeaderForm";
 
-export default function ProfileHeader({customStyles, profile }) {
+export default function ProfileHeader({ customStyles, profile }) {
   const [isFollowed, setisFollowed] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const currUserId = useUserStore((state) => state.currUserId);
@@ -22,11 +22,25 @@ export default function ProfileHeader({customStyles, profile }) {
   const unfollow = useFollowStore((state) => state.unfollow);
   const editHead = useProfileStore((state) => state.editHead);
   const setEditHead = useProfileStore((state) => state.setEditHead);
+  const createChat = useChatStore((s) => s.createChat);
   const handleMessage = useChatStore((state) => state.handleMessage);
+   const setfullChat = useChatStore((state) => state.setfullChat);
   const allFollowed = useUserStore((state) => state.allFollowed);
   const allConnections = useUserStore((state) => state.allConnections);
   const sendConnReq = useConnectionStore((state) => state.sendConnReq);
   const removeConn = useConnectionStore((state) => state.removeConn);
+  const currUserProfile = useUserStore((s) => s.currUserProfile);
+
+  const existingChat = () => {
+    for (let chat of currUserProfile?.chatList) {
+      console.log(chat);
+      let success = [currUserId, profile.userId].every((val) =>
+        chat.participants.includes(val),
+      );
+      if (success) return chat;
+    }
+    return {};
+  };
 
   console.log(allFollowed);
   console.log(allConnections);
@@ -105,7 +119,13 @@ export default function ProfileHeader({customStyles, profile }) {
             <Button
               variant="sm"
               btnText="Message"
-              onClick={() => handleMessage(profile.userId)}
+              onClick={() => {
+                let result = existingChat();
+                setfullChat(true);
+                if (Object.keys(result).length === 0) {
+                  
+                }
+              }}
             />
             {isConnected ? (
               <Button

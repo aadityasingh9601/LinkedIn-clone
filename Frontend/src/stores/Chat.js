@@ -19,21 +19,42 @@ const useChatStore = create((set, get) => ({
 
   chats: [],
 
+  newChatUser: null,
+
   setfullChat: (value, chatId) => {
-    localStorage.setItem("currChatId", chatId);
-    set({ currChatId: chatId }); //Make sure to update the state variable also, else UI won't b re-rendered!
+    localStorage.setItem("currChatId", chatId || "");
+    set({ currChatId: chatId || "" });
     set({ fullChat: value });
+    if (!value) {
+      set({ newChatUser: null });
+    }
+  },
+
+  createChat: async (userId) => {
+    tryCatchWrapper(async () => {
+      const response = await apiPost(`/chat/createchat/${userId}`, {}, {});
+      console.log(response);
+    });
   },
 
   handleMessage: async (profileId) => {
     tryCatchWrapper(async () => {
-      const response = await apiPost(`/chat/createchat/${profileId}`, {}, {});
-      console.log(response);
-      get().setfullChat(true, response.data.chatId);
-
-      get().getAllMsg(response.data.chatId);
-      //Emit socket event to join the user in the currChatId room.
-      socket.emit("join-room", response.data.chatId);
+      const response = await apiGet(`/chat/checkchat/${profileId}`);
+      if (response.data.exists) {
+        set({ newChatUser: null });
+        get().setfullChat(true, response.data.chatId);
+        get().getChatData(response.data.chatId);
+        get().getAllMsg(response.data.chatId);
+      } else {
+        set({
+          fullChat: true,
+          currChatId: "",
+          newChatUser: profileId,
+          messages: [],
+          chatData: {},
+        });
+        localStorage.setItem("currChatId", "");
+      }
     });
   },
 
@@ -52,14 +73,12 @@ const useChatStore = create((set, get) => ({
   },
 
   addMessage: (newMessage) => {
-    console.log(newMessage);
     set((state) => ({
-      messages: [...state.messages, newMessage], // Add the new message
+      messages: [...state.messages, newMessage],
     }));
   },
 
   updateLastMsg: (data) => {
-    console.log(data);
     set((state) => ({
       chats: state.chats.map((chat) =>
         chat._id === data.chatId ? { ...chat, lastMessage: data } : chat,
@@ -68,7 +87,6 @@ const useChatStore = create((set, get) => ({
   },
 
   editMessage: (data) => {
-    console.log(data);
     set((state) => ({
       messages: state.messages.map((msg) =>
         msg._id === data.msgId ? data.updatedMessage : msg,
@@ -80,28 +98,35 @@ const useChatStore = create((set, get) => ({
     set((state) => ({
       messages: state.messages.filter((m) => m._id !== msgId),
     }));
-
-    //We'll not return our toast message here,cause the event will happen in both users, even for user
-    //who hasn't done anything.That's why shift these toast messages to our functions that handle backend response.
-    // return toast.success("Msg deleted successfully!");
   },
 
   sendMsg: async (chatId, data) => {
     tryCatchWrapper(async () => {
-      console.log(data);
-      const response = await apiPost(
-        `/chat/${chatId}`,
+      const { newChatUser } = get();
+      let targetChatId = chatId;
+
+      if (!chatId && newChatUser) {
+        const createResp = await apiPost(
+          `/chat/createchat/${newChatUser}`,
+          {},
+          {},
+        );
+        targetChatId = createResp.data.chatId;
+        set({ newChatUser: null, currChatId: targetChatId });
+        localStorage.setItem("currChatId", targetChatId);
+      }
+
+      await apiPost(
+        `/chat/${targetChatId}`,
         { data },
-        {
-          "Content-Type": "multipart/form-data",
-        },
+        { "Content-Type": "multipart/form-data" },
       );
-      //console.log(response);
     });
   },
 
   getAllMsg: async (chatId) => {
     tryCatchWrapper(async () => {
+      if (!chatId) return;
       const response = await apiGet(`/chat/${chatId}`);
       set({ messages: response.data.messages });
     });

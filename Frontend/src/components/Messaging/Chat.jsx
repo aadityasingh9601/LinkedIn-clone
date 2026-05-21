@@ -6,9 +6,10 @@ import Ellipsis from "../shared-components/Icons/Ellipsis";
 import Xmark from "../shared-components/Icons/Xmark";
 import { formatTime, formatDate2 } from "../../utils/helper";
 import useUserStore from "../../stores/User";
+import UserAvatar from "../shared-components/User/UserAvatar";
 
 export default function Chat({ chat, otherPerson }) {
-  console.log(chat);
+  console.log(chat,otherPerson);
   const currUserId = useUserStore((state) => state.currUserId);
   const setfullChat = useChatStore((state) => state.setfullChat);
   const deleteChat = useChatStore((state) => state.deleteChat);
@@ -33,56 +34,35 @@ export default function Chat({ chat, otherPerson }) {
           setfullChat(true, chat._id);
         }}
       >
-        <div className="a">
-          <div>
-            <img src={otherPerson?.profile.profileImage.url} />
-          </div>
-          <div>
-            <span
-              style={{
-                margin: "0 0 1rem 0.4rem",
-                fontSize: "1rem",
-                display: "inline-block",
-              }}
-            >
-              <b>{otherPerson?.profile.name}</b>
-            </span>
-            <span
-              style={{
-                margin: "0 0 0 0.4rem",
-                position: "absolute",
-                right: "0.6rem",
-                top: "0.35rem",
-              }}
-            >
-              {isNewDay ? chatDate : Time}
-            </span>
+        <div>
+          <UserAvatar
+            url={otherPerson?.profileImage?.url}
+            customStyles={{ height: "3rem", width: "3rem" }}
+          />
+        </div>
+        <div>
+          <div>{otherPerson.name}</div>
+          <div className="lastMsg">
+            {chat?.lastMessage?.sender._id === currUserId
+              ? `You: ${chat?.lastMessage?.content}`
+              : chat?.lastMessage?.content}
           </div>
         </div>
-        <div
-          className="b"
-          style={{
-            margin: "0 0 0 0.5rem",
-            fontSize: "0.88rem",
-          }}
-        >
-          {chat?.lastMessage?.sender === currUserId ||
-          chat?.lastMessage?.sender._id === currUserId
-            ? `You: ${chat?.lastMessage?.content}`
-            : chat?.lastMessage?.content}
-        </div>
-        <Ellipsis onClick={() => setchatOptions(true)} />
+        <div>
+          <div className={styles.time}>{isNewDay ? chatDate : Time}</div>
+          <div>
+            <Ellipsis onClick={() => setchatOptions(true)} />
 
-        {chatOptions && (
-          <div className={styles.chatOptions}>
-            <Xmark
-              onClick={() => setchatOptions(false)}
-              styles={{ position: "absolute", top: "0.3rem", right: "0.3rem" }}
-            />
-
-            <Button btnText="Delete" onClick={() => deleteChat(chat._id)} />
+            {chatOptions && (
+              <div className={styles.chatOptions}>
+                <Xmark
+                  onClick={() => setchatOptions(false)}
+                />
+                <Button btnText="Delete" onClick={() => deleteChat(chat._id)} />
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </>
   );

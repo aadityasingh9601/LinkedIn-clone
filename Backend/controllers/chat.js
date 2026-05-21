@@ -5,6 +5,21 @@ import Message from "../models/Message.js";
 import { io } from "../server.js";
 import { v2 as cloudinary } from "cloudinary";
 
+const checkChat = async (req, res) => {
+  const { userId } = req.params;
+  const currUserId = req.user._id;
+
+  const existingChat = await Chat.findOne({
+    participants: { $all: [currUserId, userId] },
+  });
+
+  if (existingChat) {
+    res.status(200).json({ exists: true, chatId: existingChat._id });
+  } else {
+    res.status(200).json({ exists: false });
+  }
+};
+
 const createChat = async (req, res) => {
   console.log("inside createChat");
   const { userId } = req.params;
@@ -12,39 +27,35 @@ const createChat = async (req, res) => {
   const currUserId = req.user._id;
   //First save the currUser's id in a variable only then use it , else mongoose will not include chatList in the
   //currUser, see the reason why_? in ChatGPT.
-  const user = await Profile.findOne({ userId: userId });
+  const targetUser = await Profile.findOne({ userId: userId });
   const currUser = await Profile.findOne({ userId: currUserId });
 
-  if (user.userId.toString() === currUser.userId.toString()) {
+  if (targetUser.userId.toString() === currUser.userId.toString()) {
     res.status(404).send({ message: "Cannot create a Chat with yourself." });
     return;
   }
   const existingChat = await Chat.findOne({
-    participants: { $all: [currUser.userId, user.userId] },
-
-    //$or: [{ participants: currUser._id }, { participants: user._id }], This is another way to doing that.
+    participants: { $all: [currUser.userId, targetUser.userId] },
   });
 
   if (existingChat) {
     const chatMessages = await Message.find({ chatId: existingChat._id });
-
     //Emit the socket event to join the user into the socket room with current chatId.
-
-    res.status(200).send({ chatId: existingChat._id, messages: chatMessages });
+    res.status(200).json({ chatId: existingChat._id, messages: chatMessages });
   } else {
     const chat = new Chat({
-      participants: [currUser.userId, user.userId],
+      participants: [currUser.userId, targetUser.userId],
     });
     await chat.save();
-    //console.log("Emitting join-room with chatId:");
+    console.log(chat);
+
     io.emit("join-room", chat._id);
     //console.log(currUser.chatList);
-    user.chatList.push(chat);
+    targetUser.chatList.push(chat);
     currUser.chatList.push(chat);
-    await user.save();
+    await targetUser.save();
     await currUser.save();
-    // console.log("ChatID", chat._id);
-    res.status(200).send({ chatId: chat._id });
+    res.status(200).json({ newChat: chat });
   }
 };
 
@@ -81,7 +92,7 @@ const getAllChats = async (req, res) => {
     })
     .populate({
       path: "lastMessage",
-      select: "sender content Date",
+      select: "sender content createdAt",
     });
 
   console.log(chats);
@@ -91,10 +102,7 @@ const getAllChats = async (req, res) => {
 };
 
 const createMsg = async (req, res) => {
-  console.log("inside sendMsg");
   const { chatId } = req.params;
-  // console.log(req.file);
-  // console.log(chatId);
   const { data } = req.body;
   // console.log(data);
 
@@ -148,7 +156,7 @@ const createMsg = async (req, res) => {
       });
     }
   } else {
-    res.status(404).send({ message: "Chat group not found" });
+    res.status(404).send({ message: "Chat not found!" });
     return;
   }
 };
@@ -188,7 +196,7 @@ const editMsg = async (req, res) => {
   const { msgId } = req.params;
   const { newContent } = req.body;
   const message = await Message.findById(msgId);
-  const timePassed = (new Date() - message.Date) / 60000;
+  const timePassed = (new Date() - message.createdAt) / 60000;
 
   if (req.user._id.toString() === message.sender.toString()) {
     if (timePassed < 60) {
@@ -271,6 +279,7 @@ const deleteChat = async (req, res) => {
 };
 
 export default {
+  checkChat,
   createChat,
   createMsg,
   getSingleChat,

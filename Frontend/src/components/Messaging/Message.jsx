@@ -16,7 +16,7 @@ export default function Message({ msg, formatTime }) {
   const updateMsg = useChatStore((state) => state.updateMsg);
   const deleteMsg = useChatStore((state) => state.deleteMsg);
 
-  const timePassed = (new Date() - new Date(msg.Date)) / 60000;
+  const timePassed = (new Date() - new Date(msg.createdAt)) / 60000;
 
   return (
     <div key={msg?._id} className={styles.msg}>
@@ -33,7 +33,7 @@ export default function Message({ msg, formatTime }) {
             </b>{" "}
           </div>
 
-          <div className={styles.time}>{formatTime(msg?.Date)}</div>
+          <div className={styles.time}>{formatTime(msg?.createdAt)}</div>
         </div>
         {currUserId === msg?.sender._id && (
           <Ellipsis

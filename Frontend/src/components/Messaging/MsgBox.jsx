@@ -60,8 +60,6 @@ export default function MsgBox({ currChatId, socket }) {
             setFileName("");
             setmediaFile("");
             setnewMsg("");
-
-            socket.emit("newMsg", newMsg);
           }}
         />
       </div>

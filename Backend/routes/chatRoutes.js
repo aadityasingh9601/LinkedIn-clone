@@ -8,6 +8,12 @@ const upload = multer({ storage: storage });
 
 const router = Router();
 
+router.get(
+  "/checkchat/:userId",
+  protect,
+  wrapAsync(chatController.checkChat),
+);
+
 router.post(
   "/createchat/:userId",
   protect,
