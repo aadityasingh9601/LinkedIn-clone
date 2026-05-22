@@ -42,18 +42,20 @@ const useProfileStore = create((set, get) => ({
   //Create separate methods here for updating profilehead, skills, about, experience etc sections.
 
   getProfileData: async (profileId) => {
+    console.log(profileId);
     tryCatchWrapper(async () => {
       //LOGIC TO ENSURE THAT WHENEVER A USER VISITS SOME OTHER USER'S PROFILE, A EVENT GETS LOGGED IN THE
       //DATABASE, THAT CAN BE USED LATER TO SHOW ANALYTICS DATA.
 
-      if (currUserProfile?.userId !== profileId) {
-        //Fix the analytics feature to associate with profileId, or get the userId of the user somehow.
-        let eventData = {
-          userId: userId,
-          eventType: "profile_view",
-        };
-        logEvent(eventData);
-      }
+      // if (currUserProfile?.userId !== profileId) {
+      //   //Fix the analytics feature to associate with profileId, or get the userId of the user somehow.
+      //   let eventData = {
+      //     userId: userId,
+      //     eventType: "profile_view",
+      //   };
+      //   logEvent(eventData);
+      // }
+
       const response = await apiGet(`/profile/${profileId}`);
       console.log(response);
       //We'll persist the data of the current user's profile to use that later.

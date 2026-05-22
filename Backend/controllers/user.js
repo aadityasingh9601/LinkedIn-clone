@@ -28,7 +28,7 @@ const checkAuthStatus = async (req, res) => {
         select: "profile",
         populate: {
           path: "profile",
-          select: "name headline profileImage",
+          select: "name headline profileImage userId",
         },
       },
       {

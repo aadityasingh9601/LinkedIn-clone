@@ -23,13 +23,13 @@ export default function Message({ msg, formatTime }) {
       <div className={styles.sender}>
         <div style={{ paddingRight: "2rem", display: "flex" }}>
           <div>
-            <img src={msg?.sender.profile?.profileImage?.url} />
+            <img src={msg?.sender?.profile?.profileImage?.url} />
           </div>
           <div className="name">
             <b>
-              {currUserId === msg.sender._id
+              {currUserId === msg?.sender._id
                 ? "You"
-                : msg?.sender.profile?.name}
+                : msg?.sender?.profile.name}
             </b>{" "}
           </div>
 

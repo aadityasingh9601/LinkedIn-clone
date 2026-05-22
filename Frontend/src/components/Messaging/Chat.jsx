@@ -8,9 +8,14 @@ import { formatTime, formatDate2 } from "../../utils/helper";
 import useUserStore from "../../stores/User";
 import UserAvatar from "../shared-components/User/UserAvatar";
 
-export default function Chat({ chat, otherPerson }) {
-  console.log(chat,otherPerson);
+export default function Chat({ chat }) {
   const currUserId = useUserStore((state) => state.currUserId);
+  console.log(chat);
+  const otherPerson = chat?.participants?.find(
+    (participant) => participant._id !== currUserId,
+  );
+  console.log(otherPerson);
+
   const setfullChat = useChatStore((state) => state.setfullChat);
   const deleteChat = useChatStore((state) => state.deleteChat);
 
@@ -31,17 +36,17 @@ export default function Chat({ chat, otherPerson }) {
       <div
         className={styles.chat}
         onClick={() => {
-          setfullChat(true, chat._id);
+          setfullChat(true, chat);
         }}
       >
         <div>
           <UserAvatar
-            url={otherPerson?.profileImage?.url}
+            url={otherPerson?.profile.profileImage?.url}
             customStyles={{ height: "3rem", width: "3rem" }}
           />
         </div>
         <div>
-          <div>{otherPerson.name}</div>
+          <div>{otherPerson?.profile.name}</div>
           <div className="lastMsg">
             {chat?.lastMessage?.sender._id === currUserId
               ? `You: ${chat?.lastMessage?.content}`
@@ -55,9 +60,7 @@ export default function Chat({ chat, otherPerson }) {
 
             {chatOptions && (
               <div className={styles.chatOptions}>
-                <Xmark
-                  onClick={() => setchatOptions(false)}
-                />
+                <Xmark onClick={() => setchatOptions(false)} />
                 <Button btnText="Delete" onClick={() => deleteChat(chat._id)} />
               </div>
             )}

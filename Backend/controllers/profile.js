@@ -10,13 +10,15 @@ import {
   ProfileHeaderDataSchema,
 } from "../zodSchema/index.js";
 import { convertDateToUTC } from "../utils/helper.js";
+import User from "../models/User.js";
 
 const getUserProfile = async (req, res) => {
   console.log("inside get user profile on backend");
   const { profileId } = req.params;
-  console.log(userId);
+  console.log(profileId);
+  const currUser = await User.findById(req.user._id);
   let userProfile = {};
-  if (userId === req.user._id.toString()) {
+  if (currUser.profile === profileId) {
     userProfile = await Profile.findById(profileId).populate({
       path: "chatList",
       select: "participants lastMessage",
@@ -26,7 +28,7 @@ const getUserProfile = async (req, res) => {
           select: "profile",
           populate: {
             path: "profile",
-            select: "name headline profileImage",
+            select: "name headline profileImage userId",
           },
         },
         {
@@ -36,7 +38,7 @@ const getUserProfile = async (req, res) => {
       ],
     });
   } else {
-    userProfile = await Profile.findOne({ userId: userId });
+    userProfile = await Profile.findById(profileId);
   }
   console.log("userProfile", userProfile);
   res.status(200).json({

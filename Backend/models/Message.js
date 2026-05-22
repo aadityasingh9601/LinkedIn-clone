@@ -9,7 +9,7 @@ const messageSchema = new Schema({
   },
   sender: {
     type: Schema.Types.ObjectId,
-    ref: "Profile",
+    ref: "User",
   },
   media: {
     mediaType: String,

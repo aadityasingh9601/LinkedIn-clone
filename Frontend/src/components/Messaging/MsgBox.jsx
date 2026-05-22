@@ -9,9 +9,10 @@ import SmileR from "../shared-components/Icons/SmileR";
 import Paperclip from "../shared-components/Icons/Paperclip";
 import ControlledTextarea from "../shared-components/Textarea/ControlledTextarea";
 import ControlledInput from "../shared-components/Inputs/ControlledInput";
+import ImageIcon from "../shared-components/Icons/ImageIcon";
 
-export default function MsgBox({ currChatId, socket }) {
-  const sendMsg = useChatStore((state) => state.sendMsg);
+export default function MsgBox({ currChatId, receiverId, socket }) {
+  const sendMessage = useChatStore((state) => state.sendMessage);
   const [newMsg, setnewMsg] = useState("");
 
   const [emojiPicker, setemojiPicker] = useState(false);
@@ -24,6 +25,15 @@ export default function MsgBox({ currChatId, socket }) {
     setnewMsg(event.target.value);
   }
 
+  const handleSubmission = (event) => {
+    event.preventDefault();
+    console.log(currChatId);
+    sendMessage(receiverId, { message: newMsg, mediaFile });
+    setFileName("");
+    setmediaFile("");
+    setnewMsg("");
+  };
+
   function handleEmojiClick(emojiObject) {
     console.log(emojiObject);
     setnewMsg((prev) => prev + emojiObject.emoji);
@@ -31,39 +41,18 @@ export default function MsgBox({ currChatId, socket }) {
 
   return (
     <div className={styles.msgbox}>
-      {emojiPicker && (
-        <div className={styles.emoji}>
-          <EmojiPicker
-            height={350}
-            width={300}
-            onEmojiClick={handleEmojiClick}
+      <div className={styles.msgForm}>
+        <form id="msgform">
+          <ControlledTextarea
+            customClass={styles.msgFormTextarea}
+            placeholder="Write a message"
+            value={newMsg}
+            onChange={handleChange}
           />
-        </div>
-      )}
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <ControlledTextarea
-          placeholder="Write a message"
-          value={newMsg}
-          styles={{
-            maxHeight: "4.5rem",
-            width: "22rem",
-            margin: "0.3rem 0 0 0",
-            backgroundColor: "#f4f2ee",
-          }}
-          onChange={handleChange}
-        />
-
-        <Button
-          btnText="Send"
-          onClick={() => {
-            sendMsg(currChatId, { newMsg, mediaFile });
-            setFileName("");
-            setmediaFile("");
-            setnewMsg("");
-          }}
-        />
+        </form>
       </div>
-      <div className={styles.extras}>
+
+      <div className={styles.controls}>
         <div className={styles.icons}>
           <div className={styles.icon}>
             {emojiPicker ? (
@@ -71,22 +60,34 @@ export default function MsgBox({ currChatId, socket }) {
             ) : (
               <SmileR onClick={() => setemojiPicker(true)} />
             )}
+            <div>
+              {emojiPicker && (
+                <div className={styles.emojiPicker}>
+                  <EmojiPicker
+                    height={350}
+                    width={300}
+                    onEmojiClick={handleEmojiClick}
+                  />
+                </div>
+              )}
+            </div>
           </div>
-
-          <div className={styles.icon}>
+          <div>
             <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
-              <Paperclip />
+              <div className={styles.icon}>
+                <ImageIcon />
+              </div>
             </label>
             <ControlledInput
               id="file-upload"
               type="file"
               styles={{ display: "none" }}
+              customClass={styles.hidden}
               onChange={(e) => {
                 setFileName(e.target.files[0]?.name || "");
                 setmediaFile(e.target.files[0]);
               }}
             />
-
             {fileName && (
               <>
                 <div>{fileName}</div>
@@ -99,6 +100,15 @@ export default function MsgBox({ currChatId, socket }) {
               </>
             )}
           </div>
+        </div>
+        <div>
+          <Button
+            btnText="Send"
+            form="msgform"
+            variant="sm"
+            type="submit"
+            onClick={handleSubmission}
+          />
         </div>
       </div>
     </div>

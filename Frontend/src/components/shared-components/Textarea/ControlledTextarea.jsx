@@ -6,10 +6,11 @@ export default function ControlledTextarea({
   value,
   onChange,
   styles,
+  customClass=""
 }) {
   return (
     <MyErrorBoundary>
-      <div className={css.textarea}>
+      <div className={`${css.textarea} ${customClass}`}>
         <textarea
           style={styles}
           placeholder={placeholder}

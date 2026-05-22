@@ -8,12 +8,6 @@ const upload = multer({ storage: storage });
 
 const router = Router();
 
-router.get(
-  "/checkchat/:userId",
-  protect,
-  wrapAsync(chatController.checkChat),
-);
-
 router.post(
   "/createchat/:userId",
   protect,
@@ -27,12 +21,15 @@ router
 router
   .route("/:chatId")
   .get(protect, wrapAsync(chatController.getAllMsg))
+  .delete(protect, wrapAsync(chatController.deleteChat));
+
+router
+  .route("/:id")
   .post(
     protect,
     upload.single("data[mediaFile]"),
-    wrapAsync(chatController.createMsg),
-  )
-  .delete(protect, wrapAsync(chatController.deleteChat));
+    wrapAsync(chatController.createMessage),
+  );
 
 router
   .route("/message/:msgId")

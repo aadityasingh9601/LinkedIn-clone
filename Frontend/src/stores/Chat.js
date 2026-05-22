@@ -6,24 +6,27 @@ import {
   apiGet,
   apiPost,
   apiPatch,
+  safeParseJSON,
 } from "../utils/helper";
 
 const useChatStore = create((set, get) => ({
-  chatData: {},
+  currChatData: safeParseJSON("currChatData", {}),
 
   messages: [],
 
   fullChat: false,
 
-  currChatId: localStorage.getItem("currChatId") || "",
+  currChatId: safeParseJSON("currChatId", ""),
 
   chats: [],
 
   newChatUser: null,
 
-  setfullChat: (value, chatId) => {
-    localStorage.setItem("currChatId", chatId || "");
-    set({ currChatId: chatId || "" });
+  setfullChat: (value, chat) => {
+    localStorage.setItem("currChatId", chat?._id || "");
+    localStorage.setItem("currChatData", chat || {});
+    set({ currChatId: chat._id || "" });
+    set({ currChatData: chat });
     set({ fullChat: value });
     if (!value) {
       set({ newChatUser: null });
@@ -34,27 +37,6 @@ const useChatStore = create((set, get) => ({
     tryCatchWrapper(async () => {
       const response = await apiPost(`/chat/createchat/${userId}`, {}, {});
       console.log(response);
-    });
-  },
-
-  handleMessage: async (profileId) => {
-    tryCatchWrapper(async () => {
-      const response = await apiGet(`/chat/checkchat/${profileId}`);
-      if (response.data.exists) {
-        set({ newChatUser: null });
-        get().setfullChat(true, response.data.chatId);
-        get().getChatData(response.data.chatId);
-        get().getAllMsg(response.data.chatId);
-      } else {
-        set({
-          fullChat: true,
-          currChatId: "",
-          newChatUser: profileId,
-          messages: [],
-          chatData: {},
-        });
-        localStorage.setItem("currChatId", "");
-      }
     });
   },
 
@@ -100,27 +82,19 @@ const useChatStore = create((set, get) => ({
     }));
   },
 
-  sendMsg: async (chatId, data) => {
+  sendMessage: async (receiverId, data) => {
+    console.log(receiverId);
+    console.log(data);
     tryCatchWrapper(async () => {
-      const { newChatUser } = get();
-      let targetChatId = chatId;
-
-      if (!chatId && newChatUser) {
-        const createResp = await apiPost(
-          `/chat/createchat/${newChatUser}`,
-          {},
-          {},
-        );
-        targetChatId = createResp.data.chatId;
-        set({ newChatUser: null, currChatId: targetChatId });
-        localStorage.setItem("currChatId", targetChatId);
-      }
-
-      await apiPost(
-        `/chat/${targetChatId}`,
+      const response = await apiPost(
+        `/chat/${receiverId}`,
         { data },
         { "Content-Type": "multipart/form-data" },
       );
+      console.log(response);
+      if (response.status === 200) {
+        get().addMessage(response?.data.fullMessage);
+      }
     });
   },
 

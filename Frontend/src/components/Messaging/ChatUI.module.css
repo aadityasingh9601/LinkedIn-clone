@@ -1,17 +1,17 @@
 .chatui {
   width: 28rem;
-  height: 75%;
+  height: fit-content;
   background-color: white;
   position: fixed;
   right: 17.5rem;
-  bottom: 5rem;
+  bottom: 0rem;
   border-top-left-radius: 0.4rem;
   border-top-right-radius: 0.4rem;
   border: 1.5px solid gray;
-  z-index: 20;
+  z-index: 1000;
 }
 
-.receiver {
+.userInfo {
   display: flex;
   border-bottom: 1px solid gray;
   width: 96%;
@@ -20,18 +20,11 @@
   height: 8%;
 }
 
-.receiver .header .img img {
-  height: 3rem;
-  width: 3rem;
-  border-radius: 50%;
-  margin-right: 0.8rem;
-}
-
 .allMsg {
   background-color: white;
   width: 94%;
   padding: 0.8rem;
-  height: 64%;
+  height: 21rem;
   overflow-y: auto;
 }
 

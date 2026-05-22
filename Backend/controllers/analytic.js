@@ -3,12 +3,7 @@ import Analytic from "../models/Analytics.js";
 import Post from "../models/Post.js";
 
 const logEvent = async (req, res) => {
-  //console.log("inside log event on backend.");
-
   const { eventData } = req.body;
-
-  //console.log(eventData);
-
   //Now we have to save the post_impression information in the database for every post along with the user.
 
   //If the eventType is post_impression,only then --

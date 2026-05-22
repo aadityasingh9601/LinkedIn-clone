@@ -1,51 +1,56 @@
 .msgbox {
   display: flex;
   flex-direction: column;
-  padding: 0 0.8rem;
   border-top: 1px solid gray;
-  height: 20%;
-  width: 94.3%;
   position: relative;
 }
 
-.msgbox button {
-  height: fit-content;
-}
-
-.emoji {
-  position: absolute;
-  left: -19rem;
-  bottom: 0rem;
-}
-
-.extras {
+.msgForm form{
   display: flex;
+  justify-content: center;
+}
+
+.msgForm{
+  padding: 0.5rem 0 0.2rem 0;
+}
+
+.msgFormTextarea{
+  width: 95%;
+  background-color: #f4f2ee;
+}
+
+.controls {
+  display: flex;
+  border-top: 0.5px solid gray;
   align-items: center;
   justify-content: space-between;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #f8f9fa;
-  border-radius: 8px;
+  padding: 0.5rem 0.5rem;
 }
 
 .icons {
   display: flex;
-  gap: 12px; /* Adds space between icons */
+  gap: 0.75rem;
 }
 
 .icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px; /* Ensures uniform spacing */
-  height: 36px;
   cursor: pointer;
   border-radius: 50%;
 }
 
 .icon i {
-  font-size: 1.4rem; /* Slightly larger for better visibility */
+  font-size: 1.2rem;
   color: #555;
+}
+
+.emojiPicker{
+  position: absolute;
+  bottom: 0;
+  left:-20rem;
+}
+
+.hidden {
+  display: none;
 }

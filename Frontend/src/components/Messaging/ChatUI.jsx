@@ -13,6 +13,7 @@ import useUserStore from "../../stores/User";
 
 export default function ChatUI({ socket }) {
   const currChatId = useChatStore((state) => state.currChatId);
+  const currChatData = useChatStore((state)=> state.currChatData);
   const currUserId = useUserStore((state) => state.currUserId);
   const getChatData = useChatStore((state) => state.getChatData);
   const messages = useChatStore((state) => state.messages);
@@ -24,17 +25,20 @@ export default function ChatUI({ socket }) {
   const chatContainerRef = useRef(null);
 
   const profileData = {
-    name: profile.name,
-    headline: profile.headline,
-    profileImage: profile.profileImage,
+    _id: profile?._id,
+    name: profile?.name,
+    headline: profile?.headline,
+    profileImage: profile?.profileImage,
+    userId: profile?.userId
   };
   const currUserProfile = useUserStore((s) => s.currUserProfile);
   const chatList = currUserProfile.chatList;
 
-const existingChat = () => {
+  const existingChat = () => {
+    console.log(currUserProfile?.chatList);
     for (let chat of currUserProfile?.chatList) {
       console.log(chat);
-      let success = [currUserId, profile.userId].every((val) =>
+      let success = [currUserId, profile?.userId].every((val) =>
         chat.participants.includes(val),
       );
       if (success) return chat;
@@ -43,7 +47,20 @@ const existingChat = () => {
   };
 
   const existingChatData = existingChat();
-  const otherPersonn = Object.keys(existingChatData) !== 0 ? existingChatData : profileData;
+  
+  const otherPerson = currChatData?.participants?.find(
+    (participant) => participant._id !== currUserId,
+  );
+
+  
+
+  const displayUser =
+    Object.keys(otherPerson).length !== 0
+      ? otherPerson?.profile
+      : profileData;
+
+  console.log(Object.keys(existingChatData !== 0).length);
+  console.log(displayUser);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -60,24 +77,16 @@ const existingChat = () => {
     }
   }, [currChatId]);
 
-  const otherPerson = chatData?.participants?.find(
-    (participant) => participant._id !== currUserId,
-  );
-
-  const displayUser = currChatId ? otherPerson?.profile : profile;
-
-  const displayUserId = currChatId ? otherPerson?._id : profile?.userId;
-
   let lastDate = null;
 
   return (
     <div className={styles.chatui}>
-      <div className={styles.receiver}>
+      <div className={styles.userInfo}>
         <Xmark
           onClick={() => {
-            setfullChat(false);
+            setfullChat(false,{});
           }}
-          styles={{
+          customStyles={{
             zIndex: "30",
             top: "0.5rem",
             right: "0.5rem",
@@ -85,13 +94,12 @@ const existingChat = () => {
         />
 
         <UserInfo
-          userId={displayUserId}
+          profileId={displayUser?._id}
           username={displayUser?.name}
           url={displayUser?.profileImage?.url}
           headline={displayUser?.headline}
         />
       </div>
-
       <div className={styles.allMsg} ref={chatContainerRef}>
         {messages?.map((msg) => {
           const messageDate = formatDate2(msg?.createdAt);
@@ -107,7 +115,9 @@ const existingChat = () => {
           );
         })}
       </div>
-      <MsgBox currChatId={currChatId} socket={socket} />
+      <div>
+        <MsgBox currChatId={currChatId} receiverId={displayUser?.userId} socket={socket} />
+      </div>
     </div>
   );
 }

@@ -5,21 +5,6 @@ import Message from "../models/Message.js";
 import { io } from "../server.js";
 import { v2 as cloudinary } from "cloudinary";
 
-const checkChat = async (req, res) => {
-  const { userId } = req.params;
-  const currUserId = req.user._id;
-
-  const existingChat = await Chat.findOne({
-    participants: { $all: [currUserId, userId] },
-  });
-
-  if (existingChat) {
-    res.status(200).json({ exists: true, chatId: existingChat._id });
-  } else {
-    res.status(200).json({ exists: false });
-  }
-};
-
 const createChat = async (req, res) => {
   console.log("inside createChat");
   const { userId } = req.params;
@@ -101,64 +86,89 @@ const getAllChats = async (req, res) => {
   });
 };
 
-const createMsg = async (req, res) => {
-  const { chatId } = req.params;
+const createMessage = async (req, res) => {
+  console.log("inside create message on backend");
+  const { id } = req.params;
+  let currUserId = req.user._id;
+  let receiverId = id;
+  console.log("CurrUserId", currUserId);
+  console.log("ReceiverId", receiverId);
   const { data } = req.body;
-  // console.log(data);
+
+  let existingChat = await Chat.findOne({
+    participants: { $all: [currUserId, receiverId] },
+  });
+
+  let newChat = {};
+  console.log(existingChat);
+  //If there's no existing chat between the two users, first create chat.
+  if (!existingChat) {
+    newChat = new Chat({
+      participants: [currUserId, receiverId],
+    });
+    await newChat.save();
+
+    //Put the chatlist in both user's chatlist.
+    const currUserProfile = await Profile.findOne({ userId: currUserId });
+    const receiverUserProfile = await Profile.findOne({ userId: receiverId });
+    currUserProfile.chatList.push(newChat._id);
+    receiverUserProfile.chatList.push(newChat._id);
+    await currUserProfile.save();
+    await receiverUserProfile.save();
+  }
+
+  const chat = existingChat ? existingChat : newChat;
 
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
   let filename = req.file ? req.file.filename : "";
 
-  const chat = await Chat.findById(chatId);
-  const userProfile = await Profile.findOne({ userId: req.user._id });
+  const userProfile = await Profile.findOne({ userId: currUserId });
 
-  //Check if group exists and person trying to send message is a member of the chat group.
-  if (chat) {
-    //Check if the user's chatList has the chat in which msg is sent, because if a user deletes a chat, the
-    //chat_id of that chat gets removed from the chatList of that user, but what if both of the users starts to
-    //message again? in that case, we'll b needed to push the chat_id again into the chatList , so that it gets
-    //displayed, whenever a new Msg comes.
-
-    if (chat.participants.includes(req.user._id)) {
-      if (!userProfile.chatList.includes(chat._id)) {
-        userProfile.chatList.push(chat._id);
-        await userProfile.save();
-      }
-
-      const newMessage = new Message({
-        chatId: chatId,
-        sender: req.user._id,
-        content: data.newMsg,
-        media: {
-          mediaType: type,
-          url: url,
-          filename: filename,
-        },
-      });
-      await newMessage.save();
-      chat.lastMessage = newMessage;
-      await chat.save();
-      //Emit socket event as the newMsg gets saved.
-      const fullMessage = await Message.findById(newMessage._id).populate({
-        path: "sender",
-        select: "profile",
-        populate: {
-          path: "profile",
-          select: "name profileImage",
-        },
-      });
-      io.to(chatId).emit("newMsg", fullMessage);
-      res.status(200).send(fullMessage);
-    } else {
-      res.status(403).send({
-        message: "You are unauthorized to send messages in this group.",
-      });
-    }
-  } else {
-    res.status(404).send({ message: "Chat not found!" });
-    return;
+  //Check if the person trying to send message is a member of the chat.
+  if (!chat.participants.includes(currUserId)) {
+    return res.status(403).json({
+      message: "Forbidden!",
+    });
   }
+
+  //If user's profile chatlist doesn't have the chat id, push it.
+  if (!userProfile.chatList.includes(chat._id)) {
+    userProfile.chatList.push(chat._id);
+    await userProfile.save();
+  }
+
+  //Create the message.
+
+  const newMessage = new Message({
+    chatId: chat._id,
+    sender: currUserId,
+    content: data.message,
+    media: {
+      mediaType: type,
+      url: url,
+      filename: filename,
+    },
+  });
+
+  await newMessage.save();
+  chat.lastMessage = newMessage;
+  await chat.save();
+
+  //Emit socket event as the message gets saved in DB.
+  const fullMessage = await newMessage.populate({
+    path: "sender",
+    select: "profile",
+    populate: {
+      path: "profile",
+      select: "name headline profileImage",
+    },
+  });
+  io.to(chat._id).emit("newMsg", fullMessage);
+  console.log(fullMessage);
+  res.status(200).json({
+    fullMessage: fullMessage,
+  });
 };
 
 const getAllMsg = async (req, res) => {
@@ -279,9 +289,8 @@ const deleteChat = async (req, res) => {
 };
 
 export default {
-  checkChat,
   createChat,
-  createMsg,
+  createMessage,
   getSingleChat,
   getAllChats,
   getAllMsg,

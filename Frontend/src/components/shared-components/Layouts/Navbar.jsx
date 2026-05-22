@@ -29,11 +29,13 @@ export default function Navbar({ showMessaging }) {
 
   const [username, setUsername] = useState("");
 
+  const currUserId = useUserStore((s) => s.currUserId);
+
   const [searchResult, setSearchResult] = useState(false);
 
   const notiCount = useNotificationStore((state) => state.notiCount);
 
-  const currUserId = useUserStore((state) => state.currUserId);
+  const currUserProfileId = useUserStore((s) => s.currUserProfileId);
 
   const logEvent = useAnalyticStore((state) => state.logEvent);
 
@@ -133,10 +135,10 @@ export default function Navbar({ showMessaging }) {
             ) : null}
           </span>
         </Link>
-        <Link to={`/profile/${currUserId}`}>
+        <Link to={`/profile/${currUserProfileId}`}>
           <div className={styles.profileLink}>
             <UserAvatar
-              customStyles={{height:"1.6rem",width:"1.6rem"}}
+              customStyles={{ height: "1.6rem", width: "1.6rem" }}
               url="src/assets/img1.jpg"
             />
             <div>Me</div>
