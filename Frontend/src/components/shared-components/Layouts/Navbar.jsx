@@ -82,7 +82,7 @@ export default function Navbar({ showMessaging }) {
           {userProfiles?.map((profile) => (
             <UserInfo
               url={profile.profileImage.url}
-              userId={profile.userId}
+              profileId={profile._id}
               username={profile.name}
               headline={profile.headline}
             />

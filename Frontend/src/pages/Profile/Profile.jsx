@@ -22,32 +22,24 @@ export default function Profile() {
   const profile = useProfileStore((state) => state.profile);
   const getProfileData = useProfileStore((state) => state.getProfileData);
   const currUserId = useUserStore((state) => state.currUserId);
-  const currUserProfile = useUserStore((state) => state.currUserProfile);
-  const userProfile =
-    currUserProfile?.userId !== currUserId ? profile : currUserProfile;
 
   useEffect(() => {
-    if (currUserProfile?.userId !== currUserId) {
-      getProfileData(currProfileId);
-    }
+    getProfileData(currProfileId);
   }, [currProfileId]);
 
   let customStyles = {
-    display: currUserId !== currProfileId ? "none" : "inline",
+    display: profile?.userId !== currUserId ? "none" : "inline",
   };
 
   return (
     <div className={styles.profile}>
-      <ProfileHeader
-      styles={customStyles}
-        profile={userProfile}
-      />
+      <ProfileHeader styles={customStyles} profile={profile} />
 
       {currUserId === currProfileId && <AnalyticsSection />}
 
       <ProfileAbout
         styles={customStyles}
-        profileId={profile._id}
+        profileId={profile?._id}
         profileAbout={profile?.about}
       />
 

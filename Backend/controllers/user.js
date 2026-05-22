@@ -19,24 +19,31 @@ const checkAuthStatus = async (req, res) => {
   let accesstoken = req.cookies.accesstoken;
   let decoded = jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET);
   const user = await User.findOne({ _id: decoded.id });
-  const userProfile = await Profile.findOne({ userId: decoded.id })
-    .select("name headline profileImage chatList")
-    .populate({
-      path: "chatList",
-      select: "participants lastMessage",
-      populate: {
+  const userProfile = await Profile.findOne({ userId: decoded.id }).populate({
+    path: "chatList",
+    select: "participants lastMessage",
+    populate: [
+      {
+        path: "participants",
+        select: "profile",
+        populate: {
+          path: "profile",
+          select: "name headline profileImage",
+        },
+      },
+      {
         path: "lastMessage",
         select: "sender content createdAt",
-        populate:{
-          path:"sender",
-          select:"name profileImage"
-        }
       },
-    });
+    ],
+  });
 
-  res
-    .status(200)
-    .json({ isLoggedIn: true, userId: user._id, currUserProfile: userProfile });
+  res.status(200).json({
+    isLoggedIn: true,
+    currUserId: user._id,
+    currUserProfileId: userProfile._id,
+    currUserProfile: userProfile,
+  });
 };
 
 const signup = async (req, res) => {
@@ -125,7 +132,11 @@ const login = async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
       })
       .status(200)
-      .json({ userId: id, currUserProfile: userProfile });
+      .json({
+        currUserId: id,
+        currUserProfileId: userProfile._id,
+        currUserProfile: userProfile,
+      });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error logging in" });

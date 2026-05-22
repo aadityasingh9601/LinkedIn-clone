@@ -12,25 +12,33 @@ import {
 import { convertDateToUTC } from "../utils/helper.js";
 
 const getUserProfile = async (req, res) => {
-  const { userId } = req.params;
+  console.log("inside get user profile on backend");
+  const { profileId } = req.params;
+  console.log(userId);
   let userProfile = {};
   if (userId === req.user._id.toString()) {
-    userProfile = await Profile.findOne({ userId: userId }).populate({
+    userProfile = await Profile.findById(profileId).populate({
       path: "chatList",
       select: "participants lastMessage",
-      populate: {
-        path: "lastMessage",
-        select: "sender content createdAt",
-        populate:{
-          path:"sender",
-          select:"name profileImage"
-        }
-      },
+      populate: [
+        {
+          path: "participants",
+          select: "profile",
+          populate: {
+            path: "profile",
+            select: "name headline profileImage",
+          },
+        },
+        {
+          path: "lastMessage",
+          select: "sender content createdAt",
+        },
+      ],
     });
   } else {
     userProfile = await Profile.findOne({ userId: userId });
   }
-  console.log(userProfile);
+  console.log("userProfile", userProfile);
   res.status(200).json({
     userProfile,
   });

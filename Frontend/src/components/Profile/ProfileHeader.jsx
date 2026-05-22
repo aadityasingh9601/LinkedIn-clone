@@ -24,7 +24,7 @@ export default function ProfileHeader({ customStyles, profile }) {
   const setEditHead = useProfileStore((state) => state.setEditHead);
   const createChat = useChatStore((s) => s.createChat);
   const handleMessage = useChatStore((state) => state.handleMessage);
-   const setfullChat = useChatStore((state) => state.setfullChat);
+  const setfullChat = useChatStore((state) => state.setfullChat);
   const allFollowed = useUserStore((state) => state.allFollowed);
   const allConnections = useUserStore((state) => state.allConnections);
   const sendConnReq = useConnectionStore((state) => state.sendConnReq);
@@ -34,7 +34,7 @@ export default function ProfileHeader({ customStyles, profile }) {
   const existingChat = () => {
     for (let chat of currUserProfile?.chatList) {
       console.log(chat);
-      let success = [currUserId, profile.userId].every((val) =>
+      let success = [currUserId, profile?.userId].every((val) =>
         chat.participants.includes(val),
       );
       if (success) return chat;
@@ -56,18 +56,18 @@ export default function ProfileHeader({ customStyles, profile }) {
   }
 
   useEffect(() => {
-    if (allFollowed.has(profile.userId)) {
+    if (allFollowed.has(profile?.userId)) {
       setisFollowed(true);
     } else {
       setisFollowed(false);
     }
 
-    if (allConnections.has([profile.userId, currUserId].sort().join("-"))) {
+    if (allConnections.has([profile?.userId, currUserId].sort().join("-"))) {
       setIsConnected(true);
     } else {
       setIsConnected(false);
     }
-  }, [profile.userId, allFollowed, allConnections]);
+  }, [profile?.userId, allFollowed, allConnections]);
   return (
     <div className={styles.profileHeader}>
       <div className={styles.banner}>
@@ -77,7 +77,7 @@ export default function ProfileHeader({ customStyles, profile }) {
         <img src={profile?.profileImage?.url} alt="" />
       </div>
       <div className={styles.text}>
-        {profile.userId === currUserId && (
+        {profile?.userId === currUserId && (
           <Pen onClick={() => setEditHead(true)} />
         )}
         <div className={styles.details}>
@@ -104,7 +104,7 @@ export default function ProfileHeader({ customStyles, profile }) {
                 variant="sm"
                 btnText="Following"
                 onClick={() => {
-                  unfollow(profile.userId, updateIsFollowed);
+                  unfollow(profile?.userId, updateIsFollowed);
                 }}
               />
             ) : (
@@ -112,7 +112,7 @@ export default function ProfileHeader({ customStyles, profile }) {
                 variant="sm"
                 btnText="Follow"
                 onClick={() => {
-                  follow(profile.userId, updateIsFollowed);
+                  follow(profile?.userId, updateIsFollowed);
                 }}
               />
             )}
@@ -123,7 +123,6 @@ export default function ProfileHeader({ customStyles, profile }) {
                 let result = existingChat();
                 setfullChat(true);
                 if (Object.keys(result).length === 0) {
-                  
                 }
               }}
             />
@@ -131,13 +130,13 @@ export default function ProfileHeader({ customStyles, profile }) {
               <Button
                 variant="sm"
                 btnText="Remove Connection"
-                onClick={() => removeConn(profile.userId)}
+                onClick={() => removeConn(profile?.userId)}
               />
             ) : (
               <Button
                 variant="sm"
                 btnText="Connect"
-                onClick={() => sendConnReq(profile.userId)}
+                onClick={() => sendConnReq(profile?.userId)}
               />
             )}
           </>

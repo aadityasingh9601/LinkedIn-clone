@@ -12,8 +12,9 @@ import {
 } from "../utils/helper";
 
 const setCurrUserProfile = useUserStore.getState().setCurrUserProfile;
+const currUserProfile = useUserStore.getState().currUserProfile;
 const logEvent = useAnalyticStore.getState().logEvent;
-const currUserId = useUserStore.getState().currUserId;
+const currUserProfileId = useUserStore.getState().currUserProfileId;
 
 const useProfileStore = create((set, get) => ({
   profile: {},
@@ -40,22 +41,23 @@ const useProfileStore = create((set, get) => ({
 
   //Create separate methods here for updating profilehead, skills, about, experience etc sections.
 
-  getProfileData: async (userId) => {
+  getProfileData: async (profileId) => {
     tryCatchWrapper(async () => {
       //LOGIC TO ENSURE THAT WHENEVER A USER VISITS SOME OTHER USER'S PROFILE, A EVENT GETS LOGGED IN THE
       //DATABASE, THAT CAN BE USED LATER TO SHOW ANALYTICS DATA.
 
-      if (currUserId !== userId) {
+      if (currUserProfile?.userId !== profileId) {
+        //Fix the analytics feature to associate with profileId, or get the userId of the user somehow.
         let eventData = {
           userId: userId,
           eventType: "profile_view",
         };
         logEvent(eventData);
       }
-      const response = await apiGet(`/profile/${userId}`);
+      const response = await apiGet(`/profile/${profileId}`);
       console.log(response);
       //We'll persist the data of the current user's profile to use that later.
-      if (userId === currUserId) {
+      if (profileId === currUserProfileId) {
         localStorage.setItem("currUserProfile", JSON.stringify(response.data));
         setCurrUserProfile(response.data);
       }

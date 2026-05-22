@@ -15,6 +15,8 @@ const useUserStore = create((set, get) => ({
 
   currUserId: safeParseJSON("currUserId", ""),
 
+  currUserProfileId: safeParseJSON("currUserProfileId", ""),
+
   currUserProfile: safeParseJSON("currUserProfile", {}),
 
   setCurrUserProfile: (value) => {
@@ -27,10 +29,12 @@ const useUserStore = create((set, get) => ({
       if (response.status === 200) {
         set({
           isLoggedIn: true,
-          currUserId: response?.data.userId,
+          currUserId: response?.data.currUserId,
+          currUserProfileId: response?.data.currUserProfileId,
           currUserProfile: response?.data.currUserProfile,
         });
         localStorage.setItem("currUserId", response.data.userId);
+        localStorage.setItem("currUserProfileId", response.data.userProfileId);
         localStorage.setItem("currUserProfile", response.data.currUserProfile);
         navigate("/home");
       }
@@ -60,7 +64,8 @@ const useUserStore = create((set, get) => ({
         toast.success("User logged in successfully!");
         set({
           isLoggedIn: true,
-          currUserId: response.data.userId,
+          currUserId: response?.data.currUserId,
+          currUserProfileId: response?.data.currUserProfileId,
         });
         get().setCurrUserProfile(response.data.currUserProfile);
         localStorage.setItem("currUserId", response.data.userId);

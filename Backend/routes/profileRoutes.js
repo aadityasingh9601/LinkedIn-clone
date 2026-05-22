@@ -38,7 +38,7 @@ router.patch("/experience/:id",protect,wrapAsync(profileController.updateExperie
 router.delete("/experience/:id",protect,wrapAsync(profileController.deleteExperience))
 
 router
-  .route("/:userId")
+  .route("/:profileId")
   .get(protect, wrapAsync(profileController.getUserProfile))
 
 //Get all groups a user has joined route.
