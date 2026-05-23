@@ -53,7 +53,7 @@ function Layout({ children, socket }) {
         </div>
         {isMessagingOpen && (
           <div className={styles.chats}>
-            <ChatList />
+            <ChatList socket={socket} />
           </div>
         )}
         {fullChat && <ChatUI socket={socket} />}

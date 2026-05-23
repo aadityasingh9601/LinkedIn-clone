@@ -61,6 +61,7 @@ const useChatStore = create((set, get) => ({
   },
 
   updateLastMsg: (data) => {
+    console.log(data);
     set((state) => ({
       chats: state.chats.map((chat) =>
         chat._id === data.chatId ? { ...chat, lastMessage: data } : chat,
@@ -91,10 +92,7 @@ const useChatStore = create((set, get) => ({
         { data },
         { "Content-Type": "multipart/form-data" },
       );
-      console.log(response);
-      if (response.status === 200) {
-        get().addMessage(response?.data.fullMessage);
-      }
+      //console.log(response);
     });
   },
 
@@ -115,7 +113,7 @@ const useChatStore = create((set, get) => ({
         { newContent },
         {},
       );
-      get().editMessage(newContent);
+      //Update state must be handled by socket events.
       return toast.success("Msg updated succesfully!");
     });
   },
@@ -123,7 +121,7 @@ const useChatStore = create((set, get) => ({
   deleteMsg: async (msgId) => {
     tryCatchWrapper(async () => {
       const response = await apiDelete(`/chat/message/${msgId}`);
-      get().removeMessage(msgId);
+      //Update state must be handled by socket events.
       return toast.success("Msg deleted successfully!");
     });
   },

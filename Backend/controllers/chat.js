@@ -156,8 +156,8 @@ const createMessage = async (req, res) => {
       select: "name headline profileImage",
     },
   });
-  io.to(chat._id).emit("newMsg", fullMessage);
-  //console.log(fullMessage);
+  //Emit socket event to update the newMsg.
+  io.to(chat._id.toString()).emit("newMsg", fullMessage);
   res.status(200).json({
     fullMessage: fullMessage,
   });
@@ -231,6 +231,7 @@ const editMsg = async (req, res) => {
 const deleteMsg = async (req, res) => {
   const { msgId } = req.params;
   const message = await Message.findById(msgId);
+  let chatId = message.chatId;
   if (req.user._id.toString() === message.sender.toString()) {
     if (message.media.mediaType === "image") {
       await cloudinary.uploader
@@ -243,12 +244,17 @@ const deleteMsg = async (req, res) => {
         .destroy(message.media.filename, { resource_type: "video" })
         .then((result) => console.log(result));
     }
-
+    //Update the last message of the chat.
     await message.deleteOne();
-    //Emit socket event to add real-time changes to both participants.
+    const chat = await Chat.findById(chatId);
+    const allMessages = await Message.find({ chatId: chatId }).sort({
+      createdAt: -1,
+    });
+    chat.lastMessage = allMessages[0];
+    await chat.save();
     //Make sure to first convert the mongoDB id to string, else socket event will not get emitted.
-    let chatId = message.chatId.toString();
-    io.to(chatId).emit("deleteMsg", msgId);
+    //Emit socket event to add real-time changes to both participants.
+    io.to(chat._id.toString()).emit("deleteMsg", msgId);
     res.status(200).send({ message: "Message deleted successfully!" });
   } else {
     res.status(401).send({ message: "You are not the sender of this message" });

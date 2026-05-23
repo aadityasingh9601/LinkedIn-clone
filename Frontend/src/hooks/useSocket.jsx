@@ -1,13 +1,11 @@
 import { useEffect, useRef } from "react";
-import { io } from "socket.io-client";
+import { socket } from "../utils/socket";
 import { toast } from "react-toastify";
 import useChatStore from "../stores/Chat";
 import usePostStore from "../stores/Post";
 import useNotificationStore from "../stores/Notification";
 
-const useSocket = (BACKEND_URL, isLoggedIn, currUserId,location) => {
-  const socketRef = useRef(null);
-  const isAuthRoute = ["/", "/signup", "/login"].includes(location.pathname);
+const useSocket = (isLoggedIn, currUserId, location) => {
   const addMessage = useChatStore((s) => s.addMessage);
   const updateLastMsg = useChatStore((s) => s.updateLastMsg);
   const editMessage = useChatStore((s) => s.editMessage);
@@ -16,43 +14,54 @@ const useSocket = (BACKEND_URL, isLoggedIn, currUserId,location) => {
   const addNoti = useNotificationStore((s) => s.addNoti);
   const notifications = useNotificationStore((s) => s.notifications);
   const setNotiCount = useNotificationStore((s) => s.setNotiCount);
+  const isAuthRoute = ["/", "/signup", "/login"].includes(location.pathname);
 
   useEffect(() => {
     if (!isLoggedIn || isAuthRoute) return;
-    const socketInstance = io(BACKEND_URL, { query: { userId: currUserId } });
-    socketRef.current = socketInstance;
-    socketInstance.on("connReq", (noti) => {
+
+    socket.io.opts.query = { userId: currUserId };
+    socket.connect(); // no-op if already connected ✅
+    console.log(socket.connected);
+    return () => {
+      socket.disconnect();
+    };
+  }, [isLoggedIn, isAuthRoute, currUserId]);
+
+  // In useSocket.js — separate useEffect per event group
+  useEffect(() => {
+    socket.on("connReq", (noti) => {
       addNoti(noti);
       toast(noti.message);
     });
-    socketInstance.on("newMsg", (data) => {
+    socket.on("newMsg", (data) => {
+      console.log(data);
       addMessage(data);
       updateLastMsg(data);
     });
-    socketInstance.on("editMsg", (data) => {
+    socket.on("editMsg", (data) => {
       editMessage(data);
     });
-    socketInstance.on("deleteMsg", (data) => {
+    socket.on("deleteMsg", (data) => {
       removeMessage(data);
     });
-    socketInstance.on("post_created", (data) => {
-      console.log(data);
+    socket.on("post_created", (data) => {
       updatePost(data);
     });
-    socketInstance.on("application-rejected", (data) => {
+    socket.on("application-rejected", (data) => {
       addNoti(data);
     });
+
     return () => {
-      socketInstance.disconnect();
+      socket.disconnect();
     };
-  }, [isLoggedIn, isAuthRoute, currUserId, BACKEND_URL]);
-  
-  useEffect(() => {
-    if (!isAuthRoute) {
-      setNotiCount(notifications?.filter((n) => !n.isRead).length);
-    }
-  }, [notifications, isAuthRoute]);
-  
-  return socketRef.current;
+  }, []);
+
+  //   useEffect(() => {
+  //   if (!isAuthRoute) {
+  //     setNotiCount(notifications?.filter((n) => !n.isRead).length);
+  //   }
+  // }, [notifications, isAuthRoute]);
+
+  return socket;
 };
 export default useSocket;

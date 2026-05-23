@@ -48,7 +48,7 @@ const checkAuthStatus = async (req, res) => {
 
 const signup = async (req, res) => {
   const { signupData } = req.body;
-  console.log(signupData);
+  //console.log(signupData);
   const result = SignupDataSchema.safeParse(signupData);
   if (!result.success) {
     return res.status(400).json({
@@ -91,7 +91,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { loginData } = req.body;
-  console.log(loginData);
+  //console.log(loginData);
   const result = LoginDataSchema.safeParse(loginData);
   if (!result.success) {
     return res.status(400).json({

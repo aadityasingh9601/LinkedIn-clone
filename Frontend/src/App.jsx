@@ -90,7 +90,7 @@ function App() {
     import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
   const currUserId = useUserStore((state) => state.currUserId);
-  const socket = useSocket(BACKEND_URL, isLoggedIn, currUserId, location);
+  const socket = useSocket(isLoggedIn, currUserId, location);
 
   //To get all the notifications that are unread ,so that we can display the number on the bell icon.
   // useEffect(() => {
