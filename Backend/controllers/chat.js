@@ -87,13 +87,11 @@ const getAllChats = async (req, res) => {
 };
 
 const createMessage = async (req, res) => {
-  console.log("inside create message on backend");
   const { id } = req.params;
   let currUserId = req.user._id;
   let receiverId = id;
-  console.log("CurrUserId", currUserId);
-  console.log("ReceiverId", receiverId);
   const { data } = req.body;
+  console.log(data);
 
   let existingChat = await Chat.findOne({
     participants: { $all: [currUserId, receiverId] },
@@ -107,7 +105,6 @@ const createMessage = async (req, res) => {
       participants: [currUserId, receiverId],
     });
     await newChat.save();
-
     //Put the chatlist in both user's chatlist.
     const currUserProfile = await Profile.findOne({ userId: currUserId });
     const receiverUserProfile = await Profile.findOne({ userId: receiverId });
@@ -119,27 +116,24 @@ const createMessage = async (req, res) => {
 
   const chat = existingChat ? existingChat : newChat;
 
+  console.log("Request file", req.file);
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
   let filename = req.file ? req.file.filename : "";
 
   const userProfile = await Profile.findOne({ userId: currUserId });
-
   //Check if the person trying to send message is a member of the chat.
   if (!chat.participants.includes(currUserId)) {
     return res.status(403).json({
       message: "Forbidden!",
     });
   }
-
   //If user's profile chatlist doesn't have the chat id, push it.
   if (!userProfile.chatList.includes(chat._id)) {
     userProfile.chatList.push(chat._id);
     await userProfile.save();
   }
-
   //Create the message.
-
   const newMessage = new Message({
     chatId: chat._id,
     sender: currUserId,
@@ -150,11 +144,9 @@ const createMessage = async (req, res) => {
       filename: filename,
     },
   });
-
   await newMessage.save();
   chat.lastMessage = newMessage;
   await chat.save();
-
   //Emit socket event as the message gets saved in DB.
   const fullMessage = await newMessage.populate({
     path: "sender",
@@ -165,7 +157,7 @@ const createMessage = async (req, res) => {
     },
   });
   io.to(chat._id).emit("newMsg", fullMessage);
-  console.log(fullMessage);
+  //console.log(fullMessage);
   res.status(200).json({
     fullMessage: fullMessage,
   });
@@ -232,7 +224,7 @@ const editMsg = async (req, res) => {
       });
     }
   } else {
-    res.status(403).send({ message: "You can't delete this message" });
+    res.status(403).send({ message: "Forbidden!" });
   }
 };
 

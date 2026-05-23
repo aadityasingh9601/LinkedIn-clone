@@ -18,9 +18,7 @@ export default function ChatUI({ socket }) {
   const getChatData = useChatStore((state) => state.getChatData);
   const messages = useChatStore((state) => state.messages);
   const getAllMsg = useChatStore((state) => state.getAllMsg);
-  const chatData = useChatStore((state) => state.chatData);
   const setfullChat = useChatStore((state) => state.setfullChat);
-  const newChatUser = useChatStore((state) => state.newChatUser);
   const profile = useProfileStore((state) => state.profile);
   const chatContainerRef = useRef(null);
 
@@ -32,7 +30,6 @@ export default function ChatUI({ socket }) {
     userId: profile?.userId
   };
   const currUserProfile = useUserStore((s) => s.currUserProfile);
-  const chatList = currUserProfile.chatList;
 
   const existingChat = () => {
     console.log(currUserProfile?.chatList);
@@ -51,16 +48,11 @@ export default function ChatUI({ socket }) {
   const otherPerson = currChatData?.participants?.find(
     (participant) => participant._id !== currUserId,
   );
-
   
-
   const displayUser =
     Object.keys(otherPerson).length !== 0
       ? otherPerson?.profile
       : profileData;
-
-  console.log(Object.keys(existingChatData !== 0).length);
-  console.log(displayUser);
 
   useEffect(() => {
     if (chatContainerRef.current) {

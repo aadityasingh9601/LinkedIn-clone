@@ -27,7 +27,6 @@ export default function MsgBox({ currChatId, receiverId, socket }) {
 
   const handleSubmission = (event) => {
     event.preventDefault();
-    console.log(currChatId);
     sendMessage(receiverId, { message: newMsg, mediaFile });
     setFileName("");
     setmediaFile("");
@@ -72,32 +71,35 @@ export default function MsgBox({ currChatId, receiverId, socket }) {
               )}
             </div>
           </div>
-          <div>
+          <div className={styles.media}>
             <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
               <div className={styles.icon}>
                 <ImageIcon />
               </div>
             </label>
-            <ControlledInput
-              id="file-upload"
-              type="file"
-              styles={{ display: "none" }}
-              customClass={styles.hidden}
-              onChange={(e) => {
-                setFileName(e.target.files[0]?.name || "");
-                setmediaFile(e.target.files[0]);
-              }}
-            />
+            <div>
+              <ControlledInput
+                id="file-upload"
+                type="file"
+                customClass={styles.hidden}
+                onChange={(e) => {
+                  setFileName(e.target.files[0]?.name || "");
+                  setmediaFile(e.target.files[0]);
+                }}
+              />
+            </div>
             {fileName && (
-              <>
+              <div className={styles.filename}>
                 <div>{fileName}</div>
-                <Xmark
-                  onClick={() => {
-                    setFileName("");
-                    setmediaFile("");
-                  }}
-                />
-              </>
+                <div className={styles.xmark}>
+                  <Xmark
+                    onClick={() => {
+                      setFileName("");
+                      setmediaFile("");
+                    }}
+                  />
+                </div>
+              </div>
             )}
           </div>
         </div>

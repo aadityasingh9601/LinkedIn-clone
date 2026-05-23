@@ -39,29 +39,35 @@ export default function Chat({ chat }) {
           setfullChat(true, chat);
         }}
       >
-        <div>
+        <div className={styles.chatInfo}>
           <UserAvatar
             url={otherPerson?.profile.profileImage?.url}
             customStyles={{ height: "3rem", width: "3rem" }}
           />
-        </div>
-        <div>
-          <div>{otherPerson?.profile.name}</div>
-          <div className="lastMsg">
-            {chat?.lastMessage?.sender._id === currUserId
-              ? `You: ${chat?.lastMessage?.content}`
-              : chat?.lastMessage?.content}
+          <div>
+            <div className={styles.name}>{otherPerson?.profile.name}</div>
+            <div className={styles.lastMsg}>
+              {chat?.lastMessage?.sender._id === currUserId
+                ? `You: ${chat?.lastMessage?.content}`
+                : chat?.lastMessage?.content}
+            </div>
           </div>
         </div>
-        <div>
-          <div className={styles.time}>{isNewDay ? chatDate : Time}</div>
+
+        <div className={styles.options}>
+          <div className={styles.datetime}>
+            {isNewDay ? chatDate.split(",")[1] : Time}
+          </div>
           <div>
-            <Ellipsis onClick={() => setchatOptions(true)} />
+            <Ellipsis onClick={() => setchatOptions(!chatOptions)} />
 
             {chatOptions && (
               <div className={styles.chatOptions}>
-                <Xmark onClick={() => setchatOptions(false)} />
-                <Button btnText="Delete" onClick={() => deleteChat(chat._id)} />
+                <Button
+                  variant="sm"
+                  btnText="Delete"
+                  onClick={() => deleteChat(chat._id)}
+                />
               </div>
             )}
           </div>

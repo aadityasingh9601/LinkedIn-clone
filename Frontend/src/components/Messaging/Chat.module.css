@@ -2,26 +2,49 @@
   position: relative;
   width: inherit;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   height: 3.5rem;
   background-color: #f4f2ee;
   border-bottom: 1px solid gray;
   padding: 0.3rem;
 }
 
-.chatOptions {
-  background-color: white;
-  position: absolute;
-  top: 4rem;
-  left: 10.6rem;
-  padding: 0.6rem;
-  border-radius: 0.4rem;
+.chatInfo {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.name {
+  font-size: 1;
+  font-weight: 500;
+}
+
+.lastMsg {
+  font-size: 0.8rem;
+  max-width: 90%;
+}
+
+.options {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
+}
+
+.datetime {
+  font-size: 0.8rem;
   width: fit-content;
+}
+
+.chatOptions {
+  background-color: white;
+  padding: 0.5rem 1rem;
+  border: 0.5px solid black;
+  border-radius: 0.2rem;
+  position: absolute;
+  left: 8rem;
 }
 
 .chatOptions button {

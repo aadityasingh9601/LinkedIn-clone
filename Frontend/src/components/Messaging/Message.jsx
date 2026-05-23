@@ -3,15 +3,18 @@ import { useState } from "react";
 import Button from "../shared-components/Buttons/Button";
 import useChatStore from "../../stores/Chat";
 import ExternalLink from "../shared-components/Links/ExternalLink";
-import Ellipsis from "../shared-components/Icons/Ellipsis";
-import Xmark from "../shared-components/Icons/Xmark";
+import Options from "../shared-components/Options/Options";
+import Modal from "../shared-components/Modal/Modal";
+import DeleteModal from "../shared-components/Modal/DeleteModal";
 import ControlledInput from "../shared-components/Inputs/ControlledInput";
 import useUserStore from "../../stores/User";
+import UserAvatar from "../shared-components/User/UserAvatar";
 
 export default function Message({ msg, formatTime }) {
-  const [msgOptions, setMsgOptions] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [newMsg, setnewMsg] = useState(msg?.content);
-  const [editMsg, seteditMsg] = useState(false);
+  const [editMsg, setEditMsg] = useState(false);
   const currUserId = useUserStore((state) => state.currUserId);
   const updateMsg = useChatStore((state) => state.updateMsg);
   const deleteMsg = useChatStore((state) => state.deleteMsg);
@@ -20,30 +23,31 @@ export default function Message({ msg, formatTime }) {
 
   return (
     <div key={msg?._id} className={styles.msg}>
-      <div className={styles.sender}>
-        <div style={{ paddingRight: "2rem", display: "flex" }}>
-          <div>
-            <img src={msg?.sender?.profile?.profileImage?.url} />
-          </div>
+      <div className={styles.msgInfo}>
+        <div className={styles.sender}>
+          <UserAvatar
+            url={msg?.sender?.profile?.profileImage?.url}
+            customStyles={{ height: "2rem", width: "2rem" }}
+          />
           <div className="name">
-            <b>
-              {currUserId === msg?.sender._id
-                ? "You"
-                : msg?.sender?.profile.name}
-            </b>{" "}
+            {currUserId === msg?.sender._id ? "You" : msg?.sender?.profile.name}
           </div>
-
           <div className={styles.time}>{formatTime(msg?.createdAt)}</div>
         </div>
-        {currUserId === msg?.sender._id && (
-          <Ellipsis
-            styles={{ position: "absolute", right: "0rem", top: "0rem" }}
-            onClick={() => setMsgOptions(true)}
-          />
-        )}
+        <div>
+          {currUserId === msg?.sender._id && timePassed < 60 && (
+            <Options
+              show={showOptions}
+              setShow={setShowOptions}
+              setEdit={setEditMsg}
+              setDelete={setDeleteModal}
+            />
+          )}
+        </div>
       </div>
+
       {editMsg ? (
-        <>
+        <div className={styles.msgEditForm}>
           <ControlledInput
             value={newMsg}
             onChange={(e) => {
@@ -51,15 +55,22 @@ export default function Message({ msg, formatTime }) {
             }}
           />
 
-          <Button btnText="Cancel" onClick={() => seteditMsg(false)} />
+          <div className={styles.buttonWrapper}>
+            <Button
+            variant="xs"
+            btnText="Cancel"
+            onClick={() => setEditMsg(false)}
+          />
           <Button
+            variant="xs"
             btnText="Save Changes"
             onClick={() => {
               updateMsg({ msgId: msg._id, newMsg: newMsg });
-              seteditMsg(false);
+              setEditMsg(false);
             }}
           />
-        </>
+          </div>
+        </div>
       ) : (
         <div className={styles.msgText}>{msg?.content}</div>
       )}
@@ -95,17 +106,15 @@ export default function Message({ msg, formatTime }) {
         />
       )}
 
-      {msgOptions && (
-        <div className={styles.msgOptions} onClick={() => setMsgOptions(false)}>
-          <Xmark
-            style={{ position: "absolute", top: "0.3rem", right: "0.3rem" }}
+      {deleteModal && (
+        <Modal>
+          <DeleteModal
+            handleCancel={setDeleteModal}
+            handleDelete={() => {
+              deleteMsg(msg._id);
+            }}
           />
-
-          {timePassed < 60 && (
-            <Button btnText="Edit" onClick={() => seteditMsg(true)} />
-          )}
-          <Button btnText="Delete" onClick={() => deleteMsg(msg._id)} />
-        </div>
+        </Modal>
       )}
     </div>
   );

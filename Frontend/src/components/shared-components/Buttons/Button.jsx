@@ -20,6 +20,7 @@ const [buttonHeight, setButtonHeight] = useState();
   //const conditionalStyle = disabled ? { padding: "0.48rem 1.5rem" } : undefined;
 
   const variantStyles = {
+    xs: {padding:"0.25rem 0.6rem",fontSize:"0.65rem"},
     sm: { padding: "0.4rem 1rem", fontSize: "0.8rem" },
     md: { padding: "0.6rem 1.5rem", fontSize: "1rem" },
   };

@@ -86,44 +86,6 @@ export default function PostHead({ data, type, setEdit, setDelete }) {
           </button>
         ))}
 
-      {/* Fix this code later, to transfer it into Options.jsx componenent & use it here. */}
-      {/* {currUserId === profileUserId && (
-        <button
-          className="options"
-          onClick={() => setShowOptions(!showOptions)}
-        >
-          <Ellipsis />
-        </button>
-      )}
-      {showOptions && (
-        <div className="options-box">
-          {(type === "post" || type == "comment") && (
-            <button
-              onClick={() => {
-                {
-                  type === "comment"
-                    ? setCommentEdit(true)
-                    : seteditModal(true);
-                  setShowOptions(false);
-                }
-              }}
-            >
-              <Pen />
-              Edit
-            </button>
-          )}
-          <button
-            onClick={() => {
-              setdeleteModal(true);
-              setShowOptions(false);
-            }}
-          >
-            <Trash />
-            Delete
-          </button>
-        </div>
-      )} */}
-
       <div className={styles.ellipsis}>{currUserId === profileUserId && (
         <Options show={showOptions} setShow={setShowOptions} setEdit={setEdit} setDelete={setDelete}/>
       )}</div>

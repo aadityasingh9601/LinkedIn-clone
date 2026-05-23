@@ -115,6 +115,7 @@ const useChatStore = create((set, get) => ({
         { newContent },
         {},
       );
+      get().editMessage(newContent);
       return toast.success("Msg updated succesfully!");
     });
   },
@@ -122,6 +123,7 @@ const useChatStore = create((set, get) => ({
   deleteMsg: async (msgId) => {
     tryCatchWrapper(async () => {
       const response = await apiDelete(`/chat/message/${msgId}`);
+      get().removeMessage(msgId);
       return toast.success("Msg deleted successfully!");
     });
   },
