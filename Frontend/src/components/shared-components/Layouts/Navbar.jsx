@@ -18,6 +18,7 @@ import UserInfo from "../User/UserInfo";
 import Xmark from "../Icons/Xmark";
 import ControlledInput from "../Inputs/ControlledInput";
 import UserAvatar from "../User/UserAvatar";
+import UserIcon from "../Icons/UserIcon";
 
 export default function Navbar({ showMessaging }) {
   const navigate = useNavigate();
@@ -105,10 +106,10 @@ export default function Navbar({ showMessaging }) {
           <div className={styles.myNetwork}>
             <div>Manage your network</div>
             <div onClick={() => navigate("/network/connections")}>
-              <i class="fa-solid fa-users"></i>Connections
+              <UsersIcon /> Connections
             </div>
             <div onClick={() => navigate("/network/followers")}>
-              <i class="fa-solid fa-user"></i>Followers
+              <UserIcon /> Followers
             </div>
             <div onClick={() => navigate("/network/following")}>
               <i class="fa-solid fa-user"></i>Following
