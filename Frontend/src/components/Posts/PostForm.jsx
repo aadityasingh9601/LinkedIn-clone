@@ -21,9 +21,12 @@ import useUserStore from "../../stores/User";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
 import EmojiPicker from "emoji-picker-react";
 const PollForm = lazy(() => import("../Polls/PollForm"));
+import { parseISODate } from "../../utils/helper";
 const ScheduledPostsUI = lazy(() => import("./ScheduledPostsUI"));
 
-export default function PostForm() {
+export default function PostForm({ mode, post = {}, setEditModal = {} }) {
+  //Fix the editing post part for scheduled posts too.
+  //const { date, time } = parseISODate(post?.scheduledTime); //Is post isn't published yet.
   const {
     register,
     handleSubmit,
@@ -31,11 +34,20 @@ export default function PostForm() {
     formState: { errors },
     watch,
     setValue,
-  } = useForm({ resolver: zodResolver(PostDataSchema) });
+  } = useForm({
+    resolver: zodResolver(PostDataSchema),
+    defaultValues: {
+      content: post?.content,
+      media: post?.media?.url,
+      //date: date,
+      //time: time,
+    },
+  });
 
   const [isLoading, setIsLoading] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const createPost = usePostStore((state) => state.createPost);
+  const editPost = usePostStore((state) => state.editPost);
   const poll = usePostStore((state) => state.poll);
   const setPoll = usePostStore((state) => state.setPoll);
   const schedule = usePostStore((state) => state.schedule);
@@ -44,6 +56,7 @@ export default function PostForm() {
   const setShowScheduledPosts = usePostStore(
     (state) => state.setShowScheduledPosts,
   );
+
   const currUserProfile = useUserStore((state) => state.currUserProfile);
 
   const [preview, setPreview] = useState(null);
@@ -51,7 +64,7 @@ export default function PostForm() {
   const file = watch("media");
   const existingContent = watch("content");
 
-  if (file && file.length > 0) {
+  if (typeof file !== "string" && file && file.length > 0) {
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreview(reader.result);
@@ -60,20 +73,25 @@ export default function PostForm() {
   }
 
   const handleEmojiClick = (emojiObject) => {
-    //console.log(emojiObject);
     setValue("content", existingContent + emojiObject.emoji);
   };
 
   const onSubmit = (data) => {
-    console.log(data);
     const postData = {
       ...data,
       media: data.media[0],
     };
-    console.log(postData);
-    createPost(postData, setIsLoading);
-    reset();
+    if (
+      mode === "create"
+        ? createPost(postData, setIsLoading)
+        : editPost(post._id, postData, setIsLoading, setEditModal)
+    )
+      reset();
   };
+
+  useEffect(() => {
+    setPreview(post?.media?.url);
+  }, [post]);
 
   return (
     <div>
@@ -83,7 +101,7 @@ export default function PostForm() {
         </Suspense>
       ) : showScheduledPosts ? (
         <Suspense fallback={<div>Loading...</div>}>
-          <ScheduledPostsUI/>
+          <ScheduledPostsUI />
         </Suspense>
       ) : (
         <div className={styles.postform}>
@@ -158,14 +176,34 @@ export default function PostForm() {
                     register={register}
                   />
                 </div>
-                <div>
-                  <Pollicon onClick={() => setPoll(true)} />
-                </div>
+                {mode === "create" && (
+                  <div>
+                    <Pollicon onClick={() => setPoll(true)} />
+                  </div>
+                )}
               </div>
             </FormWrapper>
+
+            {/* Show only if post isn't published yet. Fix this too.
+                   {post.published === false && (
+                     <div style={{ display: "inline" }}>
+                       {schedule ? (
+                         <ClockS
+                           onClick={() => setSchedule(false)}
+                           style={{ fontSize: "1.2rem" }}
+                         />
+                       ) : (
+                         <ClockR
+                           onClick={() => setSchedule(true)}
+                           style={{ fontSize: "1.2rem" }}
+                         />
+                       )}
+                     </div>
+                   )} */}
+
             <div className={styles.footer}>
               <div className={styles.footerOptions}>
-                {schedule ? (
+                {mode === "create" && schedule ? (
                   <ClockS onClick={() => setSchedule(false)} />
                 ) : (
                   <ClockR onClick={() => setSchedule(true)} />
@@ -177,7 +215,15 @@ export default function PostForm() {
                   variant="sm"
                   disabled={isLoading}
                   btnText={
-                    isLoading ? <Spinner height={17} width={17} /> : schedule ? "Schedule" : "Post"
+                    isLoading ? (
+                      <Spinner height={17} width={17} />
+                    ) : mode === "edit" ? (
+                      "Save Changes"
+                    ) : schedule ? (
+                      "Schedule"
+                    ) : (
+                      "Post"
+                    )
                   }
                 />
               </div>

@@ -105,12 +105,30 @@ const singlePost = async (req, res) => {
 const updatePost = async (req, res) => {
   const { postId } = req.params;
   const { postData } = req.body;
+  console.log(postData);
   const result = PostDataSchema.safeParse(postData);
   if (!result.success) {
     return res.status(400).json({
       message: result.error.message,
     });
   }
+
+  const existingPost = await Post.findById(postId);
+
+  console.log(req.user._id.toString())
+  console.log(existingPost.author.toString())
+
+if (req.user._id.toString() !== existingPost.author.toString()) {
+    return res.status(403).json({
+      message: "Forbidden!",
+    });
+  }
+  if (!existingPost) {
+    res.status(400).json({
+      message: "Post doesn't exists!",
+    });
+  }
+
   const { date, time } = postData;
   let scheduledAt = "";
   if (date && time) {
@@ -126,53 +144,33 @@ const updatePost = async (req, res) => {
     scheduledAt = new Date(utcTimestamp - 5.5 * 60 * 60 * 1000);
   }
 
-  const { error } = postSchema.validate(req.body);
-  if (error) {
-    console.log(error);
-    res.status(404).send({ error: error });
-    return;
-  }
-
   const post = await Post.findByIdAndUpdate(postId, {
     ...req.body.postData,
     scheduledTime: scheduledAt,
   });
-  //Check if the user trying to update is the owner of the post.
-  if (req.user._id.toString() === post.author.toString()) {
-    // Update the image url only when some new image is available.
 
-    if (typeof req.file !== "undefined") {
-      //First delete the old media file.
-
-      if (post.media.mediaType === "image") {
-        await cloudinary.uploader
-          .destroy(post.media.filename, { resource_type: "image" })
-          .then((result) => console.log(result));
-      }
-
-      if (post.media.mediaType === "video") {
-        await cloudinary.uploader
-          .destroy(post.media.filename, { resource_type: "video" })
-          .then((result) => console.log(result));
-      }
-
-      let type = req.file.mimetype.split("/")[0];
-      post.media.mediaType = type;
-      post.media.url = req.file.path;
-      post.media.filename = req.file.filename;
-      await post.save();
+  if (typeof req.file !== "undefined") {
+    //First delete the old media file.
+    if (post.media.mediaType === "image") {
+      await cloudinary.uploader
+        .destroy(post.media.filename, { resource_type: "image" })
+        .then((result) => console.log(result));
+    }
+    if (post.media.mediaType === "video") {
+      await cloudinary.uploader
+        .destroy(post.media.filename, { resource_type: "video" })
+        .then((result) => console.log(result));
     }
 
-    //Everything is fine here, but there's just one small problem you edited a post, uploaded a new media, but
-    //what about the old image on the cloud it's still there , it's not deleted from there & still consuming
-    //memory so ,that needs to be deleted , even u have changed the url of the file and all in the database, that
-    //fine , but u need to remove the old image from the cloud storage also. So do that.
-    const updatedPost = await Post.findById(postId);
-
-    res.status(200).send({ message: "Post updated successfully", updatedPost });
-  } else {
-    res.status(401).send({ message: "You are not the owner of this post." });
+    let type = req.file.mimetype.split("/")[0];
+    post.media.mediaType = type;
+    post.media.url = req.file.path;
+    post.media.filename = req.file.filename;
+    await post.save();
   }
+
+  const updatedPost = await Post.findById(postId);
+  res.status(200).send({ message: "Post updated successfully", updatedPost });
 };
 
 const deletePost = async (req, res) => {

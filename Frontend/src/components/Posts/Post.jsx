@@ -17,6 +17,7 @@ import CommentR from "../shared-components/Icons/CommentR";
 import useCommentStore from "../../stores/Comment";
 import PostHead from "../Posts/PostHead";
 import DeleteModal from "../shared-components/Modal/DeleteModal";
+import PostForm from "./PostForm";
 
 export default function Post({ post, postRef }) {
   const currUserId = useUserStore((state) => state.currUserId);
@@ -37,10 +38,10 @@ export default function Post({ post, postRef }) {
   const allLikedPosts = useUserStore((state) => state.allLikedPosts);
   const allFollowed = useUserStore((state) => state.allFollowed);
 
-  const [editModal, seteditModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const toggleEditModal = (value) => {
-    seteditModal(value);
+    setEditModal(value);
   };
 
   //To ensure that we can't scroll the page while the modal is open.
@@ -87,7 +88,7 @@ export default function Post({ post, postRef }) {
         <PostHead
           data={post}
           type="post"
-          setEdit={seteditModal}
+          setEdit={setEditModal}
           setDelete={setdeleteModal}
         />
         <div className={styles.body}>
@@ -165,7 +166,8 @@ export default function Post({ post, postRef }) {
         <Modal>
           <Xmark onClick={() => toggleEditModal(false)} />
           <Suspense fallback={<div>Loading...</div>}>
-            <PostEditForm post={post} toggleEditModal={toggleEditModal} />
+            <PostForm mode="edit" post={post} setEditModal={setEditModal}/>
+            {/* <PostEditForm post={post} toggleEditModal={toggleEditModal} /> */}
           </Suspense>
         </Modal>
       )}

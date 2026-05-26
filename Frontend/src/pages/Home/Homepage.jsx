@@ -125,7 +125,6 @@ export default function Homepage() {
 
   // Assign ref to each post
   const setRef = (node, id) => {
-    //console.log(node);
     if (node) {
       postRefs.current[id] = node;
     }
@@ -154,8 +153,7 @@ export default function Homepage() {
                   (setPostFormModal(false), setShowScheduledPosts(false));
                 }}
               />
-
-              <PostForm />
+              <PostForm mode="create" />
             </Modal>
           </div>
         )}

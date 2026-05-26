@@ -101,7 +101,8 @@ const usePostStore = create((set) => ({
     });
   },
 
-  editPost: async (postId, postData) => {
+  editPost: async (postId, postData, setIsLoading, setEditModal) => {
+    setIsLoading(true);
     tryCatchWrapper(async () => {
       const response = await apiPatch(
         `/post/${postId}`,
@@ -110,11 +111,11 @@ const usePostStore = create((set) => ({
           "Content-Type": "multipart/form-data",
         },
       );
-
-      console.log(response.data);
+      setIsLoading(false);
       const updatedPost = response.data.updatedPost;
 
       if (response.status === 200) {
+        setEditModal(false);
         set((state) => ({
           //This one is for regular posts.
           posts: state.posts.map((post) =>
