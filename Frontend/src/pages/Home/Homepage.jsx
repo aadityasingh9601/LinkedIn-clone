@@ -131,13 +131,6 @@ export default function Homepage() {
 
   //Intersection Observer part ends here.
 
-  //To ensure that we can't scroll the page while the modal is open.
-  if (postFormModal) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "unset";
-  }
-
   return (
     <div className={styles.homepage}>
       <div className={styles.feed}>

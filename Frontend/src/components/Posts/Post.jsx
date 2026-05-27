@@ -40,13 +40,6 @@ export default function Post({ post, postRef }) {
     setEditModal(value);
   };
 
-  //To ensure that we can't scroll the page while the modal is open.
-  if (likeModal) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "unset";
-  }
-
   const togglelikeModal = (value) => {
     setlikeModal(value);
   };

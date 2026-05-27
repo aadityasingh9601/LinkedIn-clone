@@ -48,13 +48,6 @@ export default function ProfileHeader({ customStyles, profile }) {
   const updateIsFollowed = (value) => {
     setisFollowed(value);
   };
-  //To ensure that we can't scroll the page while the modal is open.
-  if (editHead) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "unset";
-  }
-
   useEffect(() => {
     if (allFollowed.has(profile?.userId)) {
       setisFollowed(true);
