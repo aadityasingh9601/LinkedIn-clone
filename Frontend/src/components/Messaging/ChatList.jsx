@@ -4,14 +4,10 @@ import useUserStore from "../../stores/User";
 import useChatStore from "../../stores/Chat";
 
 export default function ChatList({ socket }) {
-  const { currUserId, currUserProfile } = useUserStore((s) => ({
-    currUserId: s.currUserId,
-    currUserProfile: s.currUserProfile,
-  }));
-  const { chats, getAllChats } = useChatStore((s) => ({
-    chats: s.chats,
-    getAllChats: s.getAllChats,
-  }));
+  const currUserId = useUserStore((s) => s.currUserId);
+  const currUserProfile = useUserStore((s) => s.currUserProfile);
+  const chats = useChatStore((s) => s.chats);
+  const getAllChats = useChatStore((s) => s.getAllChats);
   console.log(currUserProfile);
 
   return (

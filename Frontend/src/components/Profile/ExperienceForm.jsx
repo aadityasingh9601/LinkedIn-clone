@@ -13,10 +13,8 @@ import Spinner from "../shared-components/Loaders/Spinner";
 
 export default function ExperienceForm({ experience = {}, setShow, mode }) {
   const [isLoading, setIsLoading] = useState(false);
-  const { addExperience, updateExperience } = useProfileStore((s) => ({
-    addExperience: s.addExperience,
-    updateExperience: s.updateExperience,
-  }));
+  const addExperience = useProfileStore((s) => s.addExperience);
+  const updateExperience = useProfileStore((s) => s.updateExperience);
   const {
     register,
     handleSubmit,

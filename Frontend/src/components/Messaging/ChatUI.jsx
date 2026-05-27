@@ -12,18 +12,14 @@ import { formatDate2 } from "../../utils/helper";
 import useUserStore from "../../stores/User";
 
 export default function ChatUI({ socket }) {
-  const { currChatId, currChatData, getChatData, messages, getAllMsg, setfullChat } = useChatStore((s) => ({
-    currChatId: s.currChatId,
-    currChatData: s.currChatData,
-    getChatData: s.getChatData,
-    messages: s.messages,
-    getAllMsg: s.getAllMsg,
-    setfullChat: s.setfullChat,
-  }));
-  const { currUserId, currUserProfile } = useUserStore((s) => ({
-    currUserId: s.currUserId,
-    currUserProfile: s.currUserProfile,
-  }));
+  const currChatId = useChatStore((s) => s.currChatId);
+  const currChatData = useChatStore((s) => s.currChatData);
+  const getChatData = useChatStore((s) => s.getChatData);
+  const messages = useChatStore((s) => s.messages);
+  const getAllMsg = useChatStore((s) => s.getAllMsg);
+  const setfullChat = useChatStore((s) => s.setfullChat);
+  const currUserId = useUserStore((s) => s.currUserId);
+  const currUserProfile = useUserStore((s) => s.currUserProfile);
   const profile = useProfileStore((state) => state.profile);
   const chatContainerRef = useRef(null);
 

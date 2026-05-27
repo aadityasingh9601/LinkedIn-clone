@@ -8,16 +8,14 @@ import useJobStore from "../../stores/Job";
 import JobDetail from "../../components/Jobs/JobDetail";
 
 export default function JobsUI() {
-  const { jobs, postJob, setpostJob, getAllJobs, getMyJobs, currJobListingId, setcurrJobListingId, editJob } = useJobStore((s) => ({
-    jobs: s.jobs,
-    postJob: s.postJob,
-    setpostJob: s.setpostJob,
-    getAllJobs: s.getAllJobs,
-    getMyJobs: s.getMyJobs,
-    currJobListingId: s.currJobListingId,
-    setcurrJobListingId: s.setcurrJobListingId,
-    editJob: s.editJob,
-  }));
+  const jobs = useJobStore((s) => s.jobs);
+  const postJob = useJobStore((s) => s.postJob);
+  const setpostJob = useJobStore((s) => s.setpostJob);
+  const getAllJobs = useJobStore((s) => s.getAllJobs);
+  const getMyJobs = useJobStore((s) => s.getMyJobs);
+  const currJobListingId = useJobStore((s) => s.currJobListingId);
+  const setcurrJobListingId = useJobStore((s) => s.setcurrJobListingId);
+  const editJob = useJobStore((s) => s.editJob);
   const currJobDetails = jobs.find((job) => job._id === currJobListingId);
 
   const [myJobs, setmyJobs] = useState(false);

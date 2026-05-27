@@ -18,21 +18,17 @@ import DeleteModal from "../shared-components/Modal/DeleteModal";
 import PostForm from "./PostForm";
 
 export default function Post({ post, postRef }) {
-  const { currUserId, allLikedPosts, allFollowed } = useUserStore((s) => ({
-    currUserId: s.currUserId,
-    allLikedPosts: s.allLikedPosts,
-    allFollowed: s.allFollowed,
-  }));
+  const currUserId = useUserStore((s) => s.currUserId);
+  const allLikedPosts = useUserStore((s) => s.allLikedPosts);
+  const allFollowed = useUserStore((s) => s.allFollowed);
   const [showComments, setshowComments] = useState(false);
   const [deleteModal, setdeleteModal] = useState(false);
   const [likeModal, setlikeModal] = useState(false);
   const [isLiked, setisLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likeCount);
-  const { deletePost, likePost, unlikePost } = usePostStore((s) => ({
-    deletePost: s.deletePost,
-    likePost: s.likePost,
-    unlikePost: s.unlikePost,
-  }));
+  const deletePost = usePostStore((s) => s.deletePost);
+  const likePost = usePostStore((s) => s.likePost);
+  const unlikePost = usePostStore((s) => s.unlikePost);
   const [commentCount, setCommentCount] = useState(post.comments.length);
   const [likedUsers, setlikedUsers] = useState([]);
 

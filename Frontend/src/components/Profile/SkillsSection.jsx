@@ -14,10 +14,8 @@ export default function SkillsSection({
   setAddInSection,
 }) {
   const [isLoading, setIsLoading] = useState(false);
-  const { addNewSkill, deleteSkill } = useProfileStore((s) => ({
-    addNewSkill: s.addNewSkill,
-    deleteSkill: s.deleteSkill,
-  }));
+  const addNewSkill = useProfileStore((s) => s.addNewSkill);
+  const deleteSkill = useProfileStore((s) => s.deleteSkill);
   const [newSkill, setNewSkill] = useState("");
   const [addSkill, setAddSkill] = useState(false);
 

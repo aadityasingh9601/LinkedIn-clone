@@ -33,11 +33,9 @@ import { setNavigate } from "./utils/api/axiosInstance";
 import useSocket from "./hooks/useSocket";
 
 const AppRoutes = () => {
-  const { isLoggedIn, currUserId, checkAuthStatus } = useUserStore((s) => ({
-    isLoggedIn: s.isLoggedIn,
-    currUserId: s.currUserId,
-    checkAuthStatus: s.checkAuthStatus,
-  }));
+  const isLoggedIn = useUserStore((s) => s.isLoggedIn);
+  const currUserId = useUserStore((s) => s.currUserId);
+  const checkAuthStatus = useUserStore((s) => s.checkAuthStatus);
   const getNotifications = useNotificationStore(
     (state) => state.getNotifications,
   );
@@ -87,10 +85,8 @@ const AppRoutes = () => {
 };
 
 function App() {
-  const { isLoggedIn, currUserId } = useUserStore((s) => ({
-    isLoggedIn: s.isLoggedIn,
-    currUserId: s.currUserId,
-  }));
+  const isLoggedIn = useUserStore((s) => s.isLoggedIn);
+  const currUserId = useUserStore((s) => s.currUserId);
   const BACKEND_URL =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
   const socket = useSocket(isLoggedIn, currUserId, location);

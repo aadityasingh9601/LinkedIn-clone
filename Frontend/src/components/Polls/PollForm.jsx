@@ -9,10 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
 
 export default function PollForm() {
-  const { setPoll, createPoll } = usePollStore((s) => ({
-    setPoll: s.setPoll,
-    createPoll: s.createPoll,
-  }));
+  const setPoll = usePollStore((s) => s.setPoll);
+  const createPoll = usePollStore((s) => s.createPoll);
 
   const {
     register,

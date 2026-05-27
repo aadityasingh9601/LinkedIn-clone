@@ -6,10 +6,8 @@ import Application from "./Application";
 
 export default function Applications() {
   const { id } = useParams();
-  const { getAllApplicants, applicants } = useJobStore((s) => ({
-    getAllApplicants: s.getAllApplicants,
-    applicants: s.applicants,
-  }));
+  const getAllApplicants = useJobStore((s) => s.getAllApplicants);
+  const applicants = useJobStore((s) => s.applicants);
   console.log(id);
   useEffect(() => {
     getAllApplicants(id);

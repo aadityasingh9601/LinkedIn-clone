@@ -6,18 +6,14 @@ import usePostStore from "../stores/Post";
 import useNotificationStore from "../stores/Notification";
 
 const useSocket = (isLoggedIn, currUserId, location) => {
-  const { addMessage, updateLastMsg, editMessage, removeMessage } = useChatStore((s) => ({
-    addMessage: s.addMessage,
-    updateLastMsg: s.updateLastMsg,
-    editMessage: s.editMessage,
-    removeMessage: s.removeMessage,
-  }));
+  const addMessage = useChatStore((s) => s.addMessage);
+  const updateLastMsg = useChatStore((s) => s.updateLastMsg);
+  const editMessage = useChatStore((s) => s.editMessage);
+  const removeMessage = useChatStore((s) => s.removeMessage);
   const updatePost = usePostStore((s) => s.updatePost);
-  const { addNoti, notifications, setNotiCount } = useNotificationStore((s) => ({
-    addNoti: s.addNoti,
-    notifications: s.notifications,
-    setNotiCount: s.setNotiCount,
-  }));
+  const addNoti = useNotificationStore((s) => s.addNoti);
+  const notifications = useNotificationStore((s) => s.notifications);
+  const setNotiCount = useNotificationStore((s) => s.setNotiCount);
   const isAuthRoute = ["/", "/signup", "/login"].includes(location.pathname);
 
   useEffect(() => {

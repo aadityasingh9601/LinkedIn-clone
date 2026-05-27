@@ -22,15 +22,11 @@ import UserIcon from "../Icons/UserIcon";
 
 export default function Navbar({ showMessaging }) {
   const navigate = useNavigate();
-  const { userProfiles, getProfiles } = useProfileStore((s) => ({
-    userProfiles: s.userProfiles,
-    getProfiles: s.getProfiles,
-  }));
-  const { logout, currUserId, currUserProfileId } = useUserStore((s) => ({
-    logout: s.logout,
-    currUserId: s.currUserId,
-    currUserProfileId: s.currUserProfileId,
-  }));
+  const userProfiles = useProfileStore((s) => s.userProfiles);
+  const getProfiles = useProfileStore((s) => s.getProfiles);
+  const logout = useUserStore((s) => s.logout);
+  const currUserId = useUserStore((s) => s.currUserId);
+  const currUserProfileId = useUserStore((s) => s.currUserProfileId);
 
   const [showNetwork, setShowNetworks] = useState(false);
 

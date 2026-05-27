@@ -12,10 +12,8 @@ import { useState } from "react";
 import FormWrapper from "../../components/shared-components/Forms/FormWrapper";
 
 export default function Login() {
-  const { isLoggedIn, login } = useUserStore((s) => ({
-    isLoggedIn: s.isLoggedIn,
-    login: s.login,
-  }));
+  const isLoggedIn = useUserStore((s) => s.isLoggedIn);
+  const login = useUserStore((s) => s.login);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const {

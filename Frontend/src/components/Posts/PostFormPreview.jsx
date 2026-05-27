@@ -5,10 +5,8 @@ import Pollicon from "../shared-components/Icons/PollIcon";
 import ControlledInput from "../shared-components/Inputs/ControlledInput";
 
 export default function PostFormPreview() {
-  const { postFormModal, setPostFormModal } = usePostStore((s) => ({
-    postFormModal: s.postFormModal,
-    setPostFormModal: s.setPostFormModal,
-  }));
+  const postFormModal = usePostStore((s) => s.postFormModal);
+  const setPostFormModal = usePostStore((s) => s.setPostFormModal);
 
   return (
     <div className={styles.postformpreview}>

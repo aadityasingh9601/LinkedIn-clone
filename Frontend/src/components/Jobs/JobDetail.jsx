@@ -12,19 +12,15 @@ import JobFitStats from "../Jobs/JobFitStats";
 
 export default function JobDetail({ job }) {
   const navigate = useNavigate();
-  const { currUserId, userProfile } = useUserStore((s) => ({
-    currUserId: s.currUserId,
-    userProfile: s.currUserProfile,
-  }));
+  const currUserId = useUserStore((s) => s.currUserId);
+  const userProfile = useUserStore((s) => s.currUserProfile);
 
   const [applied, setApplied] = useState(false);
   const [saved, setSaved] = useState(false);
-  const { saveJob, unapplyFromJob, jobFitStats, getJobFitStats } = useJobStore((s) => ({
-    saveJob: s.saveJob,
-    unapplyFromJob: s.unapplyFromJob,
-    jobFitStats: s.jobFitStats,
-    getJobFitStats: s.getJobFitStats,
-  }));
+  const saveJob = useJobStore((s) => s.saveJob);
+  const unapplyFromJob = useJobStore((s) => s.unapplyFromJob);
+  const jobFitStats = useJobStore((s) => s.jobFitStats);
+  const getJobFitStats = useJobStore((s) => s.getJobFitStats);
 
   const jobApplications = job?.applications;
   //console.log(jobApplications);

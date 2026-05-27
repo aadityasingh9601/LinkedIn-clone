@@ -19,27 +19,21 @@ const Modal = lazy(
 const Poll = lazy(() => import("../../components/Polls/Poll"));
 
 export default function Homepage() {
-  const { isLoggedIn, currUserId, getAllLikedPosts, getAllFollowed, getAllConnections } = useUserStore((s) => ({
-    isLoggedIn: s.isLoggedIn,
-    currUserId: s.currUserId,
-    getAllLikedPosts: s.getAllLikedPosts,
-    getAllFollowed: s.getAllFollowed,
-    getAllConnections: s.getAllConnections,
-  }));
+  const isLoggedIn = useUserStore((s) => s.isLoggedIn);
+  const currUserId = useUserStore((s) => s.currUserId);
+  const getAllLikedPosts = useUserStore((s) => s.getAllLikedPosts);
+  const getAllFollowed = useUserStore((s) => s.getAllFollowed);
+  const getAllConnections = useUserStore((s) => s.getAllConnections);
   const logEvent = useAnalyticStore((state) => state.logEvent);
-  const { posts, getPosts, hasMore, page, postFormModal, setPostFormModal, setShowScheduledPosts } = usePostStore((s) => ({
-    posts: s.posts,
-    getPosts: s.getPosts,
-    hasMore: s.hasMore,
-    page: s.page,
-    postFormModal: s.postFormModal,
-    setPostFormModal: s.setPostFormModal,
-    setShowScheduledPosts: s.setShowScheduledPosts,
-  }));
-  const { getAllPolls, polls } = usePollStore((s) => ({
-    getAllPolls: s.getAllPolls,
-    polls: s.polls,
-  }));
+  const posts = usePostStore((s) => s.posts);
+  const getPosts = usePostStore((s) => s.getPosts);
+  const hasMore = usePostStore((s) => s.hasMore);
+  const page = usePostStore((s) => s.page);
+  const postFormModal = usePostStore((s) => s.postFormModal);
+  const setPostFormModal = usePostStore((s) => s.setPostFormModal);
+  const setShowScheduledPosts = usePostStore((s) => s.setShowScheduledPosts);
+  const getAllPolls = usePollStore((s) => s.getAllPolls);
+  const polls = usePollStore((s) => s.polls);
 
   useEffect(() => {
     if (isLoggedIn) {

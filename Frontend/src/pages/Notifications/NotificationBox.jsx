@@ -4,11 +4,9 @@ import { useEffect } from "react";
 import useNotificationStore from "../../stores/Notification";
 
 export default function NotificationBox() {
-  const { notifications, markAsRead, setNotiCount } = useNotificationStore((s) => ({
-    notifications: s.notifications,
-    markAsRead: s.markAsRead,
-    setNotiCount: s.setNotiCount,
-  }));
+  const notifications = useNotificationStore((s) => s.notifications);
+  const markAsRead = useNotificationStore((s) => s.markAsRead);
+  const setNotiCount = useNotificationStore((s) => s.setNotiCount);
 
   useEffect(() => {
     setNotiCount(0);

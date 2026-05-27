@@ -19,10 +19,8 @@ import AnalyticsSection from "../../components/Profile/AnalyticsSection";
 //it can beomce light & fast.
 export default function Profile() {
   const { id: currProfileId } = useParams();
-  const { profile, getProfileData } = useProfileStore((s) => ({
-    profile: s.profile,
-    getProfileData: s.getProfileData,
-  }));
+  const profile = useProfileStore((s) => s.profile);
+  const getProfileData = useProfileStore((s) => s.getProfileData);
   const currUserId = useUserStore((state) => state.currUserId);
 
   useEffect(() => {
