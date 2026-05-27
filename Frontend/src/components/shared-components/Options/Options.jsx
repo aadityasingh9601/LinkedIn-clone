@@ -3,10 +3,22 @@ import Ellipsis from "../Icons/Ellipsis";
 import Pen from "../Icons/Pen";
 import Trash from "../Icons/Trash";
 
-export default function Options({ show, setShow, setEdit, setDelete }) {
+export default function Options({
+  show,
+  setShow,
+  setEdit,
+  setDelete,
+  dropdownRef,
+}) {
   return (
-    <div className={styles.options}>
-      <div className={styles.optionsBtn} onClick={() => setShow(!show)}>
+    <div className={styles.options} ref={dropdownRef}>
+      <div
+        className={styles.optionsBtn}
+        onClick={() => {
+          console.log("Cliked");
+          setShow(!show);
+        }}
+      >
         <Ellipsis />
       </div>
 
