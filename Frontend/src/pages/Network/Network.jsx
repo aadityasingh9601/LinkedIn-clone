@@ -9,10 +9,12 @@ import useNetworkStore from "../../stores/Network";
 export default function Network() {
   const { type } = useParams(); // "followers" or "following"
   console.log(type);
-  const network = useNetworkStore((state) => state.network);
+  const { network, getNetwork, handleRemove } = useNetworkStore((s) => ({
+    network: s.network,
+    getNetwork: s.getNetwork,
+    handleRemove: s.handleRemove,
+  }));
   const currUserId = useUserStore((state) => state.currUserId);
-  const getNetwork = useNetworkStore((state) => state.getNetwork);
-  const handleRemove = useNetworkStore((state) => state.handleRemove);
 
   useEffect(() => {
     getNetwork(type, currUserId);

@@ -33,9 +33,11 @@ import { setNavigate } from "./utils/api/axiosInstance";
 import useSocket from "./hooks/useSocket";
 
 const AppRoutes = () => {
-  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-  const currUserId = useUserStore((state) => state.currUserId);
-  const checkAuthStatus = useUserStore((state) => state.checkAuthStatus);
+  const { isLoggedIn, currUserId, checkAuthStatus } = useUserStore((s) => ({
+    isLoggedIn: s.isLoggedIn,
+    currUserId: s.currUserId,
+    checkAuthStatus: s.checkAuthStatus,
+  }));
   const getNotifications = useNotificationStore(
     (state) => state.getNotifications,
   );
@@ -85,11 +87,12 @@ const AppRoutes = () => {
 };
 
 function App() {
-  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const { isLoggedIn, currUserId } = useUserStore((s) => ({
+    isLoggedIn: s.isLoggedIn,
+    currUserId: s.currUserId,
+  }));
   const BACKEND_URL =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
-
-  const currUserId = useUserStore((state) => state.currUserId);
   const socket = useSocket(isLoggedIn, currUserId, location);
 
   //To get all the notifications that are unread ,so that we can display the number on the bell icon.

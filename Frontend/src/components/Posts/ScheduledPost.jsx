@@ -8,8 +8,8 @@ import Xmark from "../shared-components/Icons/Xmark";
 import { formatTime, formatDate2 } from "../../utils/helper";
 import Options from "../shared-components/Options/Options";
 import DeleteModal from "../shared-components/Modal/DeleteModal";
+import PostForm from "./PostForm";
 
-const PostEditForm = lazy(() => import("./PostEditForm"));
 
 export default function ScheduledPost({ scheduledPost }) {
   const [editModal, setEditModal] = useState(false);
@@ -35,13 +35,13 @@ export default function ScheduledPost({ scheduledPost }) {
       <div>{scheduledPost?.content.substring(0, 50)}...</div>
 
       {editModal && (
-        <Modal>
-          <Xmark onClick={() => setEditModal(false)} />
-          <Suspense fallback={<div>Loading...</div>}>
-            <PostEditForm post={scheduledPost} />
-          </Suspense>
-        </Modal>
-      )}
+              <Modal>
+                <Xmark onClick={() => setEditModal(false)} />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <PostForm mode="edit" post={scheduledPost} setEditModal={setEditModal}/>
+                </Suspense>
+              </Modal>
+            )}
 
       {deleteModal && (
         <DeleteModal

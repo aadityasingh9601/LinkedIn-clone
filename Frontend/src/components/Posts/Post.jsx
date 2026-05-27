@@ -3,9 +3,7 @@ import { lazy } from "react";
 import { useState, useEffect, useRef } from "react";
 import usePostStore from "../../stores/Post";
 import Modal from "../shared-components/Modal/Modal";
-const Button = lazy(() => import("../shared-components/Buttons/Button"));
 import { Suspense } from "react";
-const PostEditForm = lazy(() => import("./PostEditForm"));
 const CommentSection = lazy(() => import("./CommentSection"));
 import useUserStore from "../../stores/User";
 import UserInfo from "../shared-components/User/UserInfo";
@@ -20,23 +18,25 @@ import DeleteModal from "../shared-components/Modal/DeleteModal";
 import PostForm from "./PostForm";
 
 export default function Post({ post, postRef }) {
-  const currUserId = useUserStore((state) => state.currUserId);
+  const { currUserId, allLikedPosts, allFollowed } = useUserStore((s) => ({
+    currUserId: s.currUserId,
+    allLikedPosts: s.allLikedPosts,
+    allFollowed: s.allFollowed,
+  }));
   const [showComments, setshowComments] = useState(false);
   const [deleteModal, setdeleteModal] = useState(false);
   const [likeModal, setlikeModal] = useState(false);
   const [isLiked, setisLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likeCount);
-  const deletePost = usePostStore((state) => state.deletePost);
+  const { deletePost, likePost, unlikePost } = usePostStore((s) => ({
+    deletePost: s.deletePost,
+    likePost: s.likePost,
+    unlikePost: s.unlikePost,
+  }));
   const [commentCount, setCommentCount] = useState(post.comments.length);
-
-  const likePost = usePostStore((state) => state.likePost);
-  const unlikePost = usePostStore((state) => state.unlikePost);
   const [likedUsers, setlikedUsers] = useState([]);
 
   const comments = useCommentStore((state) => state.comments);
-
-  const allLikedPosts = useUserStore((state) => state.allLikedPosts);
-  const allFollowed = useUserStore((state) => state.allFollowed);
 
   const [editModal, setEditModal] = useState(false);
 

@@ -46,16 +46,16 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const createPost = usePostStore((state) => state.createPost);
-  const editPost = usePostStore((state) => state.editPost);
-  const poll = usePostStore((state) => state.poll);
-  const setPoll = usePostStore((state) => state.setPoll);
-  const schedule = usePostStore((state) => state.schedule);
-  const setSchedule = usePostStore((state) => state.setSchedule);
-  const showScheduledPosts = usePostStore((state) => state.showScheduledPosts);
-  const setShowScheduledPosts = usePostStore(
-    (state) => state.setShowScheduledPosts,
-  );
+  const { createPost, editPost, poll, setPoll, schedule, setSchedule, showScheduledPosts, setShowScheduledPosts } = usePostStore((s) => ({
+    createPost: s.createPost,
+    editPost: s.editPost,
+    poll: s.poll,
+    setPoll: s.setPoll,
+    schedule: s.schedule,
+    setSchedule: s.setSchedule,
+    showScheduledPosts: s.showScheduledPosts,
+    setShowScheduledPosts: s.setShowScheduledPosts,
+  }));
 
   const currUserProfile = useUserStore((state) => state.currUserProfile);
 

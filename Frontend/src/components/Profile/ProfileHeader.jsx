@@ -17,19 +17,29 @@ import ProfileHeaderForm from "./ProfileHeaderForm";
 export default function ProfileHeader({ customStyles, profile }) {
   const [isFollowed, setisFollowed] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
-  const currUserId = useUserStore((state) => state.currUserId);
-  const follow = useFollowStore((state) => state.follow);
-  const unfollow = useFollowStore((state) => state.unfollow);
-  const editHead = useProfileStore((state) => state.editHead);
-  const setEditHead = useProfileStore((state) => state.setEditHead);
-  const createChat = useChatStore((s) => s.createChat);
-  const handleMessage = useChatStore((state) => state.handleMessage);
-  const setfullChat = useChatStore((state) => state.setfullChat);
-  const allFollowed = useUserStore((state) => state.allFollowed);
-  const allConnections = useUserStore((state) => state.allConnections);
-  const sendConnReq = useConnectionStore((state) => state.sendConnReq);
-  const removeConn = useConnectionStore((state) => state.removeConn);
-  const currUserProfile = useUserStore((s) => s.currUserProfile);
+  const { currUserId, allFollowed, allConnections, currUserProfile } = useUserStore((s) => ({
+    currUserId: s.currUserId,
+    allFollowed: s.allFollowed,
+    allConnections: s.allConnections,
+    currUserProfile: s.currUserProfile,
+  }));
+  const { follow, unfollow } = useFollowStore((s) => ({
+    follow: s.follow,
+    unfollow: s.unfollow,
+  }));
+  const { editHead, setEditHead } = useProfileStore((s) => ({
+    editHead: s.editHead,
+    setEditHead: s.setEditHead,
+  }));
+  const { createChat, handleMessage, setfullChat } = useChatStore((s) => ({
+    createChat: s.createChat,
+    handleMessage: s.handleMessage,
+    setfullChat: s.setfullChat,
+  }));
+  const { sendConnReq, removeConn } = useConnectionStore((s) => ({
+    sendConnReq: s.sendConnReq,
+    removeConn: s.removeConn,
+  }));
 
   const existingChat = () => {
     for (let chat of currUserProfile?.chatList) {

@@ -19,8 +19,10 @@ export default function Comment({ comment }) {
   const [commentEdit, setCommentEdit] = useState(false);
   const [deleteModal, setdeleteModal] = useState(false);
   const currUserId = useUserStore((state) => state.currUserId);
-  const editComment = useCommentStore((state) => state.editComment);
-  const deleteComment = useCommentStore((state) => state.deleteComment);
+  const { editComment, deleteComment } = useCommentStore((s) => ({
+    editComment: s.editComment,
+    deleteComment: s.deleteComment,
+  }));
   const handleDelete = () =>{
     deleteComment(comment?.author._id, comment?._id)
   }

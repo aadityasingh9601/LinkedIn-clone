@@ -5,8 +5,10 @@ import TimePassed from "../shared-components/Date_Time/TimePassed";
 import Xmark from "../shared-components/Icons/Xmark";
 
 export default function Notification({ noti }) {
-  const deleteNoti = useNotificationStore((state) => state.deleteNoti);
-  const handleConnRes = useNotificationStore((state) => state.handleConnRes);
+  const { deleteNoti, handleConnRes } = useNotificationStore((s) => ({
+    deleteNoti: s.deleteNoti,
+    handleConnRes: s.handleConnRes,
+  }));
 
   return (
     <div className={styles.notification}>

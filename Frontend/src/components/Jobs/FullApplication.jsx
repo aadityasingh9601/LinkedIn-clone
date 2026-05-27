@@ -8,9 +8,11 @@ import Envelope from "../shared-components/Icons/Envelope";
 export default function FullApplication() {
   const { id, appId } = useParams();
   const navigate = useNavigate();
-  const jobs = useJobStore((state) => state.jobs);
+  const { jobs, applicants } = useJobStore((s) => ({
+    jobs: s.jobs,
+    applicants: s.applicants,
+  }));
   const job = jobs.find((job) => job._id === id);
-  const applicants = useJobStore((state) => state.applicants);
 
   const application = applicants.find((app) => app._id === appId);
   const BACKEND_URL =
@@ -28,11 +30,10 @@ export default function FullApplication() {
     navigate(`/profile/${userId}`);
   };
 
-  const markAsReviewed = useJobStore((state) => state.markAsReviewed);
-
-  const rejectUserApplication = useJobStore(
-    (state) => state.rejectUserApplication,
-  );
+  const { markAsReviewed, rejectUserApplication } = useJobStore((s) => ({
+    markAsReviewed: s.markAsReviewed,
+    rejectUserApplication: s.rejectUserApplication,
+  }));
 
   const downloadResume = () => {
     window.open(

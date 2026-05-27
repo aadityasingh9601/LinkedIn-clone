@@ -20,10 +20,14 @@ export default function PostHead({ data, type, setEdit, setDelete }) {
   
   
   const deletePoll = usePollStore((state) => state.deletePoll);
-  const currUserId = useUserStore((state) => state.currUserId);
-  const allFollowed = useUserStore((state) => state.allFollowed);
-  const follow = useFollowStore((state) => state.follow);
-  const unfollow = useFollowStore((state) => state.unfollow);
+  const { currUserId, allFollowed } = useUserStore((s) => ({
+    currUserId: s.currUserId,
+    allFollowed: s.allFollowed,
+  }));
+  const { follow, unfollow } = useFollowStore((s) => ({
+    follow: s.follow,
+    unfollow: s.unfollow,
+  }));
 
   const profile = data.author?.profile;
   const profileUserId = data.author?._id;

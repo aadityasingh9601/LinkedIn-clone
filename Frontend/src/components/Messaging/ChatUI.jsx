@@ -12,13 +12,18 @@ import { formatDate2 } from "../../utils/helper";
 import useUserStore from "../../stores/User";
 
 export default function ChatUI({ socket }) {
-  const currChatId = useChatStore((state) => state.currChatId);
-  const currChatData = useChatStore((state)=> state.currChatData);
-  const currUserId = useUserStore((state) => state.currUserId);
-  const getChatData = useChatStore((state) => state.getChatData);
-  const messages = useChatStore((state) => state.messages);
-  const getAllMsg = useChatStore((state) => state.getAllMsg);
-  const setfullChat = useChatStore((state) => state.setfullChat);
+  const { currChatId, currChatData, getChatData, messages, getAllMsg, setfullChat } = useChatStore((s) => ({
+    currChatId: s.currChatId,
+    currChatData: s.currChatData,
+    getChatData: s.getChatData,
+    messages: s.messages,
+    getAllMsg: s.getAllMsg,
+    setfullChat: s.setfullChat,
+  }));
+  const { currUserId, currUserProfile } = useUserStore((s) => ({
+    currUserId: s.currUserId,
+    currUserProfile: s.currUserProfile,
+  }));
   const profile = useProfileStore((state) => state.profile);
   const chatContainerRef = useRef(null);
 
@@ -29,7 +34,6 @@ export default function ChatUI({ socket }) {
     profileImage: profile?.profileImage,
     userId: profile?.userId
   };
-  const currUserProfile = useUserStore((s) => s.currUserProfile);
 
   const existingChat = () => {
     console.log(currUserProfile?.chatList);

@@ -13,8 +13,10 @@ import Spinner from "../shared-components/Loaders/Spinner";
 
 export default function EducationForm({ education = {}, setShow, mode }) {
   const [isLoading, setIsLoading] = useState(false);
-  const addEducation = useProfileStore((s) => s.addEducation);
-  const updateEducation = useProfileStore((s) => s.updateEducation);
+  const { addEducation, updateEducation } = useProfileStore((s) => ({
+    addEducation: s.addEducation,
+    updateEducation: s.updateEducation,
+  }));
   const {
     register,
     handleSubmit,

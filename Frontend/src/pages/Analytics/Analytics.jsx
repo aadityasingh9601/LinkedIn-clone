@@ -5,9 +5,11 @@ import useAnalyticStore from "../../stores/Analytic";
 import dropDownStyles from "../../components/shared-components/Select/RHFselect.module.css";
 
 export default function Analytics() {
-  const analyticsEvent = useAnalyticStore((state) => state.analyticsEvent);
-  const analyticsData = useAnalyticStore((state) => state.analyticsData);
-  const getData = useAnalyticStore((state) => state.getData);
+  const { analyticsEvent, analyticsData, getData } = useAnalyticStore((s) => ({
+    analyticsEvent: s.analyticsEvent,
+    analyticsData: s.analyticsData,
+    getData: s.getData,
+  }));
   const [range, setRange] = useState("all");
 
   useEffect(() => {

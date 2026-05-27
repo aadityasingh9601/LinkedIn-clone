@@ -16,8 +16,10 @@ export default function Message({ msg, formatTime }) {
   const [newMsg, setnewMsg] = useState(msg?.content);
   const [editMsg, setEditMsg] = useState(false);
   const currUserId = useUserStore((state) => state.currUserId);
-  const updateMsg = useChatStore((state) => state.updateMsg);
-  const deleteMsg = useChatStore((state) => state.deleteMsg);
+  const { updateMsg, deleteMsg } = useChatStore((s) => ({
+    updateMsg: s.updateMsg,
+    deleteMsg: s.deleteMsg,
+  }));
 
   const timePassed = (new Date() - new Date(msg.createdAt)) / 60000;
 

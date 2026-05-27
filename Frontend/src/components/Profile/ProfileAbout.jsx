@@ -10,9 +10,11 @@ import Pen from "../shared-components/Icons/Pen";
 export default function ProfileAbout({styles, profileId, profileAbout }) {
   const [isLoading, setIsLoading] = useState(false);
   const [about, setAbout] = useState(profileAbout);
-  const editAbout = useProfileStore((s) => s.editAbout);
-  const setEditAbout = useProfileStore((s) => s.setEditAbout);
-  const updateProfileAbout = useProfileStore((s) => s.updateProfileAbout);
+  const { editAbout, setEditAbout, updateProfileAbout } = useProfileStore((s) => ({
+    editAbout: s.editAbout,
+    setEditAbout: s.setEditAbout,
+    updateProfileAbout: s.updateProfileAbout,
+  }));
 
   useEffect(() => {
     if (about !== profileAbout) {

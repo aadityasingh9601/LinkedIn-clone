@@ -10,10 +10,12 @@ import PostHead from "../Posts/PostHead";
 export default function Poll({ poll }) {
   const [voted, setVoted] = useState(false);
   const currUserId = useUserStore((state) => state.currUserId);
-  const voteInPoll = usePollStore((state) => state.voteInPoll);
-  const unVote = usePollStore((state) => state.unVote);
-  const deletePoll = usePollStore((state) => state.deletePoll);
-  const checkVote = usePollStore((state) => state.checkVote);
+  const { voteInPoll, unVote, deletePoll, checkVote } = usePollStore((s) => ({
+    voteInPoll: s.voteInPoll,
+    unVote: s.unVote,
+    deletePoll: s.deletePoll,
+    checkVote: s.checkVote,
+  }));
   const [toggle, setToggle] = useState(false);
   const setVoteState = (value) => {
     setVoted(value);

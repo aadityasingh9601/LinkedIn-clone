@@ -17,8 +17,10 @@ export default function Chat({ chat, socket }) {
   );
   console.log(otherPerson);
 
-  const setfullChat = useChatStore((state) => state.setfullChat);
-  const deleteChat = useChatStore((state) => state.deleteChat);
+  const { setfullChat, deleteChat } = useChatStore((s) => ({
+    setfullChat: s.setfullChat,
+    deleteChat: s.deleteChat,
+  }));
 
   let Time = formatTime(
     chat?.lastMessage ? chat?.lastMessage?.createdAt : new Date(),

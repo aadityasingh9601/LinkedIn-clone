@@ -10,10 +10,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
 
 export default function CreateJobForm({ job }) {
-  const setpostJob = useJobStore((state) => state.setpostJob);
-  const seteditJob = useJobStore((state) => state.seteditJob);
-  const createJob = useJobStore((state) => state.createJob);
-  const updateJob = useJobStore((state) => state.updateJob);
+  const { setpostJob, seteditJob, createJob, updateJob } = useJobStore((s) => ({
+    setpostJob: s.setpostJob,
+    seteditJob: s.seteditJob,
+    createJob: s.createJob,
+    updateJob: s.updateJob,
+  }));
   const {
     register,
     handleSubmit,

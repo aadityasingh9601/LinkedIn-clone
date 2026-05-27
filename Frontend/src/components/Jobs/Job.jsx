@@ -9,9 +9,11 @@ import Xmark from "../shared-components/Icons/Xmark";
 export default function Job({ job }) {
   //console.log(job);
   const currUserId = useUserStore((state) => state.currUserId);
-  const setcurrJobListingId = useJobStore((state) => state.setcurrJobListingId);
-  const deleteJob = useJobStore((state) => state.deleteJob);
-  const seteditJob = useJobStore((state) => state.seteditJob);
+  const { setcurrJobListingId, deleteJob, seteditJob } = useJobStore((s) => ({
+    setcurrJobListingId: s.setcurrJobListingId,
+    deleteJob: s.deleteJob,
+    seteditJob: s.seteditJob,
+  }));
   const [jobOptions, setjobOptions] = useState(false);
 
   return (

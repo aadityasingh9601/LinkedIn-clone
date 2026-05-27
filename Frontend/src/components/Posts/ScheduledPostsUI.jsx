@@ -9,9 +9,11 @@ const SchPost = lazy(() => import("./ScheduledPost"));
 
 export default function ScheduledPostsUI() {
   const currUserId = useUserStore((state) => state.currUserId);
-  const scheduledPosts = usePostStore((state) => state.scheduledPosts);
-  const setShowScheduledPosts = usePostStore((state)=>state.setShowScheduledPosts)
-  const getScheduledPosts = usePostStore((state) => state.getScheduledPosts);
+  const { scheduledPosts, setShowScheduledPosts, getScheduledPosts } = usePostStore((s) => ({
+    scheduledPosts: s.scheduledPosts,
+    setShowScheduledPosts: s.setShowScheduledPosts,
+    getScheduledPosts: s.getScheduledPosts,
+  }));
 
   useEffect(() => {
     getScheduledPosts(currUserId);
