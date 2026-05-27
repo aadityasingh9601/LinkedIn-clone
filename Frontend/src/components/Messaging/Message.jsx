@@ -9,9 +9,11 @@ import DeleteModal from "../shared-components/Modal/DeleteModal";
 import ControlledInput from "../shared-components/Inputs/ControlledInput";
 import useUserStore from "../../stores/User";
 import UserAvatar from "../shared-components/User/UserAvatar";
+import useComponentVisible from "../../hooks/useComponentVisible";
 
 export default function Message({ msg, formatTime }) {
-  const [showOptions, setShowOptions] = useState(false);
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useComponentVisible();
   const [deleteModal, setDeleteModal] = useState(false);
   const [newMsg, setnewMsg] = useState(msg?.content);
   const [editMsg, setEditMsg] = useState(false);
@@ -37,10 +39,11 @@ export default function Message({ msg, formatTime }) {
         <div>
           {currUserId === msg?.sender._id && timePassed < 60 && (
             <Options
-              show={showOptions}
-              setShow={setShowOptions}
+              show={isComponentVisible}
+              setShow={setIsComponentVisible}
               setEdit={setEditMsg}
               setDelete={setDeleteModal}
+              dropdownRef={ref}
             />
           )}
         </div>
@@ -57,18 +60,18 @@ export default function Message({ msg, formatTime }) {
 
           <div className={styles.buttonWrapper}>
             <Button
-            variant="xs"
-            btnText="Cancel"
-            onClick={() => setEditMsg(false)}
-          />
-          <Button
-            variant="xs"
-            btnText="Save Changes"
-            onClick={() => {
-              updateMsg({ msgId: msg._id, newMsg: newMsg });
-              setEditMsg(false);
-            }}
-          />
+              variant="xs"
+              btnText="Cancel"
+              onClick={() => setEditMsg(false)}
+            />
+            <Button
+              variant="xs"
+              btnText="Save Changes"
+              onClick={() => {
+                updateMsg({ msgId: msg._id, newMsg: newMsg });
+                setEditMsg(false);
+              }}
+            />
           </div>
         </div>
       ) : (

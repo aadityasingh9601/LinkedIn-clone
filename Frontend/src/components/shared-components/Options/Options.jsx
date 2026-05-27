@@ -15,7 +15,6 @@ export default function Options({
       <div
         className={styles.optionsBtn}
         onClick={() => {
-          console.log("Cliked");
           setShow(!show);
         }}
       >

@@ -1,21 +1,20 @@
 import styles from "./ScheduledPostsUI.module.css";
 import { useState, lazy, Suspense } from "react";
-import Button from "../shared-components/Buttons/Button";
 import usePostStore from "../../stores/Post";
 import Modal from "../shared-components/Modal/Modal";
-import Ellipsis from "../shared-components/Icons/Ellipsis";
 import Xmark from "../shared-components/Icons/Xmark";
 import { formatTime, formatDate2 } from "../../utils/helper";
 import Options from "../shared-components/Options/Options";
 import DeleteModal from "../shared-components/Modal/DeleteModal";
 import PostForm from "./PostForm";
-
+import useComponentVisible from "../../hooks/useComponentVisible";
 
 export default function ScheduledPost({ scheduledPost }) {
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useComponentVisible();
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const deletePost = usePostStore((state) => state.deletePost);
-  const [options, setOptions] = useState(false);
   const handleDelete = () => deletePost(scheduledPost._id);
   return (
     <div className={styles.scheduledPost}>
@@ -25,23 +24,28 @@ export default function ScheduledPost({ scheduledPost }) {
         )}`}</div>
         <div>
           <Options
-            show={options}
-            setShow={setOptions}
+            show={isComponentVisible}
+            setShow={setIsComponentVisible}
             setEdit={setEditModal}
             setDelete={setDeleteModal}
+            dropdownRef={ref}
           />
         </div>
       </div>
       <div>{scheduledPost?.content.substring(0, 50)}...</div>
 
       {editModal && (
-              <Modal>
-                <Xmark onClick={() => setEditModal(false)} />
-                <Suspense fallback={<div>Loading...</div>}>
-                  <PostForm mode="edit" post={scheduledPost} setEditModal={setEditModal}/>
-                </Suspense>
-              </Modal>
-            )}
+        <Modal>
+          <Xmark onClick={() => setEditModal(false)} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <PostForm
+              mode="edit"
+              post={scheduledPost}
+              setEditModal={setEditModal}
+            />
+          </Suspense>
+        </Modal>
+      )}
 
       {deleteModal && (
         <DeleteModal

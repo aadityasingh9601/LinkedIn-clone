@@ -13,9 +13,6 @@ import useComponentVisible from "../../hooks/useComponentVisible";
 export default function PostHead({ data, type, setEdit, setDelete }) {
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible();
-  console.log(ref);
-  console.log(isComponentVisible);
-  console.log(setIsComponentVisible);
   const [isFollowed, setIsFollowed] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const currUserId = useUserStore((s) => s.currUserId);

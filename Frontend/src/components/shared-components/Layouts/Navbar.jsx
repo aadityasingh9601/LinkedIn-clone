@@ -19,8 +19,11 @@ import Xmark from "../Icons/Xmark";
 import ControlledInput from "../Inputs/ControlledInput";
 import UserAvatar from "../User/UserAvatar";
 import UserIcon from "../Icons/UserIcon";
+import useComponentVisible from "../../../hooks/useComponentVisible";
 
 export default function Navbar({ showMessaging }) {
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useComponentVisible();
   const navigate = useNavigate();
   const userProfiles = useProfileStore((s) => s.userProfiles);
   const getProfiles = useProfileStore((s) => s.getProfiles);
@@ -96,24 +99,27 @@ export default function Navbar({ showMessaging }) {
           <HomeIcon />
           <span>Home</span>
         </Link>
-        <Link>
-          <UsersIcon />
-          <span onClick={toggle}>My Network</span>
-        </Link>
-        {showNetwork && (
-          <div className={styles.myNetwork}>
-            <div>Manage your network</div>
-            <div onClick={() => navigate("/network/connections")}>
-              <UsersIcon /> Connections
+        <div ref={ref}>
+          <Link onClick={() => setIsComponentVisible(!isComponentVisible)}>
+            <UsersIcon />
+            <span>My Network</span>
+          </Link>
+          {isComponentVisible && (
+            <div className={styles.myNetwork}>
+              <div>Manage your network</div>
+              <div onClick={() => navigate("/network/connections")}>
+                <UsersIcon /> Connections
+              </div>
+              <div onClick={() => navigate("/network/followers")}>
+                <UserIcon /> Followers
+              </div>
+              <div onClick={() => navigate("/network/following")}>
+                <i class="fa-solid fa-user"></i>Following
+              </div>
             </div>
-            <div onClick={() => navigate("/network/followers")}>
-              <UserIcon /> Followers
-            </div>
-            <div onClick={() => navigate("/network/following")}>
-              <i class="fa-solid fa-user"></i>Following
-            </div>
-          </div>
-        )}
+          )}
+        </div>
+
         <Link to={"/jobs"}>
           <JobIcon />
           <span>Jobs</span>
