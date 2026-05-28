@@ -60,9 +60,18 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
   const [preview, setPreview] = useState(null);
   // Watch for file changes
   const file = watch("media");
+  console.log(typeof file);
+  console.log(file);
   const existingContent = watch("content");
 
+  useEffect(() => {
+    if (typeof file === "string") {
+      setPreview(post?.media?.url);
+    }
+  }, []);
+
   if (typeof file !== "string" && file && file.length > 0) {
+    console.log("triggered");
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreview(reader.result);
@@ -86,10 +95,6 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
     )
       reset();
   };
-
-  useEffect(() => {
-    setPreview(post?.media?.url);
-  }, [post]);
 
   return (
     <div>
@@ -136,6 +141,7 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
                       <Xmark
                         onClick={() => {
                           setValue("media", "");
+                          setPreview("");
                         }}
                       />
                     </div>

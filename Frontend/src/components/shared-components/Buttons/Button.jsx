@@ -22,7 +22,7 @@ const [buttonHeight, setButtonHeight] = useState();
   const variantStyles = {
     xs: {padding:"0.25rem 0.6rem",fontSize:"0.65rem"},
     sm: { padding: "0.4rem 1rem", fontSize: "0.8rem" },
-    md: { padding: "0.6rem 1.5rem", fontSize: "1rem" },
+    md: { padding: "0.5rem 1.4rem", fontSize: "0.95rem" },
   };
 
   useLayoutEffect(() => {

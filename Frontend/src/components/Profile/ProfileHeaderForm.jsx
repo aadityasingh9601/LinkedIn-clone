@@ -9,7 +9,7 @@ import useProfileStore from "../../stores/Profile";
 import { useState } from "react";
 import Spinner from "../shared-components/Loaders/Spinner";
 
-export default function ProfileHeaderForm({ profile }) {
+export default function ProfileHeaderForm({ profile,handleCancel }) {
   const {
     register,
     handleSubmit,
@@ -131,6 +131,7 @@ export default function ProfileHeaderForm({ profile }) {
         </FormWrapper>
       </div>
       <div className={styles.footer}>
+        <Button variant="sm" btnText="Cancel" onClick={handleCancel} />
         <Button
           form="form"
           type="submit"

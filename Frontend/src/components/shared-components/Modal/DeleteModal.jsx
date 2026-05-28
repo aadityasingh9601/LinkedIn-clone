@@ -5,7 +5,6 @@ import Button from "../Buttons/Button";
 export default function DeleteModal({ handleCancel, handleDelete }) {
   return (
     <>
-      <Xmark onClick={handleCancel} />
       <div className={styles.deleteModal}>
         <div className={styles.deleteModalText}>
           Are you sure you want to delete this? This action isn't reversible!

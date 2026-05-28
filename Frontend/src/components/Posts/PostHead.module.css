@@ -8,13 +8,21 @@
   align-items: normal !important;
 }
 
-.followBtn {
+.followBtnWrapper {
   position: absolute;
   right: 3.5rem;
+}
+
+.followBtnWrapper button{
+  display: flex;
+  gap: 0.4rem;
+}
+
+.followBtn {
+  font-size: 0.9rem;
   background-color: white;
   color: #0a66c2;
   border: none;
-  font-size: 1rem;
 }
 
 .followBtn:hover {
@@ -22,21 +30,24 @@
 }
 
 .followedBtn {
-  position: absolute;
-  right: 3.5rem;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.2rem;
   background-color: rgb(219, 212, 212);
   color: black;
   border: none;
-  font-size: 1rem;
 }
 
-.followBtn i {
-  margin-right: 0.3rem;
-  font-size: 1.1rem;
+.followedBtn:hover {
+  background-color: rgb(203, 197, 197);
 }
 
-.ellipsis{
-  position:absolute;
-  top:0;
-  right:0;
+.followBtn, .followedBtn i {
+  
+}
+
+.ellipsis {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

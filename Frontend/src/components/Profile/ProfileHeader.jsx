@@ -147,9 +147,8 @@ export default function ProfileHeader({ customStyles, profile }) {
       </div>
       {editHead && (
         <Modal>
-          <Xmark onClick={() => setEditHead(false)} />
           <Suspense fallback={<div>Loading...</div>}>
-            <ProfileHeaderForm profile={profile} />
+            <ProfileHeaderForm profile={profile} handleCancel={()=> setEditHead(false)}/>
           </Suspense>
         </Modal>
       )}

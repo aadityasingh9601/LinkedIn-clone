@@ -22,13 +22,6 @@ export default function PostHead({ data, type, setEdit, setDelete }) {
   const profile = data.author?.profile;
   const profileUserId = data.author?._id;
 
-  //To ensure that we can't scroll the page while the modal is open.
-  // if (deleteModal || editModal) {
-  //   document.body.style.overflow = "hidden";
-  // } else {
-  //   document.body.style.overflow = "unset";
-  // }
-
   const setFollower = (userId) => {
     follow(userId);
     setIsFollowed(true);
@@ -60,25 +53,27 @@ export default function PostHead({ data, type, setEdit, setDelete }) {
         styles={{ left: "4.5rem", top: "2.7rem", fontSize: "0.72rem" }}
       />
 
-      {(type === "post" || type === "poll") &&
-        currUserId !== profileUserId &&
-        (isFollowed ? (
-          <button
-            className={styles.followedBtn}
-            onClick={() => unsetFollower(profileUserId)}
-          >
-            Following
-            <Check styles={{ marginLeft: "0.4rem" }} />
-          </button>
-        ) : (
-          <button
-            className={styles.followBtn}
-            onClick={() => setFollower(profileUserId)}
-          >
-            <Plus />
-            Follow
-          </button>
-        ))}
+      {(type === "post" || type === "poll") && currUserId !== profileUserId && (
+        <div className={styles.followBtnWrapper}>
+          {isFollowed ? (
+            <button
+              className={styles.followedBtn}
+              onClick={() => unsetFollower(profileUserId)}
+            >
+              Following
+              <Check />
+            </button>
+          ) : (
+            <button
+              className={styles.followBtn}
+              onClick={() => setFollower(profileUserId)}
+            >
+              <Plus />
+              Follow
+            </button>
+          )}
+        </div>
+      )}
 
       <div className={styles.ellipsis}>
         {currUserId === profileUserId && (
