@@ -35,6 +35,8 @@ const usePostStore = create((set) => ({
     set({ showScheduledPosts: value });
   },
 
+  usersWhoLiked: [],
+
   hasMore: true,
 
   //To detect our page turn or no. of times posts data have been fetched.
@@ -196,7 +198,8 @@ const usePostStore = create((set) => ({
   getAllLikes: async (postId) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/post/${postId}/like`);
-      setlikedUsers(response.data);
+      console.log(response);
+      set({ usersWhoLiked: response.data.likes });
     });
   },
 }));

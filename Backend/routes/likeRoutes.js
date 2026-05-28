@@ -12,6 +12,4 @@ router
   .post(protect, wrapAsync(likeController.likePost))
   .delete(protect, wrapAsync(likeController.unlikePost));
 
-router.get("/checklike", protect, wrapAsync(likeController.checkLike));
-
 export default router;

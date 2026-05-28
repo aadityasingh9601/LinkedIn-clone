@@ -7,11 +7,12 @@ export default function UserInfo({
   profileId,
   username,
   headline,
+  customClass = "",
   avatarStyles = {},
 }) {
   const navigate = useNavigate();
   return (
-    <div className={styles.userInfo} key={profileId}>
+    <div className={`${styles.userInfo} ${customClass}`} key={profileId}>
       <UserAvatar url={url} customStyles={avatarStyles} />
       <div className={styles.details}>
         <div

@@ -74,11 +74,30 @@
 }
 
 .likeList {
+  width: 30rem;
+  max-height: 30rem;
+  min-height: 15rem;
+  justify-content: center;
+  overflow-y: auto;
+  border-radius: 1rem;
+}
+
+.likeListHeader{
+  padding:1rem 0 0.5rem 1rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  border-bottom: 1px solid gray;
+}
+
+.likeListBody{
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 1rem 0.5rem;
-  border-radius: 1rem;
+  padding:0.5rem 1rem;
+}
+
+.likeListUser{
+  border-bottom: 1px solid gray;
+  padding: 0.5rem 0 0 0;
 }
 
 .like {

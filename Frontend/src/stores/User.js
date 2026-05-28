@@ -52,8 +52,7 @@ const useUserStore = create((set, get) => ({
       }
     });
   },
-  //If cookies are not setting in the browser in other ways, try sending them normally in a res.send object rather than
-  //res.cookie & then use the cookie api on frontend to set them in the browser.
+
   login: async (loginData, navigate, setIsLoading) => {
     tryCatchWrapper(async () => {
       setIsLoading(true);
@@ -88,28 +87,22 @@ const useUserStore = create((set, get) => ({
 
   //But storing all ids of posts liked by the user will cause error, as we can store only a limited amount of
   //data in our localStorage, so we'll store only those ids that are liked by the user and are present in the
-  //current feed.
+  //current feed -> To be implemented at scale.
   allLikedPosts: new Set(safeParseJSON("allLikedPosts", [])),
 
   setAllLikedPosts: (action, postId) => {
     const likedPostIds = safeParseJSON("allLikedPosts", []);
-
     const likedSet = new Set(likedPostIds); //Create set from the array.
 
     if (action === "add") {
       likedSet.add(postId);
     }
-
     if (action === "remove") {
       likedSet.delete(postId);
     }
-    // Update localStorage,Set isn't a plain JS object so we havae to serialize it like this in an array.
+
     localStorage.setItem("allLikedPosts", JSON.stringify([...likedSet]));
-
-    // Update the state
     set({ allLikedPosts: likedSet });
-
-    //console.log("Updated liked posts:", likedSet);
   },
 
   getAllLikedPosts: async () => {

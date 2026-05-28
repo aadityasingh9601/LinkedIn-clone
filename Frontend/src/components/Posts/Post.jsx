@@ -18,9 +18,9 @@ import DeleteModal from "../shared-components/Modal/DeleteModal";
 import PostForm from "./PostForm";
 
 export default function Post({ post, postRef }) {
-  const currUserId = useUserStore((s) => s.currUserId);
   const allLikedPosts = useUserStore((s) => s.allLikedPosts);
-  const allFollowed = useUserStore((s) => s.allFollowed);
+  const getAllLikes = usePostStore((s) => s.getAllLikes);
+  const usersWhoLiked = usePostStore((s) => s.usersWhoLiked);
   const [showComments, setshowComments] = useState(false);
   const [deleteModal, setdeleteModal] = useState(false);
   const [likeModal, setlikeModal] = useState(false);
@@ -30,7 +30,6 @@ export default function Post({ post, postRef }) {
   const likePost = usePostStore((s) => s.likePost);
   const unlikePost = usePostStore((s) => s.unlikePost);
   const [commentCount, setCommentCount] = useState(post.comments.length);
-  const [likedUsers, setlikedUsers] = useState([]);
 
   const comments = useCommentStore((state) => state.comments);
 
@@ -67,7 +66,7 @@ export default function Post({ post, postRef }) {
   //Fetch likes related to a post when like modal shows up.
   useEffect(() => {
     if (likeModal) {
-      getAllLikes(post._id);
+      getAllLikes(post?._id);
     }
   }, [likeModal]);
 
@@ -135,18 +134,24 @@ export default function Post({ post, postRef }) {
 
         {likeModal && (
           <Modal>
-            <Xmark onClick={() => togglelikeModal(false)} />
             <div className={styles.likeList}>
-              {likedUsers?.map((like) => {
-                return (
-                  <UserInfo
-                    userId={like.user._id}
-                    url={like.user.profileImage}
-                    username={like.user.name}
-                    headline={like.user.headline}
-                  />
-                );
-              })}
+              <div className={styles.likeListHeader}>
+                Likes <Xmark onClick={() => togglelikeModal(false)} />
+              </div>
+              <div className={styles.likeListBody}>
+                {usersWhoLiked?.map((like) => {
+                  return (
+                    <UserInfo
+                      customClass={styles.likeListUser}
+                      profileId={like?.user.profile._id}
+                      url={like?.user.profile.profileImage.url}
+                      username={like?.user.profile.name}
+                      headline={like?.user.profile.headline}
+                      avatarStyles={{ height: "3.1rem", width: "3.1rem" }}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </Modal>
         )}
@@ -155,7 +160,7 @@ export default function Post({ post, postRef }) {
         <Modal>
           <Xmark onClick={() => toggleEditModal(false)} />
           <Suspense fallback={<div>Loading...</div>}>
-            <PostForm mode="edit" post={post} setEditModal={setEditModal}/>
+            <PostForm mode="edit" post={post} setEditModal={setEditModal} />
             {/* <PostEditForm post={post} toggleEditModal={toggleEditModal} /> */}
           </Suspense>
         </Modal>
