@@ -110,7 +110,7 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
         <div className={styles.postform}>
           <div className={styles.header}>
             <UserInfo
-              userId={currUserProfile?.userId}
+              profileId={currUserProfile?._id}
               username={currUserProfile?.name}
               url={currUserProfile?.profileImage?.url}
               headline={currUserProfile?.headline}

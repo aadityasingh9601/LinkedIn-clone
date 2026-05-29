@@ -39,8 +39,6 @@ const useNetworkStore = create((set) => ({
           : null;
 
       const response = await apiDelete(endpoint);
-      console.log(response.data);
-
       if (response.status === 200) {
         set((state) => ({
           network: state.network.filter(

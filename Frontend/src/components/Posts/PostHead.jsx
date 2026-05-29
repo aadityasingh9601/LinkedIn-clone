@@ -43,7 +43,7 @@ export default function PostHead({ data, type, setEdit, setDelete }) {
     <div className={styles.postHead}>
       <UserInfo
         url={profile?.profileImage?.url}
-        userId={profileUserId}
+        profileId={profile?._id}
         username={profile?.name}
         headline={profile?.headline}
         avatarStyles={{ height: "3.3rem", width: "3.3rem" }}

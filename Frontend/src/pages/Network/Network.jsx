@@ -7,8 +7,7 @@ import useUserStore from "../../stores/User";
 import useNetworkStore from "../../stores/Network";
 
 export default function Network() {
-  const { type } = useParams(); // "followers" or "following"
-  console.log(type);
+  const { type } = useParams();
   const network = useNetworkStore((s) => s.network);
   const getNetwork = useNetworkStore((s) => s.getNetwork);
   const handleRemove = useNetworkStore((s) => s.handleRemove);
@@ -19,8 +18,8 @@ export default function Network() {
   }, [type]);
 
   return (
-    <div className={styles.networks}>
-      <h2>
+    <div className={styles.networkCard}>
+      <div className={styles.networkHeader}>
         {type === "followers"
           ? "Your Followers"
           : type === "following"
@@ -28,49 +27,53 @@ export default function Network() {
             : type === "connections"
               ? "My connections"
               : null}
-      </h2>
+      </div>
 
-      {network.length === 0 ? (
-        <h2 style={{ color: "red" }}>
-          {type === "followers"
-            ? "Oops! Looks like you don't have any followers!"
-            : type === "following"
-              ? "Oops! Looks like you aren't following anybody!"
-              : type === "connections"
-                ? "Oops! You have no connections. Start connecting today!"
-                : null}
-        </h2>
-      ) : (
-        network?.map((n) => {
-          const user =
-            type === "followers"
-              ? n.user
+      <div className={styles.networkCardBody}>
+        {network.length === 0 ? (
+          <div className={styles.fallBackUI}>
+            {type === "followers"
+              ? "Oops! Looks like you don't have any followers!"
               : type === "following"
-                ? n.userFollowed
-                : type === "connections" //We're trying to find the other person from connections data here.
-                  ? currUserId === n.user._id
-                    ? n.connectedUser
-                    : n.user
-                  : null;
+                ? "Oops! Looks like you aren't following anybody!"
+                : type === "connections"
+                  ? "Oops! You have no connections. Start connecting today!"
+                  : null}
+          </div>
+        ) : (
+          network?.map((n) => {
+            const user =
+              type === "followers"
+                ? n.user
+                : type === "following"
+                  ? n.userFollowed
+                  : type === "connections" //We're trying to find the other person from connections data here.
+                    ? currUserId === n.user._id
+                      ? n.connectedUser
+                      : n.user
+                    : null;
 
-          if (!user || !user.profile) return null; // Handle edge case
+            if (!user || !user.profile) return null; // Handle edge case
 
-          return (
-            <div className={styles.network} key={n._id}>
-              <UserInfo
-                url={user.profile.profileImage?.url}
-                headline={user.profile.headline}
-                username={user.profile.name}
-                userId={user._id}
-              />
-              <Button
-                btnText={type === "following" ? "Unfollow" : "Remove"}
-                onClick={() => handleRemove(type, user._id)}
-              />
-            </div>
-          );
-        })
-      )}
+            return (
+              <div className={styles.networkItem} key={n._id}>
+                <UserInfo
+                  url={user.profile.profileImage?.url}
+                  headline={user.profile.headline}
+                  username={user.profile.name}
+                  profileId={user?.profile._id}
+                  avatarStyles={{ height: "3rem", width: "3rem" }}
+                />
+                <Button
+                  variant="sm"
+                  btnText={type === "following" ? "Unfollow" : "Remove"}
+                  onClick={() => handleRemove(type, user._id)}
+                />
+              </div>
+            );
+          })
+        )}
+      </div>
     </div>
   );
 }

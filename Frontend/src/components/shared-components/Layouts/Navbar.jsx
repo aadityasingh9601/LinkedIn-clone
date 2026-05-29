@@ -106,15 +106,26 @@ export default function Navbar({ showMessaging }) {
           </Link>
           {isComponentVisible && (
             <div className={styles.myNetwork}>
-              <div>Manage your network</div>
-              <div onClick={() => navigate("/network/connections")}>
+              <div className={styles.myNetworkHeader}>Manage your network</div>
+              <div className={styles.myNetworkBody}></div>
+              <div
+                className={styles.myNetworkBodyItem}
+                onClick={() => navigate("/network/connections")}
+              >
                 <UsersIcon /> Connections
               </div>
-              <div onClick={() => navigate("/network/followers")}>
+              <div
+                className={styles.myNetworkBodyItem}
+                onClick={() => navigate("/network/followers")}
+              >
                 <UserIcon /> Followers
               </div>
-              <div onClick={() => navigate("/network/following")}>
-                <i class="fa-solid fa-user"></i>Following
+              <div
+                className={styles.myNetworkBodyItem}
+                onClick={() => navigate("/network/following")}
+              >
+                <UserIcon />
+                Following
               </div>
             </div>
           )}
