@@ -30,11 +30,12 @@ const useNotificationStore = create((set) => ({
   },
 
   handleConnRes: async (noti, action) => {
+    console.log(action);
     tryCatchWrapper(async () => {
       const response = await apiPost(
         `/connection/respond/${noti.sender}`,
         { response: action, notiId: noti._id },
-        {}
+        {},
       );
 
       console.log(response);
@@ -45,6 +46,7 @@ const useNotificationStore = create((set) => ({
           notifications: state.notifications.filter((n) => n._id !== noti._id),
         }));
         setAllConnections("add", user1, user2);
+        toast.success(action === "Accept" ? "Accepted!" : "Rejected!");
       }
     });
   },

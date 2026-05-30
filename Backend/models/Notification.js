@@ -15,9 +15,9 @@ const notiSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  notiType: {
+  type: {
     type: String,
-    enum: ["like", "comment", "connection", "groupjoinreq", "job", "response"],
+    enum: ["like", "comment", "connection", "job", "response"],
     required: true,
   },
   isRead: {

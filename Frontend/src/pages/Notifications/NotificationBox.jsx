@@ -15,11 +15,20 @@ export default function NotificationBox() {
 
   return (
     <div className={styles.notificationBox}>
-      {notifications.length > 0 ? (
-        notifications?.map((noti) => <Notification key={noti.id} noti={noti} />)
-      ) : (
-        <h2>Oops! Looks like you don't have notifications yet!</h2>
-      )}
+      <div className={styles.boxHeader}>All notifications</div>
+      <div className={styles.boxBody}>
+        {notifications.length > 0 ? (
+          <div>
+            {notifications?.map((noti) => (
+              <Notification key={noti.id} noti={noti} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.fallBackUI}>
+            Oops! Looks like you don't have notifications yet!
+          </div>
+        )}
+      </div>
     </div>
   );
 }

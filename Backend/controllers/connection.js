@@ -47,7 +47,7 @@ const sendConnRequest = async (req, res) => {
       recipient: userId,
       message: message,
       sender: req.user._id,
-      notiType: "connection",
+      type: "connection",
     });
     await newNotification.save();
 
@@ -103,7 +103,7 @@ const respondToConnRequest = async (req, res) => {
     recipient: userId,
     message: Msg,
     sender: req.user._id,
-    notiType: "response",
+    type: "response",
   });
   await newNotification.save();
 

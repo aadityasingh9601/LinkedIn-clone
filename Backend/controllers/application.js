@@ -192,7 +192,7 @@ const rejectUserApplication = async (req, res) => {
     recipient: applicantId,
     sender: job.postedBy.toString(),
     message: "Your application has been rejected!",
-    notiType: "job",
+    type: "job",
   });
   await newNoti.save();
 

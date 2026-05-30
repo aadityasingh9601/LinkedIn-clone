@@ -40,11 +40,6 @@
   padding: 0.4rem 0.5rem;
 }
 
-.headline :first-child:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .network button {
   position: absolute !important;
   right: 0;

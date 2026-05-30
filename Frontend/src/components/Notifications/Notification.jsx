@@ -1,4 +1,4 @@
-import styles from "./Notification.module.css";
+import styles from "../../pages/Notifications/NotificationBox.module.css";
 import Button from "../shared-components/Buttons/Button";
 import useNotificationStore from "../../stores/Notification";
 import TimePassed from "../shared-components/Date_Time/TimePassed";
@@ -11,33 +11,39 @@ export default function Notification({ noti }) {
   return (
     <div className={styles.notification}>
       <div>{noti.message}</div>
-
-      {noti.notiType === "connection" || noti.notiType === "groupjoinreq" ? (
-        <div className="btns">
-          <Button
-            btnText="Accept"
-            onClick={() => handleConnRes(noti, "Accept")}
-          />
-          <Button
-            btnText="Reject"
-            onClick={() => handleConnRes(noti, "Reject")}
+      <div className={styles.options}>
+        <div className={styles.btns}>
+          {noti?.type === "connection" ? (
+            <>
+              <Button
+                btnText="Accept"
+                variant="xs"
+                onClick={() => handleConnRes(noti, "Accept")}
+              />
+              <Button
+                variant="xs"
+                btnText="Reject"
+                onClick={() => handleConnRes(noti, "Reject")}
+              />
+            </>
+          ) : (
+            <Xmark
+              customStyles={{
+                fontSize: "1.3rem",
+                zIndex: "100",
+                right: "1.8rem",
+              }}
+              onClick={() => deleteNoti(noti._id)}
+            />
+          )}
+        </div>
+        <div className="timePassed">
+          <TimePassed
+            timePassed={noti.sentDate}
+            styles={{ fontSize: "0.75rem", right: "0.5rem" }}
           />
         </div>
-      ) : (
-        <Xmark
-          styles={{
-            fontSize: "1.3rem",
-            zIndex: "100",
-            right: "1.8rem",
-          }}
-          onClick={() => deleteNoti(noti._id)}
-        />
-      )}
-
-      <TimePassed
-        timePassed={noti.sentDate}
-        styles={{ fontSize: "0.75rem", right: "0.5rem" }}
-      />
+      </div>
     </div>
   );
 }
