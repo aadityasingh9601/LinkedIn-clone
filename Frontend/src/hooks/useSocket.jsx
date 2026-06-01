@@ -33,6 +33,9 @@ const useSocket = (isLoggedIn, currUserId, location) => {
       addNoti(noti);
       toast(noti.message);
     });
+    socket.on("firstMsg",(data)=>{
+      console.log(data);
+    })
     socket.on("newMsg", (data) => {
       console.log(data);
       addMessage(data);

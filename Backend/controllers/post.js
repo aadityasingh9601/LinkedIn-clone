@@ -11,7 +11,7 @@ const createPost = async (req, res) => {
     });
   }
 
-  console.log(req.file);
+  console.log("Req file", req.files);
 
   const { date, time } = postData;
   let scheduledTime = "";
@@ -115,10 +115,10 @@ const updatePost = async (req, res) => {
 
   const existingPost = await Post.findById(postId);
 
-  console.log(req.user._id.toString())
-  console.log(existingPost.author.toString())
+  console.log(req.user._id.toString());
+  console.log(existingPost.author.toString());
 
-if (req.user._id.toString() !== existingPost.author.toString()) {
+  if (req.user._id.toString() !== existingPost.author.toString()) {
     return res.status(403).json({
       message: "Forbidden!",
     });

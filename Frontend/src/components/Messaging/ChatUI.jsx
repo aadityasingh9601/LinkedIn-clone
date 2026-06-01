@@ -28,7 +28,7 @@ export default function ChatUI({ socket }) {
     name: profile?.name,
     headline: profile?.headline,
     profileImage: profile?.profileImage,
-    userId: profile?.userId
+    userId: profile?.userId,
   };
 
   const existingChat = () => {
@@ -44,15 +44,15 @@ export default function ChatUI({ socket }) {
   };
 
   const existingChatData = existingChat();
-  
+
   const otherPerson = currChatData?.participants?.find(
     (participant) => participant._id !== currUserId,
   );
-  
+
   const displayUser =
-    Object.keys(otherPerson).length !== 0
-      ? otherPerson?.profile
-      : profileData;
+    typeof otherPerson !== "undefined" ? otherPerson?.profile : profileData;
+
+  console.log(profileData);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -76,7 +76,7 @@ export default function ChatUI({ socket }) {
       <div className={styles.userInfo}>
         <Xmark
           onClick={() => {
-            setfullChat(false,{});
+            setfullChat(false, {});
           }}
           customStyles={{
             zIndex: "30",
@@ -108,7 +108,11 @@ export default function ChatUI({ socket }) {
         })}
       </div>
       <div>
-        <MsgBox currChatId={currChatId} receiverId={displayUser?.userId} socket={socket} />
+        <MsgBox
+          currChatId={currChatId}
+          receiverId={displayUser?.userId}
+          socket={socket}
+        />
       </div>
     </div>
   );

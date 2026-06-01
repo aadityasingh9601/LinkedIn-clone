@@ -19,30 +19,14 @@ export default function ProfileHeader({ profile }) {
   const currUserId = useUserStore((s) => s.currUserId);
   const allFollowed = useUserStore((s) => s.allFollowed);
   const allConnections = useUserStore((s) => s.allConnections);
-  const currUserProfile = useUserStore((s) => s.currUserProfile);
   const follow = useFollowStore((s) => s.follow);
   const unfollow = useFollowStore((s) => s.unfollow);
   const editHead = useProfileStore((s) => s.editHead);
   const setEditHead = useProfileStore((s) => s.setEditHead);
-  const createChat = useChatStore((s) => s.createChat);
-  const handleMessage = useChatStore((s) => s.handleMessage);
   const setfullChat = useChatStore((s) => s.setfullChat);
   const sendConnReq = useConnectionStore((s) => s.sendConnReq);
   const removeConn = useConnectionStore((s) => s.removeConn);
 
-  const existingChat = () => {
-    for (let chat of currUserProfile?.chatList) {
-      console.log(chat);
-      let success = [currUserId, profile?.userId].every((val) =>
-        chat.participants.includes(val),
-      );
-      if (success) return chat;
-    }
-    return {};
-  };
-
-  console.log(allFollowed);
-  console.log(allConnections);
 
   const updateIsFollowed = (value) => {
     setisFollowed(value);
@@ -112,10 +96,8 @@ export default function ProfileHeader({ profile }) {
               variant="sm"
               btnText="Message"
               onClick={() => {
-                let result = existingChat();
                 setfullChat(true);
-                if (Object.keys(result).length === 0) {
-                }
+
               }}
             />
             {isConnected ? (

@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { Suspense } from "react";
 import Layout from "../Layouts/Layout";
 import AuthLayout from "../Layouts/AuthLayout";
+import Spinner from "../../shared-components/Loaders/Spinner";
 
 const AppWrapper = ({ children, socket }) => {
   const location = useLocation();
@@ -14,13 +15,11 @@ const AppWrapper = ({ children, socket }) => {
     <Suspense
       fallback={
         <h1 style={{ position: "absolute", top: "20rem", left: "50rem" }}>
-          Loading...
+          <Spinner />
         </h1>
       }
     >
-      <Layout socket={socket}>
-        {children}
-      </Layout>
+      <Layout socket={socket}>{children}</Layout>
     </Suspense>
   ) : (
     <Suspense

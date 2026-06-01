@@ -25,7 +25,7 @@ const useChatStore = create((set, get) => ({
   setfullChat: (value, chat) => {
     localStorage.setItem("currChatId", chat?._id || "");
     localStorage.setItem("currChatData", chat || {});
-    set({ currChatId: chat._id || "" });
+    set({ currChatId: chat?._id || "" });
     set({ currChatData: chat });
     set({ fullChat: value });
     if (!value) {
@@ -84,8 +84,6 @@ const useChatStore = create((set, get) => ({
   },
 
   sendMessage: async (receiverId, data) => {
-    console.log(receiverId);
-    console.log(data);
     tryCatchWrapper(async () => {
       const response = await apiPost(
         `/chat/${receiverId}`,
@@ -120,9 +118,8 @@ const useChatStore = create((set, get) => ({
 
   deleteMsg: async (msgId) => {
     tryCatchWrapper(async () => {
-      const response = await apiDelete(`/chat/message/${msgId}`);
-      //Update state must be handled by socket events.
-      return toast.success("Msg deleted successfully!");
+      await apiDelete(`/chat/message/${msgId}`);
+      return toast.success("Success!");
     });
   },
 

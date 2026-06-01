@@ -21,6 +21,9 @@
 .body-text {
   height: fit-content;
   margin: 0 0 0.5rem 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .body .media img {
@@ -82,20 +85,20 @@
   border-radius: 1rem;
 }
 
-.likeListHeader{
-  padding:1rem 0 0.5rem 1rem;
+.likeListHeader {
+  padding: 1rem 0 0.5rem 1rem;
   font-size: 1.5rem;
   font-weight: 400;
   border-bottom: 1px solid gray;
 }
 
-.likeListBody{
+.likeListBody {
   display: flex;
   flex-direction: column;
-  padding:0.5rem 1rem;
+  padding: 0.5rem 1rem;
 }
 
-.likeListUser{
+.likeListUser {
   border-bottom: 1px solid gray;
   padding: 0.5rem 0 0 0;
 }

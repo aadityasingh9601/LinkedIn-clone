@@ -1,5 +1,5 @@
 import Navbar from "./Navbar";
-import styles from "./Layout.module.css"
+import styles from "./Layout.module.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useUserStore from "../../../stores/User";
@@ -8,6 +8,8 @@ import useChatStore from "../../../stores/Chat";
 import ChatList from "../../Messaging/ChatList";
 import { useEffect, useState } from "react";
 import CaretUp from "../../shared-components/Icons/CaretUp";
+import UserAvatarIcon from "../Icons/UserAvatarIcon";
+import { size } from "lodash";
 
 function Layout({ children, socket }) {
   const fullChat = useChatStore((state) => state.fullChat);
@@ -34,14 +36,13 @@ function Layout({ children, socket }) {
         transition:Bounce
       />
 
-      <div className={`${styles.messaging} ${isMessagingOpen ? styles.expanded : styles.collapsed}`}>
+      <div
+        className={`${styles.messaging} ${isMessagingOpen ? styles.expanded : styles.collapsed}`}
+      >
         <div className={styles.top}>
           <div className={styles.a}>
             <div>
-              <img
-                src="https://tse3.mm.bing.net/th?id=OIP.puMo9ITfruXP8iQx9cYcqwHaGJ&pid=Api&P=0&h=180"
-                alt=""
-              />
+              <UserAvatarIcon styles={{ fontSize: "2rem", color: "#666666" }} />
             </div>
             <div>Messaging</div>
           </div>

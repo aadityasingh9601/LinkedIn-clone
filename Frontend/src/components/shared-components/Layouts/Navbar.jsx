@@ -20,6 +20,7 @@ import ControlledInput from "../Inputs/ControlledInput";
 import UserAvatar from "../User/UserAvatar";
 import UserIcon from "../Icons/UserIcon";
 import useComponentVisible from "../../../hooks/useComponentVisible";
+import UserAvatarIcon from "../Icons/UserAvatarIcon";
 
 export default function Navbar({ showMessaging }) {
   const { ref, isComponentVisible, setIsComponentVisible } =
@@ -151,13 +152,8 @@ export default function Navbar({ showMessaging }) {
           </span>
         </Link>
         <Link to={`/profile/${currUserProfileId}`}>
-          <div className={styles.profileLink}>
-            <UserAvatar
-              customStyles={{ height: "1.6rem", width: "1.6rem" }}
-              url="src/assets/img1.jpg"
-            />
-            <div>Me</div>
-          </div>
+            <UserAvatarIcon styles={{fontSize:"1.6rem", color:"#666666"}} />
+            <span>Me</span>
         </Link>
       </div>
 

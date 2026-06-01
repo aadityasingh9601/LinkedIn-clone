@@ -28,9 +28,11 @@
 
 .msgText {
   width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.msgEditForm input{
+.msgEditForm input {
   width: 24rem;
 }
 

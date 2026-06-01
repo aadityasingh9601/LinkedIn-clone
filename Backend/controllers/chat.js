@@ -1,8 +1,7 @@
 import Chat from "../models/Chat.js";
-import User from "../models/User.js";
 import Profile from "../models/Profile.js";
 import Message from "../models/Message.js";
-import { io } from "../server.js";
+import { io, userSocketMap } from "../server.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const createChat = async (req, res) => {
@@ -112,11 +111,20 @@ const createMessage = async (req, res) => {
     receiverUserProfile.chatList.push(newChat._id);
     await currUserProfile.save();
     await receiverUserProfile.save();
+
+    //If chat didn't existed before, then make the user join the socket room.
+    const roomId = newChat._id.toString();
+    const socketId = userSocketMap[currUserId];
+    const socket = io.sockets.sockets.get(socketId);
+    if (socket) {
+      socket.join(roomId);
+      console.log(`User ${currUserId} joined room ${roomId}`);
+    }
   }
 
   const chat = existingChat ? existingChat : newChat;
 
-  console.log("Request file", req.file);
+  //console.log("Request file", req.file);
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
   let filename = req.file ? req.file.filename : "";
