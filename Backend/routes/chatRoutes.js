@@ -2,9 +2,7 @@ import { Router } from "express";
 import chatController from "../controllers/chat.js";
 import wrapAsync from "../utils/wrapAsync.js";
 import protect from "../utils/Middlewares/Middleware.js";
-import multer from "multer";
-import { storage } from "../cloud/cloudConfig.js";
-const upload = multer({ storage: storage });
+import { singleUpload } from "../cloud/cloudConfig.js";
 
 const router = Router();
 
@@ -27,7 +25,7 @@ router
   .route("/:id")
   .post(
     protect,
-    upload.single("data[mediaFile]"),
+    singleUpload("data[mediaFile]"),
     wrapAsync(chatController.createMessage),
   );
 

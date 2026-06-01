@@ -2,9 +2,7 @@ import { Router } from "express";
 import profileController from "../controllers/profile.js";
 import wrapAsync from "../utils/wrapAsync.js";
 import protect from "../utils/Middlewares/Middleware.js";
-import multer from "multer";
-import { storage } from "../cloud/cloudConfig.js";
-const upload = multer({ storage: storage });
+import { singleUpload, multiFieldsUpload } from "../cloud/cloudConfig.js";
 
 const router = Router();
 
@@ -15,7 +13,7 @@ router.get(
 );
 
 //Profileheader routes.
-router.patch("/header",protect, upload.fields([
+router.patch("/header",protect, multiFieldsUpload([
       { name: "profileHeaderData[profileImage]" },
       { name: "profileHeaderData[bannerImage]" },
     ]), wrapAsync(profileController.updateProfileHeader))

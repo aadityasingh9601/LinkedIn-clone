@@ -85,11 +85,11 @@ const useChatStore = create((set, get) => ({
 
   sendMessage: async (receiverId, data) => {
     tryCatchWrapper(async () => {
-      const response = await apiPost(
-        `/chat/${receiverId}`,
-        { data },
-        { "Content-Type": "multipart/form-data" },
-      );
+      const fd = new FormData();
+      const { mediaFile, ...textData } = data;
+      fd.append("data", JSON.stringify(textData));
+      if (mediaFile instanceof File) fd.append("data[mediaFile]", mediaFile);
+      const response = await apiPost(`/chat/${receiverId}`, fd);
       //console.log(response);
     });
   },

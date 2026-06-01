@@ -90,13 +90,11 @@ const useJobStore = create(
 
       applyToJob: async (jobId, data, navigate) => {
         tryCatchWrapper(async () => {
-          const response = await apiPost(
-            `/jobs/${jobId}/apply`,
-            { data },
-            {
-              "Content-Type": "multipart/form-data",
-            },
-          );
+          const fd = new FormData();
+          const { resume, ...textData } = data;
+          fd.append("jobApplicationData", JSON.stringify(textData));
+          if (resume instanceof File) fd.append("data[resume]", resume);
+          const response = await apiPost(`/jobs/${jobId}/apply`, fd);
           console.log(response);
           if (response.status === 200) {
             set((state) => ({

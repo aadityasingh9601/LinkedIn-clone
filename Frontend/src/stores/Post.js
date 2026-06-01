@@ -46,13 +46,11 @@ const usePostStore = create((set) => ({
     tryCatchWrapper(async () => {
       let post;
       setIsLoading(true);
-      const response = await apiPost(
-        "/post",
-        { postData },
-        {
-          "Content-Type": "multipart/form-data",
-        },
-      );
+      const fd = new FormData();
+      const { media, ...textData } = postData;
+      fd.append("postData", JSON.stringify(textData));
+      if (media instanceof File) fd.append("postData[media]", media);
+      const response = await apiPost("/post", fd);
       setIsLoading(false);
       post = response.data;
       if (response.status === 201) {
@@ -106,13 +104,11 @@ const usePostStore = create((set) => ({
   editPost: async (postId, postData, setIsLoading, setEditModal) => {
     setIsLoading(true);
     tryCatchWrapper(async () => {
-      const response = await apiPatch(
-        `/post/${postId}`,
-        { postData },
-        {
-          "Content-Type": "multipart/form-data",
-        },
-      );
+      const fd = new FormData();
+      const { media, ...textData } = postData;
+      fd.append("postData", JSON.stringify(textData));
+      if (media instanceof File) fd.append("postData[media]", media);
+      const response = await apiPatch(`/post/${postId}`, fd);
       setIsLoading(false);
       const updatedPost = response.data.updatedPost;
 

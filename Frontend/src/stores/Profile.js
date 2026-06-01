@@ -93,13 +93,12 @@ const useProfileStore = create((set, get) => ({
   updateProfileHeader: async (profileHeaderData, setIsLoading) => {
     setIsLoading(true);
     tryCatchWrapper(async () => {
-      const response = await apiPatch(
-        `/profile/header`,
-        { profileHeaderData },
-        {
-          "Content-Type": "multipart/form-data",
-        },
-      );
+      const fd = new FormData();
+      const { profileImage, bannerImage, ...textData } = profileHeaderData;
+      fd.append("profileHeaderData", JSON.stringify(textData));
+      if (profileImage instanceof File) fd.append("profileHeaderData[profileImage]", profileImage);
+      if (bannerImage instanceof File) fd.append("profileHeaderData[bannerImage]", bannerImage);
+      const response = await apiPatch(`/profile/header`, fd);
       console.log(response.data.updatedData);
 
       if (response.status === 200) {

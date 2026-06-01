@@ -2,10 +2,7 @@ import { Router } from "express";
 import postController from "../controllers/post.js";
 import wrapAsync from "../utils/wrapAsync.js";
 import protect from "../utils/Middlewares/Middleware.js";
-import multer from "multer";
-import { storage } from "../cloud/cloudConfig.js";
-import post from "../controllers/post.js";
-const upload = multer({ storage: storage });
+import { singleUpload } from "../cloud/cloudConfig.js";
 
 const router = Router();
 
@@ -13,7 +10,7 @@ const router = Router();
 router.post(
   "/",
   protect,
-  upload.single("postData[media]"),
+  singleUpload("postData[media]"),
   wrapAsync(postController.createPost),
 );
 
@@ -28,7 +25,7 @@ router
   .route("/:postId")
   .patch(
     protect,
-    upload.single("postData[media]"),
+    singleUpload("postData[media]"),
     wrapAsync(postController.updatePost),
   )
   .delete(protect, wrapAsync(postController.deletePost));

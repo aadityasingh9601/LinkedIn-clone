@@ -20,7 +20,9 @@ let bucket;
 const applyToJob = async (req, res) => {
   console.log("Inside applyToJob");
   const { jobId } = req.params;
-  const { jobApplicationData } = req.body;
+  const jobApplicationData = typeof req.body.jobApplicationData === "string"
+    ? JSON.parse(req.body.jobApplicationData)
+    : req.body.jobApplicationData;
   const result = JobApplicationDataSchema.safeParse(jobApplicationData);
   if (!result.success) {
     return res.status(400).json({
@@ -47,7 +49,7 @@ const applyToJob = async (req, res) => {
     const newApplication = new Application({
       jobId: jobId,
       applicant: req.user._id,
-      answers: data.answers,
+      answers: jobApplicationData.answers,
       resume: {
         filename: filename,
         id: id,

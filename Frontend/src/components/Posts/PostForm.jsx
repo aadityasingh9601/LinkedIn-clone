@@ -60,8 +60,6 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
   const [preview, setPreview] = useState(null);
   // Watch for file changes
   const file = watch("media");
-  console.log(typeof file);
-  console.log(file);
   const existingContent = watch("content");
 
   useEffect(() => {
@@ -84,6 +82,7 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
   };
 
   const onSubmit = (data) => {
+    console.log(data.media)
     const postData = {
       ...data,
       media: data.media[0],
