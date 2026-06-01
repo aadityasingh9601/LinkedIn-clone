@@ -11,6 +11,10 @@
   padding: 0.3rem;
 }
 
+.chat:hover {
+  cursor: pointer;
+}
+
 .chatInfo {
   display: flex;
   gap: 0.3rem;
@@ -23,7 +27,6 @@
 
 .lastMsg {
   font-size: 0.8rem;
-  max-width: 90%;
 }
 
 .options {
@@ -35,7 +38,6 @@
 
 .datetime {
   font-size: 0.8rem;
-  width: fit-content;
 }
 
 .chatOptions {

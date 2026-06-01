@@ -24,6 +24,7 @@ export default function EducationSection({ customStyles, profileEducation }) {
               <EducationCard
                 key={e._id}
                 education={e}
+                customStyles={customStyles}
               />
             );
           })}

@@ -7,14 +7,13 @@ import useProfileStore from "../../stores/Profile";
 import Modal from "../shared-components/Modal/Modal";
 import { lazy, Suspense } from "react";
 import Pen from "../shared-components/Icons/Pen";
-import Xmark from "../shared-components/Icons/Xmark";
 import useFollowStore from "../../stores/Follow";
 import useConnectionStore from "../../stores/Connection";
 import useChatStore from "../../stores/Chat";
 import { useState, useEffect } from "react";
 import ProfileHeaderForm from "./ProfileHeaderForm";
 
-export default function ProfileHeader({ customStyles, profile }) {
+export default function ProfileHeader({ profile }) {
   const [isFollowed, setisFollowed] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const currUserId = useUserStore((s) => s.currUserId);

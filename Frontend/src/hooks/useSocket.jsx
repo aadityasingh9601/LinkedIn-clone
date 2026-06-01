@@ -15,6 +15,7 @@ const useSocket = (isLoggedIn, currUserId, location) => {
   const notifications = useNotificationStore((s) => s.notifications);
   const setNotiCount = useNotificationStore((s) => s.setNotiCount);
   const isAuthRoute = ["/", "/signup", "/login"].includes(location.pathname);
+  const isNotificationRoute = ["/notifications"].includes(location.pathname);
 
   useEffect(() => {
     if (!isLoggedIn || isAuthRoute) return;
@@ -55,11 +56,11 @@ const useSocket = (isLoggedIn, currUserId, location) => {
     };
   }, []);
 
-  //   useEffect(() => {
-  //   if (!isAuthRoute) {
-  //     setNotiCount(notifications?.filter((n) => !n.isRead).length);
-  //   }
-  // }, [notifications, isAuthRoute]);
+  useEffect(() => {
+    if (!isAuthRoute && !isNotificationRoute) {
+      setNotiCount(notifications?.filter((n) => !n.isRead).length);
+    }
+  }, [notifications, isAuthRoute, isNotificationRoute]);
 
   return socket;
 };

@@ -22,7 +22,13 @@ export default function ExperienceSection({ customStyles, profileExperience }) {
         </div>
         <div>
           {profileExperience?.map((e) => {
-            return <ExperienceCard key={e._id} experience={e} />;
+            return (
+              <ExperienceCard
+                key={e._id}
+                experience={e}
+                customStyles={customStyles}
+              />
+            );
           })}
         </div>
       </div>

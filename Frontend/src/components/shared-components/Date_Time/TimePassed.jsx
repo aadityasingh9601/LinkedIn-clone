@@ -3,7 +3,7 @@ import { timeRep } from "../../../utils/helper";
 
 export default function TimePassed({ timePassed, styles = {} }) {
   const diff = new Date(timePassed) - new Date(); // future time = positive
-  const isFuture = diff > 0;
+  const isFuture = diff > 1;
   const { weeks, days, hours, minutes, seconds } = timeRep(Math.abs(diff));
 
   const timeStr =

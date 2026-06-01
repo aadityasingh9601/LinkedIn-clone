@@ -141,7 +141,6 @@ export default function Navbar({ showMessaging }) {
         </Link>
         <Link to={"/notifications"}>
           <NotiIcon />
-
           <span style={{ position: "relative" }}>
             Notifications
             {notiCount > 0 ? (

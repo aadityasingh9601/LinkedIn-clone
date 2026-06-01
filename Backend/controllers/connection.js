@@ -23,46 +23,47 @@ const checkConnection = async (req, res) => {
 
 const sendConnRequest = async (req, res) => {
   const { userId } = req.params;
-  console.log("26", userId);
-  console.log("27", req.user._id);
   const user = await User.findById(userId);
   const currUser = await User.findById(req.user._id);
-  //console.log(req.user._id, userId);
-  const connections = await Connection.find({
+  const connection = await Connection.findOne({
     $and: [
       { user: { $in: [req.user._id, userId] } },
       { connectedUser: { $in: [userId, req.user._id] } },
     ],
   });
-
-  if (connections.length > 0) {
-    res
+  //If already connected
+  if (connection) {
+    return res
       .status(400)
-      .send({ message: "You are already connected to this user!" });
-    return;
-  } else {
-    const message = `${currUser.name} would like to connect with you!`;
-    //Save the notification in database.
-    const newNotification = new Notification({
-      recipient: userId,
-      message: message,
-      sender: req.user._id,
-      type: "connection",
-    });
-    await newNotification.save();
-
-    //Emit socket event for real-time notification.
-    const socketId = userSocketMap[userId];
-    if (socketId) {
-      io.to(socketId).emit("connReq", newNotification);
-    }
-    //YOU haven't written the line below before , and beacuse of this trivial looking line all of the issue
-    //happened, just this small mistake caused so much headache to you, so remember next time, always while
-    //creating a backend route, must send a response or problem will occur , server will stop responding because
-    //of the load.
-
-    res.status(200).send({ message: "Connection request sent successfully!" });
+      .json({ message: "You are already connected to this user!" });
   }
+  //Check if connection request already sent.
+  const notification = await Notification.findOne({
+    sender: req.user._id,
+    recipient: userId,
+    type: "connection",
+  });
+  if (notification) {
+    return res.status(400).json({
+      message: "Connection request already sent!",
+    });
+  }
+  const message = `${currUser.name} would like to connect with you!`;
+  //Save the notification in database.
+  const newNotification = new Notification({
+    recipient: userId,
+    message: message,
+    sender: req.user._id,
+    type: "connection",
+  });
+  await newNotification.save();
+  //Emit socket event for real-time notification.
+  const socketId = userSocketMap[userId];
+  if (socketId) {
+    io.to(socketId).emit("connReq", newNotification);
+  }
+
+  res.status(200).send({ message: "Connection request sent successfully!" });
 };
 
 const respondToConnRequest = async (req, res) => {
@@ -117,8 +118,6 @@ const respondToConnRequest = async (req, res) => {
 
 const getAllConnections = async (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
-  const user = await User.findById(userId);
   //Check if the user trying to see the connections is connected to the user.
   const isConnected = await Connection.find({
     $and: [
@@ -137,9 +136,7 @@ const getAllConnections = async (req, res) => {
         select: "headline name profileImage",
       },
     });
-
     res.status(200).send(connections);
-    console.log(connections);
   } else {
     res.status(404).send({
       message:

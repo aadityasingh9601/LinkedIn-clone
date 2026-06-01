@@ -9,13 +9,10 @@ import useUserStore from "../../stores/User";
 import UserAvatar from "../shared-components/User/UserAvatar";
 
 export default function Chat({ chat, socket }) {
-  console.log(socket.connected);
   const currUserId = useUserStore((state) => state.currUserId);
-  console.log(chat);
   const otherPerson = chat?.participants?.find(
     (participant) => participant._id !== currUserId,
   );
-  console.log(otherPerson);
 
   const setfullChat = useChatStore((s) => s.setfullChat);
   const deleteChat = useChatStore((s) => s.deleteChat);
