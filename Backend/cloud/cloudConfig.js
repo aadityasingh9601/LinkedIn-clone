@@ -31,8 +31,8 @@ const parseJsonBody = (req) => {
     if (typeof req.body[key] === "string") {
       try {
         req.body[key] = JSON.parse(req.body[key]);
-      } catch {
-
+      } catch (e) {
+        console.log(e);
       }
     }
   }

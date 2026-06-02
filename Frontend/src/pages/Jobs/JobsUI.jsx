@@ -41,8 +41,8 @@ export default function JobsUI() {
         />
         {myJobs && (
           <div className={styles.myjobsoptions}>
-            <Button btnText="Saved" onClick={() => getMyJobs("saved")} />
-            <Button btnText="Applied" onClick={() => getMyJobs("applied")} />
+            <Button variant="sm" btnText="Saved" onClick={() => getMyJobs("saved")} />
+            <Button variant="sm" btnText="Applied" onClick={() => getMyJobs("applied")} />
           </div>
         )}
         <Button
@@ -61,19 +61,20 @@ export default function JobsUI() {
       </div>
       <div className={styles.jobs}>
         <div className={styles.jobList}>
-          <div className={styles.a}>
-            <h2>Top jobs picks for you!</h2>
-          </div>
+          <div className={styles.header}>Top jobs picks for you!</div>
           <div className="b">
             {jobs?.map((job) => {
               return <Job job={job} />;
             })}
           </div>
         </div>
-        {jobs.length > 0 && currJobListingId && (
-          <JobDetail job={currJobDetails} />
-        )}
+        <div className={styles.jobDetails}>
+          {jobs.length > 0 && currJobListingId && (
+            <JobDetail job={currJobDetails} />
+          )}
+        </div>
       </div>
+
       {postJob && (
         <Modal>
           <CreateJobForm job={currJobDetails} />

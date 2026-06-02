@@ -29,7 +29,7 @@ export default function JobFitStats({ jobFitStats, jobSkills }) {
           backgroundColor: "#fddcdc",
         }}
       >
-        You're missing:
+        You're missing: {" "}
         {jobFitStats?.missingSkills?.map((s) => {
           return "❌" + s + " ";
         })}
@@ -40,20 +40,12 @@ export default function JobFitStats({ jobFitStats, jobSkills }) {
           backgroundColor: "#fef9c3",
         }}
       >
-        💡Suggested actions:
+        💡Suggested actions: {" "}
         {jobFitStats?.missingSkills?.map((s) => {
           return "[ Learn " + s + " ]";
         })}
         [ Apply anyway ].
       </div>
-
-      {/* <div
-        style={{
-          backgroundColor: " #e0f2fe",
-        }}
-      >
-        📌Recommended resources to learn{" "}
-      </div> */}
 
       <div>
         {matchedScore >= 80
@@ -68,7 +60,7 @@ export default function JobFitStats({ jobFitStats, jobSkills }) {
       <div className={styles.note}>
         <span style={{ fontWeight: "bold" }}>ℹ️ Note:</span> This is just an
         automated estimate. Actual job success depends on various factors like
-        experience, portfolio, and communication skills too.
+        experience, portfolio, and communication skills.
       </div>
     </div>
   );

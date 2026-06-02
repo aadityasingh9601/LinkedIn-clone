@@ -43,41 +43,35 @@ export const PostDataSchema = z.object({
 });
 
 export const PollDataSchema = z.object({
-  question: z
-    .string("Question is required!")
-    .min(10, "Question should be atleast 10 characters long!")
-    .max(200, "Question should be under 200 characters!"),
+  question: z.string("Required!").min(10, "Too short!").max(200, "Too long!"),
   options: z.array({
-    value: z.string().min(1, "Can't be empty!"),
+    value: z.string().min(1, "Required!"),
   }),
-  pollDuration: z.string("Poll duration is required!"),
+  pollDuration: z.string("Required!"),
 });
 
 export const JobDataSchema = z.object({
-  title: z
-    .string("Title is required!")
-    .min(5, "Title should be atleast 5 characters long!"),
-  company: z.string().min(5, "Company is required!"),
+  title: z.string("Title is required!").min(5, "Too Short!"),
+  company: z.string("Required!").min(5, "Too short!").max(25, "Too long!"),
   companyLogo: z.string(),
   companyDescription: z
-    .string("Company description is required!")
+    .string("Required!")
     .min(100, "Too short!")
     .max(300, "Too long!"),
-  location: z
-    .string("Location is required!")
-    .min(5, "Too short!")
-    .max(20, "Too long!"),
+  location: z.string("Required!").min(5, "Too short!").max(20, "Too long!"),
   jobType: z.enum(["Full-time", "Part-time", "Contract", "Internship"]),
   jobMode: z.enum(["On-site", "Remote"]),
-  salary: z.number("Salary is required!"),
+  salary: z.coerce
+    .number("Please enter a valid amount!")
+    .gte(1000, "Too short!")
+    .lte(9999999, "Too long!"),
   qualifications: z
-    .array(z.string().min(3, "Too short!"))
-    .min(1, "Qualifications are required!"), //Verify this later, if it's correct type of not, also make it required.
-  skills: z
-    .array(z.string().min(5, "Too short!"))
-    .min(1, "Skills are required"),
+    .string("Required!")
+    .min(100, "Too short!")
+    .max(300, "Too long!"),
+  skills: z.array(z.string().min(5, "Too short!")).min(1, "Required!"),
   jobDescription: z
-    .string("Job description is required!")
+    .string("Required!")
     .min(100, "Too short!")
     .max(300, "Too long!"),
 });

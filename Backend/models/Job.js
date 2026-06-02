@@ -14,7 +14,7 @@ const jobSchema = new Schema({
   location: { type: String, required: true },
   jobDescription: { type: String, required: true },
   qualifications: {
-    type: [String], //Means this field is an array of strings.
+    type: String,
     required: true,
   },
   isOpen: {

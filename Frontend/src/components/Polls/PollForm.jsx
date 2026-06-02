@@ -70,7 +70,7 @@ export default function PollForm() {
                 name="options"
                 placeholder="Eg. Public transport"
                 {...register(`options.${index}.value`, {
-                  required: "This is an required field.",
+                  required: "Required!",
                 })}
               />
             </div>

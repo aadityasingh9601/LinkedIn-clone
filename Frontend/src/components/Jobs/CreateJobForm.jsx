@@ -3,13 +3,20 @@ import { useForm } from "react-hook-form";
 import useJobStore from "../../stores/Job";
 import Button from "../shared-components/Buttons/Button";
 import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
-import Xmark from "../shared-components/Icons/Xmark";
+import { useState } from "react";
+import RHFselect from "../shared-components/Select/RHFselect";
 import RHFInput from "../shared-components/Inputs/RHFInput";
+import ControlledInput from "../shared-components/Inputs/ControlledInput";
+import Xmark from "../shared-components/Icons/Xmark";
 import { JobDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Spinner from "../shared-components/Loaders/Spinner";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
 
 export default function CreateJobForm({ job }) {
+  const [skillInput, setSkillInput] = useState("");
+  const [skills, setSkills] = useState(job?.skills || []);
+  const [isLoading, setIsLoading] = useState(false);
   const setpostJob = useJobStore((s) => s.setpostJob);
   const seteditJob = useJobStore((s) => s.seteditJob);
   const createJob = useJobStore((s) => s.createJob);
@@ -18,41 +25,53 @@ export default function CreateJobForm({ job }) {
     register,
     handleSubmit,
     setValue,
-    watch,
-    reset, //This method is used to clear up the form fields after the form has been submitted.
     formState: { errors },
   } = useForm({
     resolver: zodResolver(JobDataSchema),
     defaultValues: {
       ...job,
-      skills: job?.skills.join(","),
-      qualifications: job?.qualifications.join(","),
-      //We're joining the array into a string because the backend sent an array , and if the user doesn't
-      //updated skills or qualifications, they will stay an array, and they will cause problem at time of
-      //submitting the form, as the skills & qualifications first gets converted to arrays for backend, because
-      //backend needs them as arrays.
+      skills: job?.skills || [],
+      qualifications: job?.qualifications?.join(",") || "",
     },
   });
 
+  const handleSkillKeyDown = (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+
+    const skill = skillInput.trim();
+
+    if (!skill) return;
+    if (skills.includes(skill)) return;
+    const updatedSkills = [...skills, skill];
+    setSkills(updatedSkills);
+    setValue("skills", updatedSkills, {
+      shouldValidate: true,
+    });
+    setSkillInput("");
+  };
+
+  const removeSkill = (skillToRemove) => {
+    const updatedSkills = skills.filter((skill) => skill !== skillToRemove);
+    setSkills(updatedSkills);
+    setValue("skills", updatedSkills, {
+      shouldValidate: true,
+    });
+  };
+
   const onSubmit = (data) => {
-    console.log(data);
-
-    //We take input from the user as a single string and use split method to store each value in an array.
-
+    setIsLoading(true);
     const jobData = {
       ...data,
-
-      skills: data.skills.split(","),
-      qualifications: data.qualifications.split(","),
+      skills: skills,
     };
     console.log(jobData);
     {
-      job ? updateJob(jobData, job._id) : createJob(jobData);
+      job
+        ? updateJob(jobData, job._id, setIsLoading)
+        : createJob(jobData, setIsLoading);
     }
   };
-
-  const jobType = watch("jobType");
-  const jobMode = watch("jobMode");
 
   const handleChange = (event) => {
     setValue("jobType", event.target.value); // Update the value in React Hook Form
@@ -63,103 +82,125 @@ export default function CreateJobForm({ job }) {
   };
   return (
     <div className={styles.createjobform}>
-      <Xmark
-        onClick={() => {
-          job ? seteditJob(false) : setpostJob(false);
-        }}
-      />
+      <div className={styles.header}>Create a job posting</div>
+      <div className={styles.form}>
+        <FormWrapper id="jobForm" onSubmit={handleSubmit(onSubmit)}>
+          <div className={styles.formBody}>
+            <RHFInput
+              placeholder="Write job title"
+              register={register}
+              name="title"
+              errors={errors}
+            />
 
-      <div className={styles.h2}>Create a job posting</div>
-      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-        <RHFInput
-          placeholder="Write job title"
-          register={register}
-          name="title"
-          errors={errors}
-        />
+            <RHFInput
+              placeholder="Enter company name"
+              name="company"
+              register={register}
+              errors={errors}
+            />
 
-        <br />
-        <RHFInput
-          placeholder="Enter company name"
-          name="company"
-          register={register}
-          errors={errors}
-        />
+            <RHFInput
+              placeholder="Enter company logo url"
+              name="companyLogo"
+              register={register}
+            />
 
-        <br />
-        <RHFInput
-          placeholder="Enter company logo url"
-          name="companyLogo"
-          register={register}
-        />
+            <RHFtextarea
+              register={register}
+              errors={errors}
+              name="companyDescription"
+              placeholder="Enter company description"
+            />
+            <RHFInput
+              placeholder="Company location"
+              name="location"
+              register={register}
+              errors={errors}
+            />
 
-        <RHFtextarea
-          register={register}
-          errors={errors}
-          name="companyDescription"
-          placeholder="Enter company description"
-        />
-        <RHFInput
-          placeholder="Company location"
-          name="location"
-          register={register}
-          errors={errors}
-        />
-        <br />
+            <div className={styles.jobType}>
+              <RHFselect
+                name="jobType"
+                label="Job Type"
+                register={register}
+                options={["Full-time", "Contract", "Part-time", "Internship"]}
+                errors={errors}
+              />
 
-        <label htmlFor="jobType">Job Type</label>
-        <select id="jobType" value={jobType || ""} onChange={handleChange}>
-          <option value="Full-time">Full-Time</option>
-          <option value="Contract">Contract</option>
-          <option value="Part-time">Part-Time</option>
-          <option value="Internship">Internship</option>
-        </select>
+              <RHFselect
+                name="jobMode"
+                label="Job Mode"
+                register={register}
+                options={["On-site", "Remote"]}
+                errors={errors}
+              />
+            </div>
 
-        <br />
+            <RHFInput
+              placeholder="Enter salary"
+              name="salary"
+              register={register}
+            />
 
-        <label htmlFor="jobMode">Job Mode</label>
-        <select id="jobMode" value={jobMode || ""} onChange={handleChange2}>
-          <option value="On-site">On-site</option>
-          <option value="Remote">Remote</option>
-        </select>
+            <RHFtextarea
+              register={register}
+              errors={errors}
+              name="qualifications"
+              placeholder="Enter qualifications"
+            />
 
-        <br />
-        <RHFInput
-          placeholder="Enter salary"
-          name="salary"
-          register={register}
-        />
-        <br />
+            <div>
+              <ControlledInput
+                type="text"
+                placeholder="Enter skill and press Enter"
+                value={skillInput}
+                onChange={(e) => setSkillInput(e.target.value)}
+                onKeyDown={handleSkillKeyDown}
+              />
 
-        <RHFtextarea
-          register={register}
-          errors={errors}
-          name="qualifications"
-          placeholder="Enter qualifications"
-        />
+              {skills.length === 0 && <div> Required!</div>}
 
-        <RHFInput
-          placeholder="Enter skills required"
-          name="skills"
-          register={register}
-          errors={errors}
-        />
-        <br />
+              <div className={styles.skillTags}>
+                {skills.map((skill) => (
+                  <div key={skill} className={styles.skillTag}>
+                    <div>{skill}</div>
+                    <div>
+                      {" "}
+                      <Xmark onClick={() => removeSkill(skill)} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-        <RHFtextarea
-          register={register}
-          errors={errors}
-          name="jobDescription"
-          placeholder="Enter job description"
-          rules={{
-            required: "Job description is required",
-          }}
-        />
+            <RHFtextarea
+              register={register}
+              errors={errors}
+              name="jobDescription"
+              placeholder="Enter job description"
+              rules={{
+                required: "Job description is required!",
+              }}
+            />
 
-        <br />
-
-        <Button btnText="Submit" />
-      </FormWrapper>
+            <div className={styles.buttonWrapper}>
+              <Button
+                btnText="Cancel"
+                variant="sm"
+                onClick={() => {
+                  job ? seteditJob(false) : setpostJob(false);
+                }}
+              />
+              <Button
+                btnText={isLoading ? <Spinner /> : "Submit"}
+                form="jobForm"
+                variant="sm"
+              />
+            </div>
+          </div>
+        </FormWrapper>
+      </div>
     </div>
   );
 }

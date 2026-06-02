@@ -1,7 +1,7 @@
 import styles from "./JobDetail.module.css";
 import useJobStore from "../../stores/Job";
 import useUserStore from "../../stores/User";
-
+import UserAvatar from "../shared-components/User/UserAvatar";
 import Button from "../shared-components/Buttons/Button";
 import Dot from "../shared-components/Dot/Dot";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ import TimePassed from "../shared-components/Date_Time/TimePassed";
 import JobFitStats from "../Jobs/JobFitStats";
 
 export default function JobDetail({ job }) {
+  console.log(job);
   const navigate = useNavigate();
   const currUserId = useUserStore((s) => s.currUserId);
   const userProfile = useUserStore((s) => s.currUserProfile);
@@ -45,29 +46,17 @@ export default function JobDetail({ job }) {
 
   return (
     <div className={styles.jobDetail}>
-      <div className={styles.aa}>
-        <img src={job?.companyLogo} />
-        <span>{job?.company}</span>
+      <div className={styles.companyInfo}>
+        <UserAvatar
+          customStyles={{ borderRadius: 0, border: "1px solid black" }}
+          url={job?.companyLogo}
+        />
+        <div>{job?.company}</div>
       </div>
-      <div className={styles.bb}>
-        <div
-          style={{
-            fontWeight: "500",
-            fontSize: "1.8rem",
-            margin: "1rem 0 0.35rem 0",
-          }}
-        >
-          {job?.title}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            color: "#444444",
-            fontSize: "0.9rem",
-            margin: "0 0 0.7rem 0",
-          }}
-        >
+
+      <div className={styles.jobInfo}>
+        <div className={styles.jobTitle}>{job?.title}</div>
+        <div className={styles.jobLocation}>
           {job?.location} <Dot />
           <TimePassed
             timePassed={job?.postedDate}
@@ -77,48 +66,29 @@ export default function JobDetail({ job }) {
           <Dot />
           {job?.applications?.length} people clicked apply
         </div>
-        <div style={{ display: "flex", margin: "0 0 0.85rem 0" }}>
-          {/* <div>₹{job?.salary}/month</div> */}
-          <div
-            style={{
-              backgroundColor: "rgb(232,232,232)",
-              borderRadius: "0.3rem",
-              fontSize: "0.9rem",
-              padding: "0.25rem 0.4rem",
-              margin: "0 0.3rem 0 0 ",
-            }}
-          >
-            {job?.mode}
-          </div>
-          <div
-            style={{
-              backgroundColor: "rgb(218, 235, 209)",
-              borderRadius: "0.3rem",
-              padding: " 0.25rem 0.4rem",
-              fontSize: "0.9rem",
-            }}
-          >
-            <Check styles={{ marginRight: "0.3rem" }} />
+        <div className={styles.jobTypeAndMode}>
+          <div className={styles.jobTypeTag}>{job?.jobType} </div>
+          <div className={styles.jobModeTag}>{job?.jobMode}</div>
+        </div>
+      </div>
 
-            {job?.jobType}
-          </div>
+      <div className={styles.applicantTab}>
+        <div>
+          {currUserId !== job?.postedBy && (
+            <JobFitStats jobFitStats={jobFitStats} jobSkills={job?.skills} />
+          )}
         </div>
 
-        {currUserId !== job?.postedBy && (
-          <JobFitStats jobFitStats={jobFitStats} jobSkills={job?.skills} />
-        )}
-
-        <div className={styles.job_btns}>
+        <div className={styles.applicantTabButtons}>
           {currUserId !== job?.postedBy &&
             (applied ? (
               <Button
+                variant="sm"
                 btnText={
                   <>
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <span>
-                        Applied
-                        <Check />
-                      </span>
+                      Applied
+                      <Check />
                     </div>
                   </>
                 }
@@ -129,6 +99,7 @@ export default function JobDetail({ job }) {
               />
             ) : (
               <Button
+                variant="sm"
                 btnText="Apply"
                 onClick={() => {
                   setApplied(true);
@@ -139,6 +110,7 @@ export default function JobDetail({ job }) {
 
           {saved ? (
             <Button
+              variant="sm"
               btnText="Saved"
               onClick={() => {
                 (saveJob(job._id), setSaved(false));
@@ -146,6 +118,7 @@ export default function JobDetail({ job }) {
             />
           ) : (
             <Button
+              variant="sm"
               btnText="Save"
               onClick={() => {
                 (saveJob(job._id), setSaved(true));
@@ -155,62 +128,43 @@ export default function JobDetail({ job }) {
         </div>
       </div>
 
-      <div className="c">
-        <div
-          style={{
-            fontWeight: "500",
-            fontSize: "1.3rem",
-            margin: "0 0 0.7rem 0",
-          }}
-        >
-          About the job
-        </div>
-          <div className={styles.subsection}>
-            <span className={styles.subtitle}>Skills required</span>
+      <div className={styles.aboutTheJob}>
+        <div className={styles.header}>About the job</div>
 
-          <div>
-            {" "}
-            {job?.skills?.map((q) => {
-              return <li>{q}</li>;
+        <div>
+          <div className={styles.subtitle}>Skills required</div>
+          <div className={styles.skills}>
+            {job?.skills?.map((skill) => {
+              return <div className={styles.skillTag}>{skill}</div>;
             })}
           </div>
         </div>
 
-        <div className={styles.subsection}>
-          <span className={styles.subtitle}>Company overview</span>
-          <div> {job?.companydescription}</div>
+        <div>
+          <div className={styles.subtitle}>Company overview</div>
+          <div>{job?.companyDescription}</div>
         </div>
 
-        <div className={styles.subsection}>
-          <span className={styles.subtitle}>Required qualifications</span>
-          <div>
-            {job?.qualifications?.map((q) => {
-              return <li>{q}</li>;
-            })}
-          </div>
+        <div>
+          <div className={styles.subtitle}>Required qualifications</div>
+          <div>{job?.qualifications}</div>
         </div>
 
-        <div className={styles.subsection}>
-          <span className={styles.subtitle}>Job overview</span>
-          <div> {job?.jobdescription}</div>
+        <div>
+          <div className={styles.subtitle}>Job overview</div>
+          <div> {job?.jobDescription}</div>
         </div>
-
-        {currUserId === job?.postedBy && (
-          <div
-            style={{
-              backgroundColor: "green",
-              padding: "1rem",
-              maxHeight: "20rem",
-              maxWidth: "95%",
-            }}
-          >
-            <Button
-              btnText="View Applicants"
-              onClick={() => navigate(`/jobs/${job._id}/applications`)}
-            />
-          </div>
-        )}
       </div>
+
+      {currUserId === job?.postedBy && (
+        <div className={styles.viewApplicantsButton}>
+          <Button
+            variant="sm"
+            btnText="View Applicants"
+            onClick={() => navigate(`/jobs/${job._id}/applications`)}
+          />
+        </div>
+      )}
     </div>
   );
 }

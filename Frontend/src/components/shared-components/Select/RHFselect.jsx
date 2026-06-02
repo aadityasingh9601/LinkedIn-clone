@@ -7,12 +7,23 @@ export default function RHFselect({
   errors = {},
   customStyles = {},
   rules = {},
+  label = "",
 }) {
   return (
     <div className={styles.dropdown}>
-      <select className={styles.select}  style={customStyles} {...register(name, { ...rules })}>
+      {label && <label className={styles.label} htmlFor={name}>{label}</label>}
+      <select
+        id={name}
+        className={styles.select}
+        style={customStyles}
+        {...register(name, { ...rules })}
+      >
         {options?.map((option, index) => {
-          return <option className={styles.option} key={index}>{option}</option>;
+          return (
+            <option className={styles.option} key={index}>
+              {option}
+            </option>
+          );
         })}
       </select>
       {errors[name] && <span>{errors[name].message}</span>}

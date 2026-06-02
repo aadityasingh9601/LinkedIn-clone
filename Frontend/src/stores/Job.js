@@ -41,7 +41,7 @@ const useJobStore = create(
         set({ currJobListingId: value });
       },
 
-      createJob: async (jobData) => {
+      createJob: async (jobData, setIsLoading) => {
         tryCatchWrapper(async () => {
           const response = await apiPost(`/jobs/create`, { jobData }, {});
           console.log(response);
@@ -52,10 +52,11 @@ const useJobStore = create(
             }));
             return toast.success("Job posted successfully!");
           }
+          setIsLoading(false);
         });
       },
 
-      updateJob: async (jobData, jobId) => {
+      updateJob: async (jobData, jobId, setIsLoading) => {
         tryCatchWrapper(async () => {
           console.log(jobId);
           const response = await apiPatch(`/jobs/${jobId}`, { jobData }, {});
@@ -69,6 +70,7 @@ const useJobStore = create(
             }));
             return toast.success("Job updated successfully!");
           }
+          setIsLoading(false);
         });
       },
 
