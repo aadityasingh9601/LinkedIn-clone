@@ -44,7 +44,6 @@ const useJobStore = create(
       createJob: async (jobData, setIsLoading) => {
         tryCatchWrapper(async () => {
           const response = await apiPost(`/jobs/create`, { jobData }, {});
-          console.log(response);
           if (response.status === 200) {
             set({ postJob: false });
             set((state) => ({
@@ -58,9 +57,7 @@ const useJobStore = create(
 
       updateJob: async (jobData, jobId, setIsLoading) => {
         tryCatchWrapper(async () => {
-          console.log(jobId);
           const response = await apiPatch(`/jobs/${jobId}`, { jobData }, {});
-          console.log(response);
           if (response.status === 200) {
             set({ editJob: false });
             set((state) => ({
@@ -77,9 +74,7 @@ const useJobStore = create(
       getAllJobs: async () => {
         tryCatchWrapper(async () => {
           const response = await apiGet("/jobs/alljobs");
-          console.log(response);
-          //Update the state variable here accordingly.
-          set({ jobs: response.data });
+          set({ jobs: response.data.jobs });
         });
       },
 
@@ -97,7 +92,6 @@ const useJobStore = create(
           fd.append("jobApplicationData", JSON.stringify(textData));
           if (resume instanceof File) fd.append("data[resume]", resume);
           const response = await apiPost(`/jobs/${jobId}/apply`, fd);
-          console.log(response);
           if (response.status === 200) {
             toast.success("Applied successfully!");
             navigate("/jobs");
@@ -109,7 +103,6 @@ const useJobStore = create(
       saveJob: async (jobId) => {
         tryCatchWrapper(async () => {
           const response = await apiPost(`/jobs/${jobId}/save`, {}, {});
-          console.log(response);
           if (response.status === 200) {
             return toast.success(response.data);
           }
@@ -119,7 +112,6 @@ const useJobStore = create(
       getAllApplicants: async (jobId) => {
         tryCatchWrapper(async () => {
           const response = await apiGet(`/jobs/${jobId}/applicants`);
-          console.log(response);
           if (response.status === 200) {
             set({ applicants: response.data });
           }
@@ -133,14 +125,12 @@ const useJobStore = create(
             {},
             {},
           );
-          console.log(response);
         });
       },
 
       getJobFitStats: async (jobId) => {
         tryCatchWrapper(async () => {
           const response = await apiGet(`/jobs/${jobId}/jobfitstats`);
-          console.log(response);
           if (response.status === 200) {
             //Update the state.
             set({ jobFitStats: response.data });
@@ -151,7 +141,6 @@ const useJobStore = create(
       unapplyFromJob: async (jobId) => {
         tryCatchWrapper(async () => {
           const response = await apiDelete(`/jobs/${jobId}/unapply`);
-          console.log(response);
           if (response.status === 200) {
             set((state) => ({
               jobs: state.jobs.map((job) => {
@@ -177,7 +166,6 @@ const useJobStore = create(
       deleteJob: async (jobId) => {
         tryCatchWrapper(async () => {
           const response = await apiDelete(`/jobs/${jobId}`);
-          console.log(response);
           if (response.status === 200) {
             set((state) => ({
               jobs: state.jobs.filter((j) => j._id !== jobId),
@@ -189,11 +177,9 @@ const useJobStore = create(
 
       rejectUserApplication: async (jobId, applicationId, navigate) => {
         tryCatchWrapper(async () => {
-          console.log(jobId, applicationId);
           const response = await apiDelete(
             `/jobs/${jobId}/reject/${applicationId}`,
           );
-          console.log(response);
           if (response.status === 200) {
             //Delete the application data from local storage and also update the state variable also.
             set((state) => ({

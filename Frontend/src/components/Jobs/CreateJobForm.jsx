@@ -65,7 +65,6 @@ export default function CreateJobForm({ job }) {
       ...data,
       skills: skills,
     };
-    console.log(jobData);
     {
       job
         ? updateJob(jobData, job._id, setIsLoading)

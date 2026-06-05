@@ -30,7 +30,6 @@ export default function EducationForm({ education = {}, setShow, mode }) {
   });
 
   const onSubmit = (educationData) => {
-    console.log(educationData);
     mode === "add"
       ? addEducation(educationData, setIsLoading)
       : updateEducation(education?._id, educationData, setIsLoading, setShow);

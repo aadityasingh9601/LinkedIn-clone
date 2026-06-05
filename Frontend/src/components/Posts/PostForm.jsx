@@ -69,7 +69,6 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
   }, []);
 
   if (typeof file !== "string" && file && file.length > 0) {
-    console.log("triggered");
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreview(reader.result);
@@ -82,7 +81,6 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
   };
 
   const onSubmit = (data) => {
-    console.log(data.media)
     const postData = {
       ...data,
       media: data.media[0],

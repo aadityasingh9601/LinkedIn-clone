@@ -1,7 +1,6 @@
 import styles from "./Comment.module.css";
 import Button from "../shared-components/Buttons/Button";
 import { useForm } from "react-hook-form";
-import RHFInput from "../shared-components/Inputs/RHFInput";
 import useCommentStore from "../../stores/Comment";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
 import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
@@ -16,7 +15,6 @@ export default function CommentBox({ postId }) {
   } = useForm();
 
   const onSubmit = (comment) => {
-    console.log(comment);
     reset();
     addComment(postId, comment);
   };

@@ -9,7 +9,6 @@ const useConnectionStore = create((set, get) => ({
   sendConnReq: async (userId) => {
     tryCatchWrapper(async () => {
       const response = await apiPost(`/connection/${userId}`, {}, {});
-      console.log(response);
       if (response.status === 200) {
         return toast.success("Connection request sent!");
       }
@@ -19,7 +18,6 @@ const useConnectionStore = create((set, get) => ({
   removeConn: async (userId) => {
     tryCatchWrapper(async () => {
       const response = await apiDelete(`/connection/${userId}`);
-      console.log(response);
       let { user1, user2 } = response.data;
       if (response.status === 200) {
         //Update the state also.

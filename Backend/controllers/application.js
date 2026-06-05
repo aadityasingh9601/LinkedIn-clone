@@ -9,7 +9,6 @@ import { JobApplicationDataSchema } from "../zodSchema/index.js";
 let bucket;
 (() => {
   mongoose.connection.on("connected", () => {
-    console.log(mongoose.connection.db);
     bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
       bucketName: "uploads",
     });
@@ -17,7 +16,6 @@ let bucket;
 })();
 
 const applyToJob = async (req, res) => {
-  console.log("Inside applyToJob");
   const { jobId } = req.params;
   const jobApplicationData =
     typeof req.body.jobApplicationData === "string"
@@ -43,7 +41,6 @@ const applyToJob = async (req, res) => {
   }
 
   const { filename, id } = req.file;
-  console.log(filename, id);
   const userId = req.user._id;
   const currUser = await Profile.findOne({ userId: userId });
 
@@ -127,7 +124,6 @@ const unapplyFromJob = async (req, res) => {
 
 const getAllApplications = async (req, res) => {
   const { jobId } = req.params;
-  console.log(jobId);
   const allApplications = await Application.find({ jobId: jobId }).populate({
     path: "applicant",
     select: "profile", // Include only the `profile` field in `author`
@@ -136,8 +132,6 @@ const getAllApplications = async (req, res) => {
       select: "headline name profileImage", // Include only `headline` and `name` fields in the `profile`
     },
   });
-
-  console.log(allApplications);
 
   res.status(200).send(allApplications);
 };
@@ -225,21 +219,14 @@ const rejectUserApplication = async (req, res) => {
 };
 
 const jobFitStats = async (req, res) => {
-  console.log("jobfitrstats");
   const { jobId } = req.params;
-  console.log(jobId);
   const userId = req.user._id;
 
   const job = await Job.findById(jobId);
   if (job) {
     const userProfile = await Profile.findOne({ userId: userId });
-
     const jobSkills = job.skills;
     const userSkills = userProfile.skills;
-
-    console.log(jobSkills);
-    console.log(userSkills);
-
     let matchedSkills = [];
     let missingSkills = [];
 
@@ -251,13 +238,9 @@ const jobFitStats = async (req, res) => {
       }
     });
 
-    console.log("These are our matched skills", matchedSkills);
-    console.log("These are our missing skills", missingSkills);
-
     const matchedScore = Math.ceil(
       (matchedSkills.length / jobSkills.length) * 100,
     );
-    console.log(matchedScore);
 
     res.status(200).send({ matchedScore, missingSkills, matchedSkills });
   } else {

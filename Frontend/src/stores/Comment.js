@@ -19,7 +19,6 @@ const useCommentStore = create((set) => ({
 
   getComments: async (postId) => {
     tryCatchWrapper(async () => {
-      console.log(postId);
       const response = await apiGet(`/post/${postId}/comment`);
       set({ comments: response.data });
     });
@@ -34,7 +33,6 @@ const useCommentStore = create((set) => ({
         { comment },
         {}
       );
-      console.log(response.data);
       newComment = response.data;
       if (response.status === 201) {
         set((state) => ({
@@ -67,7 +65,6 @@ const useCommentStore = create((set) => ({
   deleteComment: async (postId, commentId) => {
     tryCatchWrapper(async () => {
       const response = await apiDelete(`/post/${postId}/comment/${commentId}`);
-      console.log(response);
       if (response.status === 200) {
         set((state) => ({
           comments: state.comments.filter((c) => c._id !== commentId),

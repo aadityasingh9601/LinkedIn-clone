@@ -30,7 +30,6 @@ const logEvent = async (req, res) => {
       });
 
       await analytic.save();
-      //console.log(analytic);
       res.status(201).send("Data logged successfully!");
       return;
     }
@@ -53,25 +52,10 @@ const logEvent = async (req, res) => {
       });
 
       await analytic.save();
-      // console.log(analytic);
       res.status(200).send("Data logged in successfully!");
       return;
     }
 
-    //We've not used forEacch or map because they don't support async & await inside them, so database queries
-    //won't happen as expected, so we've used for of loop as shown above.
-    // const users =  eventData.users.forEach((u)=>{
-
-    //   const analytic = new Analytic({
-    //     user: u,
-    //     triggeredBy: req.user._id,
-    //     eventType: eventData.eventType,
-    //   });
-
-    //   await analytic.save();
-    //   console.log(analytic);
-
-    // })
   } else {
     if (req.user._id === eventData.userId) {
       res.send("You can't log event for yourself!");
@@ -85,7 +69,6 @@ const logEvent = async (req, res) => {
     });
 
     await analytic.save();
-    // console.log(analytic);
     res.status(200).send("Data logged in successfully!");
     return;
   }
@@ -94,12 +77,8 @@ const logEvent = async (req, res) => {
 const getAnalyticsData = async (req, res) => {
   try {
     const userId = req.user._id;
-
     const event = req.query.q1;
-
     const range = req.query.q2;
-
-    //console.log(range);
 
     const eventType = event
       .substring(0, event.length - 1)
@@ -108,24 +87,13 @@ const getAnalyticsData = async (req, res) => {
       .join("_");
 
     const user = await User.findById(userId);
-    const signupDate = user.signupDate;
-    //console.log(signupDate);
+    const signupDate = user.signupDate
 
     let startDate;
 
-    // console.log(signupDate);
-
-    let endDate = new Date(); //Pass today's date.
-    //console.log("I am end date" + endDate);
-    //In case , user is logged in just 5 days ago, but wanna see the earlier analytics too, so to handle that
-    //fix the startDate to signupDate.
+    let endDate = new Date();
 
     if (startDate > signupDate || range === "all" || range === "365") {
-      //The issue that was occuring was , out database stores the date in UTC format, but our backend means
-      //node.js uses local IST (Indian Standard Time) so when you were trying to assign startDate = signupDate
-      //it was getting assigned in IST format , not UTC format, and that caused problem because time shifts
-      //occured that displaced the whole date range, so from now on use UTC whenever u have to also store
-      //dates in databases also, to ensure no overlap, shifts or problem occurs.
       startDate = new Date(
         Date.UTC(
           signupDate.getUTCFullYear(),
@@ -136,7 +104,6 @@ const getAnalyticsData = async (req, res) => {
           0,
         ),
       );
-      //console.log("I am the start date" + startDate);
     } else {
       let today = new Date();
       startDate = new Date(
@@ -147,15 +114,9 @@ const getAnalyticsData = async (req, res) => {
         ),
       );
       startDate.setUTCDate(startDate.getUTCDate() - (range - 1));
-      // console.log("I am the start date" + startDate);
     }
-
-    //console.log(startDate);
-    //console.log(new Date());
-
     //CREATE AN AGGREGATION PIPELINE HERE, TO DO COMPLEX OPERATIONS AND GET ANALYTICS DATA ACCORDINGLY.
     //KEEP THIS PIPELINE DYNAMIC TO ENSURE IT HANDLES DIFFERENT KIND OF EVENTS PROPERLY.
-
     const data = await Analytic.aggregate([
       //1.First filter data according to userId,eventType and date range.
       {
@@ -168,7 +129,6 @@ const getAnalyticsData = async (req, res) => {
           },
         },
       },
-
       //Grouping the selected data.
       {
         $group: {
@@ -182,25 +142,21 @@ const getAnalyticsData = async (req, res) => {
     const properData = data?.map((e) => {
       return { date: e._id, count: e.count };
     });
-    //console.log(data);
-    //console.log(properData);
 
     //What we're doing here is that , suppose there is no analytics data for a certain data in the database,
     //what would we show on the graph for that day? nothing? no, we would be needing a full range of data to
     //be shown on the graph , and because of this we're taking our data from the database and mergin that with
     //the complete range of dates generated or selected by the user.
     const generateDateRange = (start, end) => {
-      //console.log(start, end);
-
       const dates = [];
       const current = new Date(start);
 
       while (current <= end) {
-        dates.push(new Date(current)); // push a copy of the date
+        dates.push(new Date(current)); 
         current.setDate(current.getDate() + 1);
       }
       return dates;
-    }; //It generates the complete range of date.
+    };
 
     const formatDate = (date) => date.toISOString().split("T")[0];
 
@@ -212,12 +168,7 @@ const getAnalyticsData = async (req, res) => {
       });
     };
 
-    // Set the date range
-
     const fullRange = generateDateRange(startDate, endDate);
-    // console.log(fullRange);
-
-    // Map the full range and merge with fetched data to have complete data for us to display.
     const completeData = fullRange?.map((date) => {
       const formatted = formatDate(date);
       const formatted2 = formatDate2(date);
@@ -228,11 +179,10 @@ const getAnalyticsData = async (req, res) => {
       };
     });
 
-    //console.log(completeData.length);
 
     res.status(200).send(completeData);
   } catch (e) {
-    //console.log(e);
+    console.log(e);
     res.send("Already logged for the day.");
   }
 };

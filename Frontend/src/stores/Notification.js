@@ -19,7 +19,6 @@ const useNotificationStore = create((set) => ({
   notiCount: 0,
 
   setNotiCount: (value) => {
-    //console.log(value);
     set({ notiCount: value });
   },
 
@@ -30,7 +29,6 @@ const useNotificationStore = create((set) => ({
   },
 
   handleConnRes: async (noti, action) => {
-    console.log(action);
     tryCatchWrapper(async () => {
       const response = await apiPost(
         `/connection/respond/${noti.sender}`,
@@ -38,7 +36,6 @@ const useNotificationStore = create((set) => ({
         {},
       );
 
-      console.log(response);
       let { user1, user2 } = response.data;
       if (response.status === 200) {
         //Update the state as well.
@@ -54,7 +51,7 @@ const useNotificationStore = create((set) => ({
   getNotifications: async function () {
     tryCatchWrapper(async () => {
       const response = await apiGet("/notification");
-      set({ notifications: response.data });
+      set({ notifications: response.data.notifications });
     });
   },
 

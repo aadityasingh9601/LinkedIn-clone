@@ -18,7 +18,6 @@ export default function UserInfo({
         <div
           className={styles.username}
           onClick={() => {
-            console.log("clicked!");
             navigate(`/profile/${profileId}`);
           }}
         >

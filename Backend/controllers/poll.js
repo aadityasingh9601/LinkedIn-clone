@@ -3,7 +3,6 @@ import { PollDataSchema } from "../zodSchema/index.js";
 
 const createPoll = async (req, res) => {
   const { pollData } = req.body;
-  //console.log(pollData);
   let { pollDuration } = pollData;
 
   const result = PollDataSchema.safeParse(pollData);
@@ -16,7 +15,6 @@ const createPoll = async (req, res) => {
   const expiryDate = new Date(
     Date.now() + pollDuration * 24 * 60 * 60 * 1000,
   ).toISOString();
-  //console.log(expiryDate);
 
   const newPoll = new Poll({
     question: pollData.question,
@@ -40,24 +38,17 @@ const createPoll = async (req, res) => {
   res.status(201).send(fullPoll);
 };
 
-const getPoll = async (req, res) => {
-  // console.log(req.params);
-  res.send("Inside getPoll function");
-};
-
 const getAllPolls = async (req, res) => {
-  // console.log("inside getAllPolls");
   const polls = await Poll.find()
     .sort({ createdAt: -1 })
     .populate({
       path: "author",
-      select: "profile", // Include only the `profile` field in `poll`
+      select: "profile",
       populate: {
-        path: "profile", // Populate the `profile` field
-        select: "headline name profileImage", // Include only `headline` and `name` fields in the `profile`
+        path: "profile", 
+        select: "headline name profileImage",
       },
     });
-  //console.log(polls);
   res.status(200).send(polls);
 };
 
@@ -71,7 +62,6 @@ const voteInPoll = async (req, res) => {
     optionId: optionId,
   };
 
-  //Check if the user has already voted or not.
   let existingVoter = poll.voters.find(
     (voter) => voter.user.toString() === userId,
   );
@@ -91,12 +81,9 @@ const voteInPoll = async (req, res) => {
 };
 
 const unVote = async (req, res) => {
-  //console.log("inside unvote on teh backend");
   const { id } = req.params;
   let userId = req.user._id.toString();
   const poll = await Poll.findById(id);
-
-  //Check if the user has even voted or not.
   let existingVoter = poll.voters.find(
     (voter) => voter.user.toString() === userId,
   );
@@ -116,12 +103,8 @@ const unVote = async (req, res) => {
 };
 
 const checkVote = async (req, res) => {
-  // console.log("inside checkvote on the backend");
   const { id } = req.params;
-  //console.log(id);
-
   const poll = await Poll.findById(id);
-
   const existingVote = poll.voters.find(
     (voter) => voter.user.toString() === req.user._id.toString(),
   );
@@ -135,7 +118,6 @@ const checkVote = async (req, res) => {
 
 const deletePoll = async (req, res) => {
   const { id } = req.params;
-  // console.log(id);
   const poll = await Poll.findById(id);
   if (req.user._id.toString() === poll.author._id.toString()) {
     await poll.deleteOne();
@@ -145,7 +127,6 @@ const deletePoll = async (req, res) => {
 
 export default {
   createPoll,
-  getPoll,
   getAllPolls,
   voteInPoll,
   unVote,

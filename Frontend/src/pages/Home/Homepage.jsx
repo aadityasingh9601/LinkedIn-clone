@@ -7,7 +7,6 @@ import usePollStore from "../../stores/Poll";
 import useUserStore from "../../stores/User";
 import useAnalyticStore from "../../stores/Analytic";
 import Xmark from "../../components/shared-components/Icons/Xmark";
-
 const Post = lazy(() => import("../../components/Posts/Post"));
 const InfiniteScroll = lazy(() => import("react-infinite-scroll-component"));
 const PostFormPreview = lazy(
@@ -79,13 +78,10 @@ export default function Homepage() {
 
   const IOCallback = (entries) => {
     entries.forEach((entry) => {
-      // console.log(entry);
       if (entry.isIntersecting) {
         const postId = entry.target.getAttribute("data-post-id");
-        //console.log(postId);
         if (postId && !viewedPostIds.current.has(postId)) {
           viewedPostIds.current.add(postId); // Prevent duplicates
-          //console.log(viewedPostIds.current);
         }
         // Stop observing this element after first intersection
         observer.current.unobserve(entry.target);

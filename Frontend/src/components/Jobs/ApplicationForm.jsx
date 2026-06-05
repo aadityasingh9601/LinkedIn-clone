@@ -29,12 +29,9 @@ export default function ApplicationForm() {
       ...data,
       resume: data.resume[0],
     };
-    console.log(applicationData);
     setIsLoading(true);
     applyToJob(jobId, applicationData, navigate, setIsLoading);
   };
-
-  console.log(errors);
 
   return (
     <div className={styles.applicationForm}>

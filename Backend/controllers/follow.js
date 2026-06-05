@@ -4,7 +4,6 @@ import Follow from "../models/Follow.js";
 //To check if the current logged in user has followed a certain user or not.
 const checkFollow = async (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
   const follow = await Follow.findOne({
     user: req.user._id,
     userFollowed: userId,
@@ -19,9 +18,6 @@ const checkFollow = async (req, res) => {
 
 const follow = async (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
-  console.log(req.user._id);
-  console.log("inside follow");
   const userProfile = await Profile.findOne({ userId: userId });
   const follow = await Follow.findOne({
     user: req.user._id,
@@ -47,9 +43,7 @@ const follow = async (req, res) => {
 
 //Done by the user who has followed initially.
 const unfollow = async (req, res) => {
-  console.log("inside unfollow");
   const { userId } = req.params;
-  console.log(userId);
   const userProfile = await Profile.findOne({ userId: userId });
   const follow = await Follow.findOne({
     user: req.user._id,
@@ -68,9 +62,7 @@ const unfollow = async (req, res) => {
 
 //Done by the user who is being followed.
 const removeFollower = async (req, res) => {
-  console.log("inside removeFollower");
   const { followerId } = req.params;
-  console.log(followerId);
   const userProfile = await Profile.findOne({ userId: req.user._id });
 
   const follow = await Follow.findOne({
@@ -92,9 +84,7 @@ const removeFollower = async (req, res) => {
 };
 
 const allFollowers = async (req, res) => {
-  console.log("inside all followers");
   const userId = req.user._id;
-  console.log(userId);
   const followers = await Follow.find({ userFollowed: userId }).populate({
     path: "user",
     select: "profile",
@@ -103,14 +93,11 @@ const allFollowers = async (req, res) => {
       select: "name headline profileImage",
     },
   });
-  //console.log(followers);
   res.status(200).send(followers);
 };
 
 const allFollowing = async (req, res) => {
-  console.log("Inside all following");
   const userId = req.user._id;
-  //console.log(userId);
   const following = await Follow.find({ user: userId }).populate({
     path: "userFollowed",
     select: "profile",
@@ -119,7 +106,6 @@ const allFollowing = async (req, res) => {
       select: "name headline profileImage",
     },
   });
-  //console.log(following);
   res.status(200).send(following);
 };
 

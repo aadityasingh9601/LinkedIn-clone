@@ -4,7 +4,6 @@ import indexStyles from "./index.module.css";
 import { useForm } from "react-hook-form";
 import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
 import RHFInput from "../shared-components/Inputs/RHFInput";
-import useUserStore from "../../stores/User";
 import { ExperienceDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
@@ -30,7 +29,6 @@ export default function ExperienceForm({ experience = {}, setShow, mode }) {
   });
 
   const onSubmit = (experienceData) => {
-    console.log(experienceData);
     mode === "add"
       ? addExperience(experienceData, setIsLoading)
       : updateExperience(experience?._id, experienceData, setIsLoading, setShow);

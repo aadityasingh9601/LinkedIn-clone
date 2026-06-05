@@ -11,20 +11,16 @@ import TimePassed from "../shared-components/Date_Time/TimePassed";
 import JobFitStats from "../Jobs/JobFitStats";
 
 export default function JobDetail({ job }) {
-  console.log(job);
   const navigate = useNavigate();
   const currUserId = useUserStore((s) => s.currUserId);
   const userProfile = useUserStore((s) => s.currUserProfile);
-
   const [applied, setApplied] = useState(false);
   const [saved, setSaved] = useState(false);
   const saveJob = useJobStore((s) => s.saveJob);
   const unapplyFromJob = useJobStore((s) => s.unapplyFromJob);
   const jobFitStats = useJobStore((s) => s.jobFitStats);
   const getJobFitStats = useJobStore((s) => s.getJobFitStats);
-
   const jobApplications = job?.applications;
-  //console.log(jobApplications);
   const existingApplication = jobApplications?.find(
     (a) => a?.applicant?.toString() === currUserId,
   );

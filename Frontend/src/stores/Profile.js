@@ -42,7 +42,6 @@ const useProfileStore = create((set, get) => ({
   //Create separate methods here for updating profilehead, skills, about, experience etc sections.
 
   getProfileData: async (profileId) => {
-    console.log(profileId);
     tryCatchWrapper(async () => {
       //LOGIC TO ENSURE THAT WHENEVER A USER VISITS SOME OTHER USER'S PROFILE, A EVENT GETS LOGGED IN THE
       //DATABASE, THAT CAN BE USED LATER TO SHOW ANALYTICS DATA.
@@ -57,7 +56,6 @@ const useProfileStore = create((set, get) => ({
       // }
 
       const response = await apiGet(`/profile/${profileId}`);
-      console.log(response);
       //We'll persist the data of the current user's profile to use that later.
       if (profileId === currUserProfileId) {
         localStorage.setItem("currUserProfile", JSON.stringify(response.data));
@@ -70,7 +68,6 @@ const useProfileStore = create((set, get) => ({
   getProfiles: async (username) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/profile/allUsers?username=${username}`);
-      console.log(response);
       if (response.status === 200) {
         set({ userProfiles: response.data });
 
@@ -99,7 +96,6 @@ const useProfileStore = create((set, get) => ({
       if (profileImage instanceof File) fd.append("profileHeaderData[profileImage]", profileImage);
       if (bannerImage instanceof File) fd.append("profileHeaderData[bannerImage]", bannerImage);
       const response = await apiPatch(`/profile/header`, fd);
-      console.log(response.data.updatedData);
 
       if (response.status === 200) {
         set((state) => ({
@@ -116,7 +112,6 @@ const useProfileStore = create((set, get) => ({
     setIsLoading(true);
     tryCatchWrapper(async () => {
       const response = await apiPatch(`/profile/about`, { data }, {});
-      console.log(response);
 
       if (response.status === 200) {
         set((state) => ({
@@ -149,7 +144,6 @@ const useProfileStore = create((set, get) => ({
   deleteSkill: async (skill) => {
     tryCatchWrapper(async () => {
       const response = await apiDelete(`/profile/skills?skill=${skill}`, {});
-      console.log(response);
 
       if (response.status === 200) {
         set((state) => ({
@@ -171,7 +165,6 @@ const useProfileStore = create((set, get) => ({
         { educationData },
         {},
       );
-      console.log(response);
       if (response.status === 200) {
         set((state) => ({
           profile: {
@@ -201,7 +194,6 @@ const useProfileStore = create((set, get) => ({
         { educationData },
         {},
       );
-      console.log(response);
       if (response.status === 200) {
         set((state) => ({
           profile: {
@@ -221,7 +213,6 @@ const useProfileStore = create((set, get) => ({
   deleteEducation: async (educationId) => {
     tryCatchWrapper(async () => {
       const response = await apiDelete(`/profile/education/${educationId}`, {});
-      console.log(response);
       if (response.status === 200) {
         set((state) => ({
           profile: {
@@ -244,7 +235,6 @@ const useProfileStore = create((set, get) => ({
         { experienceData },
         {},
       );
-      console.log(response);
       if (response.status === 200) {
         set((state) => ({
           profile: {
@@ -274,7 +264,6 @@ const useProfileStore = create((set, get) => ({
         { experienceData },
         {},
       );
-      console.log(response);
       if (response.status === 200) {
         set((state) => ({
           profile: {
@@ -297,7 +286,6 @@ const useProfileStore = create((set, get) => ({
         `/profile/experience/${experienceId}`,
         {},
       );
-      console.log(response);
       if (response.status === 200) {
         set((state) => ({
           profile: {

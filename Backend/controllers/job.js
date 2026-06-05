@@ -16,15 +16,12 @@ const createJob = async (req, res) => {
     postedBy: req.user._id,
   });
   await newJob.save();
-  //console.log(newJob);
   res.status(200).send(newJob);
 };
 
 const editJob = async (req, res) => {
   const { id } = req.params;
-  // console.log(id);
   const job = await Job.findById(id);
-  //console.log(req.user._id, job.postedBy);
   const { jobData } = req.body;
 
   if (req.user._id.toString() === job.postedBy.toString()) {
@@ -40,13 +37,9 @@ const editJob = async (req, res) => {
 };
 
 const deleteJob = async (req, res) => {
-  console.log("Inside deleteJob on the backend!");
   const { id } = req.params;
   const job = await Job.findById(id);
   if (req.user._id.toString() === job.postedBy.toString()) {
-    // Add a middleware to delete all the applicants related to this job or decide what to do with the
-    //applicantions later after searching on the internet.
-
     await job.deleteOne();
     res.status(200).send({ message: "Job deleted successfully!" });
   } else {
@@ -58,7 +51,6 @@ const deleteJob = async (req, res) => {
 
 const getMyJobs = async (req, res) => {
   const { q } = req.query;
-  console.log(q);
   let fullJobs;
   const currUserProfile = await Profile.findOne({ userId: req.user._id });
 
@@ -74,30 +66,21 @@ const getMyJobs = async (req, res) => {
   }
   if (q === "myjobpostings") {
     const myJobPostings = await Job.find({ postedBy: req.user._id });
-    console.log(myJobPostings);
-
     res.status(200).send(myJobPostings);
   }
 };
 
 const getAllJobs = async (req, res) => {
-  console.log("inside getalljobs");
   const jobs = await Job.find().populate("applications");
-  //console.log(jobs);
-
-  res.status(200).send(jobs);
+  res.status(200).json({
+    jobs:jobs
+  })
 };
 
 const saveJob = async (req, res) => {
   const { jobId } = req.params;
-
   const currUserProfile = await Profile.findOne({ userId: req.user._id });
-
-  console.log(currUserProfile.myJobs);
-
   const savedJobs = currUserProfile.myJobs.saved;
-
-  //If user has already saved the job then--
   if (savedJobs.includes(jobId)) {
     //unsave the job from myJobs.
     let idxOfJob = savedJobs.indexOf(jobId);

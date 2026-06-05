@@ -15,7 +15,6 @@ const options = {
 };
 
 const checkAuthStatus = async (req, res) => {
-  console.log("inside checkauthstatus on the backend");
   let accesstoken = req.cookies.accesstoken;
   let decoded = jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET);
   const user = await User.findOne({ _id: decoded.id });
@@ -48,7 +47,6 @@ const checkAuthStatus = async (req, res) => {
 
 const signup = async (req, res) => {
   const { signupData } = req.body;
-  //console.log(signupData);
   const result = SignupDataSchema.safeParse(signupData);
   if (!result.success) {
     return res.status(400).json({
@@ -84,14 +82,13 @@ const signup = async (req, res) => {
     await newUser.save();
     res.status(201).json({ message: "User registered successfully!" });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(500).json({ message: "Error creating user!" });
   }
 };
 
 const login = async (req, res) => {
   const { loginData } = req.body;
-  //console.log(loginData);
   const result = LoginDataSchema.safeParse(loginData);
   if (!result.success) {
     return res.status(400).json({
@@ -138,7 +135,7 @@ const login = async (req, res) => {
         currUserProfile: userProfile,
       });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(500).json({ message: "Error logging in" });
   }
 };

@@ -11,9 +11,8 @@ export default class MyErrorBoundary extends Component {
     return { hasError: true };
   }
 
-  //This function is to run certain code when error occurs.
   componentDidCatch(error, errorInfo) {
-    console.log("Error", error, errorInfo);
+    //console.log("Error", error, errorInfo);
   }
 
   render() {

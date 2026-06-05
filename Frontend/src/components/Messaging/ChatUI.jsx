@@ -32,9 +32,7 @@ export default function ChatUI({ socket }) {
   };
 
   const existingChat = () => {
-    console.log(currUserProfile?.chatList);
     for (let chat of currUserProfile?.chatList) {
-      console.log(chat);
       let success = [currUserId, profile?.userId].every((val) =>
         chat.participants.includes(val),
       );
@@ -51,8 +49,6 @@ export default function ChatUI({ socket }) {
 
   const displayUser =
     typeof otherPerson !== "undefined" ? otherPerson?.profile : profileData;
-
-  console.log(profileData);
 
   useEffect(() => {
     if (chatContainerRef.current) {

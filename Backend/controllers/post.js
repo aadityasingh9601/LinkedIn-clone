@@ -11,8 +11,6 @@ const createPost = async (req, res) => {
     });
   }
 
-  console.log("Req file", req.files);
-
   const { date, time } = postData;
   let scheduledTime = "";
   if (date && time) {
@@ -105,7 +103,6 @@ const singlePost = async (req, res) => {
 const updatePost = async (req, res) => {
   const { postId } = req.params;
   const { postData } = req.body;
-  console.log(postData);
   const result = PostDataSchema.safeParse(postData);
   if (!result.success) {
     return res.status(400).json({
@@ -114,9 +111,6 @@ const updatePost = async (req, res) => {
   }
 
   const existingPost = await Post.findById(postId);
-
-  console.log(req.user._id.toString());
-  console.log(existingPost.author.toString());
 
   if (req.user._id.toString() !== existingPost.author.toString()) {
     return res.status(403).json({

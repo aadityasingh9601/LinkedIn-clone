@@ -52,7 +52,6 @@ export default function ProfileHeaderForm({ profile,handleCancel }) {
   }
 
   const onSubmit = (data) => {
-    console.log(data);
     const profileData = {
       ...data,
       profileImage: data.profileImage[0],

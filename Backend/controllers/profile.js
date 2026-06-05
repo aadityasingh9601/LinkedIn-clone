@@ -13,9 +13,7 @@ import { convertDateToUTC } from "../utils/helper.js";
 import User from "../models/User.js";
 
 const getUserProfile = async (req, res) => {
-  //console.log("inside get user profile on backend");
   const { profileId } = req.params;
-  //console.log(profileId);
   const currUser = await User.findById(req.user._id);
   let userProfile = {};
   if (currUser.profile === profileId) {
@@ -40,7 +38,6 @@ const getUserProfile = async (req, res) => {
   } else {
     userProfile = await Profile.findById(profileId);
   }
-  //console.log("userProfile", userProfile);
   res.status(200).json({
     userProfile,
   });
@@ -49,7 +46,7 @@ const getUserProfile = async (req, res) => {
 const getAllUserProfiles = async (req, res) => {
   const { username } = req.query;
   const users = await Profile.find({
-    name: { $regex: username, $options: "i" }, // Case-insensitive search
+    name: { $regex: username, $options: "i" },
   })
     .select("name profileImage headline userId")
     .limit(10);
@@ -154,7 +151,6 @@ const addNewSkill = async (req, res) => {
 
 const deleteSkill = async (req, res) => {
   const { skill } = req.query;
-  //console.log(skill);
   const profile = await Profile.findOne({ userId: req.user._id });
   profile.skills.splice(profile.skills.indexOf(skill), 1);
   await profile.save();

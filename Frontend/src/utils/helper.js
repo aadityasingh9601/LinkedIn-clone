@@ -10,7 +10,6 @@ const apiGet = async (endPoint, headers = {}) => {
     });
     return response;
   } catch (error) {
-    //console.log(error.response?.data.message);
     return toast.error(
       error.response?.data.message || error.message || "Something went wrong!",
     );
@@ -24,7 +23,6 @@ const apiPost = async (endPoint, reqBody, headers = {}) => {
     });
     return response;
   } catch (error) {
-    //console.log(error.response.data.message);
     return toast.error(
       error.response?.data.message || error.message || "Something went wrong!",
     );
@@ -38,7 +36,6 @@ const apiPatch = async (endPoint, reqBody, headers = {}) => {
     });
     return response;
   } catch (error) {
-    //console.log(error.response.data.message);
     return toast.error(
       error.response?.data.message || error.message || "Something went wrong!",
     );
@@ -60,9 +57,9 @@ const tryCatchWrapper = async (fn) => {
   try {
     return await fn();
   } catch (error) {
-    console.log(
-      error.response?.data.message || error.message || "Something went wrong!",
-    );
+    // //console.log(
+    //   error.response?.data.message || error.message || "Something went wrong!",
+    // );
   }
 };
 

@@ -21,7 +21,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Connected to MongoDB Atlas"))
+  .then(() => console.log("Connected to MongoDB Atlas!"))
   .catch((err) => console.error(err));
 
 const createObjectId = () => new mongoose.Types.ObjectId();
@@ -492,7 +492,6 @@ const init = async () => {
     await Poll.insertMany(polls);
     await Connection.insertMany(connections);
     await Follow.insertMany(follows);
-    console.log("All relational mock data inserted successfully!");
     mongoose.disconnect();
   } catch (err) {
     console.error("Error inserting mock data:", err);

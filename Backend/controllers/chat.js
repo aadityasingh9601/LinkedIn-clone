@@ -5,9 +5,7 @@ import { io, userSocketMap } from "../server.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const createChat = async (req, res) => {
-  console.log("inside createChat");
   const { userId } = req.params;
-  console.log(userId);
   const currUserId = req.user._id;
   //First save the currUser's id in a variable only then use it , else mongoose will not include chatList in the
   //currUser, see the reason why_? in ChatGPT.
@@ -31,10 +29,8 @@ const createChat = async (req, res) => {
       participants: [currUser.userId, targetUser.userId],
     });
     await chat.save();
-    console.log(chat);
 
     io.emit("join-room", chat._id);
-    //console.log(currUser.chatList);
     targetUser.chatList.push(chat);
     currUser.chatList.push(chat);
     await targetUser.save();
@@ -44,9 +40,7 @@ const createChat = async (req, res) => {
 };
 
 const getSingleChat = async (req, res) => {
-  // console.log("getsingleChat");
   const { chatId } = req.params;
-  // console.log(chatId);
   const chat = await Chat.findById(chatId).populate({
     path: "participants",
     select: "profile",
@@ -55,14 +49,11 @@ const getSingleChat = async (req, res) => {
       select: "name headline profileImage",
     },
   });
-  //console.log(chat);
-
   res.status(200).send(chat);
 };
 
 const getAllChats = async (req, res) => {
   const { userId } = req.params;
-  console.log(req.params);
   const profile = await Profile.findOne({ userId: userId });
 
   const chats = await Chat.find({ _id: { $in: profile?.chatList } })
@@ -78,8 +69,6 @@ const getAllChats = async (req, res) => {
       path: "lastMessage",
       select: "sender content createdAt",
     });
-
-  console.log(chats);
   res.status(200).json({
     chats: chats,
   });
@@ -90,14 +79,12 @@ const createMessage = async (req, res) => {
   let currUserId = req.user._id;
   let receiverId = id;
   const { data } = req.body;
-  console.log(data);
 
   let existingChat = await Chat.findOne({
     participants: { $all: [currUserId, receiverId] },
   });
 
   let newChat = {};
-  console.log(existingChat);
   //If there's no existing chat between the two users, first create chat.
   if (!existingChat) {
     newChat = new Chat({
@@ -118,13 +105,10 @@ const createMessage = async (req, res) => {
     const socket = io.sockets.sockets.get(socketId);
     if (socket) {
       socket.join(roomId);
-      console.log(`User ${currUserId} joined room ${roomId}`);
     }
   }
 
   const chat = existingChat ? existingChat : newChat;
-
-  //console.log("Request file", req.file);
   let type = req.file ? req.file.mimetype.split("/")[0] : "";
   let url = req.file ? req.file.path : "";
   let filename = req.file ? req.file.filename : "";
@@ -173,7 +157,6 @@ const createMessage = async (req, res) => {
 
 const getAllMsg = async (req, res) => {
   const { chatId } = req.params;
-  console.log(chatId);
   const currUserId = req.user._id;
 
   const chat = await Chat.findById(chatId);
@@ -273,14 +256,9 @@ const deleteMsg = async (req, res) => {
 const deleteChat = async (req, res) => {
   const { chatId } = req.params;
   const chat = await Chat.findById(chatId);
-  // console.log(chat);
-  //Only members of a chat can delete it not anyone else.
   if (chat.participants.includes(req.user._id.toString())) {
-    //First check if the chat has no participants, only then delete it, else delete it just for the one user.
-
     if (chat.participants.length === 1) {
       const deletedChat = await Chat.findByIdAndDelete(chatId);
-      // console.log(deletedChat);
     } else {
       //Remove the chatId from the chatList of the user.
       const profile = await Profile.findOne({ userId: req.user._id });

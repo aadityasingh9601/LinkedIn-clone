@@ -34,7 +34,6 @@ export default function MsgBox({ currChatId, receiverId, socket }) {
   };
 
   function handleEmojiClick(emojiObject) {
-    console.log(emojiObject);
     setnewMsg((prev) => prev + emojiObject.emoji);
   }
 

@@ -11,7 +11,6 @@ const useAnalyticStore = create((set, get) => ({
       const response = await apiGet(
         `/analytics?q1=${get().analyticsEvent}&q2=${range}`,
       );
-      console.log(response);
       set({ analyticsData: response.data });
     });
   },
@@ -24,7 +23,6 @@ const useAnalyticStore = create((set, get) => ({
   logEvent: async (data) => {
     tryCatchWrapper(async () => {
       const response = await apiPost("/analytics", { eventData: data }, {});
-      console.log(response);
     });
   },
 }));

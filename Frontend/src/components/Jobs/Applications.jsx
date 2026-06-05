@@ -8,7 +8,6 @@ export default function Applications() {
   const { id } = useParams();
   const getAllApplicants = useJobStore((s) => s.getAllApplicants);
   const applicants = useJobStore((s) => s.applicants);
-  console.log(id);
   useEffect(() => {
     getAllApplicants(id);
   }, [id]);

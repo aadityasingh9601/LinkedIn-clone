@@ -24,7 +24,6 @@ const usePollStore = create((set) => ({
   createPoll: async (pollData) => {
     tryCatchWrapper(async () => {
       const response = await apiPost(`/poll/create`, { pollData }, {});
-      console.log(response);
       //Update the polls state variable.
       set((state) => ({
         polls: [...state.polls, response.data],
@@ -53,7 +52,6 @@ const usePollStore = create((set) => ({
         {},
         {}
       );
-      console.log(response);
       if (response.status === 200) {
         //Update the poll voters and options votes carefully.
         set((state) => ({
@@ -74,7 +72,6 @@ const usePollStore = create((set) => ({
   unVote: async (pollId) => {
     tryCatchWrapper(async () => {
       const response = await apiPost(`/poll/${pollId}/unvote`, {}, {});
-      console.log(response);
       if (response.status === 200) {
         //Update the poll voters and options votes carefully.
         set((state) => ({
@@ -96,7 +93,6 @@ const usePollStore = create((set) => ({
   checkVote: async (pollId) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/poll/${pollId}/checkvote`);
-      console.log(response);
       if (response.data === "Yes") {
         return true;
       } else {
@@ -108,7 +104,6 @@ const usePollStore = create((set) => ({
   deletePoll: async (pollId) => {
     tryCatchWrapper(async () => {
       const response = await apiDelete(`/poll/${pollId}/delete`);
-      console.log(response);
       if (response.status === 200) {
         set((state) => ({
           polls: state.polls.filter((p) => p._id !== pollId),

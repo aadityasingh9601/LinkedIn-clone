@@ -13,7 +13,6 @@ const ControlledTextarea = lazy(
 );
 
 export default function Comment({ comment }) {
-  console.log(comment?.author._id, comment?._id);
   const [toggle, setToggle] = useState(false);
   const [newComm, setnewComm] = useState(comment.text);
   const [commentEdit, setCommentEdit] = useState(false);

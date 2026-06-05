@@ -57,7 +57,6 @@ const useUserStore = create((set, get) => ({
     tryCatchWrapper(async () => {
       setIsLoading(true);
       const response = await apiPost(`/users/login`, { loginData }, {});
-      console.log(response);
       setIsLoading(false);
       if (response.status === 200) {
         toast.success("User logged in successfully!");
@@ -128,14 +127,8 @@ const useUserStore = create((set, get) => ({
     if (action === "unfollow") {
       followedSet.delete(userId);
     }
-
-    // Update localStorage,Set isn't a plain JS object so we havae to serialize it like this in an array.
     localStorage.setItem("allFollowed", JSON.stringify([...followedSet]));
-
-    // Update the state
     set({ allFollowed: followedSet });
-
-    //console.log("Updated followed :", followedSet);
   },
 
   getAllFollowed: async () => {
@@ -155,31 +148,19 @@ const useUserStore = create((set, get) => ({
     const connectionsUserIds = safeParseJSON("allConnections", []);
     const connectionsSet = new Set(connectionsUserIds); //Create set from the array.
     const key = [userId1, userId2].sort().join("-");
-    //We'll create a single unique key so it'll be easier to identify and look up for.
-
     if (action === "add") {
       connectionsSet.add(key);
     }
-
     if (action === "remove") {
       connectionsSet.delete(key);
     }
-
-    // Update localStorage,Set isn't a plain JS object so we havae to serialize it like this in an array.
     localStorage.setItem("allConnections", JSON.stringify([...connectionsSet]));
-
-    // Update the state
     set({ allConnections: connectionsSet });
-
-    //console.log("Updated connections :", connectionsSet);
   },
 
   getAllConnections: async (userId) => {
     tryCatchWrapper(async () => {
-      //console.log(userId);
       const response = await apiGet(`/connection/${userId}`);
-      //console.log(response);
-      //Save to local storage to persist state and to identify the users followed by the user.
       let allConnections = response?.data?.map((c) => {
         return [c.user, c.connectedUser].sort().join("-");
       });

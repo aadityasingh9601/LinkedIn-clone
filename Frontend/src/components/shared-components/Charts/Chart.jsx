@@ -9,12 +9,7 @@ import {
 } from "recharts";
 
 export default function Chart({ data }) {
-  // console.log(data);
   const maxValue = Math.max(...data?.map((d) => d.count));
-  //console.log(maxValue);
-  //We removed range & used data.length ,because data is sent from backend so consistency is maintained plus
-  //when the value of range is all, then how do we handle it_? we can't divide "all"/7 , that's why we used
-  //data.length , this is better.
   return (
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={data}>

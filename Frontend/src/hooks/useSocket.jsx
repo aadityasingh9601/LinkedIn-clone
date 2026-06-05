@@ -20,8 +20,7 @@ const useSocket = (isLoggedIn, currUserId, location) => {
   useEffect(() => {
     if (!isLoggedIn || isAuthRoute) return;
     socket.io.opts.query = { userId: currUserId };
-    socket.connect(); // no-op if already connected
-    console.log(socket.connected);
+    socket.connect();
     return () => {
       socket.disconnect();
     };
@@ -34,10 +33,8 @@ const useSocket = (isLoggedIn, currUserId, location) => {
       toast(noti.message);
     });
     socket.on("firstMsg",(data)=>{
-      console.log(data);
     })
     socket.on("newMsg", (data) => {
-      console.log(data);
       addMessage(data);
       updateLastMsg(data);
     });

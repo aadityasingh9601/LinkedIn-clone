@@ -36,7 +36,6 @@ const useChatStore = create((set, get) => ({
   createChat: async (userId) => {
     tryCatchWrapper(async () => {
       const response = await apiPost(`/chat/createchat/${userId}`, {}, {});
-      console.log(response);
     });
   },
 
@@ -61,7 +60,6 @@ const useChatStore = create((set, get) => ({
   },
 
   updateLastMsg: (data) => {
-    console.log(data);
     set((state) => ({
       chats: state.chats.map((chat) =>
         chat._id === data.chatId ? { ...chat, lastMessage: data } : chat,
@@ -90,7 +88,6 @@ const useChatStore = create((set, get) => ({
       fd.append("data", JSON.stringify(textData));
       if (mediaFile instanceof File) fd.append("data[mediaFile]", mediaFile);
       const response = await apiPost(`/chat/${receiverId}`, fd);
-      //console.log(response);
     });
   },
 

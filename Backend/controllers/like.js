@@ -52,7 +52,6 @@ const getAllLikes = async (req, res) => {
       select: "name profileImage headline",
     },
   });
-  console.log(likes);
   res.status(200).json({
     likes: likes,
   });

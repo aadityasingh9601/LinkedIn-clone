@@ -7,7 +7,6 @@ import Ellipsis from "../shared-components/Icons/Ellipsis";
 import Xmark from "../shared-components/Icons/Xmark";
 
 export default function Job({ job }) {
-  //console.log(job);
   const currUserId = useUserStore((state) => state.currUserId);
   const setcurrJobListingId = useJobStore((s) => s.setcurrJobListingId);
   const deleteJob = useJobStore((s) => s.deleteJob);

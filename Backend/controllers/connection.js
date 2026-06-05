@@ -5,7 +5,6 @@ import { io, userSocketMap } from "../server.js";
 import Notification from "../models/Notification.js";
 
 const checkConnection = async (req, res) => {
-  console.log("inside checkConnection");
   const { userId } = req.params;
   const connection = await Connection.find({
     $and: [
@@ -13,7 +12,6 @@ const checkConnection = async (req, res) => {
       { connectedUser: { $in: [userId, req.user._id] } },
     ],
   });
-  console.log(connection);
   if (connection.length > 0) {
     res.send("yes");
   } else {
@@ -68,10 +66,7 @@ const sendConnRequest = async (req, res) => {
 
 const respondToConnRequest = async (req, res) => {
   const { userId } = req.params;
-
   const { response, notiId } = req.body;
-  console.log(req.body);
-
   const user = await Profile.findOne({ userId: userId });
   const currUser = await Profile.findOne({ userId: req.user._id });
   if (response === "Accept") {
@@ -147,7 +142,6 @@ const getAllConnections = async (req, res) => {
 
 const removeConnection = async (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
   const connection = await Connection.findOne({
     $and: [
       { user: { $in: [req.user._id, userId] } },

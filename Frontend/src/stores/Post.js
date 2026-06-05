@@ -79,14 +79,9 @@ const usePostStore = create((set) => ({
   getScheduledPosts: async (userId) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/post/scheduled/${userId}`);
-
-      console.log(response);
       if (response.status == 200) {
         set({ scheduledPosts: response.data });
       }
-      // console.log(response.data);
-      //the map & forEach functions are used when updating the state or showing them somewhere, or making some
-      //change to them, they are not needed to just normally set state.
     });
   },
 
@@ -176,7 +171,6 @@ const usePostStore = create((set) => ({
   likePost: async (postId) => {
     tryCatchWrapper(async () => {
       const response = await apiPost(`/post/${postId}/like`, {}, {});
-      console.log(response);
       //Add the postId that is liked into the allLikedPosts stored in the localStorage to persist state.
       setAllLikedPosts("add", postId);
     });
@@ -185,7 +179,6 @@ const usePostStore = create((set) => ({
   unlikePost: async (postId) => {
     tryCatchWrapper(async () => {
       const response = await apiDelete(`/post/${postId}/like`);
-      console.log(response);
       //Delete the postId that is unliked from the allLikedPosts stored in the localStorage to persist state.
       setAllLikedPosts("remove", postId);
     });
@@ -194,7 +187,6 @@ const usePostStore = create((set) => ({
   getAllLikes: async (postId) => {
     tryCatchWrapper(async () => {
       const response = await apiGet(`/post/${postId}/like`);
-      console.log(response);
       set({ usersWhoLiked: response.data.likes });
     });
   },

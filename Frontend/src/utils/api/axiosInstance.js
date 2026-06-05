@@ -39,7 +39,6 @@ axiosInstance.interceptors.response.use(
         const res = await axios.get(`${BE}/users/newaccesstoken`, {
           withCredentials: true,
         });
-        console.log(res);
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         if (navigateRef) {

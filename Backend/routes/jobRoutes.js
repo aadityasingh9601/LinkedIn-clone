@@ -12,7 +12,6 @@ import GridFsStorage from "../utils/gridfsStorage.js";
 const pdfStorage = new GridFsStorage({
   file: (req, file) => {
     const filename = `${file.originalname}`;
-    console.log(filename);
     return { filename, bucketName: "uploads" };
   },
 });

@@ -38,7 +38,6 @@ export default function PollForm() {
       question: data.question,
       pollDuration: pollDuration,
     };
-    console.log(pollData);
     createPoll(pollData);
   };
 
