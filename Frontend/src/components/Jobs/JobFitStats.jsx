@@ -18,7 +18,7 @@ export default function JobFitStats({ jobFitStats, jobSkills }) {
         }}
       >
         {jobFitStats?.matchedSkills?.length} out of {jobSkills?.length} skills
-        matched:
+        matched:{" "}
         {jobFitStats?.matchedSkills?.map((s) => {
           return "✅" + s + " ";
         })}
@@ -29,7 +29,7 @@ export default function JobFitStats({ jobFitStats, jobSkills }) {
           backgroundColor: "#fddcdc",
         }}
       >
-        You're missing: {" "}
+        You're missing:{" "}
         {jobFitStats?.missingSkills?.map((s) => {
           return "❌" + s + " ";
         })}
@@ -40,7 +40,7 @@ export default function JobFitStats({ jobFitStats, jobSkills }) {
           backgroundColor: "#fef9c3",
         }}
       >
-        💡Suggested actions: {" "}
+        💡Suggested actions:{" "}
         {jobFitStats?.missingSkills?.map((s) => {
           return "[ Learn " + s + " ]";
         })}
@@ -51,10 +51,10 @@ export default function JobFitStats({ jobFitStats, jobSkills }) {
         {matchedScore >= 80
           ? "🎯 You’re highly likely to be a great fit for this job!"
           : matchedScore >= 60 && matchedScore < 80
-          ? "💪 You meet most requirements – consider applying!"
-          : matchedScore >= 40 && matchedScore < 60
-          ? "⚠️ You match some skills - try upskilling or apply with a strong case."
-          : "🌱 You currently lack many of the required skills - learning them can help a lot!"}
+            ? "💪 You meet most requirements – consider applying!"
+            : matchedScore >= 40 && matchedScore < 60
+              ? "⚠️ You match some skills - try upskilling or apply with a strong case."
+              : "🌱 You currently lack many of the required skills - learning them can help a lot!"}
       </div>
 
       <div className={styles.note}>

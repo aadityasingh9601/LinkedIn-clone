@@ -1,10 +1,32 @@
 .applications {
-  height: 90%;
-  width: 99%;
+  background-color: white;
+  height: fit-content;
+  width: 50%;
+  position: relative;
+  top: 5rem;
+  left: 10rem;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+}
+
+.boxHeader {
+  font-size: 1.5rem;
+  font-weight: 500;
+  border-bottom: 1px solid gray;
+  padding: 1rem 0 0.5rem 1rem;
+}
+
+.boxBody {
+  min-height: 15rem;
+  overflow-y: auto;
+}
+
+.fallBackUI {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  position: absolute;
-  top: 4rem;
-  background-color: pink;
+  justify-content: center;
+  font-size: 1.5rem;
+  background-color: lightblue;
+  height: 15rem;
+  width: 100%;
 }

@@ -90,7 +90,7 @@ const useJobStore = create(
         });
       },
 
-      applyToJob: async (jobId, data, navigate) => {
+      applyToJob: async (jobId, data, navigate, setIsLoading) => {
         tryCatchWrapper(async () => {
           const fd = new FormData();
           const { resume, ...textData } = data;
@@ -99,19 +99,10 @@ const useJobStore = create(
           const response = await apiPost(`/jobs/${jobId}/apply`, fd);
           console.log(response);
           if (response.status === 200) {
-            set((state) => ({
-              jobs: state.jobs.map((job) => {
-                if (job._id === jobId) {
-                  return { ...job, applicants: response.data };
-                } else {
-                  return job;
-                }
-              }),
-            }));
-            //Navigate.
+            toast.success("Applied successfully!");
             navigate("/jobs");
-            return toast.success("Applied successfully!");
           }
+          setIsLoading(false);
         });
       },
 

@@ -47,8 +47,8 @@ const useUserStore = create((set, get) => ({
       const response = await apiPost(`/users/signup`, { signupData }, {});
       setIsLoading(false);
       if (response.status === 201) {
-        toast.success(response.data.message);
         navigate("/login");
+        return toast.success(response.data.message);
       }
     });
   },
@@ -60,7 +60,7 @@ const useUserStore = create((set, get) => ({
       console.log(response);
       setIsLoading(false);
       if (response.status === 200) {
-        toast.success("User logged in successfully!");
+        return toast.success("User logged in successfully!");
         set({
           isLoggedIn: true,
           currUserId: response?.data.currUserId,

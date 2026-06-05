@@ -73,7 +73,7 @@ const usePostStore = create((set) => ({
     set((state) => ({
       posts: [newPost, ...state.posts],
     }));
-    toast.success("Your post is live!");
+    return toast.success("Your post is live!");
   },
 
   getScheduledPosts: async (userId) => {

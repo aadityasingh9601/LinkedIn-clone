@@ -45,7 +45,7 @@ const useNetworkStore = create((set) => ({
             (item) => item._id !== response.data.deletedId
           ),
         }));
-        toast.success(
+        return toast.success(
           type === "followers"
             ? "Follower removed!"
             : type === "following"

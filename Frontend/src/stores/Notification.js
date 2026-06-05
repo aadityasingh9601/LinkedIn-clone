@@ -46,7 +46,7 @@ const useNotificationStore = create((set) => ({
           notifications: state.notifications.filter((n) => n._id !== noti._id),
         }));
         setAllConnections("add", user1, user2);
-        toast.success(action === "Accept" ? "Accepted!" : "Rejected!");
+        return toast.success(action === "Accept" ? "Accepted!" : "Rejected!");
       }
     });
   },

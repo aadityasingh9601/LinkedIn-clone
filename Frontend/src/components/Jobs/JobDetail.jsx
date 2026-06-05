@@ -86,10 +86,8 @@ export default function JobDetail({ job }) {
                 variant="sm"
                 btnText={
                   <>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      Applied
-                      <Check />
-                    </div>
+                    Applied
+                    <Check />
                   </>
                 }
                 onClick={() => {

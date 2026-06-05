@@ -148,14 +148,17 @@ export const ProfileHeaderDataSchema = z.object({
 
 export const JobApplicationDataSchema = z.object({
   answers: z.array(
-    z.string("Answer is required!").min(10, "Too short!").max(150, "Too long!"),
+    z.string("Answer is required!").min(10, "Too short!").max(200, "Too long!"),
   ),
   resume: z
-    .instanceof(File)
-    .refine((file) => file.type === "application/pdf", {
+    .any()
+    .refine((files) => files?.length === 1, {
+      message: "Resume is required",
+    })
+    .refine((files) => files?.[0]?.type === "application/pdf", {
       message: "Only PDF files allowed",
     })
-    .refine((file) => file.size <= MAX_PDF_SIZE, {
+    .refine((files) => files?.[0]?.size <= MAX_PDF_SIZE, {
       message: "File must be under 5MB",
     }),
 });
