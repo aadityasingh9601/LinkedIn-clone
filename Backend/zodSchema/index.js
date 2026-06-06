@@ -56,7 +56,7 @@ export const JobDataSchema = z.object({
     .string("Required!")
     .min(100, "Too short!")
     .max(300, "Too long!"),
-  location: z.string("Required!").min(5, "Too short!").max(20, "Too long!"),
+  location: z.string("Required!").min(5, "Too short!").max(30, "Too long!"),
   jobType: z.enum(["Full-time", "Part-time", "Contract", "Internship"]),
   jobMode: z.enum(["On-site", "Remote"]),
   salary: z.coerce

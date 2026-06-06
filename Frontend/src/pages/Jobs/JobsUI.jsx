@@ -6,7 +6,7 @@ import Modal from "../../components/shared-components/Modal/Modal";
 import useJobStore from "../../stores/Job";
 import Spinner from "../../components/shared-components/Loaders/Spinner";
 
-const CreateJobForm = lazy(() => import("../../components/Jobs/CreateJobForm"));
+const JobForm = lazy(() => import("../../components/Jobs/JobForm"));
 const JobDetail = lazy(() => import("../../components/Jobs/JobDetail"));
 
 export default function JobsUI() {
@@ -17,7 +17,6 @@ export default function JobsUI() {
   const getMyJobs = useJobStore((s) => s.getMyJobs);
   const currJobListingId = useJobStore((s) => s.currJobListingId);
   const setcurrJobListingId = useJobStore((s) => s.setcurrJobListingId);
-  const editJob = useJobStore((s) => s.editJob);
   const currJobDetails = jobs.find((job) => job._id === currJobListingId);
 
   const [myJobs, setmyJobs] = useState(false);
@@ -82,14 +81,7 @@ export default function JobsUI() {
       {postJob && (
         <Modal>
           <Suspense fallback={<Spinner height={40} width={40} />}>
-            <CreateJobForm job={currJobDetails} />
-          </Suspense>
-        </Modal>
-      )}
-      {editJob && (
-        <Modal>
-          <Suspense fallback={<Spinner height={40} width={40} />}>
-            <CreateJobForm job={currJobDetails} />
+            <JobForm mode="create"/>
           </Suspense>
         </Modal>
       )}

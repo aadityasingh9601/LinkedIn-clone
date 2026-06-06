@@ -62,7 +62,7 @@ const useJobStore = create(
             set({ editJob: false });
             set((state) => ({
               jobs: state.jobs.map((job) => {
-                return job._id === jobId ? response.data : job;
+                return job._id === jobId ? response.data.updatedJob : job;
               }),
             }));
             return toast.success("Job updated successfully!");
@@ -163,14 +163,15 @@ const useJobStore = create(
         });
       },
 
-      deleteJob: async (jobId) => {
+      deleteJob: async (jobId, setDeleteModal) => {
         tryCatchWrapper(async () => {
           const response = await apiDelete(`/jobs/${jobId}`);
           if (response.status === 200) {
             set((state) => ({
               jobs: state.jobs.filter((j) => j._id !== jobId),
             }));
-            return toast.success("Job deleted successfully!");
+            setDeleteModal(false);
+            return toast.success(response.data.message);
           }
         });
       },

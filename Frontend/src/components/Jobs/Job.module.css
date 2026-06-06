@@ -1,49 +1,35 @@
 .job {
+  position: relative;
   background-color: white;
   display: flex;
   padding: 0.5rem;
+  justify-content: space-between;
   border-bottom: 1px solid gray;
-  position: relative;
 }
 
-.job i {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+.jobDetails{
+  display: flex;
+  align-items: center;
+  gap:0.75rem;
 }
 
-.job .img img {
+.img img {
   height: 3.3rem;
   width: 3.3rem;
   border: 1px solid gray;
-  margin: 0 1rem 0 0;
 }
 
-.details .title {
+.title {
   color: #0a66c2;
   font-weight: 700;
   font-size: 1.1rem;
 }
 
-.details .title:hover {
+.title:hover {
   text-decoration: underline;
   cursor: pointer;
 }
 
-.job .options {
-  background-color: wheat;
-  position: absolute;
-  top: 4rem;
-  padding: 0.6rem;
-  border-radius: 0.4rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  z-index: 50;
-}
-
-.job .options button {
-  margin: 0 !important;
+.companyInfo{
+  font-size: 0.85rem;
 }

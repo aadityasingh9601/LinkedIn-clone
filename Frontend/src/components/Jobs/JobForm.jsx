@@ -1,4 +1,4 @@
-import styles from "./CreateJobForm.module.css";
+import styles from "./JobForm.module.css";
 import { useForm } from "react-hook-form";
 import useJobStore from "../../stores/Job";
 import Button from "../shared-components/Buttons/Button";
@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Spinner from "../shared-components/Loaders/Spinner";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
 
-export default function CreateJobForm({ job }) {
+export default function JobForm({ mode, job = {} }) {
   const [skillInput, setSkillInput] = useState("");
   const [skills, setSkills] = useState(job?.skills || []);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,8 +30,6 @@ export default function CreateJobForm({ job }) {
     resolver: zodResolver(JobDataSchema),
     defaultValues: {
       ...job,
-      skills: job?.skills || [],
-      qualifications: job?.qualifications?.join(",") || "",
     },
   });
 
@@ -66,22 +64,17 @@ export default function CreateJobForm({ job }) {
       skills: skills,
     };
     {
-      job
-        ? updateJob(jobData, job._id, setIsLoading)
-        : createJob(jobData, setIsLoading);
+      mode === "create"
+        ? createJob(jobData, setIsLoading)
+        : updateJob(jobData, job._id, setIsLoading);
     }
   };
 
-  const handleChange = (event) => {
-    setValue("jobType", event.target.value); // Update the value in React Hook Form
-  };
-
-  const handleChange2 = (event) => {
-    setValue("jobMode", event.target.value); // Update the value in React Hook Form
-  };
   return (
     <div className={styles.createjobform}>
-      <div className={styles.header}>Create a job posting</div>
+      <div className={styles.header}>
+        {mode === "create" ? "Create" : "Edit"} job posting
+      </div>
       <div className={styles.form}>
         <FormWrapper id="jobForm" onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.formBody}>
@@ -182,23 +175,32 @@ export default function CreateJobForm({ job }) {
                 required: "Job description is required!",
               }}
             />
-
-            <div className={styles.buttonWrapper}>
-              <Button
-                btnText="Cancel"
-                variant="sm"
-                onClick={() => {
-                  job ? seteditJob(false) : setpostJob(false);
-                }}
-              />
-              <Button
-                btnText={isLoading ? <Spinner /> : "Submit"}
-                form="jobForm"
-                variant="sm"
-              />
-            </div>
           </div>
         </FormWrapper>
+        <div className={styles.footer}>
+          <div className={styles.buttonWrapper}>
+            <Button
+              btnText="Cancel"
+              variant="sm"
+              onClick={() => {
+                job ? seteditJob(false) : setpostJob(false);
+              }}
+            />
+            <Button
+              btnText={
+                isLoading ? (
+                  <Spinner />
+                ) : mode === "edit" ? (
+                  "Save Changes"
+                ) : (
+                  "Submit"
+                )
+              }
+              form="jobForm"
+              variant="sm"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

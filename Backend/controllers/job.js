@@ -21,32 +21,35 @@ const createJob = async (req, res) => {
 
 const editJob = async (req, res) => {
   const { id } = req.params;
-  const job = await Job.findById(id);
   const { jobData } = req.body;
-
-  if (req.user._id.toString() === job.postedBy.toString()) {
-    const updatedJob = await Job.findByIdAndUpdate(id, { ...jobData });
-
-    res.status(200).send(updatedJob);
-  } else {
-    res
-      .status(401)
-      .send({ message: "You are not the owner of this job listing!" });
-    return;
+  const result = JobDataSchema.safeParse(jobData);
+  if (!result.success) {
+    return res.status(400).json({
+      message: result.error.message,
+    });
   }
+  const job = await Job.findById(id);
+  if (req.user._id.toString() === job.postedBy.toString()) {
+    return res.status(403).json({
+      message: "Forbidden!",
+    });
+  }
+  const updatedJob = await Job.findByIdAndUpdate(id, { ...jobData });
+  res.status(200).json({
+    updatedJob: updatedJob,
+  });
 };
 
 const deleteJob = async (req, res) => {
   const { id } = req.params;
   const job = await Job.findById(id);
   if (req.user._id.toString() === job.postedBy.toString()) {
-    await job.deleteOne();
-    res.status(200).send({ message: "Job deleted successfully!" });
-  } else {
-    res
-      .status(401)
-      .send({ message: "You are not the owner of this job listing!" });
+    return res.status(403).json({
+      message: "Forbidden!",
+    });
   }
+  await job.deleteOne();
+  res.status(200).json({ message: "Job deleted successfully!" });
 };
 
 const getMyJobs = async (req, res) => {
@@ -73,8 +76,8 @@ const getMyJobs = async (req, res) => {
 const getAllJobs = async (req, res) => {
   const jobs = await Job.find().populate("applications");
   res.status(200).json({
-    jobs:jobs
-  })
+    jobs: jobs,
+  });
 };
 
 const saveJob = async (req, res) => {

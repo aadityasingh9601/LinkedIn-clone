@@ -15,7 +15,6 @@
   justify-content: flex-end;
   align-items: center;
   gap: 0.5rem;
-  margin: 0.5rem 0 0 0;
 }
 
 .header {
@@ -64,4 +63,9 @@
   display: flex;
   gap: 0.3rem;
   background-color: lightblue;
+}
+
+.footer{
+  border-top: 1px solid black;
+  padding: 0.5rem 1rem 0.5rem 0;
 }
