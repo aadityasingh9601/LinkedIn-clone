@@ -203,7 +203,7 @@ const useJobStore = create(
             }));
 
             navigate(`/jobs/${jobId}/applications`);
-            return toast.success(response.data);
+            return toast.success(response.data.message);
           }
         });
       },

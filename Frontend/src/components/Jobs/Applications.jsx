@@ -17,7 +17,7 @@ export default function Applications() {
       <div className={styles.boxHeader}>All job applications</div>
       <div className={styles.boxBody}>
         {applicants?.length > 0 ? (
-          <div>
+          <div >
             {applicants?.map((a) => (
               <Application application={a} key={a._id} jobId={id} />
             ))}

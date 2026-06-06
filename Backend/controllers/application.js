@@ -144,12 +144,13 @@ const getAllApplications = async (req, res) => {
 
 const getUserResume = async (req, res) => {
   const { resumeId } = req.params;
-  //console.log(resumeId);
+  if (!bucket) {
+    return res.status(500).json({ message: "Storage not initialized" });
+  }
+
   const properResumeId = new mongoose.Types.ObjectId(String(resumeId));
-  console.log(properResumeId);
 
   const file = await bucket.find({ _id: properResumeId }).toArray();
-  console.log(file);
 
   if (!file || file.length === 0) {
     return res.status(404).json({ message: "File not found" });
@@ -158,17 +159,14 @@ const getUserResume = async (req, res) => {
   res.set("Content-Type", file[0].contentType || "application/pdf");
   res.set("Content-Disposition", `attachment; filename="${file[0].filename}"`);
 
-  // create a stream to read from the bucket
   const downloadStream = bucket.openDownloadStream(properResumeId);
-
+  downloadStream.on("error", () => {
+    res.status(500).json({ message: "Error downloading file" });
+  });
   downloadStream.pipe(res);
-  // console.log(downloadStream);
-
-  //res.status(200).send(downloadStream);
 };
 
 const markReviewed = async (req, res) => {
-  console.log("inside markreviewed");
   const { jobId, id } = req.params;
 
   const application = await Application.findById(id);
@@ -180,32 +178,30 @@ const markReviewed = async (req, res) => {
 
 const rejectUserApplication = async (req, res) => {
   const { jobId, id } = req.params;
-  console.log(jobId, id);
   const currUserId = req.user._id.toString();
-
   const job = await Job.findById(jobId);
   const application = await Application.findById(id);
   const applicantId = application.applicant.toString();
-  console.log("Applicant Id is" + applicantId);
   const resumePdfId = application.resume.id;
-
   if (!job.applications.includes(id)) {
-    return res
-      .status(400)
-      .send("You can't reject a user who hasn't applied to the job!");
+    return res.status(400).json({
+      message: "Application doesn't exists!",
+    });
+  }
+  
+  if(currUserId.toString() !== job.postedBy.toString()){
+    return res.status(403).json({
+      message:"Forbidden!"
+    })
   }
 
-  if (currUserId === job.postedBy.toString()) {
     //Use GridFsStorage bucket api to delete the resume pdf from the database,as application gets deleted.
     await bucket.delete(resumePdfId);
-
     await Job.findByIdAndUpdate(jobId, {
       $pull: { applications: id },
     });
-
-    //Deleted the application
     await Application.findByIdAndDelete(id);
-  }
+
 
   //Add a middleware in application schema so that wheneer a application gets deleted it's corresponding
   //resume also gets deleted from the database from db.uploads.files and db.uploads.chunks like you have done
@@ -221,10 +217,11 @@ const rejectUserApplication = async (req, res) => {
   await newNoti.save();
 
   const socketId = userSocketMap[applicantId];
-
   io.to(socketId).emit("application-rejected", newNoti);
 
-  res.status(200).send("Application rejected!");
+  res.status(200).json({
+    message: "Application rejected!",
+  });
 };
 
 const jobFitStats = async (req, res) => {

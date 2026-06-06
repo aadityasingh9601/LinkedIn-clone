@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import useJobStore from "../../stores/Job";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Envelope from "../shared-components/Icons/Envelope";
+import UserInfo from "../shared-components/User/UserInfo";
+import axiosInstance from "../../utils/api/axiosInstance";
 
 export default function FullApplication() {
   const { id, appId } = useParams();
@@ -31,113 +32,77 @@ export default function FullApplication() {
   const markAsReviewed = useJobStore((s) => s.markAsReviewed);
   const rejectUserApplication = useJobStore((s) => s.rejectUserApplication);
 
-  const downloadResume = () => {
-    window.open(
-      `${BACKEND_URL}/jobs/resume/${application?.resume.id}`,
-      "_blank",
-    );
+  const downloadResume = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/jobs/resume/${application?.resume.id}`,
+        { responseType: "blob" },
+      );
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${application?.resume.filename}`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch {
+      alert("Failed to download resume");
+    }
   };
   return (
     <div className={styles.fullApplication}>
-      <div className={styles["fullapplication-container"]}>
-        <div className={styles["fullapplication-header"]}>
-          <div style={{ fontSize: "1.4rem", fontWeight: "500" }}>
-            {job?.title}
+      <div className={styles.header}>
+        <div className={styles.jobTitle}>{job?.title}</div>
+        <div className={styles.date}>
+          Applied on{" "}
+          {new Date(application?.appliedAt).toLocaleDateString("en-IN", {
+            timeZone: "Asia/Kolkata",
+          })}
+        </div>
+      </div>
+      <div className={styles.userInfo}>
+        <UserInfo
+          url={application?.applicant?.profile?.profileImage.url}
+          headline={application?.applicant?.profile.headline}
+          username={application?.applicant?.profile.name}
+          profileId={application?.applicant?.profile._id}
+          avatarStyles={{ height: "3rem", width: "3rem" }}
+        />
+        <div>
+          <button className={styles.customBtn} onClick={downloadResume}>
+            View Resume
+          </button>
+        </div>
+      </div>
+      <div className={styles.answers}>
+        <div className={styles.answer}>
+          <div className={styles.ansHeader}>
+            Why are you interested in this role?
           </div>
-          <div>
-            <p className={styles["fullapplication-date"]}>
-              Applied on {new Date(application?.appliedAt).toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })}
-            </p>
-          </div>
+          <div>{application?.answers[0]}</div>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            borderBottom: "1px solid black",
-            padding: "0.5rem 1rem",
-          }}
-        >
-          <div className="application-left">
-            <img
-              src={application?.applicant?.profile?.profileImage.url}
-              alt="Profile"
-              className="application-avatar"
-              style={{ height: "4.5rem", width: "4.5rem" }}
-            />
-            <div className="application-info">
-              <div style={{ fontSize: "1.2rem" }}>
-                {application?.applicant?.profile.name}
-              </div>
-              <div style={{ fontSize: "0.95rem", color: "#555" }}>
-                {application?.applicant?.profile.headline}
-              </div>
-              <div style={{ fontSize: "0.85rem" }}>
-                <span
-                  style={{
-                    color: "#0a66c2",
-                    textDecoration: "none",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => showProfile(application?.applicant._id)}
-                >
-                  View Profile
-                </span>
-              </div>
-            </div>
+        <div className={styles.answer}>
+          <div className={styles.ansHeader}>
+            Which skill of yours do you believe will have the most impact in
+            this role?
           </div>
-          <div
-            style={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div style={{ marginLeft: "0.5rem", fontSize: "1.1rem" }}>
-              <Envelope />
-              jane.doe@example.com
-            </div>
-            <div
-              style={{
-                display: "flex",
-                gap: "1rem",
-              }}
-            >
-              <button className={styles["btn-download"]} onClick={downloadResume}>
-                View Resume
-              </button>
-            </div>
-          </div>
+          <div>{application?.answers[1]}</div>
         </div>
 
-        <div className={styles["application-answers"]}>
-          <div className={styles.answer}>
-            <div className={styles["ans-head"]}>Why are you interested in this role?</div>
-            <div>{application?.answers[0]}</div>
+        <div className={styles.answer}>
+          <div className={styles.ansHeader}>
+            When would you be able to join if selected?
           </div>
-
-          <div className={styles.answer}>
-            <div className={styles["ans-head"]}>
-              Which skill of yours do you believe will have the most impact in
-              this role?
-            </div>
-            <div>{application?.answers[1]}</div>
-          </div>
-
-          <div className={styles.answer}>
-            <div className={styles["ans-head"]}>
-              When would you be able to join if selected?
-            </div>
-            <div>{application?.answers[2]}</div>
-          </div>
+          <div>{application?.answers[2]}</div>
         </div>
-
-        <div className={styles["fullapplication-actions"]}>
-          {reviewed ? (
+      </div>
+      <div className={styles.footer}>
+          <div className={styles.footerBtns}>
+            {reviewed ? (
             <button
-              className={styles["btn-download-hover"]}
+              className={styles.customBtn}
               onClick={() => {
                 markAsReviewed(id, appId);
                 setReviewed(false);
@@ -147,7 +112,7 @@ export default function FullApplication() {
             </button>
           ) : (
             <button
-              className={styles["btn-download"]}
+              className={styles.customBtn}
               onClick={() => {
                 markAsReviewed(id, appId);
                 setReviewed(true);
@@ -158,12 +123,12 @@ export default function FullApplication() {
           )}
 
           <button
-            className={styles["btn-download"]}
+            className={styles.customBtn}
             onClick={() => rejectUserApplication(id, appId, navigate)}
           >
             Reject
           </button>
-        </div>
+          </div>
       </div>
     </div>
   );

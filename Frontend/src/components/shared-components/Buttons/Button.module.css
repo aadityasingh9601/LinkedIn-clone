@@ -13,3 +13,7 @@
 .btnText {
   text-align: center;
 }
+
+.btn:hover{
+  cursor: pointer;
+}

@@ -60,7 +60,7 @@ const useUserStore = create((set, get) => ({
       console.log(response);
       setIsLoading(false);
       if (response.status === 200) {
-        return toast.success("User logged in successfully!");
+        toast.success("User logged in successfully!");
         set({
           isLoggedIn: true,
           currUserId: response?.data.currUserId,
