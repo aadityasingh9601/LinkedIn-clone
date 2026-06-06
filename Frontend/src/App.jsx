@@ -34,6 +34,7 @@ import useSocket from "./hooks/useSocket";
 
 const AppRoutes = () => {
   const isLoggedIn = useUserStore((s) => s.isLoggedIn);
+  const isAuthLoading = useUserStore((s) => s.isAuthLoading);
   const currUserId = useUserStore((s) => s.currUserId);
   const checkAuthStatus = useUserStore((s) => s.checkAuthStatus);
   const getNotifications = useNotificationStore(
@@ -60,13 +61,24 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route element={<PublicRoutes isLoggedIn={isLoggedIn} />}>
+      <Route
+        element={
+          <PublicRoutes isLoggedIn={isLoggedIn} isAuthLoading={isAuthLoading} />
+        }
+      >
         <Route path="/" element={<PreLogin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
       </Route>
 
-      <Route element={<PrivateRoutes isLoggedIn={isLoggedIn} />}>
+      <Route
+        element={
+          <PrivateRoutes
+            isLoggedIn={isLoggedIn}
+            isAuthLoading={isAuthLoading}
+          />
+        }
+      >
         <Route path="/home" element={<Homepage />} />
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/jobs/:id/apply" element={<ApplicationForm />} />

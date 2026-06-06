@@ -12,6 +12,7 @@ import {
 
 const useUserStore = create((set, get) => ({
   isLoggedIn: false,
+  isAuthLoading: true,
 
   currUserId: safeParseJSON("currUserId", ""),
 
@@ -36,8 +37,8 @@ const useUserStore = create((set, get) => ({
         localStorage.setItem("currUserId", response.data.userId);
         localStorage.setItem("currUserProfileId", response.data.userProfileId);
         localStorage.setItem("currUserProfile", response.data.currUserProfile);
-        navigate("/home");
       }
+      set({ isAuthLoading: false });
     });
   },
 

@@ -2,6 +2,7 @@ import styles from "./CommentSection.module.css";
 import { lazy, Suspense } from "react";
 import useCommentStore from "../../stores/Comment";
 import { useEffect } from "react";
+import Spinner from "../shared-components/Loaders/Spinner";
 
 const CommentBox = lazy(() => import("./CommentBox"));
 const Comment = lazy(() => import("./Comment"));
@@ -21,13 +22,13 @@ export default function CommentSection({
 
   return (
     <div className={styles.commentSection}>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Spinner height={30} width={30} />}>
         <CommentBox postId={postId} />
       </Suspense>
       <div className={styles.comments}>
         {comments?.map((comment) => {
           return (
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Spinner height={30} width={30} />}>
               <Comment key={comment._id} comment={comment} />
             </Suspense>
           );

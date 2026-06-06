@@ -4,6 +4,7 @@ import usePostStore from "../../stores/Post";
 import { useEffect, lazy, Suspense } from "react";
 import useUserStore from "../../stores/User";
 import ScheduledPost from "./ScheduledPost";
+import Spinner from "../shared-components/Loaders/Spinner";
 
 const SchPost = lazy(() => import("./ScheduledPost"));
 
@@ -30,7 +31,7 @@ export default function ScheduledPostsUI() {
         ) : (
           scheduledPosts?.map((p) => {
             return (
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<Spinner height={40} width={40} />}>
                 <ScheduledPost key={p._id} scheduledPost={p}  />
               </Suspense>
             );

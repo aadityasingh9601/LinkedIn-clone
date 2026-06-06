@@ -3,6 +3,7 @@ import { useState, lazy, Suspense } from "react";
 import usePostStore from "../../stores/Post";
 import Modal from "../shared-components/Modal/Modal";
 import Xmark from "../shared-components/Icons/Xmark";
+import Spinner from "../shared-components/Loaders/Spinner";
 import { formatTime, formatDate2 } from "../../utils/helper";
 import Options from "../shared-components/Options/Options";
 import DeleteModal from "../shared-components/Modal/DeleteModal";
@@ -37,7 +38,7 @@ export default function ScheduledPost({ scheduledPost }) {
       {editModal && (
         <Modal>
           <Xmark onClick={() => setEditModal(false)} />
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Spinner height={40} width={40} />}>
             <PostForm
               mode="edit"
               post={scheduledPost}

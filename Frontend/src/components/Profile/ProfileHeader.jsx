@@ -8,6 +8,7 @@ import Modal from "../shared-components/Modal/Modal";
 import { lazy, Suspense } from "react";
 import Pen from "../shared-components/Icons/Pen";
 import useFollowStore from "../../stores/Follow";
+import Spinner from "../shared-components/Loaders/Spinner";
 import useConnectionStore from "../../stores/Connection";
 import useChatStore from "../../stores/Chat";
 import { useState, useEffect } from "react";
@@ -121,14 +122,14 @@ export default function ProfileHeader({ profile }) {
             fileName="Profile.pdf"
           >
             {({ loading }) =>
-              loading ? "Loading document..." : "Download PDF"
+              loading ? <Spinner height={17} width={17} /> : "Download PDF"
             }
           </PDFDownloadLink>
         </button>
       </div>
       {editHead && (
         <Modal>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Spinner height={40} width={40} />}>
             <ProfileHeaderForm profile={profile} handleCancel={()=> setEditHead(false)}/>
           </Suspense>
         </Modal>

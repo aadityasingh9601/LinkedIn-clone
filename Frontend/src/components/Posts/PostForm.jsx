@@ -96,11 +96,11 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
   return (
     <div>
       {poll ? (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Spinner height={40} width={40} />}>
           <PollForm />
         </Suspense>
       ) : showScheduledPosts ? (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Spinner height={40} width={40} />}>
           <ScheduledPostsUI />
         </Suspense>
       ) : (

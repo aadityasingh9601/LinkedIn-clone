@@ -3,6 +3,7 @@ import styles from "./Comment.module.css";
 import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import Modal from "../shared-components/Modal/Modal";
 import useUserStore from "../../stores/User";
+import Spinner from "../shared-components/Loaders/Spinner";
 import Xmark from "../shared-components/Icons/Xmark";
 import TimePassed from "../shared-components/Date_Time/TimePassed";
 import useCommentStore from "../../stores/Comment";
@@ -40,7 +41,7 @@ export default function Comment({ comment }) {
         <div className={styles.commentText}>
           {commentEdit ? (
             <>
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<Spinner height={30} width={30} />}>
                 <ControlledTextarea
                   placeholder="Enter your comment"
                   value={newComm}

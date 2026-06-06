@@ -2,21 +2,33 @@ import { useLocation } from "react-router-dom";
 import { Suspense } from "react";
 import Layout from "../Layouts/Layout";
 import AuthLayout from "../Layouts/AuthLayout";
-import Spinner from "../../shared-components/Loaders/Spinner";
+import { ThreeDots } from "react-loader-spinner";
 
 const AppWrapper = ({ children, socket }) => {
   const location = useLocation();
-  // List of routes to exclude from layout
   const noLayoutRoutes = ["/", "/login", "/signup"];
-  // Check if the current route is in the noLayoutRoutes list
   const useLayout = !noLayoutRoutes.includes(location.pathname);
 
   return useLayout ? (
     <Suspense
       fallback={
-        <h1 style={{ position: "absolute", top: "20rem", left: "50rem" }}>
-          <Spinner />
-        </h1>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <ThreeDots
+            visible={true}
+            height={80}
+            width={80}
+            color="#4fa94d"
+            radius="9"
+            ariaLabel="three-dots-loading"
+          />
+        </div>
       }
     >
       <Layout socket={socket}>{children}</Layout>
@@ -24,9 +36,23 @@ const AppWrapper = ({ children, socket }) => {
   ) : (
     <Suspense
       fallback={
-        <h1 style={{ position: "absolute", top: "20rem", left: "50rem" }}>
-          Loading...
-        </h1>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <ThreeDots
+            visible={true}
+            height={80}
+            width={80}
+            color="#4fa94d"
+            radius="9"
+            ariaLabel="three-dots-loading"
+          />
+        </div>
       }
     >
       <AuthLayout>{children}</AuthLayout>

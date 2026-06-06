@@ -1,21 +1,19 @@
 import styles from "./Post.module.css";
-import { lazy } from "react";
-import { useState, useEffect, useRef } from "react";
 import usePostStore from "../../stores/Post";
-import Modal from "../shared-components/Modal/Modal";
-import { Suspense } from "react";
-const CommentSection = lazy(() => import("./CommentSection"));
 import useUserStore from "../../stores/User";
-import UserInfo from "../shared-components/User/UserInfo";
-import Xmark from "../shared-components/Icons/Xmark";
-import ThumbsupR from "../shared-components/Icons/ThumbsupR";
-import ThumbsupS from "../shared-components/Icons/ThumbsupS";
-import PaperPlane from "../shared-components/Icons/PaperPlane";
-import CommentR from "../shared-components/Icons/CommentR";
 import useCommentStore from "../../stores/Comment";
-import PostHead from "../Posts/PostHead";
+import { lazy, Suspense, useState } from "react";
+import Modal from "../shared-components/Modal/Modal";
+import CommentR from "../shared-components/Icons/CommentR";
 import DeleteModal from "../shared-components/Modal/DeleteModal";
 import PostForm from "./PostForm";
+import PostHead from "./PostHead";
+import ThumbsupS from "../shared-components/Icons/ThumbsupS";
+import CommentSection from "./CommentSection";
+import PaperPlane from "../shared-components/Icons/PaperPlane";
+import ThumbsupR from "../shared-components/Icons/ThumbsupR";
+import Spinner from "../shared-components/Loaders/Spinner";
+import { useEffect } from "react";
 
 export default function Post({ post, postRef }) {
   const allLikedPosts = useUserStore((s) => s.allLikedPosts);
@@ -159,9 +157,8 @@ export default function Post({ post, postRef }) {
       {editModal && (
         <Modal>
           <Xmark onClick={() => toggleEditModal(false)} />
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Spinner height={40} width={40} />}>
             <PostForm mode="edit" post={post} setEditModal={setEditModal} />
-            {/* <PostEditForm post={post} toggleEditModal={toggleEditModal} /> */}
           </Suspense>
         </Modal>
       )}
