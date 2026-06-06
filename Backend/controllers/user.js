@@ -205,7 +205,7 @@ const logout = async (req, res) => {
   const oldRefreshToken = req.cookies.refreshtoken;
   const user = await User.findById(userId).select("-password");
   //Remove the old refresh token from the database.
-  user.refreshTokens = user.refreshTokens.filter(
+  user.refreshTokens = user?.refreshTokens.filter(
     (token) => token !== oldRefreshToken,
   );
   await user.save();

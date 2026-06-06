@@ -6,7 +6,9 @@
   "scripts": {
     "start-db": "docker compose -f docker-compose-dev.yml up -d",
     "stop-db": "docker compose -f docker-compose-dev.yml down",
-    "dev": "npm run start-db && node --watch server.js"
+    "db-seed":"node ./utils/seed-db/mockData.js",
+    "dev":"node --watch server.js",
+    "dev:docker": "npm run start-db && npm run dev"
   },
   "keywords": [
     "\"Big",

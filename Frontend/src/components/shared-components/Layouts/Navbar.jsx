@@ -82,7 +82,7 @@ export default function Navbar({ showMessaging }) {
         <div className={styles.allUserProfiles}>
           <Xmark
             onClick={() => setSearchResult(false)}
-            styles={{ zIndex: "100" }}
+            styles={{ position: "absolute", top:"0.5rem",right:"0.5rem", zIndex: "100" }}
           />
           {userProfiles?.map((profile) => (
             <UserInfo
@@ -152,8 +152,8 @@ export default function Navbar({ showMessaging }) {
           </span>
         </Link>
         <Link to={`/profile/${currUserProfileId}`}>
-            <UserAvatarIcon styles={{fontSize:"1.6rem", color:"#666666"}} />
-            <span>Me</span>
+          <UserAvatarIcon styles={{ fontSize: "1.6rem", color: "#666666" }} />
+          <span>Me</span>
         </Link>
       </div>
 

@@ -75,6 +75,7 @@ export default function ChatUI({ socket }) {
             setfullChat(false, {});
           }}
           customStyles={{
+            position: "absolute",
             zIndex: "30",
             top: "0.5rem",
             right: "0.5rem",

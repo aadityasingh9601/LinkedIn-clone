@@ -11,16 +11,16 @@
   width: 100%;
 }
 
-.searchBarWithIcon{
+.searchBarWithIcon {
   display: flex;
 }
 
-.searchBar{
+.searchBar {
   width: 20rem !important;
 }
 
-.searchBar input{
-  padding:0 0.5rem 0 1rem;
+.searchBar input {
+  padding: 0 0.5rem 0 1rem;
   background-color: #edf3f8;
   height: 2.5rem;
   width: 10rem;
@@ -28,9 +28,9 @@
   margin: 0 8rem 0 0.7rem;
 }
 
-.navLinks{
+.navLinks {
   display: flex;
-  gap:1.5rem;
+  gap: 1.5rem;
 }
 
 .navLinks a {
@@ -72,6 +72,7 @@
 }
 
 .allUserProfiles {
+  position: relative;
   background-color: #edf3f8;
   overflow: auto;
   padding: 0.4rem 1rem 0.8rem 1rem;
@@ -113,31 +114,31 @@
   border-radius: 0.35rem;
 }
 
-.myNetworkHeader{
+.myNetworkHeader {
   border-bottom: 1px solid gray;
   padding: 0.5rem 0 0.5rem 0.5rem;
   font-weight: 500;
   font-size: 1.3rem;
 }
 
-.myNetworkBody{
+.myNetworkBody {
   display: flex;
   flex-direction: column;
 }
 
-.myNetworkBodyItem{
+.myNetworkBodyItem {
   display: flex;
   align-items: center;
-  gap:0.5rem;
+  gap: 0.5rem;
   padding: 0.6rem 0 0.6rem 1rem;
 }
 
-.myNetworkBodyItem i{
+.myNetworkBodyItem i {
   font-size: 1.3rem;
   color: #666666;
 }
 
-.myNetworkBodyItem:hover{
+.myNetworkBodyItem:hover {
   background-color: rgb(209, 204, 204);
-  cursor:  pointer;
+  cursor: pointer;
 }
