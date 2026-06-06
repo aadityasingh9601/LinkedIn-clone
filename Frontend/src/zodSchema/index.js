@@ -1,4 +1,4 @@
-import { z, coerce, e164 } from "zod";
+import { z } from "zod";
 
 const MAX_PDF_SIZE = 5 * 1024 * 1024;
 
@@ -44,9 +44,9 @@ export const PostDataSchema = z.object({
 
 export const PollDataSchema = z.object({
   question: z.string("Required!").min(10, "Too short!").max(200, "Too long!"),
-  options: z.array({
-    value: z.string().min(1, "Required!"),
-  }),
+  options: z.array(
+    z.string("Required!").min(1, "Too short!").max(40, "Too long!"),
+  ),
   pollDuration: z.string("Required!"),
 });
 

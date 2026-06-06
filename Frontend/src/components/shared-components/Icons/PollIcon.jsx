@@ -1,4 +1,4 @@
-export default function Pollicon({ styles = {}, onClick = () => {} }) {
+export default function PollIcon({ styles = {}, onClick = () => {} }) {
   return (
     <div style={{ display: "inline-block" }}>
       <i

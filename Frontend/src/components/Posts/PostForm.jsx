@@ -11,17 +11,17 @@ import ClockR from "../shared-components/Icons/ClockR";
 import ImageIcon from "../shared-components/Icons/ImageIcon";
 import RHFInput from "../shared-components/Inputs/RHFInput";
 import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
-import Pollicon from "../shared-components/Icons/PollIcon";
+import PollIcon from "../shared-components/Icons/PollIcon";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PostDataSchema } from "../../zodSchema";
 import Spinner from "../shared-components/Loaders/Spinner";
 import RHFselect from "../shared-components/Select/RHFselect";
 import UserInfo from "../shared-components/User/UserInfo";
 import useUserStore from "../../stores/User";
+import usePollStore from "../../stores/Poll";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
 import EmojiPicker from "emoji-picker-react";
 const PollForm = lazy(() => import("../Polls/PollForm"));
-import { parseISODate } from "../../utils/helper";
 const ScheduledPostsUI = lazy(() => import("./ScheduledPostsUI"));
 
 export default function PostForm({ mode, post = {}, setEditModal = {} }) {
@@ -48,8 +48,8 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const createPost = usePostStore((s) => s.createPost);
   const editPost = usePostStore((s) => s.editPost);
-  const poll = usePostStore((s) => s.poll);
-  const setPoll = usePostStore((s) => s.setPoll);
+  const poll = usePollStore((s) => s.poll);
+  const setPoll = usePollStore((s) => s.setPoll);
   const schedule = usePostStore((s) => s.schedule);
   const setSchedule = usePostStore((s) => s.setSchedule);
   const showScheduledPosts = usePostStore((s) => s.showScheduledPosts);
@@ -179,7 +179,12 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
                 </div>
                 {mode === "create" && (
                   <div>
-                    <Pollicon onClick={() => setPoll(true)} />
+                    <PollIcon
+                      onClick={() => {
+                        console.log("Clicked!");
+                        setPoll(true);
+                      }}
+                    />
                   </div>
                 )}
               </div>

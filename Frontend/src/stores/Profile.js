@@ -43,18 +43,6 @@ const useProfileStore = create((set, get) => ({
 
   getProfileData: async (profileId) => {
     tryCatchWrapper(async () => {
-      //LOGIC TO ENSURE THAT WHENEVER A USER VISITS SOME OTHER USER'S PROFILE, A EVENT GETS LOGGED IN THE
-      //DATABASE, THAT CAN BE USED LATER TO SHOW ANALYTICS DATA.
-
-      // if (currUserProfile?.userId !== profileId) {
-      //   //Fix the analytics feature to associate with profileId, or get the userId of the user somehow.
-      //   let eventData = {
-      //     userId: userId,
-      //     eventType: "profile_view",
-      //   };
-      //   logEvent(eventData);
-      // }
-
       const response = await apiGet(`/profile/${profileId}`);
       //We'll persist the data of the current user's profile to use that later.
       if (profileId === currUserProfileId) {
@@ -62,6 +50,15 @@ const useProfileStore = create((set, get) => ({
         setCurrUserProfile(response.data);
       }
       set({ profile: response.data.userProfile });
+      //LOGIC TO ENSURE THAT WHENEVER A USER VISITS SOME OTHER USER'S PROFILE, A EVENT GETS LOGGED IN THE
+      //DATABASE, THAT CAN BE USED LATER TO SHOW ANALYTICS DATA.
+      if (currUserProfile?._id !== profileId) {
+        let eventData = {
+          userId: response.data.userProfile.userId,
+          eventType: "profile_view",
+        };
+        logEvent(eventData);
+      }
     });
   },
 
@@ -93,8 +90,10 @@ const useProfileStore = create((set, get) => ({
       const fd = new FormData();
       const { profileImage, bannerImage, ...textData } = profileHeaderData;
       fd.append("profileHeaderData", JSON.stringify(textData));
-      if (profileImage instanceof File) fd.append("profileHeaderData[profileImage]", profileImage);
-      if (bannerImage instanceof File) fd.append("profileHeaderData[bannerImage]", bannerImage);
+      if (profileImage instanceof File)
+        fd.append("profileHeaderData[profileImage]", profileImage);
+      if (bannerImage instanceof File)
+        fd.append("profileHeaderData[bannerImage]", bannerImage);
       const response = await apiPatch(`/profile/header`, fd);
 
       if (response.status === 200) {

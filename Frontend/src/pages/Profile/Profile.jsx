@@ -1,22 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./Profile.module.css";
-
 import useProfileStore from "../../stores/Profile";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useUserStore from "../../stores/User";
-import useAnalyticStore from "../../stores/Analytic";
-import useConnectionStore from "../../stores/Connection";
 import ProfileHeader from "../../components/Profile/ProfileHeader";
-import ProfileSection from "../../components/Profile/ProfileSection";
 import ProfileAbout from "../../components/Profile/ProfileAbout";
 import EducationSection from "../../components/Profile/EducationSection";
 import SkillsSection from "../../components/Profile/SkillsSection";
-import ExperienceCard from "../../components/Profile/ExperienceCard";
 import ExperienceSection from "../../components/Profile/ExperienceSection";
 import AnalyticsSection from "../../components/Profile/AnalyticsSection";
 
-//this component's size is very huge, make sure to break it down into chunks & also refactor this to separate logic, so that
-//it can beomce light & fast.
 export default function Profile() {
   const { id: currProfileId } = useParams();
   const profile = useProfileStore((s) => s.profile);

@@ -1,7 +1,7 @@
 import styles from "./Homepage.module.css";
 import { useEffect, useState, useCallback, useRef, lazy } from "react";
 import usePostStore from "../../stores/Post";
-import { debounce } from "lodash";
+import { debounce, zip } from "lodash";
 import PostForm from "../../components/Posts/PostForm";
 import usePollStore from "../../stores/Poll";
 import useUserStore from "../../stores/User";
@@ -137,6 +137,7 @@ export default function Homepage() {
           <div>
             <Modal>
               <Xmark
+              customStyles={{position:"absolute", right:"0.75rem", top:"0.75rem", zIndex:100}}
                 onClick={() => {
                   (setPostFormModal(false), setShowScheduledPosts(false));
                 }}

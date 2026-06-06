@@ -1,12 +1,13 @@
 import styles from "./PollForm.module.css";
 import Button from "../shared-components/Buttons/Button";
-import { useForm, useFieldArray } from "react-hook-form";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import usePollStore from "../../stores/Poll";
 import RHFtextarea from "../shared-components/Textarea/RHFtextarea";
 import { PollDataSchema } from "../../zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
+import RHFselect from "../shared-components/Select/RHFselect";
+import RHFInput from "../shared-components/Inputs/RHFInput";
 
 export default function PollForm() {
   const setPoll = usePollStore((s) => s.setPoll);
@@ -15,88 +16,95 @@ export default function PollForm() {
   const {
     register,
     handleSubmit,
-    control,
-    reset, //This method is used to clear up the form fields after the form has been submitted.
     formState: { errors },
   } = useForm({
     resolver: zodResolver(PollDataSchema),
-    defaultValues: {
-      options: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }], // Default empty options
-    },
   });
-
-  const { fields } = useFieldArray({
-    control,
-    name: "options", // Register options as an array
-  });
-
-  const [pollDuration, setpollDuration] = useState("1");
 
   const onSubmit = (data) => {
+    console.log(data);
     const pollData = {
-      options: data.options,
-      question: data.question,
-      pollDuration: pollDuration,
+      ...data,
+      pollDuration: data.pollDuration.split(" ")[0],
     };
     createPoll(pollData);
   };
 
   return (
     <div className={styles.pollform}>
-      <div className={styles.head}>
-        <span>Create a poll</span>
-      </div>
-      <div className={styles.mid}>
+      <div className={styles.head}>Create a Poll</div>
+      <div className={styles.body}>
         <FormWrapper onSubmit={handleSubmit(onSubmit)} id="myForm">
-          <span>
-            Your question<span style={{ color: "red" }}>*</span>
-          </span>
-          <RHFtextarea
-            placeholder="Eg. How do you commute to work?"
-            name="question"
-            register={register}
-            errors={errors}
-          />
+          <div className={styles.option}>
+            <div>Question</div>
+            <RHFtextarea
+              placeholder="Eg. How do you commute to work?"
+              name="question"
+              register={register}
+              errors={errors}
+            />
+          </div>
 
-          {fields?.map((field, index) => (
-            <div key={field.id}>
-              <span>
-                Option {index + 1}
-                <span style={{ color: "red" }}>*</span>
-              </span>
+          <div className={styles.option}>
+            <div>Option 1</div>
+            <RHFInput
+              name="options.0"
+              placeholder="Eg. Public transport"
+              register={register}
+              errors={{
+                "options.0": errors.options?.[0],
+              }}
+            />
+          </div>
 
-              <input
-                name="options"
-                placeholder="Eg. Public transport"
-                {...register(`options.${index}.value`, {
-                  required: "Required!",
-                })}
-              />
-            </div>
-          ))}
-          <span>Poll duration</span>
-          <br />
-          <select
+          <div className={styles.option}>
+            <div>Option 2</div>
+            <RHFInput
+              name="options.1"
+              placeholder="Eg. Car"
+              register={register}
+              errors={{
+                "options.1": errors.options?.[1],
+              }}
+            />
+          </div>
+
+          <div className={styles.option}>
+            <div>Option 3</div>
+            <RHFInput
+              name="options.2"
+              placeholder="Eg. Bicycle"
+              register={register}
+              errors={{
+                "options.2": errors.options?.[2],
+              }}
+            />
+          </div>
+
+          <div className={styles.option}>
+            <div>Option 4</div>
+            <RHFInput
+              name="options.3"
+              placeholder="Eg. Walk"
+              register={register}
+              errors={{
+                "options.3": errors.options?.[3],
+              }}
+            />
+          </div>
+
+          <RHFselect
             name="pollDuration"
-            value={pollDuration}
-            onChange={(event) => {
-              setpollDuration(event.target.value);
-            }}
-            className={styles.pollDropdown}
-          >
-            <option value="1">1 day</option>
-            <option value="3">3 days</option>
-            <option value="7">7 days</option>
-          </select>
-          <p>Fields marked * are required</p>
+            register={register}
+            label="Poll Duration"
+            options={["1 day", "3 days", "7 days"]}
+          />
         </FormWrapper>
       </div>
-      <div className={styles.foot}>
+      <div className={styles.footer}>
         <div className={styles.btns}>
-          <Button btnText="Back" onClick={() => setPoll(false)} />
-          <button form="myForm" className="btn1">
-            Done
-          </button>
+          <Button btnText="Back" variant="sm" onClick={() => setPoll(false)} />
+          <Button btnText="Done" variant="sm" form="myForm" />
         </div>
       </div>
     </div>

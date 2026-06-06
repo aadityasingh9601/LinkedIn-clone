@@ -5,7 +5,6 @@ import Post from "../models/Post.js";
 const logEvent = async (req, res) => {
   const { eventData } = req.body;
   //Now we have to save the post_impression information in the database for every post along with the user.
-
   //If the eventType is post_impression,only then --
   if (eventData.eventType === "post_impression") {
     //For every postId,

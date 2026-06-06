@@ -3,7 +3,7 @@ export default function LinkedInIcon({ styles = {} }) {
     <div style={styles}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="0 0 84 21"
         preserveAspectRatio="xMinYMin meet"
         version="1.1"

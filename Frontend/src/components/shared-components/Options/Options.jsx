@@ -35,7 +35,6 @@ export default function Options({
           <button
             onClick={() => {
               setDelete(true);
-              // setToggle(false);
             }}
           >
             <Trash />

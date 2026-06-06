@@ -6,7 +6,7 @@ import protect from "../utils/Middlewares/Middleware.js";
 const router = Router();
 
 router
-  .get("/all", protect, wrapAsync(pollController.getAllPolls))
+  .get("/", protect, wrapAsync(pollController.getAllPolls))
   .get("/:id/checkvote", protect, wrapAsync(pollController.checkVote))
   .post("/create", protect, wrapAsync(pollController.createPoll))
   .post("/:id/vote/:optionId", protect, wrapAsync(pollController.voteInPoll))

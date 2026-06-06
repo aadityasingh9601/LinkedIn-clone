@@ -10,7 +10,7 @@ import useFollowStore from "../../stores/Follow";
 import Options from "../shared-components/Options/Options";
 import useComponentVisible from "../../hooks/useComponentVisible";
 
-export default function PostHead({ data, type, setEdit, setDelete }) {
+export default function PostHead({ data, type, setEdit = {}, setDelete = {} }) {
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible();
   const [isFollowed, setIsFollowed] = useState(false);

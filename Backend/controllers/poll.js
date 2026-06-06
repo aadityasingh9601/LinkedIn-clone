@@ -4,6 +4,7 @@ import { PollDataSchema } from "../zodSchema/index.js";
 const createPoll = async (req, res) => {
   const { pollData } = req.body;
   let { pollDuration } = pollData;
+  console.log(pollData);
 
   const result = PollDataSchema.safeParse(pollData);
   if (!result.success) {
@@ -16,9 +17,13 @@ const createPoll = async (req, res) => {
     Date.now() + pollDuration * 24 * 60 * 60 * 1000,
   ).toISOString();
 
+  console.log(expiryDate);
+
   const newPoll = new Poll({
     question: pollData.question,
-    options: pollData.options,
+    options: pollData.options.map((op) => {
+      return { value: op, votes: 0 };
+    }),
     author: req.user._id,
     expiresAt: expiryDate,
     voters: [],
@@ -35,17 +40,23 @@ const createPoll = async (req, res) => {
     },
   });
 
-  res.status(201).send(fullPoll);
+  console.log(fullPoll);
+
+  res.status(201).json({
+    message: "Poll created successfully!",
+    newPoll: fullPoll,
+  });
 };
 
 const getAllPolls = async (req, res) => {
+  console.log("inside getPolls");
   const polls = await Poll.find()
     .sort({ createdAt: -1 })
     .populate({
       path: "author",
       select: "profile",
       populate: {
-        path: "profile", 
+        path: "profile",
         select: "headline name profileImage",
       },
     });

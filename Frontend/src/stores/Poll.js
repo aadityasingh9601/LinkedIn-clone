@@ -26,19 +26,20 @@ const usePollStore = create((set) => ({
       const response = await apiPost(`/poll/create`, { pollData }, {});
       //Update the polls state variable.
       set((state) => ({
-        polls: [...state.polls, response.data],
+        polls: [...state.polls, response.data.newPoll],
       }));
 
       if (response.status === 201) {
         setPostFormModal(false);
-        return toast.success("Poll created successfully!");
+        set({ poll: false });
+        return toast.success(response.data.message);
       }
     });
   },
 
   getAllPolls: async () => {
     tryCatchWrapper(async () => {
-      const response = await apiGet("/poll/all");
+      const response = await apiGet("/poll");
       if (response.status === 200) {
         set({ polls: response.data });
       }
@@ -50,7 +51,7 @@ const usePollStore = create((set) => ({
       const response = await apiPost(
         `/poll/${pollId}/vote/${optionId}`,
         {},
-        {}
+        {},
       );
       if (response.status === 200) {
         //Update the poll voters and options votes carefully.
@@ -62,7 +63,7 @@ const usePollStore = create((set) => ({
                   voters: response.data.voters,
                   options: response.data.options,
                 }
-              : poll
+              : poll,
           ),
         }));
       }
@@ -82,7 +83,7 @@ const usePollStore = create((set) => ({
                   voters: response.data.voters,
                   options: response.data.options,
                 }
-              : poll
+              : poll,
           ),
         }));
         return false;
