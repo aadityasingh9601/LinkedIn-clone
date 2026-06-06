@@ -1,7 +1,5 @@
 import { z, coerce } from "zod";
 
-const MAX_PDF_SIZE = 5 * 1024 * 1024;
-
 export const SignupDataSchema = z.object({
   name: z
     .string()
@@ -62,9 +60,9 @@ export const JobDataSchema = z.object({
   jobType: z.enum(["Full-time", "Part-time", "Contract", "Internship"]),
   jobMode: z.enum(["On-site", "Remote"]),
   salary: z.coerce
-        .number("Please enter a valid amount!")
-        .gte(1000, "Too short!")
-        .lte(9999999, "Too long!"),
+    .number("Please enter a valid amount!")
+    .gte(1000, "Too short!")
+    .lte(9999999, "Too long!"),
   qualifications: z
     .string("Required!")
     .min(100, "Too short!")
@@ -148,14 +146,7 @@ export const ProfileHeaderDataSchema = z.object({
 
 export const JobApplicationDataSchema = z.object({
   answers: z.array(
-    z.string("Answer is required!").min(10, "Too short!").max(150, "Too long!"),
+    z.string("Required!").min(10, "Too short!").max(200, "Too long!"),
   ),
-  resume: z
-    .instanceof(File)
-    .refine((file) => file.type === "application/pdf", {
-      message: "Only PDF files allowed",
-    })
-    .refine((file) => file.size <= MAX_PDF_SIZE, {
-      message: "File must be under 5MB",
-    }),
+  //Resume validation is being done directly in the backend route.
 });

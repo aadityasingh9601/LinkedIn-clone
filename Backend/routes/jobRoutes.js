@@ -7,19 +7,13 @@ import applicationController from "../controllers/application.js";
 import wrapAsync from "../utils/wrapAsync.js";
 import protect from "../utils/Middlewares/Middleware.js";
 import multer from "multer";
-import { GridFsStorage } from "multer-gridfs-storage";
+import GridFsStorage from "../utils/gridfsStorage.js";
 
 const pdfStorage = new GridFsStorage({
-  url: process.env.MONGO_URL || "mongodb://mongo:27017/linkedin",
   file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      const filename = `${file.originalname}`;
-      const fileInfo = {
-        filename,
-        bucketName: "uploads",
-      };
-      resolve(fileInfo);
-    });
+    const filename = `${file.originalname}`;
+    console.log(filename);
+    return { filename, bucketName: "uploads" };
   },
 });
 

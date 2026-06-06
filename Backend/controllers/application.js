@@ -9,20 +9,20 @@ import { JobApplicationDataSchema } from "../zodSchema/index.js";
 let bucket;
 (() => {
   mongoose.connection.on("connected", () => {
+    console.log(mongoose.connection.db);
     bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
       bucketName: "uploads",
     });
   });
 })();
 
-//Search properly how would you add validation to check for job application data here, can you use JobApplicationDataSchema
-//here?
 const applyToJob = async (req, res) => {
   console.log("Inside applyToJob");
   const { jobId } = req.params;
-  const jobApplicationData = typeof req.body.jobApplicationData === "string"
-    ? JSON.parse(req.body.jobApplicationData)
-    : req.body.jobApplicationData;
+  const jobApplicationData =
+    typeof req.body.jobApplicationData === "string"
+      ? JSON.parse(req.body.jobApplicationData)
+      : req.body.jobApplicationData;
   const result = JobApplicationDataSchema.safeParse(jobApplicationData);
   if (!result.success) {
     return res.status(400).json({
@@ -30,42 +30,64 @@ const applyToJob = async (req, res) => {
     });
   }
 
+  if (!req.file) {
+    return res.status(400).json({ message: "Resume is required" });
+  }
+
+  const MAX_PDF_SIZE = 5 * 1024 * 1024;
+  if (req.file.mimetype !== "application/pdf") {
+    return res.status(400).json({ message: "Only PDF files allowed" });
+  }
+  if (req.file.size > MAX_PDF_SIZE) {
+    return res.status(400).json({ message: "File must be under 5MB" });
+  }
+
   const { filename, id } = req.file;
+  console.log(filename, id);
   const userId = req.user._id;
   const currUser = await Profile.findOne({ userId: userId });
 
   const job = await Job.findById(jobId).populate("applications");
-  if (job.postedBy.toString() === userId.toString()) {
-    return res.status(400).send("You can't apply to a job posted by you!");
+  if (!job) {
+    return res.status(400).json({
+      message: "The job doesn't exists!",
+    });
   }
 
-  const existingApplication = job.applications.filter(
+  if (job.postedBy.toString() === userId.toString()) {
+    return res.status(400).json({
+      message: "You can't apply to a job posted by you!",
+    });
+  }
+
+  const existingApplication = job.applications.find(
     (j) => j.applicant.toString() === userId.toString(),
   );
 
-  if (existingApplication.length > 0) {
-    return res.status(400).send("You have already applied to this job");
-  } else {
-    const newApplication = new Application({
-      jobId: jobId,
-      applicant: req.user._id,
-      answers: jobApplicationData.answers,
-      resume: {
-        filename: filename,
-        id: id,
-      },
+  if (existingApplication) {
+    return res.status(400).json({
+      message: "You've already applied to this job!",
     });
-
-    await newApplication.save();
-    //console.log(newApplication);
-
-    job.applications.push(newApplication);
-    currUser.myJobs.applied.push(job._id);
-    await job.save();
-    await currUser.save();
-
-    res.status(200).send("Applied successfully");
   }
+
+  const newApplication = new Application({
+    jobId: jobId,
+    applicant: req.user._id,
+    answers: jobApplicationData.answers,
+    resume: {
+      filename: filename,
+      id: id,
+    },
+  });
+  await newApplication.save();
+
+  job.applications.push(newApplication);
+  currUser.myJobs.applied.push(job._id);
+  await job.save();
+  await currUser.save();
+  res.status(200).json({
+    message: "Applied succesfully!",
+  });
 };
 
 const unapplyFromJob = async (req, res) => {

@@ -63,12 +63,11 @@ async function connectToDb() {
 connectToDb()
   .then(() => {
     console.log("Connected to MongoDB");
+    server.listen(8000, () => {
+      console.log("Listening on 8000");
+    });
   })
   .catch((err) => console.log(err));
-
-server.listen(8000, () => {
-  console.log("Listening on 8000");
-});
 
 startPostPublishScheduler();
 
