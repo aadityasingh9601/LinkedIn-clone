@@ -1,8 +1,6 @@
 import styles from "./ProfileHeader.module.css";
 import useUserStore from "../../stores/User";
 import Button from "../shared-components/Buttons/Button";
-import PDF from "./Pdf";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import useProfileStore from "../../stores/Profile";
 import Modal from "../shared-components/Modal/Modal";
 import { lazy, Suspense } from "react";
@@ -12,7 +10,9 @@ import Spinner from "../shared-components/Loaders/Spinner";
 import useConnectionStore from "../../stores/Connection";
 import useChatStore from "../../stores/Chat";
 import { useState, useEffect } from "react";
-import ProfileHeaderForm from "./ProfileHeaderForm";
+
+const ProfileHeaderForm = lazy(() => import("./ProfileHeaderForm"));
+const PDFDownloadButton = lazy(() => import("./PDFDownloadButton"));
 
 export default function ProfileHeader({ profile }) {
   const [isFollowed, setisFollowed] = useState(false);
@@ -117,14 +117,9 @@ export default function ProfileHeader({ profile }) {
           </>
         )}
         <button className={styles.downloadPdf}>
-          <PDFDownloadLink
-            document={<PDF user={profile} />}
-            fileName="Profile.pdf"
-          >
-            {({ loading }) =>
-              loading ? <Spinner height={17} width={17} /> : "Download PDF"
-            }
-          </PDFDownloadLink>
+          <Suspense fallback={<Spinner height={17} width={17} />}>
+            <PDFDownloadButton profile={profile} />
+          </Suspense>
         </button>
       </div>
       {editHead && (

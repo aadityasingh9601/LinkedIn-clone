@@ -1,11 +1,13 @@
 import styles from "./JobsUI.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import Button from "../../components/shared-components/Buttons/Button";
 import Job from "../../components/Jobs/Job";
 import Modal from "../../components/shared-components/Modal/Modal";
-import CreateJobForm from "../../components/Jobs/CreateJobForm";
 import useJobStore from "../../stores/Job";
-import JobDetail from "../../components/Jobs/JobDetail";
+import Spinner from "../../components/shared-components/Loaders/Spinner";
+
+const CreateJobForm = lazy(() => import("../../components/Jobs/CreateJobForm"));
+const JobDetail = lazy(() => import("../../components/Jobs/JobDetail"));
 
 export default function JobsUI() {
   const jobs = useJobStore((s) => s.jobs);
@@ -70,19 +72,25 @@ export default function JobsUI() {
         </div>
         <div className={styles.jobDetails}>
           {jobs.length > 0 && currJobListingId && (
-            <JobDetail job={currJobDetails} />
+            <Suspense fallback={<Spinner height={40} width={40} />}>
+              <JobDetail job={currJobDetails} />
+            </Suspense>
           )}
         </div>
       </div>
 
       {postJob && (
         <Modal>
-          <CreateJobForm job={currJobDetails} />
+          <Suspense fallback={<Spinner height={40} width={40} />}>
+            <CreateJobForm job={currJobDetails} />
+          </Suspense>
         </Modal>
       )}
       {editJob && (
         <Modal>
-          <CreateJobForm job={currJobDetails} />
+          <Suspense fallback={<Spinner height={40} width={40} />}>
+            <CreateJobForm job={currJobDetails} />
+          </Suspense>
         </Modal>
       )}
     </>

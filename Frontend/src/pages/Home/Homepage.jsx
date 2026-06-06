@@ -1,13 +1,14 @@
 import styles from "./Homepage.module.css";
-import { useEffect, useState, useCallback, useRef, lazy } from "react";
+import { useEffect, useState, useCallback, useRef, lazy, Suspense } from "react";
 import usePostStore from "../../stores/Post";
 import { debounce, zip } from "lodash";
-import PostForm from "../../components/Posts/PostForm";
 import usePollStore from "../../stores/Poll";
 import useUserStore from "../../stores/User";
 import useAnalyticStore from "../../stores/Analytic";
 import Xmark from "../../components/shared-components/Icons/Xmark";
+import Spinner from "../../components/shared-components/Loaders/Spinner";
 const Post = lazy(() => import("../../components/Posts/Post"));
+const PostForm = lazy(() => import("../../components/Posts/PostForm"));
 const InfiniteScroll = lazy(() => import("react-infinite-scroll-component"));
 const PostFormPreview = lazy(
   () => import("../../components/Posts/PostFormPreview"),
@@ -142,7 +143,9 @@ export default function Homepage() {
                   (setPostFormModal(false), setShowScheduledPosts(false));
                 }}
               />
-              <PostForm mode="create" />
+              <Suspense fallback={<Spinner height={40} width={40} />}>
+                <PostForm mode="create" />
+              </Suspense>
             </Modal>
           </div>
         )}
@@ -158,7 +161,7 @@ export default function Homepage() {
           next={getMoreData}
           hasMore={hasMore}
           //You can create your own good looking custom loader here also.
-          loader={<div className="loader">Loading...</div>}
+          loader={<Spinner height={40} width={40} />}
         >
           <div className="posts">
             {posts?.map((post) => {

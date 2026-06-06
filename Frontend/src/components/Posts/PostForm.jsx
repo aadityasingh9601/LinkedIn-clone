@@ -20,8 +20,8 @@ import UserInfo from "../shared-components/User/UserInfo";
 import useUserStore from "../../stores/User";
 import usePollStore from "../../stores/Poll";
 import FormWrapper from "../shared-components/Forms/FormWrapper";
-import EmojiPicker from "emoji-picker-react";
 const PollForm = lazy(() => import("../Polls/PollForm"));
+const EmojiPicker = lazy(() => import("emoji-picker-react"));
 const ScheduledPostsUI = lazy(() => import("./ScheduledPostsUI"));
 
 export default function PostForm({ mode, post = {}, setEditModal = {} }) {
@@ -155,11 +155,13 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
                   </div>
                   <div className={styles.emojiPicker}>
                     {showEmojiPicker && (
-                      <EmojiPicker
-                        height={350}
-                        width={300}
-                        onEmojiClick={handleEmojiClick}
-                      />
+                      <Suspense fallback={<Spinner height={30} width={30} />}>
+                        <EmojiPicker
+                          height={350}
+                          width={300}
+                          onEmojiClick={handleEmojiClick}
+                        />
+                      </Suspense>
                     )}
                   </div>
                 </div>

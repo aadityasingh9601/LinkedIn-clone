@@ -1,8 +1,11 @@
 import styles from "./Analytics.module.css";
-import Chart from "../../components/shared-components/Charts/Chart";
+import { lazy, Suspense } from "react";
 import { useState, useEffect } from "react";
 import useAnalyticStore from "../../stores/Analytic";
 import dropDownStyles from "../../components/shared-components/Select/RHFselect.module.css";
+import Spinner from "../../components/shared-components/Loaders/Spinner";
+
+const Chart = lazy(() => import("../../components/shared-components/Charts/Chart"));
 
 export default function Analytics() {
   const analyticsEvent = useAnalyticStore((s) => s.analyticsEvent);
@@ -48,7 +51,9 @@ export default function Analytics() {
        </div>
       </div>
 
-      <Chart data={analyticsData} />
+      <Suspense fallback={<Spinner height={60} width={60} />}>
+        <Chart data={analyticsData} />
+      </Suspense>
     </div>
   );
 }
