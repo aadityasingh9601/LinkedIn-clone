@@ -82,7 +82,7 @@ export default function Navbar({ showMessaging }) {
         <div className={styles.allUserProfiles}>
           <Xmark
             onClick={() => setSearchResult(false)}
-            styles={{ position: "absolute", top:"0.5rem",right:"0.5rem", zIndex: "100" }}
+            customStyles={{ position: "absolute", top:"0.5rem", right:"0.5rem", zIndex: "100" }}
           />
           {userProfiles?.map((profile) => (
             <UserInfo

@@ -43,10 +43,9 @@ const [buttonHeight, setButtonHeight] = useState();
         ...variantStyles[variant],
         ...buttonWidthStyle,
         ...buttonHeightStyle,
-        
       }}
     >
-      {btnText}
+      <div className={styles.btnText}>{btnText}</div>
     </button>
   );
 }

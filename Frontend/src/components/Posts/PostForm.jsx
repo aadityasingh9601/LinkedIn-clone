@@ -136,6 +136,7 @@ export default function PostForm({ mode, post = {}, setEditModal = {} }) {
                   <div className={styles.previewImg}>
                     <div className={styles.xmark}>
                       <Xmark
+                      customStyles={{position:"absolute", top:"0.75rem",right:"0.75rem",zIndex:100}}
                         onClick={() => {
                           setValue("media", "");
                           setPreview("");

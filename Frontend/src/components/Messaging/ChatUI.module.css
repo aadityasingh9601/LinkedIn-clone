@@ -26,6 +26,7 @@
   padding: 0.8rem;
   height: 21rem;
   overflow-y: auto;
+  z-index: 1000;
 }
 
 .date-divider {

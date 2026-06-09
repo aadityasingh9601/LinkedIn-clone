@@ -1,6 +1,6 @@
 .btn {
   display: flex;
-  gap:0.5rem;
+  gap: 0.5rem;
   align-items: center;
   justify-items: center;
   width: fit-content;
@@ -11,9 +11,11 @@
 }
 
 .btnText {
-  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.btn:hover{
+.btn:hover {
   cursor: pointer;
 }
