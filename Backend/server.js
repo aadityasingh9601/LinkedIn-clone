@@ -63,8 +63,9 @@ async function connectToDb() {
 connectToDb()
   .then(() => {
     console.log("Connected to MongoDB");
-    server.listen(8000, () => {
-      console.log("Listening on 8000");
+    let port = process.env.PORT || 8000;
+    server.listen(port, "0.0.0.0", () => {
+      console.log(`Listening on ${port}`);
     });
   })
   .catch((err) => console.log(err));

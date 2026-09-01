@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log*
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+.DS_Store
+.vscode
+.idea
+docker-compose-dev.yml
+Dockerfile
+*.md
+utils/seed-db
